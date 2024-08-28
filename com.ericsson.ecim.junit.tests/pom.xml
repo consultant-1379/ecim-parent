@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.ericsson.ecim</groupId>
+		<artifactId>ecim-parent</artifactId>
+		<version>3.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>com.ericsson.ecim.junit.tests</artifactId>
+	<version>3.0.0-SNAPSHOT</version>
+	<packaging>eclipse-test-plugin</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<executions>
+					<execution>
+						<id>copy-golden-files</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<!-- destination folder where the golden files must be copied to -->
+							<outputDirectory>${basedir}/target/TestModels/</outputDirectory>
+							<resources>
+								<resource>
+									<!-- folder where the golden files are stored -->
+									<directory>TestModels/</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<application>org.eclipse.pde.junit.runtime.uitestapplication</application>
+					<redirectTestOutputToFile>true</redirectTestOutputToFile>
+					<test>MasterTestSuiteForJenkins</test>
+					<argLine>-Xms128m -Xmx2G -XX:MaxPermSize=128m -Djub.consumers=XML -Djub.xml.file=${basedir}/target/junitbenchmarks.xml</argLine>
+					<showEclipseLog>true</showEclipseLog>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?><plugin>
+<extension name="dsml.validation.generated.ecim base profile" point="org.eclipse.emf.validation.constraintProviders">
+      <category id="com.ericsson.ecim.dsl.profile.validation.ecim base profile" mandatory="false" name="com.ericsson.ecim.dsl.profile.validation.ecim base profile"/>
+      <constraintProvider cache="false" mode="Batch">
+         <package namespaceUri="http:///schemas/ECIMBaseProfile/"/>
+         <constraints categories="com.ericsson.ecim.dsl.profile.validation.ecim base profile">
+            <constraint id="ECIM Base Profile.EcimMom.MustHaveVersionValue" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveVersionValue" severity="ERROR" statusCode="3">
+               <message>The MOM must have a value for the version stereotype property</message><![CDATA[self.version <> '' and not (self.version.oclIsUndefined())]]></constraint>
+            <constraint id="ECIM Base Profile.EcimMom.MustHaveReleaseValue" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveReleaseValue" severity="ERROR" statusCode="3">
+               <message>The MOM must have a value for the release stereotype property</message><![CDATA[self.release <> '' and not (self.release.oclIsUndefined())]]></constraint>
+            <constraint id="ECIM Base Profile.EcimMom.NoDuplicateEnumNames" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="NoDuplicateEnumNames" severity="WARNING" statusCode="2">
+               <message>All used enumerations must be uniquely named</message><![CDATA[-- Checks that the used enum types from different libraries are all uniquely named
+ let types : Set(Type) = 
+ 	self.base_Package.allOwnedElements()->select(e|e.oclIsTypeOf(Class))->collect(e|e.oclAsType(Class).attribute)->flatten()->collect(e|e.type)->union(
+	self.base_Package.allOwnedElements()->select(e|e.oclIsTypeOf(Class))->collect(e|e.oclAsType(Class).ownedOperation)->flatten()->collect(o|o.oclAsType(Operation).ownedParameter)->flatten()->collect(t|t.type)->flatten())->asSet()
+ in
+ let enumTypes : Set(Type) = 
+ 	types->select(e|e.oclIsTypeOf(Enumeration))
+ 		 ->select(e|not e.getAppliedStereotype('ECIM Base Profile::EcimEnumeration').oclIsUndefined())
+ in
+ let libEnumNames : Set(String) = 
+ 	enumTypes->collect(e|e.name.concat(e.getNearestPackage().name))->asSet()
+ in
+ let enumNames : Set(String) =  
+ 	enumTypes->collect(e|e.name)->asSet()
+ in
+    libEnumNames->size()=enumNames->size()
+]]></constraint>
+            <constraint id="ECIM Base Profile.EcimMom.NoDuplicateStructNames" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="NoDuplicateStructNames" severity="WARNING" statusCode="2">
+               <message>All used structs must be uniquely named</message><![CDATA[-- Checks that the used structs from different libraries are all uniquely named
+let types : Set(Type) = 
+	self.base_Package.allOwnedElements()->select(e|e.oclIsTypeOf(Class))->collect(e|e.oclAsType(Class).attribute)->flatten()->collect(e|e.type)->union(
+	self.base_Package.allOwnedElements()->select(e|e.oclIsTypeOf(Class))->collect(e|e.oclAsType(Class).ownedOperation)->flatten()->collect(o|o.oclAsType(Operation).ownedParameter)->flatten()->collect(t|t.type)->flatten())->asSet()
+in
+let structTypes : Set(Type) = 
+	types->select(e|e.oclIsTypeOf(Class))
+		 ->select(e|not (e.getAppliedStereotype('ECIM Base Profile::EcimStruct').oclIsUndefined()))
+in
+let libStructNames : Set(String) =  
+	structTypes->collect(e|e.name.concat(e.getNearestPackage().name))->asSet()
+in
+let structNames : Set(String) =  
+	structTypes->collect(e|e.name)->asSet()
+in
+   libStructNames->size()=structNames->size()]]></constraint>
+            <constraint id="ECIM Base Profile.EcimMom.NoDuplicateExceptionNames" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="NoDuplicateExceptionNames" severity="WARNING" statusCode="2">
+               <message>All used exceptions must be uniquely named</message><![CDATA[-- Checks that the used exception types from different libraries are all uniquely named--
+let types : Set(Type) = 
+	self.base_Package.allOwnedElements()->select(e|e.oclIsTypeOf(Class))->collect(e|e.oclAsType(Class).ownedOperation)->flatten()->collect(o|o.oclAsType(Operation).raisedException)->flatten()->asSet()
+in
+let exceptionTypes : Set(Type) = 
+	types->select(e|e.oclIsTypeOf(Class))
+		 ->select(e|not e.getAppliedStereotype('ECIM Base Profile::EcimException').oclIsUndefined())
+in
+let libExceptionNames : Set(String) =  
+	exceptionTypes->collect(e|e.name.concat(e.getNearestPackage().name))->asSet()
+in
+let exceptionNames : Set(String) =  
+	exceptionTypes->collect(e|e.name)->asSet()
+in
+    libExceptionNames->size()=exceptionNames->size()]]></constraint>
+            <constraint id="ECIM Base Profile.EcimMom.NoDuplicateDerivedDatatypeNames" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="NoDuplicateDerivedDatatypeNames" severity="WARNING" statusCode="2">
+               <message>All used derived datatypes must be uniquely named</message><![CDATA[-- Checks that the used derived types from different libraries are all uniquely named
+let types : Set(Type) = 
+	self.base_Package.allOwnedElements()->select(e|e.oclIsTypeOf(Class))->collect(e|e.oclAsType(Class).attribute)->flatten()->collect(e|e.type)->union(
+	self.base_Package.allOwnedElements()->select(e|e.oclIsTypeOf(Class))->collect(e|e.oclAsType(Class).ownedOperation)->flatten()->collect(o|o.oclAsType(Operation).ownedParameter)->flatten()->collect(t|t.type)->flatten())->asSet()
+in
+let derivedTypes : Set(Type) = 
+	types->select(e|e.oclIsTypeOf(DataType))
+		 ->select(e|not (e.getAppliedStereotype('ECIM Base Profile::EcimDerivedInteger').oclIsUndefined() and 
+		 				 e.getAppliedStereotype('ECIM Base Profile::EcimDerivedFloat').oclIsUndefined() and 
+		 				 e.getAppliedStereotype('ECIM Base Profile::EcimDerivedBoolean').oclIsUndefined() and 
+		 				 e.getAppliedStereotype('ECIM Base Profile::EcimDerivedString').oclIsUndefined()))
+in
+let libDerivedNames : Set(String) =  
+	derivedTypes->collect(e|e.name.concat(e.getNearestPackage().name))->asSet()
+in
+let derivedNames : Set(String) =  
+	derivedTypes->collect(e|e.name)->asSet()
+in
+    libDerivedNames->size()=derivedNames->size()
+]]></constraint>
+            <constraint id="ECIM Base Profile.EcimModel.PackageImportProfilesMustMatch" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="PackageImportProfilesMustMatch" severity="ERROR" statusCode="3">
+               <message>The PackageImport Models must have the same set of profiles as this Model</message><![CDATA[--Any PackageImports references from a model must have the same set of profiles
+--OCL lacks a Set compare method so we check the number of profiles matches and then ensure all the profiles from the PackageImport's owning model
+--are present in this model
+--Note:I would have liked to compare the profiles directly instead of the names but they are objects with different IDs so they never match
+if self.base_Model.packageImport->select(e|e.oclIsTypeOf(Package))->size() > 0
+then
+	self.base_Model.packageImport->collect(e|e.importedPackage)->select(e|e.oclIsTypeOf(Package))->collect(e|e.getModel().getAllAppliedProfiles()->size() = self.base_Model.getAllAppliedProfiles()->size() and e.getModel().getAllAppliedProfiles()->collect(f|f.name)->includesAll(self.base_Model.getAllAppliedProfiles()->collect(g|g.name)))->asSequence()->first()
+else
+	true
+endif]]></constraint>
+            <constraint id="ECIM Base Profile.EcimContainment.MustNotSpanMoms" isEnabledByDefault="true" lang="OCLpivot" mode="Live" name="MustNotSpanMoms" severity="ERROR" statusCode="3">
+               <message>Containment associations may not span between different MOMs</message><![CDATA[--get the package name of the owner(parent) of the relationship
+self.base_Association.memberEnd->select(e|e.aggregation=AggregationKind::none)->collect(e:Property|e.type.getNearestPackage())
+= --make sure owner and child packages are equal
+--get the package name of the child of the relationship
+self.base_Association.memberEnd->select(e|e.aggregation=AggregationKind::composite)->collect(e:Property|e.type.getNearestPackage()) ]]></constraint>
+            <constraint id="ECIM Base Profile.EcimContainment.MustHaveContainmentChildNotAsRootMoc" isEnabledByDefault="true" lang="OCLpivot" mode="Live" name="MustHaveContainmentChildNotAsRootMoc" severity="ERROR" statusCode="3">
+               <message>The child end of the containment association must not be a Root MOC</message><![CDATA[true
+--the target end of an association of type EcimComposition must be a regular MoClass i.e. not a RootMoc
+--self.base_Association.memberEnd->select(e|e.aggregation=AggregationKind::composite).type.getAppliedStereotypes()->select(e|e.name ='EcimAbstractMoClass' or e.name = 'EcimMoClass')->size() > 0
+]]></constraint>
+            <constraint id="ECIM Base Profile.EcimContainment.MustNotMixVisibility" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustNotMixVisibility" severity="ERROR" statusCode="3">
+               <message>Containment associations must have the same visibility value as their member ends</message><![CDATA[--The memberEnds visibility must match that of the association itself
+self.base_Association.memberEnd->forAll(e|e.visibility=self.base_Association.visibility)]]></constraint>
+            <constraint id="ECIM Base Profile.EcimContainment.MustNotComposeBetweenAbstractClasses" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustNotComposeBetweenAbstractClasses" severity="ERROR" statusCode="3">
+               <message>This dependency is connecting two EcimMocInstances, but no corresponding EcimContribution or EcimContainment was found between the EcimMocInstance's classifiers</message><![CDATA[--Do not allow compositions that connect 2 abstract classes. This will result in an unflattenable model.
+if self.base_Association.memberEnd->collect(e|e.type)->forAll(e|e.oclAsType(Class).isAbstract)
+then
+	false
+else
+	true
+endif]]></constraint>
+            <constraint id="ECIM Base Profile.EcimContribution.MustSpanMoms" isEnabledByDefault="true" lang="OCLpivot" mode="Live" name="MustSpanMoms" severity="ERROR" statusCode="3">
+               <message>Contribution associations must span between different MOMs</message><![CDATA[--Ensure the two linked MOCs are in different MOMs
+
+--get the package name of the owner(parent) of the relationship
+self.base_Association.memberEnd->select(e|e.aggregation=AggregationKind::none)->collect(e:Property|e.type.getNearestPackage())
+<> --make sure owner and child packages are not equal
+--get the package name of the child of the relationship
+self.base_Association.memberEnd->select(e|e.aggregation=AggregationKind::composite)->collect(e:Property|e.type.getNearestPackage()) ]]></constraint>
+            <constraint id="ECIM Base Profile.EcimContribution.ParentMustAllowContribution" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="ParentMustAllowContribution" severity="ERROR" statusCode="3">
+               <message>The parent class in a contribution must have allowContribution set to true</message><![CDATA[self.base_Association.memberEnd->select(e|e.aggregation=AggregationKind::none).type->
+	select(e|e.getAppliedStereotype('ECIM Base Profile::EcimRootMoClass')->size()=1)->
+	select(e|e.getValue(e.getAppliedStereotype('ECIM Base Profile::EcimRootMoClass'), 'allowContribution').oclAsType(Boolean)=true)->size()=1
+or
+self.base_Association.memberEnd->select(e|e.aggregation=AggregationKind::none).type->
+	select(e|e.getAppliedStereotype('ECIM Base Profile::EcimMoClass')->size()=1)->
+	select(e|e.getValue(e.getAppliedStereotype('ECIM Base Profile::EcimMoClass'), 'allowContribution').oclAsType(Boolean)=true)->size()=1]]></constraint>
+            <constraint id="ECIM Base Profile.EcimGeneralization.MustNotInheritFromSelf" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustNotInheritFromSelf" severity="ERROR" statusCode="3">
+               <message>The abstract MOC cannot inherit itself</message><![CDATA[self.base_Generalization.source <> self.base_Generalization.target]]></constraint>
+            <constraint id="ECIM Base Profile.EcimBiDirAssociation.MustNotSpanMoms" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustNotSpanMoms" severity="ERROR" statusCode="3">
+               <message>Bi-directional association ends must be defined in same MOM</message><![CDATA[--Association ends for bi-directional associations must be defined in same package
+self.base_Association.memberEnd->first().getNearestPackage()=self.base_Association.memberEnd->last().getNearestPackage()]]></constraint>
+            <constraint id="ECIM Base Profile.EcimBiDirAssociation.MustNotAssociateAbstractClasses" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustNotAssociateAbstractClasses" severity="ERROR" statusCode="3">
+               <message>Both ends of a bi-directional association must be concrete classes</message><![CDATA[--Do not allow bi-directional associations that connect abstract classes. 
+if self.base_Association.memberEnd->collect(e|e.type)->exists(e|e.oclAsType(Class).isAbstract)
+then
+	false
+else
+	true
+endif]]></constraint>
+            <constraint id="ECIM Base Profile.EcimBiDirAssociation.AssociationEndsHavePropertiesDefined" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="AssociationEndsHavePropertiesDefined" severity="ERROR" statusCode="3">
+               <message>Attributes matching bi-directional association ends must be defined and their multiplicities must not be narrower</message><![CDATA[-- Properties are defined that match the association ends
+-- Multiplicity of property must be larger than multiplicity of association ends
+let ae1:Property = self.base_Association.ownedEnd->first() in
+let ae2:Property = self.base_Association.ownedEnd->last() in
+let c1:Class = ae1.type.oclAsType(Class) in
+let c2:Class = ae2.type.oclAsType(Class) in
+let p1:Property = c2.getAllAttributes()->select(a|a.name=ae1.name)->asSequence()->first() in
+let p2:Property = c1.getAllAttributes()->select(a|a.name=ae2.name)->asSequence()->first() in
+not (p1.oclIsUndefined() or p2.oclIsUndefined())
+and
+if (not p1.oclIsUndefined() and not p2.oclIsUndefined())
+then
+	(p1.upper = -1 or p1.upper >= ae1.upper)
+	and
+	(p2.upper = -1 or p2.upper >= ae2.upper)
+else
+	false
+endif
+	]]></constraint>
+            <constraint id="ECIM Base Profile.EcimBiDirAssociation.AtLeastOneAssociationEndPropertyIsReadOnly" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="AtLeastOneAssociationEndPropertyIsReadOnly" severity="ERROR" statusCode="3">
+               <message>Attributes matching bi-directional association ends must be defined and at least one of them must be read-only</message><![CDATA[-- At least one of the properties is read-only
+--let ae1:Property = self.ownedEnd->first() in
+--let ae2:Property = self.ownedEnd->last() in
+--let c1:Class = ae1.type.oclAsType(Class) in
+--let c2:Class = ae2.type.oclAsType(Class) in
+--let p1:Property = c2.getAllAttributes()->select(a|a.name=ae1.name)->asSequence()->first() in
+--let p2::Property = c1.getAllAttributes()->select(a|a.name=ae2.name)->asSequence()->first() in
+true
+--p1.isReadOnly or p2.isReadOnly]]></constraint>
+            <constraint id="ECIM Base Profile.EcimBiDirAssociation.AssociationEndPropertyTypesAreEitherAbstractOrSameAsAssociationEndClass" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="AssociationEndPropertyTypesAreEitherAbstractOrSameAsAssociationEndClass" severity="ERROR" statusCode="3">
+               <message>The type of a property  matching a bi-directional association end must either be abstract class or same as association end type</message><![CDATA[-- Property types are either abstract or same as association end classes
+let ae1:Property = self.base_Association.ownedEnd->first() in
+let ae2:Property = self.base_Association.ownedEnd->last() in
+let c1:Class = ae1.type.oclAsType(Class) in
+let c2:Class = ae2.type.oclAsType(Class) in
+let p1:Property = c2.getAllAttributes()->select(a|a.name=ae1.name)->asSequence()->first() in
+let p2:Property = c1.getAllAttributes()->select(a|a.name=ae2.name)->asSequence()->first() in
+(p1.type.oclIsTypeOf(Class) and p2.type.oclIsTypeOf(Class)) and
+(p1.type.oclAsType(Class).isAbstract or c1=p1.type) and
+(p2.type.oclAsType(Class).isAbstract or c2=p2.type)]]></constraint>
+            <constraint id="ECIM Base Profile.EcimGeneralProperties.DepracatedElementMustHaveStatusInformation" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="DepracatedElementMustHaveStatusInformation" severity="WARNING" statusCode="1">
+               <message>Add details about why this item is deprecated, what replaces it, and state the release that this change is being made in</message><![CDATA[self.status=StatusType::DEPRECATED implies (not self.statusInformation.oclIsUndefined() and self.statusInformation <> '')]]></constraint>
+            <constraint id="ECIM Base Profile.EcimStruct.AtMostOneKeyStructMember" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="AtMostOneKeyStructMember" severity="ERROR" statusCode="3">
+               <message>At most one struct member can be key</message><![CDATA[--Filter all attributes to get the EcimStructMembers 
+self.base_Class.getAllAttributes()->select(e:Property|e.getAppliedStereotype('ECIM Base Profile::EcimStructMember') <> null)->
+--check the set to see if there is at most one with the isKey set to true
+select(e:Property|e.getValue(e.getAppliedStereotype('ECIM Base Profile::EcimStructMember'), 'isKey').oclAsType(Boolean))->
+size() <= 1]]></constraint>
+            <constraint id="ECIM Base Profile.EcimStruct.IsExlusiveImpliesAllMemberLowerBoundsAreZero" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="IsExlusiveImpliesAllMemberLowerBoundsAreZero" severity="ERROR" statusCode="3">
+               <message>A struct with isExclusive=true must have all its member lower bounds = 0</message><![CDATA[self.isExclusive=true implies self.base_Class.getAllAttributes()->select(e:Property|e.getAppliedStereotype('ECIM Base Profile::EcimStructMember') <> null)->select(e:Property|e.lower>0)->size() = 0]]></constraint>
+            <constraint id="ECIM Base Profile.EcimStruct.IsExclusiveImpliesNoMemberIsKey" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="IsExclusiveImpliesNoMemberIsKey" severity="ERROR" statusCode="3">
+               <message>A struct with isExclusive=true must have all its members as non key</message><![CDATA[self.isExclusive=true implies self.base_Class.getAllAttributes()->select(e:Property|e.getAppliedStereotype('ECIM Base Profile::EcimStructMember') <> null)->
+select(e:Property|e.getValue(e.getAppliedStereotype('ECIM Base Profile::EcimStructMember'), 'isKey').oclAsType(Boolean)=true)->
+size() = 0]]></constraint>
+            <constraint id="ECIM Base Profile.EcimStruct.MustHaveNoDuplicateProperties" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveNoDuplicateProperties" severity="ERROR" statusCode="3">
+               <message>A struct must have no duplicate properties</message><![CDATA[--Property names must not be the same as a parent's property name
+self.base_Class.getAllAttributes()->isUnique(name)]]></constraint>
+            <constraint id="ECIM Base Profile.EcimStruct.IsExlusiveImpliesAtMostOneDefaultValueIsSet" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="IsExlusiveImpliesAtMostOneDefaultValueIsSet" severity="ERROR" statusCode="1">
+               <message>A struct with isExclusive=true can have at most one of its members with a default value set</message>
+               <description/><![CDATA[self.isExclusive=true implies self.base_Class.getAllAttributes()->select(e:Property|e.getAppliedStereotype('ECIM Base Profile::EcimStructMember') <> null)->select(e:Property|not e.default.oclIsUndefined() and e.default<>'')->size() <= 1]]></constraint>
+            <constraint id="ECIM Base Profile.EcimGeneralMoClass.MustHaveAKeyAttribute" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveAKeyAttribute" severity="ERROR" statusCode="3">
+               <message>The MOC must have one and only one key attribute</message><![CDATA[--Every MOC must have only one Key attribute
+
+--Filter all the attributes to get only EcimKeyAttribute attributes
+self.base_Class.getAllAttributes()->select(e:Property|e.getAppliedStereotype('ECIM Base Profile::EcimKeyAttribute') <> null)->
+--check the set to see if there is one EcimPersistentKeyAttribute with the isKey set to true
+select(e:Property|e.getValue(e.getAppliedStereotype('ECIM Base Profile::EcimKeyAttribute'), 'isKey').oclAsType(Boolean))->
+size() = 1]]></constraint>
+            <constraint id="ECIM Base Profile.EcimGeneralMoClass.MustHaveNoDuplicateProperties" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveNoDuplicateProperties" severity="ERROR" statusCode="3">
+               <message>You cannot have attributes with the same name in an inheritance hierarchy</message><![CDATA[--Property names must not be the same as a parent's property name
+self.base_Class.getAllAttributes()->isUnique(name)]]></constraint>
+            <constraint id="ECIM Base Profile.EcimGeneralMoClass.MustHaveNoDuplicateOperations" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveNoDuplicateOperations" severity="ERROR" statusCode="3">
+               <message>You cannot have operations with the same name in an inheritance hierarchy</message><![CDATA[--Operation names must not be the same as a parent's operation name
+self.base_Class.getAllOperations()->isUnique(name)]]></constraint>
+            <constraint id="ECIM Base Profile.EcimGeneralAttribute.ClassTypeMustHaveNoDefault" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="ClassTypeMustHaveNoDefault" severity="ERROR" statusCode="3">
+               <message>An attribute of type Class or Struct cannot have a default value</message><![CDATA[self.oclAsType(Property).type.oclIsTypeOf(Class) implies self.oclAsType(Property).default.oclIsUndefined()]]></constraint>
+            <constraint id="ECIM Base Profile.EcimRootMoClass.MustHaveContribution" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveContribution" severity="WARNING" statusCode="2">
+               <message>A root class must be the child of an EcimContribution relationship or be named 'ManagedElement'</message><![CDATA[--Check that the class is either in an optional package, named ManagedElement, or is the child of a contribution relationship
+self.base_Class.getNearestPackage()->select(e|not e.getAppliedStereotype('ECIM Base Profile::EcimOptionalConstructs').oclIsUndefined())->size()=1
+or
+self.base_Class.name = 'ManagedElement'
+or
+self.base_Class.name = 'Root'
+or
+self.base_Class.getNearestPackage()->collect(e|e.allOwnedElements())->select(e|e.oclIsTypeOf(Association))->select(e|not e.getAppliedStereotype('ECIM Base Profile::EcimContribution').oclIsUndefined())
+->select(e|e.oclAsType(Association).memberEnd.type.oclAsType(Class)->includes(self.base_Class))->size() > 0
+]]></constraint>
+            <constraint id="ECIM Base Profile.EcimAttribute_RO.MustBeReadOnly" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustBeReadOnly" severity="ERROR" statusCode="1">
+               <message>A readonly attribute must be read only</message><![CDATA[self.base_Property.isReadOnly = true]]></constraint>
+            <constraint id="ECIM Base Profile.EcimFmAlarmType.MustHaveFMAttributes" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveFMAttributes" severity="ERROR" statusCode="3">
+               <message>FM Types must have all the predefined FM attributes as dictated by ECIM i.e. 'additionalText','configSeverityLevel','defaultSecurityLevel','isSentNotification','isStateful','majorType','minorType','probableCause','specificProblem'</message><![CDATA[--Using MMA rules now so commented
+true
+--get all the class attributes defined on the class
+--let definedClassAttributes : Set(String) = self.allOwnedElements()->select(e|e.oclIsTypeOf(Property))->collect(e|e.oclAsType(Property).name)->asSet()
+--in
+--define the class attributes which must exist
+--let requiredClassAttributes : Set(String) = Set {'fmAlarmTypeId','additionalText','configSeverityLevel','defaultSeverityLevel','isSentNotification','isStateful','majorType','minorType','probableCause','specificProblem'} 
+--in
+--compare the two sets. fail if any required attributes are missing
+--definedClassAttributes->includesAll(requiredClassAttributes)]]></constraint>
+            <constraint id="ECIM Base Profile.EcimFmAlarmType.MustHaveFMAttributeTypes" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveFMAttributeTypes" severity="ERROR" statusCode="3">
+               <message>FM Types must have all the predefined FM attribute types as dictated by ECIM</message><![CDATA[--Using MMA rules now so commented
+true
+--Check to ensure all the FM attributes have the correct types
+--self.allOwnedElements()->select(e|e.oclIsTypeOf(Property))->select(e|e.oclAsType(Property).name='fmAlarmTypeId').oclAsType(Property).type.name.oclAsType(String)= Bag{'EcimString'}
+--and
+--self.allOwnedElements()->select(e|e.oclIsTypeOf(Property))->select(e|e.oclAsType(Property).name='additionalText').oclAsType(Property).type.name.oclAsType(String)= Bag{'EcimString'}
+--and
+--self.allOwnedElements()->select(e|e.oclIsTypeOf(Property))->select(e|e.oclAsType(Property).name='configSeverityLevel').oclAsType(Property).type.name.oclAsType(String)= Bag{'SeverityLevel'}
+--and
+--self.allOwnedElements()->select(e|e.oclIsTypeOf(Property))->select(e|e.oclAsType(Property).name='defaultSeverityLevel').oclAsType(Property).type.name.oclAsType(String)= Bag{'SeverityLevel'}
+--and
+--self.allOwnedElements()->select(e|e.oclIsTypeOf(Property))->select(e|e.oclAsType(Property).name='isSentNotification').oclAsType(Property).type.name.oclAsType(String)= Bag{'EcimBoolean'}
+--and
+--self.allOwnedElements()->select(e|e.oclIsTypeOf(Property))->select(e|e.oclAsType(Property).name='isStateful').oclAsType(Property).type.name.oclAsType(String)= Bag{'EcimBoolean'}
+--and
+--self.allOwnedElements()->select(e|e.oclIsTypeOf(Property))->select(e|e.oclAsType(Property).name='majorType').oclAsType(Property).type.name.oclAsType(String)= Bag{'EcimInt32'}
+--and
+--self.allOwnedElements()->select(e|e.oclIsTypeOf(Property))->select(e|e.oclAsType(Property).name='minorType').oclAsType(Property).type.name.oclAsType(String)= Bag{'EcimInt32'}
+--and
+--self.allOwnedElements()->select(e|e.oclIsTypeOf(Property))->select(e|e.oclAsType(Property).name='probableCause').oclAsType(Property).type.name.oclAsType(String)= Bag{'EcimString'}
+--and
+--self.allOwnedElements()->select(e|e.oclIsTypeOf(Property))->select(e|e.oclAsType(Property).name='specificProblem').oclAsType(Property).type.name.oclAsType(String)= Bag{'EcimString'}]]></constraint>
+            <constraint id="ECIM Base Profile.EcimFmAlarmType.MustHaveIdAttributeEqualToTypeName" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveIdAttributeEqualToTypeName" severity="ERROR" statusCode="3">
+               <message>The name of the FM Type must match the default for the fmAlarmTypeId attribute</message><![CDATA[--This rule is not used yet!
+true
+--the name of the type(class) must be the same as the ID attribute
+--Bag{self.name} = self.allOwnedElements()->select(e|e.oclIsTypeOf(Property))->select(e|e.oclAsType(Property).name='fmAlarmTypeId').oclAsType(Property).default]]></constraint>
+            <constraint id="ECIM Base Profile.EcimEnumeration.CheckForUniqueLiteralValue" isEnabledByDefault="true" lang="OCLpivot" mode="Live" name="CheckForUniqueLiteralValue" severity="ERROR" statusCode="3">
+               <message>Enumeration literal values must be unique</message><![CDATA[self.base_Enumeration.ownedLiteral->isUnique(specification.stringValue())]]></constraint>
+            <constraint id="ECIM Base Profile.EcimAttribute_RW.MustNotBeReadOnly" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustNotBeReadOnly" severity="ERROR" statusCode="1">
+               <message>An read-write attribute must not be read only</message><![CDATA[self.base_Property.isReadOnly = false]]></constraint>
+            <constraint id="ECIM Base Profile.EcimMocInstance.StructInstanceValuesMustHaveDependencyToThisMocInstance" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="StructInstanceValuesMustHaveDependencyToThisMocInstance" severity="ERROR" statusCode="3">
+               <message>This MOC instance has a struct instance value which has no dependency defined back to the owning MOC instance</message><![CDATA[let structInstances : Set(ValueSpecification) = self.base_InstanceSpecification.slot.value->select(e| e.oclIsTypeOf(InstanceValue))->select(e|e.type.oclIsKindOf(Class))
+->select(e|not (e.type.getAppliedStereotype('ECIM Base Profile::EcimStruct').oclIsUndefined()))->flatten()->asSet() in
+let mocInstancesPointingBackFromStructInstances : Set(InstanceSpecification) = structInstances->
+collect(e|e.oclAsType(InstanceValue).instance.clientDependency.target.oclAsType(InstanceSpecification))->asSet() in
+if (structInstances->size() > 0)
+then
+	mocInstancesPointingBackFromStructInstances->includes(self.base_InstanceSpecification)
+else
+	true
+endif]]></constraint>
+            <constraint id="ECIM Base Profile.EcimMocInstance.MocInstanceMustHaveAtMostOneParentMocInstance" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MocInstanceMustHaveAtMostOneParentMocInstance" severity="ERROR" statusCode="3">
+               <message>A MOC instance can have at most one parent MOC instance. This MOC instance has several.</message><![CDATA[-- There must be at most one parent MO 
+self.base_InstanceSpecification.oclAsType(InstanceSpecification).clientDependency.target.getAppliedStereotype('ECIM Base Profile::EcimMoClass').oclIsUndefined()->size()<=1]]></constraint>
+            <constraint id="ECIM Base Profile.EcimInstanceDependency.DependencyMustFollowClassContainment" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="DependencyMustFollowClassContainment" severity="ERROR" statusCode="3">
+               <message>The connected instances must follow the defined MO class containment hierarchy</message><![CDATA[let sourceIS:InstanceSpecification=self.base_Dependency.source->asOrderedSet()->first().oclAsType(InstanceSpecification)
+in
+let targetIS:InstanceSpecification=self.base_Dependency.target->asOrderedSet()->first().oclAsType(InstanceSpecification)
+in
+if (sourceIS.getAppliedStereotypes()->select(e|e.name='EcimMocInstance')->size()=1 and
+    targetIS.getAppliedStereotypes()->select(e|e.name='EcimMocInstance')->size()=1)
+then
+	let sourceClass:Class = sourceIS.classifier->asOrderedSet()->first().oclAsType(Class)
+	in
+	let targetClass:Class = targetIS.classifier->asOrderedSet()->first().oclAsType(Class)
+	in 
+	let ass:Set(Element) = 
+		sourceClass.getNearestPackage().ownedElement->select(e|e.oclIsTypeOf(Association))->union(
+		targetClass.getNearestPackage().ownedElement->select(e|e.oclIsTypeOf(Association)))->flatten()
+	in
+	let classes:Set(String) = Set{sourceClass.name, targetClass.name}
+	in
+	ass->select(e|e.oclAsType(Association).memberEnd.type.name->includesAll(classes))->size()>=1
+else
+	true
+endif]]></constraint>
+            <constraint id="ECIM Base Profile.EcimGeneralType.MustBeAbstract" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustBeAbstract" severity="ERROR" statusCode="3">
+               <message>All ECIM Types must be abstract</message><![CDATA[--All types must be abstract
+self.base_Class.isAbstract = true]]></constraint>
+            <constraint id="ECIM Base Profile.EcimGeneralTypeWithKey.MustHaveAKeyAttribute" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveAKeyAttribute" severity="ERROR" statusCode="3">
+               <message>The MOC must have one and only one key attribute</message><![CDATA[--Every Type must have at least one Key attribute
+
+--Filter all the attributes to get only EcimKeyAttribute attributes
+self.base_Class.getAllAttributes()->select(e:Property|e.getAppliedStereotype('ECIM Base Profile::EcimKeyAttribute') <> null)->
+--check the set to see if there is one EcimPersistentKeyAttribute with the isKey set to true
+select(e:Property|e.getValue(e.getAppliedStereotype('ECIM Base Profile::EcimKeyAttribute'), 'isKey').oclAsType(Boolean))->
+size() > 0]]></constraint>
+            <constraint id="ECIM Base Profile.EcimAbstractMoClass.MustHaveConcreteImplementor" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveConcreteImplementor" severity="ERROR" statusCode="3">
+               <message>All abstract MOCs involved in a composition relationship must have a concrete sub class</message><![CDATA[--Ensure all abstract classes involved in a composition relation have a concrete sub-class
+if (self.base_Class.getNearestPackage()->collect(e|e.allOwnedElements())->select(e|e.oclIsTypeOf(Association))->select(e|e.getAppliedStereotype('ECIM Base Profile::EcimBiDirAssociation') = null)->select(e|e.oclAsType(Association).memberEnd.type.oclAsType(Class)->includes(self.base_Class))->size() > 0) then
+	self.base_Class.getNearestPackage()->collect(e|e.allOwnedElements())->select(e|e.oclIsTypeOf(Class))->select(e|e.oclAsType(Class).isAbstract=false)->collect(e|e.oclAsType(Class).allParents())->includes(self.base_Class)
+else
+	true
+endif]]></constraint>
+            <constraint id="ECIM Base Profile.EcimStructInstance.MustHaveDependency" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustHaveDependency" severity="ERROR" statusCode="3">
+               <message>A struct instance must have a dependency to the MO using it</message><![CDATA[-- The struct instance must have a dependency to the MOC instance so that its classifier name can be correctly deduced
+self.base_InstanceSpecification.clientDependency->size() > 0]]></constraint>
+            <constraint id="ECIM Base Profile.EcimUniDirAssociation.MustNotAssociateAbstractClasses" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="MustNotAssociateAbstractClasses" severity="ERROR" statusCode="3">
+               <message>An unidirassociation must not associate with abstract classes</message><![CDATA[--Do not allow bi-directional associations that connect abstract classes. 
+if self.base_Association.memberEnd->collect(e|e.type)->exists(e|e.oclAsType(Class).isAbstract)
+then
+	false
+else
+	true
+endif]]></constraint>
+            <constraint id="ECIM Base Profile.EcimUniDirAssociation.AssociationEndsHavePropertiesDefined" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="AssociationEndsHavePropertiesDefined" severity="ERROR" statusCode="3">
+               <message>Attribute matching uni-directional association end must be defined, have equal or abstract type and its multiplicity must not be narrower</message><![CDATA[-- Properties are defined that match the association ends
+-- Multiplicity of property must be larger than multiplicity of association ends
+-- Types must match as well
+let ae1:Property = self.base_Association.ownedEnd->select(e|e.name='_uniDirBP')->first() in
+let ae2:Property = self.base_Association.ownedEnd->select(e|not (e.name='_uniDirBP'))->first() in
+let c1:Class = ae1.type.oclAsType(Class) in
+let c2:Class = ae2.type.oclAsType(Class) in
+let p2:Property = c1.getAllAttributes()->select(a|a.name=ae2.name)->asSequence()->first() in
+not (p2.oclIsUndefined())
+and
+if (not  p2.oclIsUndefined())
+then
+	(p2.upper = -1 or p2.upper >= ae2.upper)
+else
+	false
+endif
+and
+(p2.type.oclIsTypeOf(Class)) and
+(p2.type.oclAsType(Class).isAbstract or c2=p2.type)
+	]]></constraint>
+         </constraints>
+      </constraintProvider>
+   </extension>
+   <extension name="dsml.validation.generated.ecim base profile" point="org.eclipse.emf.validation.constraintBindings">
+      <clientContext id="EcimGeneralMoClassClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimGeneralMoClassClientSelector"/>
+      </clientContext>
+      <binding context="EcimGeneralMoClassClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimGeneralMoClass.MustHaveAKeyAttribute"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimGeneralMoClass.MustHaveNoDuplicateProperties"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimGeneralMoClass.MustHaveNoDuplicateOperations"/>
+      </binding>
+      <clientContext id="EcimAttribute_ROClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimAttribute_ROClientSelector"/>
+      </clientContext>
+      <binding context="EcimAttribute_ROClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimAttribute_RO.MustBeReadOnly"/>
+      </binding>
+      <clientContext id="EcimModelClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimModelClientSelector"/>
+      </clientContext>
+      <binding context="EcimModelClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimModel.PackageImportProfilesMustMatch"/>
+      </binding>
+      <clientContext id="EcimAbstractMoClassClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimAbstractMoClassClientSelector"/>
+      </clientContext>
+      <binding context="EcimAbstractMoClassClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimAbstractMoClass.MustHaveConcreteImplementor"/>
+      </binding>
+      <clientContext id="EcimFmAlarmTypeClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimFmAlarmTypeClientSelector"/>
+      </clientContext>
+      <binding context="EcimFmAlarmTypeClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimFmAlarmType.MustHaveFMAttributes"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimFmAlarmType.MustHaveFMAttributeTypes"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimFmAlarmType.MustHaveIdAttributeEqualToTypeName"/>
+      </binding>
+      <clientContext id="EcimStructInstanceClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimStructInstanceClientSelector"/>
+      </clientContext>
+      <binding context="EcimStructInstanceClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimStructInstance.MustHaveDependency"/>
+      </binding>
+      <clientContext id="EcimMomClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimMomClientSelector"/>
+      </clientContext>
+      <binding context="EcimMomClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimMom.MustHaveVersionValue"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimMom.MustHaveReleaseValue"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimMom.NoDuplicateEnumNames"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimMom.NoDuplicateStructNames"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimMom.NoDuplicateExceptionNames"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimMom.NoDuplicateDerivedDatatypeNames"/>
+      </binding>
+      <clientContext id="EcimContainmentClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimContainmentClientSelector"/>
+      </clientContext>
+      <binding context="EcimContainmentClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimContainment.MustNotSpanMoms"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimContainment.MustHaveContainmentChildNotAsRootMoc"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimContainment.MustNotMixVisibility"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimContainment.MustNotComposeBetweenAbstractClasses"/>
+      </binding>
+      <clientContext id="EcimGeneralTypeClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimGeneralTypeClientSelector"/>
+      </clientContext>
+      <binding context="EcimGeneralTypeClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimGeneralType.MustBeAbstract"/>
+      </binding>
+      <clientContext id="EcimAttribute_RWClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimAttribute_RWClientSelector"/>
+      </clientContext>
+      <binding context="EcimAttribute_RWClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimAttribute_RW.MustNotBeReadOnly"/>
+      </binding>
+      <clientContext id="EcimStructClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimStructClientSelector"/>
+      </clientContext>
+      <binding context="EcimStructClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimStruct.AtMostOneKeyStructMember"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimStruct.IsExlusiveImpliesAllMemberLowerBoundsAreZero"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimStruct.IsExclusiveImpliesNoMemberIsKey"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimStruct.MustHaveNoDuplicateProperties"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimStruct.IsExlusiveImpliesAtMostOneDefaultValueIsSet"/>
+      </binding>
+      <clientContext id="EcimBiDirAssociationClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimBiDirAssociationClientSelector"/>
+      </clientContext>
+      <binding context="EcimBiDirAssociationClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimBiDirAssociation.MustNotSpanMoms"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimBiDirAssociation.MustNotAssociateAbstractClasses"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimBiDirAssociation.AssociationEndsHavePropertiesDefined"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimBiDirAssociation.AtLeastOneAssociationEndPropertyIsReadOnly"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimBiDirAssociation.AssociationEndPropertyTypesAreEitherAbstractOrSameAsAssociationEndClass"/>
+      </binding>
+      <clientContext id="EcimContributionClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimContributionClientSelector"/>
+      </clientContext>
+      <binding context="EcimContributionClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimContribution.MustSpanMoms"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimContribution.ParentMustAllowContribution"/>
+      </binding>
+      <clientContext id="EcimGeneralPropertiesClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimGeneralPropertiesClientSelector"/>
+      </clientContext>
+      <binding context="EcimGeneralPropertiesClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimGeneralProperties.DepracatedElementMustHaveStatusInformation"/>
+      </binding>
+      <clientContext id="EcimMocInstanceClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimMocInstanceClientSelector"/>
+      </clientContext>
+      <binding context="EcimMocInstanceClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimMocInstance.StructInstanceValuesMustHaveDependencyToThisMocInstance"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimMocInstance.MocInstanceMustHaveAtMostOneParentMocInstance"/>
+      </binding>
+      <clientContext id="EcimUniDirAssociationClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimUniDirAssociationClientSelector"/>
+      </clientContext>
+      <binding context="EcimUniDirAssociationClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimUniDirAssociation.MustNotAssociateAbstractClasses"/>
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimUniDirAssociation.AssociationEndsHavePropertiesDefined"/>
+      </binding>
+      <clientContext id="EcimGeneralizationClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimGeneralizationClientSelector"/>
+      </clientContext>
+      <binding context="EcimGeneralizationClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimGeneralization.MustNotInheritFromSelf"/>
+      </binding>
+      <clientContext id="EcimRootMoClassClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimRootMoClassClientSelector"/>
+      </clientContext>
+      <binding context="EcimRootMoClassClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimRootMoClass.MustHaveContribution"/>
+      </binding>
+      <clientContext id="EcimGeneralTypeWithKeyClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimGeneralTypeWithKeyClientSelector"/>
+      </clientContext>
+      <binding context="EcimGeneralTypeWithKeyClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimGeneralTypeWithKey.MustHaveAKeyAttribute"/>
+      </binding>
+      <clientContext id="EcimGeneralAttributeClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimGeneralAttributeClientSelector"/>
+      </clientContext>
+      <binding context="EcimGeneralAttributeClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimGeneralAttribute.ClassTypeMustHaveNoDefault"/>
+      </binding>
+      <clientContext id="EcimInstanceDependencyClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimInstanceDependencyClientSelector"/>
+      </clientContext>
+      <binding context="EcimInstanceDependencyClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimInstanceDependency.DependencyMustFollowClassContainment"/>
+      </binding>
+      <clientContext id="EcimEnumerationClientContext">
+         <selector class="com.ericsson.ecim.dsl.profile.validation.selectors.EcimEnumerationClientSelector"/>
+      </clientContext>
+      <binding context="EcimEnumerationClientContext">
+         <constraint ref="com.ericsson.ecim.dsl.profile.validation.ECIM Base Profile.EcimEnumeration.CheckForUniqueLiteralValue"/>
+      </binding>
+   </extension>
+</plugin>

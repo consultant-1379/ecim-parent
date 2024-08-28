@@ -1,0 +1,394 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 4:30:25 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "ComTop" {
+	namespace "urn:com:ericsson:ecim:ComTop";
+	prefix "ComTop";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	organization "EAB/FLJ/GRB";
+	description
+	"ECIM Top Level Model. This is the root level for the Ericsson Common Information Model. It contains the singleton, root Managed Object Class, ManagedElement under which the complete model is contained. Directly under ManagedElement are managed-function level classes SystemFunctions, Equipment, Transport and the root MOC of any managed functions. ";
+
+	revision "2011-03-11" {
+		ericsson:contact "Thomas Wolmer";
+		ericsson:author "EHSWOLM";
+		ericsson:release "0";
+		ericsson:version "2";
+	}
+
+	list "ManagedElement" {
+		key "managedElementId";
+		list "SystemFunctions" {
+			key "systemFunctionsId";
+			min-elements 1;
+			max-elements 1;
+			uses ComTop:SystemFunctions;
+		}
+
+		list "Transport" {
+			key "transportId";
+			max-elements 1;
+			uses ComTop:Transport;
+		}
+
+		uses ComTop:ManagedElement;
+	}
+
+	typedef "BasicAdmState" {
+		type enumeration {
+			enum "LOCKED" {
+				value 0;
+				description "  ";
+			}
+
+			enum "UNLOCKED" {
+				value 1;
+				description " ";
+			}
+
+		}
+
+		description "The following administrative states are supported when this enumeration is used:
+
+- LOCKED: The resource is administratively prohibited from performing services for its users.
+- UNLOCKED: The resource is administratively permitted to perform services for its users. This is independent of its inherent operability.";
+	}
+
+	typedef "OperState" {
+		type enumeration {
+			enum "DISABLED" {
+				value 0;
+				description " ";
+			}
+
+			enum "ENABLED" {
+				value 1;
+				description " ";
+			}
+
+		}
+
+		description "The following operational states are supported when this enumeration is used:
+
+- DISABLED
+- ENABLED";
+	}
+
+	typedef "SchemaFormat" {
+		type enumeration {
+			enum "MP_DTD" {
+				value 0;
+				description " ";
+			}
+
+		}
+
+		description "The data modelling language the schema is written in.";
+	}
+
+	typedef "AdmState" {
+		type enumeration {
+			enum "LOCKED" {
+				value 0;
+				description "Locked";
+			}
+
+			enum "UNLOCKED" {
+				value 1;
+				description "Unlocked";
+			}
+
+			enum "SHUTTINGDOWN" {
+				value 2;
+				description "Shutting down";
+			}
+
+		}
+
+		description "The administrative state of a replaceable unit.";
+	}
+
+	typedef "DateTime" {
+		type string {
+			length "20..31";
+			pattern
+			"^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+)*(([\+|\-](0[0-9]|1[0-9]|2[0-4])(:[0-5][0-9])?)|(Z))$";
+		}
+
+		description
+		"DateTime represents date and time data using strings with the example format YYYY-MM-DDThh:mm:ss.SSSZ (excluding
+        quotes).<br />
+         <br />
+         A DateTime string consists of a date part followed by a time part. When the time part represents local time, as apposed to
+        UTC time indicated by Z as last character, an additional time offset part is added to the DateTime string.<br />
+         <br />
+         The following pattern describes the DateTime format in detail:<br />
+         <br />
+         YYYY-MM-DDThh:mm:ss[.S+][Z|�hh:mm]<br />
+         <br />
+         Where:<br />
+         [A]&nbsp;&nbsp;&nbsp;&nbsp; = A is optional<br />
+         [A|B]&nbsp;&nbsp; = A or B or left out (optional)<br />
+         YYYY&nbsp;&nbsp;&nbsp; = four digit year<br />
+         MM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = two digit month (01=January, etc.)<br />
+         DD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = two digit day of month (01 through 31)<br />
+         T&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = time designator (shows start of time component)<br />
+         hh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = two digits of hour (00 through 59, AM/PM not allowed)<br />
+         mm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = two digits of minute (00 through 59)<br />
+         ss&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = two digits of second (00 through 59, leap second not allowed)<br />
+         S+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = one or more digits of decimal fraction of a second<br />
+         Z&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = time is Coordinated Universal Time (UTC)<br />
+         �&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = + or - character indicating positive or negative offset to UTC<br />
+         <br />
+         DateTime values are compliant with ISO 8601 Representation of dates and times but are restricted according to RFC 3339
+        Date and Time on the Internet: Timestamps. The DateTime format has been further restricted:<br />
+         <br />
+         - T and Z designators must be upper case.<br />
+         - T and Z may not be exchanged with other characters such as space.<br />
+         - '.' (dot) must be used to indicate start of fractions of seconds (ISO 8601 also allows comma).<br />
+         - Using 60 as value for second to indicate leap second is not allowed.<br />
+         <br />";
+	}
+
+	typedef "IpDNSAddress" {
+		type string {
+			length "1..253";
+			pattern
+			"(^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\s*$)|(^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]))*$)";
+		}
+
+		description "The IpDNSAddress type represents an IP address, version 4 or version 6, or a DNS domain name.
+
+If the address is specified as a V4 IP address then the address should be specified in dotted-quad decimal notation in accordance with RFC791.
+
+IPv4 address within range [1-126,128-223].[0-255].[0-255].[0-255], 7-15 characters. 
+
+Valid characters: 0123456789.
+
+If the address is specified as a V6 IP address then the address should be specified in colon separated hexadecimal notation as described in RFC 4291 section 2.2 items 1 and 2.
+
+IPv6 addresses shall have a length range of 3-39 characters.
+
+Valid characters: 0123456789abcdefABCDEF:
+
+If the address is specified as a DNS domain name the name should be fully qualified whenever possible.
+Internet domain names are only loosely specified. Section 3.5 of RFC 1034 recommends a syntax (modified in section 2.1 of RFC 1123).";
+	}
+
+	typedef "DateTimeWithoutOffset" {
+		type string {
+			length "19";
+			pattern
+			"^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+)*$";
+		}
+
+		description
+		"DateTimeWithoutOffset represents date and time data using strings with the example format YYYY-MM-DDThh:mm:ss.SSS
+        (excluding quotes).<br />
+         <br />
+         A DateTimeWithoutOffset string consists of a date part followed by a time part. The time part represents local time.<br />
+         <br />
+         The following pattern describes the DateTimeWithoutOffset format in detail:<br />
+         <br />
+         YYYY-MM-DDThh:mm:ss[.S+]<br />
+         <br />
+         Where:<br />
+         [A]&nbsp;&nbsp;&nbsp;&nbsp; = A is optional<br />
+         [A|B]&nbsp;&nbsp; = A or B or left out (optional)<br />
+         YYYY&nbsp;&nbsp;&nbsp; = four digit year<br />
+         MM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = two digit month (01=January, etc.)<br />
+         DD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = two digit day of month (01 through 31)<br />
+         T&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = time designator (shows start of time component)<br />
+         hh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = two digits of hour (00 through 59, AM/PM not allowed)<br />
+         mm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = two digits of minute (00 through 59)<br />
+         ss&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = two digits of second (00 through 59, leap second not allowed)<br />
+         S+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = one or more digits of decimal fraction of a second<br />
+         <br />
+         DateTimeWithoutOffset values are compliant with ISO 8601 Representation of dates and times but are restricted according
+        to RFC 3339 Date and Time on the Internet: Timestamps. The DateTimeWithoutOffset format has been further
+        restricted:<br />
+         <br />
+         - T designators must be upper case.<br />
+         - T may not be exchanged with other characters such as space.<br />
+         - '.' (dot) must be used to indicate start of fractions of seconds (ISO 8601 also allows comma).<br />
+         - Using 60 as value for second to indicate leap second is not allowed.<br />";
+		reference "ISO 8601:2004(E)";
+	}
+
+	typedef "DifferenceFromUTC" {
+		type string {
+			length "6";
+			pattern "^([+|-])(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9])$";
+		}
+
+		description "Difference between the value of the localDateTime attribute and UTC (Coordinated Universal Time).
+
+The following format shall be used
+
+[+/-]hh:mm
+
+It shall be expressed as positive (i.e. with the leading plus sign [+]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day.
+
+Example:  +01:00";
+		reference "ISO 8601:2004(E)";
+	}
+
+	typedef "EcimEmpty" {
+		type boolean;
+		description
+		"The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence. ";
+	}
+
+	grouping "ManagedElement" {
+		description "The top-level class in the Common Information Model is the ManagedElement root MOC.  From this class, all model entities are contained.  
+The MOC has attributes that provide information on the managed elements identity, primary location and the products it contains.  ";
+		leaf "managedElementId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "siteLocation" {
+			type string;
+			description
+			"This is a freetext attribute used for storing geographic or postal address data to assist staff in locating physical equipment.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description
+			"A freetext string for additional information to assist Managed Element identification.";
+		}
+
+		list "productIdentity" {
+			config true;
+			description "The product identities are used to clearly identify the product numbers and revisions that form this Managed Element.  This may refer to a single product or to several products that constitute managed functions within this Managed Element instance.
+ Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses ComTop:productIdentity;
+		}
+
+		leaf "localDateTime" {
+			type ComTop:DateTimeWithoutOffset;
+			description "This is the local date and time for the ManagedElement.
+
+The following format shall be used.
+
+YYYY-MM-DDThh:mm:ss
+
+The meaning of each field is as follows:
+YYYY is a 4-digit year.
+MM is the month within the year (starting with 01).
+DD is the day within the month (starting with 01).
+T shall be used as time designator to indicate the start of the time of day component in the expression.
+hh is the hour within the day (24-hour clock, starting with 00).
+mm is the minute within the hour (starting with 00).
+ss is the second within the minute (starting with 00).
+
+The hyphen [-] and the colon [:] shall be used as separators within the date and time of day expressions, respectively.";
+		}
+
+		leaf "timeZone" {
+			type string;
+			description "This is the timeZone that the Managed Element resides in.
+
+The possible values for this attribute are defined in the public-domain zoneinfo (or Olson) database.
+
+Locations are identified by a string indicating the continent or ocean and then the name of the location, which is typically the largest city within the region. 
+See http://www.twinsun.com/tz/tz-link.htm for more information.
+
+Example: Europe/Stockholm
+";
+		}
+
+		leaf "dateTimeOffset" {
+			type ComTop:DifferenceFromUTC;
+			config true;
+			description
+			"Difference between the value of the localDateTime attribute and UTC (Coordinated Universal Time).";
+		}
+
+		leaf "networkManagedElementId" {
+			type string;
+			description "Replaces the value component of the RDN in the COM Northbound Interface. This attribute shall, if used, be set to a simple alphanumeric value. 
+The value should be unique within the network namespace.";
+		}
+
+	}
+
+	grouping "SystemFunctions" {
+		description
+		"The SystemFunctions MOC is the container class for all common functions provided by the managed element.  Examples of these functions include Fault and Performance Management, System and Heartbest Management amongst others.  The common functions are categorised as either Common Base or Common Optional.  Common Base functions are always present regardless of node type while Common Optional functions may be present depending on the necessary capabilities of the node.  ";
+		leaf "systemFunctionsId" {
+			type string;
+			mandatory true;
+			description
+			"The value component of the RDN. It shall always be equal to 1.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "Transport" {
+		description
+		"The Transport MOC is the container for all transport related functions used within the managed element.  Its usage is dependent on the node type; where the node's primary function is to handle transport functions, the necessary fragments may be included directly within an applications xyzFunctions branch.  If the node's primary function is something other than transport handling, then the required transport fragments shall be contain by this MOC.  ";
+		leaf "transportId" {
+			type string;
+			mandatory true;
+			description
+			"The value component of the RDN. It shall always be equal to 1.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "ProductIdentity" {
+		description
+		"A struct that contains product designation, number and revision information.  ";
+		leaf "productNumber" {
+			type string;
+			mandatory true;
+			description
+			"The product number in Ericsson ABC format.  See Ericsson Corporate Basic Standards for information.";
+		}
+
+		leaf "productRevision" {
+			type string;
+			mandatory true;
+			description
+			"The product revision in the form R[1-9][A-Z].  See Ericsson Corporate Basic Standards for information.";
+		}
+
+		leaf "productDesignation" {
+			type string;
+			mandatory true;
+			description
+			"The product designation is the common name for the product.  ";
+		}
+
+	}
+
+	grouping "EcimPassword" {
+		description "The password struct";
+		leaf "password" {
+			type string;
+			mandatory true;
+			description "Holds the password or passphrase text.";
+		}
+
+		leaf "cleartext" {
+			type ComTop:EcimEmpty;
+			mandatory true;
+			description "Indicates if the password is entered in cleartext or not. ";
+		}
+
+	}
+
+}

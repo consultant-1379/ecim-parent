@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Dec 7, 2015 9:32:15 AM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="ESHUMER" contact="ESHUMER" correction="0" date="2014-05-20" docNo="" name="ECIM_SubEquipTraceM" namespace="urn:com:ericsson:ecim:ECIM_SubEquipTraceM" namespacePrefix="ecim_subequiptracem" organization="LMI" release="1" revision="" version="1">
+        <description>This fragment is used to manage the trace sessions on the managed element.&#13;
+Once the trace is activated the trace data can be collected. &#13;
+The trace data can be sent via streaming or file transfer depending on the trace capabilities specified.</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_SubEquipTraceM"/>
+            <extension name="ecimMomVersion" value="1"/>
+            <extension name="ecimMomRelease" value="1"/>
+            <extension name="ecimMomCorrection" value="0"/>
+        </domainExtension>
+        <struct name="TraceTarget">
+            <description>Trace target includes the target type and the identity.</description>
+            <structMember name="targetType">
+                <description>This defines the Trace target type.</description>
+                <enumRef name="TargetType">
+                    <mimName>ECIM_SubEquipTraceM</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="targetIdentity">
+                <description>This is the Trace target identity for first UE (Originating UE). This field is mandatory.</description>
+                <string/>
+            </structMember>
+            <structMember name="terminatingTargetIdentity">
+                <description>This is the Trace target identity for the second UE (Terminating UE).&#13;
+This field is optional and valid when attribute betweenUsersEnabled = true, in TraceCapabilities MOC.</description>
+                <string/>
+            </structMember>
+            <structMember name="traceReference">
+                <description>The TraceReference is a unique ID.&#13;
+It identifies the trace session that has been created by the activation of the trace Job on the Managed Element.&#13;
+The Trace Reference parameter shall be globally unique and composed as follows:&#13;
+MCC+MNC+Trace ID, where the MCC and MNC are coming with the trace activation request from the EM/NM to identify one PLMN containing the EM/NM, and Trace ID is a 3 byte Octet String.&#13;
+&#13;
+</description>
+                <string/>
+            </structMember>
+        </struct>
+        <struct name="TraceParameter">
+            <description>It defines the parameter name and its corresponding value.</description>
+            <structMember name="parameterName">
+                <description>Parameter name is the attribute, based on which filter is applied.</description>
+                <string/>
+            </structMember>
+            <structMember name="parameterValue">
+                <description>This is actual value of the parameter selected by the parameterName.</description>
+                <sequence>
+                    <string/>
+                    <minLength>1</minLength>
+                    <nonUnique/>
+                </sequence>
+            </structMember>
+        </struct>
+        <enum name="ActivationType">
+            <description>There are two activation types, management-based activation and signaling-based activation.</description>
+            <enumMember name="MANAGEMENT">
+                <description>In Management, the activation is done directly on the Network Elements.&#13;
+Management activation/deactivation is where a trace session is activated/deactivated in different Network Elements directly using the management interfaces of those Network Elements.&#13;
+</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="SIGNALING">
+                <description>In Signaling, the activation can be done via another Network Element.&#13;
+Signaling activation/deactivation is where a trace session is activated/deactivated in different Network Elements using the signaling interfaces between those elements, so that the Network Elements may forward the activation/deactivation.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="JobType">
+            <description>This defines the possible job types.</description>
+            <enumMember name="TRACE">
+                <description>Trace Only.</description>
+                <value>0</value>
+            </enumMember>
+        </enum>
+        <enum name="TargetType">
+            <description>Trace target type.</description>
+            <enumMember name="IMSI">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="IMEI">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="IMEISV">
+                <value>2</value>
+            </enumMember>
+            <enumMember name="PUBLIC_USER_ID">
+                <description>Public user identity.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="JobState">
+            <description>Indicates the job state.</description>
+            <enumMember name="ACTIVE">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="STOPPED">
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="SessionState">
+            <description>Defines trace-recording session states.</description>
+            <enumMember name="ACTIVATING">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ACTIVE">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="DEACTIVATING">
+                <value>3</value>
+            </enumMember>
+            <enumMember name="STOPPED">
+                <value>2</value>
+            </enumMember>
+            <enumMember name="FAILED">
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="FilterMethod">
+            <description>Filter method defines whether single or multiple values can be selected for a filter attribute.</description>
+            <enumMember name="SINGLE_SELECT">
+                <description>Only one value can be given to the attribute.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="MULTI_SELECT">
+                <description>More than one value can be assigned to the attribute.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="TimePeriod">
+            <description>Defines the periodic duration of the log file recording.</description>
+            <enumMember name="TEN_SECONDS">
+                <description>10 SEC.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="THIRTY_SECONDS">
+                <description>30 SEC.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="ONE_MIN">
+                <description>1 MIN.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="FIVE_MIN">
+                <description>5 MIN.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="FIFTEEN_MIN">
+                <description>15 MIN.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="THIRTY_MIN">
+                <description>30 MIN.</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="ONE_HOUR">
+                <description>1 HOUR.</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="TWELVE_HOUR">
+                <description>12 HOURS.</description>
+                <value>7</value>
+            </enumMember>
+            <enumMember name="ONE_DAY">
+                <description>1 DAY.</description>
+                <value>8</value>
+            </enumMember>
+        </enum>
+        <class name="SubEquipTraceM">
+            <description>This fragment is used to manage the trace sessions on the managed element.&#13;
+When the trace is activated, the trace data can be collected. The trace data can be sent via streaming or file transfer depending on the specified trace capabilities.</description>
+            <root/>
+            <attribute name="subEquipTraceMId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TraceJob">
+            <description>The trace job defines all the trace information.&#13;
+This information is used to activate and configure a trace session on the Managed Element.</description>
+            <attribute name="traceJobId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="description">
+                <description>Describes the content and purpose of the job.</description>
+                <mandatory/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="activationType">
+                <description>Specifies the trace-activation type to be used.&#13;
+There are two types of activation: &#13;
+Management activation and deactivation is a trace session that is activated or deactivated in different NEs directly by using the management interfaces of those NEs. &#13;
+Signaling activation and deactivation is a trace session that is activated or deactivated in different NEs that use the signaling interfaces between those elements to enable the NEs to forward the activation or deactivation.</description>
+                <mandatory/>
+                <dataType>
+                    <enumRef name="ActivationType">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="jobType">
+                <description>The Job type parameter defines the trace job type.&#13;
+The Job type parameter is an enumerated type with the following values:&#13;
+-	Trace only (0)&#13;
+&#13;
+</description>
+                <mandatory/>
+                <dataType>
+                    <enumRef name="JobType">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="traceTarget">
+                <description>Specifies the target object of the Trace.&#13;
+It is used to define one or multiple UEs depending on the trace requirement.</description>
+                <mandatory/>
+                <dataType>
+                    <sequence>
+                        <structRef name="TraceTarget">
+                            <mimName>ECIM_SubEquipTraceM</mimName>
+                        </structRef>
+                        <minLength>1</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="requestedJobState">
+                <description>This is the requested state of the trace job.&#13;
+It represents the state that the job has been ordered to reach. Possible values: ACTIVE, STOPPED</description>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="JobState">
+                        <defaultValue>ACTIVE</defaultValue>
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="currentJobState">
+                <description>This is the current state of the trace job.&#13;
+Possible values: ACTIVATING, ACTIVE, DEACTIVATING, STOPPED, FAILED</description>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="SessionState">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="reportingPeriod">
+                <description>Specifies how often trace data is made available.&#13;
+The value must be valid according to the supportedReportingPeriods set by the Managed Element.</description>
+                <mandatory/>
+                <dataType>
+                    <enumRef name="TimePeriod">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="streamingURI">
+                <description>Specifies the location (URI) where the trace data is to be streamed.&#13;
+Only valid if streamOutputEnabled is set to true.&#13;
+</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="streamOutputEnabled">
+                <description>StreamOutputEnabled when set to "true" means that only Streaming will be done.&#13;
+And if set to "false", means only file Pull will &#13;be done. For a single trace job either file Pull or Streaming can be &#13;selected.</description>
+                <isNillable/>
+                <dataType>
+                    <boolean>
+                        <defaultValue>false</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="fileCompressionType">
+                <description>Compression Type to be applied to file output.&#13;
+Only valid when streamOutputEnabled = false.&#13;
+If this attribute is not set, no compression will be applied to the file output.&#13;
+Can only be assigned a value according to the capability supportedCompressionTypes in the FilePullCapabilities MOC.</description>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="CompressionTypes">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="streamCompressionType">
+                <description>Compression Type to be applied to stream output.&#13;
+Only valid when streamOutputEnabled = true.&#13;
+If this attribute is not set, no compression will be applied to the stream output.&#13;
+Can only be assigned a value according to the capability supportedCompressionTypes in the StreamingCapabilities MOC.</description>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="CompressionTypes">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="StreamingCapabilities">
+            <description>Trace capabilities related to data streaming.</description>
+            <attribute name="streamingCapabilitiesId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="supportedCompressionTypes">
+                <description>Defines the compression type for data streaming.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="CompressionTypes">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TraceProfile">
+            <description>Defines the trace information to be used to activate and configure a trace profile.&#13;
+This profile must only be used if the job type is configured for Trace on the Managed Element.</description>
+            <attribute name="traceProfileId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="traceParameter">
+                <description>This defines the attributes and their values depending on which filter would be applied.</description>
+                <dataType>
+                    <sequence>
+                        <structRef name="TraceParameter">
+                            <mimName>ECIM_SubEquipTraceM</mimName>
+                        </structRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FilePullCapabilities">
+            <description>Defines the file capabilities when file transfer is PULL.</description>
+            <attribute name="filePullCapabilitiesId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="outputDirectory">
+                <description>This is the location where trace data will be placed for file Pull.&#13;
+This is the directory location on the Managed Element.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="allignedReportingPeriod">
+                <description>The Managed Element will align its reporting periods to the hour if set to TRUE.  &#13;
+</description>
+                <readOnly/>
+                <dataType>
+                    <boolean>
+                        <defaultValue>true</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="supportedCompressionTypes">
+                <description>File compression type.&#13;
+This property is only valid for FILE transfer type.</description>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="CompressionTypes">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="supportedReportingPeriods">
+                <description>Specifies the list of reporting periods supported by the Managed Element.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <enumRef name="TimePeriod">
+                            <mimName>ECIM_SubEquipTraceM</mimName>
+                        </enumRef>
+                        <minLength>1</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TraceCapabilities">
+            <description>Defines the Trace Job related capabilities.</description>
+            <attribute name="traceCapabilitiesId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="maxNoOfJobs">
+                <description>Defines the maximum number of trace jobs that can run in parallel on the Managed Element.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <int16/>
+                </dataType>
+            </attribute>
+            <attribute name="betweenUsersEnabled">
+                <description>Defines whether Managed Element supports the trace between two UEs.&#13;
+When set to true, it means that the trace job can be between two UEs, orignating and terminating.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <boolean/>
+                </dataType>
+            </attribute>
+            <attribute name="maxNoOfUEs">
+                <description>Defines the permitted maximum number of UEs that can be traced.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <int16/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TraceParameterType">
+            <description>This defines the Trace parameters, which are possible for the particular Network Element.&#13;
+All the attributes and their possible values and restrictions.&#13;
+TraceParamaterType MOs are created at design time as Instance models and installed on a system at initial configuration or Upgrade.</description>
+            <attribute name="traceParameterTypeId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="isMandatory">
+                <description>This defines if the attribute value is mandatory to be entered or not.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <boolean>
+                        <defaultValue>true</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="selectionMethod">
+                <description>This defines whether single or multiple values can be entered for the seleceted attribute.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="FilterMethod">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="validValues">
+                <description>It contains the possible valid values, which can be entered.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="defaultValue">
+                <description>This is the value which is selected if no value is given for an attribute.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="description">
+                <description>Describes a brief detail for the selected parameter.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TraceParameterGroup">
+            <description>Describes the name, version and description of the group.&#13;
+This helps in identifying the interfaces, messages and other parameters valid for this group.</description>
+            <attribute name="traceParameterGroupId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="groupVersion">
+                <description>Defines the version of this particular group.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="description">
+                <description>Contains the details relating to this group.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="SubEquipTraceM_to_TraceJob">
+            <containment>
+                <parent>
+                    <hasClass name="SubEquipTraceM">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TraceJob">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="SubEquipTraceM_to_StreamingCapabilities">
+            <containment>
+                <parent>
+                    <hasClass name="SubEquipTraceM">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="StreamingCapabilities">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="TraceJob_to_TraceProfile">
+            <containment>
+                <parent>
+                    <hasClass name="TraceJob">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TraceProfile">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="SubEquipTarceM_to_FilePullCapabilities">
+            <containment>
+                <parent>
+                    <hasClass name="SubEquipTraceM">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FilePullCapabilities">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="SubEquipTraceM_to_TraceCapabilities">
+            <containment>
+                <parent>
+                    <hasClass name="SubEquipTraceM">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TraceCapabilities">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="SubEquipTraceM_to_TraceParameterGroup">
+            <containment>
+                <parent>
+                    <hasClass name="SubEquipTraceM">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TraceParameterGroup">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="TraceParameterGroup_to_TraceFilterType">
+            <containment>
+                <parent>
+                    <hasClass name="TraceParameterGroup">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TraceParameterType">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="SystemFunctions_to_SubEquipTraceM">
+            <containment>
+                <parent>
+                    <hasClass name="SystemFunctions">
+                        <mimName>ECIM_Top</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SubEquipTraceM">
+                        <mimName>ECIM_SubEquipTraceM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

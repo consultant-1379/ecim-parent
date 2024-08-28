@@ -1,0 +1,228 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:35:36 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ECIM_Equipment" {
+	namespace "urn:com:ericsson:ecim:ECIM_Equipment";
+	prefix "ECIM_Equipment";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	organization "EAB";
+	description "ECIM Equipment Fragment";
+
+	revision "2015-02-12" {
+		ericsson:author "ETXAVED";
+		ericsson:release "1";
+		ericsson:contact "EAB/FLE/EU Vahagn Avedian";
+		ericsson:version "2";
+		ericsson:correction "0";
+		ericsson:revision "A";
+	}
+
+	augment "/ECIM_Top:ManagedElement" {
+		list "Equipment" {
+			key "equipmentId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			uses ECIM_Equipment:Equipment;
+		}
+
+	}
+
+	typedef "AvailabilityStatus" {
+		type enumeration {
+			enum "NO_STATUS" {
+				value 0;
+				description "The resource is fully operational.
+The operational state is enabled.";
+			}
+
+			enum "IN_TEST" {
+				value 1;
+				description "The resource is undergoing a test procedure.
+If the administrative state is locked or shutting down then normal users are precluded from using the resource.";
+			}
+
+			enum "FAILED" {
+				value 2;
+				description "The resource has an internal fault that prevents it from operating.
+The operational state is disabled.";
+			}
+
+			enum "POWER_OFF" {
+				value 3;
+				description "The resource requires power to be applied and is not powered on.
+For example, a fuse or other protection device is known to have removed power or a low voltage condition has been detected. The operational state is disabled.";
+			}
+
+			enum "OFF_LINE" {
+				value 4;
+				description "The resource requires a routine operation to be performed to make it available.
+The operation may be manual or automatic, or both. The operational state is disabled.";
+			}
+
+			enum "OFF_DUTY" {
+				value 5;
+				description "The resource has been made inactive in accordance with a predetermined time schedule.
+Under normal conditions the control process can be expected to reactivate the resource at some scheduled time, and it is therefore considered to be optional. The operational state is enabled or disabled.";
+			}
+
+			enum "DEGRADED" {
+				value 6;
+				description "The service available from the resource is degraded in some respect.
+The degradation can for instance be in speed or operating capacity. Failure of a test or an unacceptable performance measurement has established that some or all services are not functional or are degraded due to the presence of a defect. However, the resource remains available for service, either because some services are satisfactory or because degraded service is preferable to no service at all. Object specific attributes may be defined to represent further information indicating, for example, which services are not functional and the nature of the degradation. The operational state is enabled.";
+			}
+
+			enum "LOG_FULL" {
+				value 8;
+				description "This indicates a log full condition.
+The semantics of are defined in CCITT Rec. X.735 | ISO/IEC 10164-6.";
+			}
+
+			enum "DEPENDANCY" {
+				value 10;
+				description "The resource cannot operate because some other resource on which it depends is unavailable.
+The resource it depends on is not represented by the same managed object. For example, a device is not accessible because its controller is powered off. The operational state is disabled.";
+			}
+
+		}
+
+		description "The availability status is used to qualify the operational state.
+It indicates why the operational state has changed its value to disabled.";
+	}
+
+	typedef "HwInstallStatus" {
+		type enumeration {
+			enum "UNKNOWN" {
+				value 0;
+				description "Unknown.";
+			}
+
+			enum "INSTALLED_AND_ACCEPTABLE" {
+				value 1;
+				description
+				"Matches an expected type from the parent MO’s list of acceptableHWTypes.";
+			}
+
+			enum "INSTALLED_AND_NOT_ACCEPTABLE" {
+				value 2;
+				description
+				"Does not match an expected type from the list of parent MO’s acceptableHWTypes.";
+			}
+
+			enum "NOT_INSTALLED" {
+				value 3;
+				description "Not installed.";
+			}
+
+		}
+
+		description "hwInstallStatus indicates the installation status of the Equipment object.
+
+This attribute can be used by the external management system to manage the status of the equipment. It is used together with the acceptableHWTypes attribute from the parent MO to indicate whether the correct piece of equipment is installed or not. It is based on installStatus from the TMF standard (m.3100 attribute).";
+	}
+
+	typedef "LedColor" {
+		type enumeration {
+			enum "GREEN" {
+				value 1;
+				description "GREEN.";
+			}
+
+			enum "RED" {
+				value 0;
+				description "RED.";
+			}
+
+			enum "BLUE" {
+				value 3;
+				description "BLUE.";
+			}
+
+			enum "YELLOW" {
+				value 2;
+				description "YELLOW.";
+			}
+
+		}
+
+		description "LED color
+
+Possible values:
+0  RED
+1  GREEN
+2  YELLOW
+3  BLUE";
+	}
+
+	typedef "ResetType" {
+		type enumeration {
+			enum "SOFT" {
+				value 0;
+				description "Restart without removing power.";
+			}
+
+			enum "HARD" {
+				value 1;
+				description
+				"Restart where the power is cycled (turned on and off or the equivalent).";
+			}
+
+			enum "FACTORY_DEFAULT" {
+				value 2;
+				description
+				"A HARD reset followed by resetting the hardware is reset to the factory default settings.";
+			}
+
+		}
+
+		description "Indicates the type of HW reset to be performed.
+
+Possible values:
+0 SOFT
+1 HARD
+2 FACTORYDEFAULT";
+	}
+
+	grouping "Equipment" {
+		description "This is the Equipment MO.";
+		leaf "equipmentId" {
+			type string;
+			mandatory true;
+			description "Unique identifier for this object instance.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "User friendly name for equipment object.";
+		}
+
+	}
+
+	grouping "Position" {
+		description "Used to indicate the placement of a physical element.";
+		leaf "name" {
+			type string;
+			mandatory true;
+			description "Defines a label for the position.";
+		}
+
+		leaf "physicalPosition" {
+			type string;
+			mandatory true;
+			description "Indicates the placement of a physical element.
+It can specify slot information on a hosting board, mounting site in cabinet or latitude/longitude.";
+		}
+
+	}
+
+}

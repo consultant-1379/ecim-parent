@@ -1,0 +1,742 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-mar-17 13:38:26 using 
+    * com.ericsson.ecim.yang.m2m 2.10.0.qualifier
+*/
+module MMAS {
+	namespace "urn:com:ericsson:ecim:MMAS";
+	prefix MMAS;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import ComTop {
+		prefix ComTop;
+	}
+
+	organization "Ericsson";
+	description "MMAS MOM";
+
+	revision "2014-03-17" {
+		ericsson:revision "1";
+		ericsson:release 1;
+		ericsson:version 2;
+	}
+
+	augment "/ComTop:ManagedElement" {
+		list Mmas {
+			key mmasId;
+			max-elements 1;
+			uses "MMAS:Mmas";
+			list MmasCommon {
+				key mmasCommonId;
+				max-elements 1;
+				uses "MMAS:MmasCommon";
+			}
+
+			list MmasDns {
+				key mmasDnsId;
+				max-elements 1;
+				uses "MMAS:MmasDns";
+			}
+
+			list MmasAmf {
+				key mmasAmfId;
+				max-elements 1;
+				uses "MMAS:MmasAmf";
+			}
+
+			list MmasMonitoring {
+				key mmasMonitoringId;
+				max-elements 1;
+				uses "MMAS:MmasMonitoring";
+				list MmasAlarmTrigger {
+					key mmasAlarmTriggerId;
+					uses "MMAS:MmasAlarmTrigger";
+				}
+
+			}
+
+			list MmasLoggerConfigRoot {
+				key mmasLoggerConfigRootId;
+				uses "MMAS:MmasLoggerConfigRoot";
+				list MmasLoggerRoot {
+					key mmasLoggerRootId;
+					uses "MMAS:MmasLoggerRoot";
+					list MmasLogger {
+						key mmasLoggerId;
+						uses "MMAS:MmasLogger";
+					}
+
+					list MmasL4JLogger {
+						key mmasL4JLoggerId;
+						uses "MMAS:MmasL4JLogger";
+					}
+
+					list MmasLoggerGroup {
+						key mmasLoggerGroupId;
+						uses "MMAS:MmasLoggerGroup";
+					}
+
+					list MmasL4JLoggerGroup {
+						key mmasL4JLoggerGroupId;
+						uses "MMAS:MmasL4JLoggerGroup";
+					}
+
+				}
+
+				list MmasLogHandlerRoot {
+					key mmasLogHandlerRootId;
+					uses "MMAS:MmasLogHandlerRoot";
+					list MmasLogHandlerStreamConfig {
+						key mmasLogHandlerStreamConfigId;
+						uses "MMAS:MmasLogHandlerStreamConfig";
+					}
+
+					list MmasLogHandlerFileConfig {
+						key mmasLogHandlerFileConfigId;
+						uses "MMAS:MmasLogHandlerFileConfig";
+					}
+
+				}
+
+			}
+
+			list MmasPmConfig {
+				key mmasPmConfigId;
+				max-elements 1;
+				uses "MMAS:MmasPmConfig";
+			}
+
+			list MmasCounters {
+				key mmasCountersId;
+				max-elements 1;
+				uses "MMAS:MmasCounters";
+				list MmasCountersHandler {
+					key mmasCountersHandlerId;
+					uses "MMAS:MmasCountersHandler";
+				}
+
+			}
+
+			list MmasDeployment {
+				key mmasDeploymentId;
+				max-elements 1;
+				uses "MMAS:MmasDeployment";
+			}
+
+		}
+
+	}
+
+	grouping MmasLoggerConfigRoot {
+		description
+		"The class MmasLoggerConfigRoot Mo represents the main node for logging configuration in MMAS.";
+		leaf mmasLoggerConfigRootId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasLoggerConfigRoot instance.";
+			ericsson:restricted;
+		}
+
+		leaf logConfigModelPollInterval {
+			type int32;
+			default 3000;
+			description
+			"This attribute defines the period between polls of the Mbeans to detect configuration changes. If a logging level is changed then this is the maximum period the operator will have to wait until the change takes effect. \n            - Range 1000  - 3000 milliseconds.";
+		}
+
+		leaf globalLoggerLevel {
+			type string;
+			description
+			"This attribute defines the level for the Java Logging root logger. If a logger does not have a specific logging level defined for it, and no logger in the naming hierarchy above it provides a specific logging level, then the global-logger-level will be the effective level. \n            - Supported levels are: SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL.";
+		}
+
+		leaf l4jGlobalLoggerLevel {
+			type string;
+			description
+			"This attribute defines the level for the Log4J root logger. If a logger does not have a specific logging level defined for it, and no logger in the naming hierarchy above it provides a specific logging level, then the l4jglobal-logger-level will be the effective level. Log4J logging levels are managed in order to provide support for third-party applications that use the Log4J logging package.\n            - Supported levels are: FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL.";
+		}
+
+	}
+
+	grouping MmasPmConfig {
+		description
+		"The class MmasPmConfig is the configuration node for the MMAS.";
+		leaf mmasPmConfigId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasPmConfig instance.";
+			ericsson:restricted;
+		}
+
+		leaf outputPath {
+			type string;
+			description
+			"This attribute defines the directory where Performance Management (PM) reports are placed.";
+		}
+
+		leaf counterFilePath {
+			type string;
+			description
+			"This attribute defines the directory from where counter definitions files are loaded by the PM module.";
+		}
+
+		leaf counterFileLoaderInterval {
+			type int32;
+			default 30000;
+			description
+			"This attribute defines how often counter definitions files are read.";
+		}
+
+		leaf defaultReporter {
+			type string;
+			description
+			"This attribute defines the class that is acting as the default reporter for all PM jobs which do not define a reporter themselves.\n            Possible values are: com.ericsson.mmas.pm.report.AggregationReporter and com.ericsson.mmas.pm.report.SimpleReporter.";
+		}
+
+		leaf aggregateReporterCollectTimer {
+			type int32;
+			default 20000;
+			description
+			"This attributes defines the time for the aggregation module to wait for PM reports from the different traffic instances.";
+		}
+
+		leaf statusInspectionPool {
+			type int32;
+			default 100;
+			description
+			"This attribute defines the pool holding the threads corresponding to the different status inspections in each instance.";
+		}
+
+	}
+
+	grouping MmasMonitoring {
+		description
+		"The class MmasMonitoring is the fault management node for MMAS.";
+		leaf mmasMonitoringId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasMonitoring instance.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping MmasLogHandlerStreamConfig {
+		description
+		"The class MmasLogHandlerStreamConfig Mo is the node for the Audit, Access and Applog streams sonfiguration in MMAS.";
+		leaf mmasLogHandlerStreamConfigId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasLogHandlerStreamConfig instance.";
+			ericsson:restricted;
+		}
+
+		leaf logHandlerStreamName {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identifier for the logging stream across the Service Availability Forum (SAF) cluster.";
+		}
+
+		leaf logHandlerLogFilePath {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the location of the log file. For log streams this file path is relative to a system file path defined by the Telecommunication Server Platform (TSP) SAF layer. This path can specify any subdirectories relative to the system file path. For the local machine flat file log this is an absolute file path.";
+		}
+
+		leaf logHandlerLogFileName {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the prefix for the name of the log file within the directory.\n            Recommended values are: \n            - AuditLog for the audit log stream, \n            - AppLog for the application log stream.";
+		}
+
+		leaf logHandlerMaxFileSize {
+			type int32;
+			description
+			"This attribute defines the maximum size of an individual record in a log stream file. This allows a guaranteed number of log records within a file of a given maximum size.";
+		}
+
+		leaf logHandlerHighAvailabilityFlag {
+			type int32;
+			description
+			"This attribute specifies whether the log stream files are to be replicated and persisted across the cluster, or not. This attribute is represented as an integer, coded as follows: \n            0=No Persist, \n            1=Persist.";
+		}
+
+		leaf logHandlerNumRotationFiles {
+			type int32;
+			description
+			"This attribute defines the number of previous versions of log files, when logHandler-actionWhenFull is set to SA_LOG_FILE_FULL_ACTION_ROTATE.\n   - Range 0 to 25.";
+		}
+
+		leaf logHandlerRecordFormat {
+			type string;
+			description
+			"This attribute defines the format of a log record entry in the log stream file. The format string contains the fields in the order they are required with any separator characters between them. The syntax of the fields in the format string is described in the Service Availability Forum Application Interface Specification for the Log Service (SAI-AIS-LOG).";
+		}
+
+		leaf logHandlerLogLevel {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the log level for the log stram files.\n            - Default AUDIT for Audit stream and OFF for AppLog stream.";
+		}
+
+		leaf logHandlerMaxRecordSize {
+			type int32;
+			description
+			"This attribute defines the maximum size of an individual record in a log stream file. \r\nThis allows a guaranteed number of log records within a file of a given maximum size.\r\n- Default for AppLog stream is 3500.\r\n- Default for Audit stream is 1024.";
+		}
+
+		leaf logHandlerActionWhenLogFull {
+			type string;
+			description
+			"This attribute defines the behavior when a log file is full. There are three possible actions when a log file is full: \r\n-  Stop logging (not recommended) \r\n-  Wrap the log (start again with an empty log file, SA_LOG_FILE_FULL_ACTION_ROTATE)\r\n-  Rotate the log (save this file as a previous version and start a new one)\r\n";
+		}
+
+	}
+
+	grouping MmasLogHandlerRoot {
+		description
+		"The class MmasLogHandleRoot Mo represents the main node for the MMAS log handle configuration. The supported logs are:\n          - Audit Log\n          - Server Log\n          - Centralized Server Log\n          - Trace Log";
+		leaf mmasLogHandlerRootId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasLogHandlerRoot instance.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping MmasLogHandlerFileConfig {
+		description
+		"The class MmasLogHandlerFileConfig is the node for file log stream configuration in MMAS.";
+		leaf mmasLogHandlerFileConfigId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasLogHandlerFileConfig instance.";
+			ericsson:restricted;
+		}
+
+		leaf logHandlerLogFilePath {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the location of the log file. For log streams this file path is relative to a system file path defined by the TSP/SAF layer. This path can specify any subdirectories relative to the system file path. For the local machine flat file log this is an absolute file path.";
+		}
+
+		leaf logHandlerMaxFileSize {
+			type int32;
+			default 10000000;
+			description
+			"This attribute defines the maximum size of an individual record in a log stream file. This allows a guaranteed number of log records within a file of a given maximum size.";
+		}
+
+		leaf logHandlerNumRotationFiles {
+			type int32;
+			default 5;
+			description
+			"This attribute defines the number of previous versions of log files, when logHandler-actionWhenFull is set to SA_LOG_FILE_FULL_ACTION_ROTATE. \n    - Range 0 to 25.";
+		}
+
+	}
+
+	grouping MmasLoggerRoot {
+		description
+		"The class MmasLoggerRoot is the node for MMAS logging configuration.";
+		leaf mmasLoggerRootId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasLoggerRoot instance.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping MmasLoggerGroup {
+		description
+		"The class MmasLoggerGroup is the node for group MMAS logging configuration.";
+		leaf mmasLoggerGroupId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasLoggerGroup instance.";
+			ericsson:restricted;
+		}
+
+		leaf logGroupName {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines a user-friendly name to refer to a group of loggers whose levels are to be collectively managed.";
+		}
+
+		leaf groupLoggerLevel {
+			type string;
+			description
+			"This attribute defines the level for a group of Java Logging loggers. This provides the level to be applied to each logger in the group, and any loggers beneath them in the hierarchy which do not have their own specific logging level.\n            - Supported levels are: OFF, SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL.";
+		}
+
+		leaf loggerList {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines a list of one or more loggers which are to be treated collectively as members of a group.";
+		}
+
+	}
+
+	grouping MmasLogger {
+		description
+		"The class MmasLogger is the node for MMAS logging configuration.";
+		leaf mmasLoggerId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasLogger instance.";
+			ericsson:restricted;
+		}
+
+		leaf loggerName {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the fully dot-qualified name of the logger, giving its relationship in the logging hierarchy, for example, com.ericsson.mmas.common.AlarmSender.";
+		}
+
+		leaf loggerLevel {
+			type string;
+			description
+			"This attribute defines the level for the Java Logging logger. This provides a specific level for a logger  - and any loggers beneath it in the hierarchy which do not have their own specific logging level.\n            - Supported levels are: OFF, SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL.";
+		}
+
+	}
+
+	grouping MmasL4JLoggerGroup {
+		description
+		"The class MmasL4JLoggerGroup is the node for MMAS Log4J group logger configuration.";
+		leaf mmasL4JLoggerGroupId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasL4JLoggerGroup instance.";
+			ericsson:restricted;
+		}
+
+		leaf logGroupName {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines a user-friendly name to refer to a group of loggers whose levels are to be collectively managed.";
+		}
+
+		leaf l4jGroupLoggerLevel {
+			type string;
+			description
+			"This attribute defines the level a group of Log4J loggers. This provides the level to be applied to each logger in the group  - and any loggers beneath them in the hierarchy which do not have their own specific logging level. Log4J logging levels are managed in order to provide support for third-party applications that use the Log4J logging package.\n            - Supported levels are: FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL.";
+		}
+
+		leaf loggerList {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines a list of one or more loggers which are to be treated collectively as members of a group.";
+		}
+
+	}
+
+	grouping MmasL4JLogger {
+		description
+		"The class MmasL4JLogger is the node for MMAS Log4J logger configuration.";
+		leaf mmasL4JLoggerId {
+			type string;
+			mandatory true;
+			description "This attribute defines the identity of one MmasL4JLogger";
+			ericsson:restricted;
+		}
+
+		leaf loggerName {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the fully dot-qualified name of the logger, giving its relationship in the logging hierarchy, for example, com.ericsson.mmas.common.AlarmSender.";
+		}
+
+		leaf l4jLoggerLevel {
+			type string;
+			description
+			"This attribute defines the level for the Log4J logger. This provides a specific level for a logger and any loggers beneath it in the hierarchy which do not have their own specific logging level.\n            Log4J logging levels are managed in order to provide support for third-party applications that use the Log4J logging package.\n            - Supported levels are: FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL.";
+		}
+
+	}
+
+	grouping MmasDns {
+		description
+		"The class MmasDns stores and handles the Domain Name System (DNS) function in the MMAS.";
+		leaf mmasDnsId {
+			type string;
+			mandatory true;
+			description "This attribute defines the identity of the MmasDns instance.";
+			ericsson:restricted;
+		}
+
+		leaf dnsServerList {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the servers which are available using DNS queries.";
+		}
+
+		leaf dnsCacheSize {
+			type int32;
+			default 20000;
+			description
+			"This attribute defines the size of the cache for DNS queries.";
+		}
+
+		leaf dnsPingAttemtThreshold {
+			type int32;
+			default 2;
+			description
+			"This attribute defines the maximum number of ping attempts sent to DNS server, before the DNS server is considered to be unreachable.";
+		}
+
+		leaf dnsPingInterval {
+			type int32;
+			default 30;
+			description
+			"This attribute defines the time between pings, sent to the DNS server.";
+		}
+
+		leaf dnsPingQuery {
+			type string;
+			description
+			"This attribute defines the DNS entry which isused for DNS queries.";
+		}
+
+		leaf dnsOutgoingIP {
+			type string;
+			status deprecated;
+			description
+			"This attribute defines the outgoing IP address for dnsjava requests from all nodes. If not set, the default routing (Linux) will be used.";
+		}
+
+	}
+
+	grouping MmasCountersHandler {
+		description
+		"The class MmasCountersHandler is the configuration node for a MMAS counters handler. It specifies a Java class responsible for updating one or more MMAS counters. This class is executed continuously after a defined period.";
+		leaf mmasCountersHandlerId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasCountersHandler instance.";
+			ericsson:restricted;
+		}
+
+		leaf className {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines a Java class responsible for updating one or more MMAS counters. This class must implement the Runnable interface and must be available in the Common class loader.";
+		}
+
+		leaf period {
+			type int32;
+			mandatory true;
+			description
+			"This attribute defines the time in seconds between MMAS counter(s) updates. It defines how often the handler is called.";
+		}
+
+	}
+
+	grouping MmasCounters {
+		description
+		"The class MmasCounters is the configuration node for all MMAS counters. It includes, as childs, a list of handlers to populate the counters.";
+		leaf mmasCountersId {
+			type string;
+			mandatory true;
+			description
+			"This attributes defines the key indentity of one MmasCounters";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping MmasCommon {
+		description
+		"The class MmasCommon is the node for general common MMAS configuration.";
+		leaf mmasCommonId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasCommon instance.";
+			ericsson:restricted;
+		}
+
+		leaf adminHost {
+			type string;
+			description
+			"This attribute defines the identity of the MMAS administration host.";
+		}
+
+		leaf adminPort {
+			type int32;
+			default 8686;
+			description
+			"This attribute defines the port number of the administrator port to use on the MMAS host.";
+		}
+
+		leaf oamPort {
+			type int32;
+			default 38686;
+			description
+			"This attribute defines the port number of the oam port to use on the MMAS host.";
+		}
+
+		leaf adminUser {
+			type string;
+			description
+			"his attribute defines the user name to use when logging on the MMAS host as an administrator.";
+		}
+
+	}
+
+	grouping MmasAmf {
+		description
+		"The class MmasAmf is the node for availability management configuration in MMAS.";
+		leaf mmasAmfId {
+			type string;
+			mandatory true;
+			description "This attribute defines the identity of the MmasAmf instance.";
+			ericsson:restricted;
+		}
+
+		leaf threadPoolSize {
+			type int32;
+			default 10;
+			description
+			"This attribute defines the number of simultaneous operations that can be performed.";
+		}
+
+		leaf shutdownWhenDeactive {
+			type boolean;
+			status obsolete;
+			description
+			"This attributes defines whether to shutdown the service when deactive, default set as false.";
+		}
+
+	}
+
+	grouping MmasAlarmTrigger {
+		description
+		"The class MmasAlarmTrigger is the monitoring threshold node for the MMAS.";
+		leaf mmasAlarmTriggerId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasAlarmTrigger instance.";
+			ericsson:restricted;
+		}
+
+		leaf delay {
+			type int32;
+			default 2000;
+			description
+			"This attribute defines the delay, after which the monitoring of resources starts again.";
+		}
+
+	}
+
+	grouping Mmas {
+		description "Mmas MOC";
+		leaf mmasId {
+			type string;
+			mandatory true;
+			description "key attribute";
+			ericsson:restricted;
+		}
+
+		leaf myRefAttributeToComFm {
+			type string {
+				pattern "(.*=.*,)*Fm=.*";
+			}
+
+		}
+
+		leaf-list myRefAttributeToPm {
+			type string {
+				pattern "(.*=.*,)*Pm=.*";
+			}
+
+		}
+
+		leaf myRefAttributeToJavaCaf {
+			type string {
+				pattern "(.*=.*,)*JavaCaf=.*";
+			}
+
+		}
+
+		leaf longAttrTest {
+			type int64;
+			default 3;
+		}
+
+		leaf attrUint64 {
+			type uint64;
+			default 123456789;
+			description "Mapped to BigInteger!";
+		}
+
+		leaf-list attrUint64Array {
+			type uint64;
+			max-elements 200;
+			description "Mapped to BigInteger!";
+			ericsson:non-unique-leaf-list;
+		}
+
+	}
+
+	grouping MmasDeployment {
+		description
+		"The class MmasDeployment is the node for Java EE application deployment in the MMAS.\r\n";
+		leaf mmasDeploymentId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the MmasDeployment instance.";
+			ericsson:restricted;
+		}
+
+		leaf pollInterval {
+			type int32;
+			description
+			"This attribute defines how often the deployment directory is read to look for new, updated, or removed applications.";
+		}
+
+		leaf configDir {
+			type string;
+			description
+			"This attribute defines the path to the directory where Java EE applications archives are placed.";
+		}
+
+		leaf serverUrl {
+			type string;
+			description "This attribute defines the URL of the admin server.";
+		}
+
+	}
+
+}

@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2014 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Sep 9, 2014 12:18:28 PM using:
+	* com.ericsson.ecim.m2m 2.11.2.qualifier
+	* com.ericsson.ecim.dsl 2.11.2.qualifier
+	* com.ericsson.ecim.edm 2.11.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+  </momMetaData>
+  <mim author="" contact="" date="" docNo="" name="EcimActions" namespace="urn:com:ericsson:ecim:EcimActions" namespacePrefix="ecimactions" organization="" release="2" revision="" version="1">
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <enum name="equipmentList">
+      <description>Equipment List</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimVersion" value="4"/>
+        <extension name="originatingMimName" value="EcimEnum"/>
+        <extension name="originatingMimRelease" value="2"/>
+      </domainExtension>
+      <enumMember name="router">
+        <description>router</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="switchL2">
+        <description>switchL2</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="switchL3">
+        <description>switchL3</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="SBG">
+        <description>SBG</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="slotMachine">
+        <description>slotMachine</description>
+        <value>6</value>
+      </enumMember>
+    </enum>
+    <derivedDataType name="MyDerivedInteger(positiveRange)">
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimVersion" value="23"/>
+        <extension name="originatingMimName" value="EcimInt"/>
+        <extension name="originatingMimRelease" value="1"/>
+      </domainExtension>
+      <baseType>
+        <int64>
+          <range>
+            <min>-1</min>
+          </range>
+          <ranges>
+            <subrange>
+              <min>-1</min>
+              <max>*</max>
+            </subrange>
+          </ranges>
+        </int64>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="DerivedString">
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimVersion" value="2"/>
+        <extension name="originatingMimName" value="EcimString"/>
+        <extension name="originatingMimRelease" value="22"/>
+      </domainExtension>
+      <baseType>
+        <string>
+          <validValues>[a-zA-z0-9]+,[a-zA-z0-9]</validValues>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="DerivedFloat">
+      <baseType>
+        <double/>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="MyDerivedFloat(infinitRange)">
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimVersion" value="23"/>
+        <extension name="originatingMimName" value="EcimFloat"/>
+        <extension name="originatingMimRelease" value="1"/>
+      </domainExtension>
+      <baseType>
+        <double>
+          <range>
+            <min>0</min>
+          </range>
+          <ranges>
+            <subrange>
+              <min>0</min>
+              <max>*</max>
+            </subrange>
+          </ranges>
+        </double>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="IPaddress">
+      <baseType>
+        <string>
+          <validValues>[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}</validValues>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="Actions_actionEcimIntegerReturn_returnType">
+      <baseType>
+        <int64>
+          <range>
+            <min>0</min>
+            <max>234</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>0</min>
+              <max>234</max>
+            </subrange>
+          </ranges>
+        </int64>
+      </baseType>
+    </derivedDataType>
+    <class name="Actions">
+      <root/>
+      <action name="actionWithStringPatterns">
+        <domainExtension domain="CoreMW">
+          <extension name="admOpId" value="12"/>
+        </domainExtension>
+        <returnType>
+          <boolean/>
+        </returnType>
+        <parameter name="originatingIPAddress">
+          <in/>
+          <dataType>
+            <derivedDataTypeRef name="IPaddress">
+              <defaultValue>192.168.1.10</defaultValue>
+              <mimName>EcimActions</mimName>
+            </derivedDataTypeRef>
+          </dataType>
+        </parameter>
+        <parameter name="destinationIPAddress">
+          <in/>
+          <dataType>
+            <derivedDataTypeRef name="IPaddress">
+              <defaultValue>192.168.1.254</defaultValue>
+              <mimName>EcimActions</mimName>
+            </derivedDataTypeRef>
+          </dataType>
+        </parameter>
+      </action>
+      <action name="actionWithIntegers">
+        <domainExtension domain="CoreMW">
+          <extension name="admOpId" value="34"/>
+        </domainExtension>
+        <returnType>
+          <uint32/>
+        </returnType>
+        <parameter name="num1">
+          <in/>
+          <dataType>
+            <sequence>
+              <int32/>
+              <minLength>1</minLength>
+              <maxLength>3</maxLength>
+              <seqDefaultValue>
+                <defaultValue>200</defaultValue>
+              </seqDefaultValue>
+            </sequence>
+          </dataType>
+        </parameter>
+        <parameter name="num2">
+          <in/>
+          <dataType>
+            <sequence>
+              <int8/>
+              <minLength>1</minLength>
+              <maxLength>2</maxLength>
+              <seqDefaultValue>
+                <defaultValue>50</defaultValue>
+              </seqDefaultValue>
+            </sequence>
+          </dataType>
+        </parameter>
+        <parameter name="num3">
+          <description>qwe</description>
+          <in/>
+          <dataType>
+            <sequence>
+              <int64/>
+              <minLength>1</minLength>
+              <maxLength>30</maxLength>
+            </sequence>
+          </dataType>
+        </parameter>
+      </action>
+      <action name="actionWithBooleans">
+        <domainExtension domain="CoreMW">
+          <extension name="admOpId" value="1"/>
+        </domainExtension>
+        <returnType>
+          <boolean/>
+        </returnType>
+        <parameter name="bool1">
+          <in/>
+          <dataType>
+            <boolean>
+              <defaultValue>true</defaultValue>
+            </boolean>
+          </dataType>
+        </parameter>
+        <parameter name="bool2">
+          <in/>
+          <dataType>
+            <boolean>
+              <defaultValue>false</defaultValue>
+            </boolean>
+          </dataType>
+        </parameter>
+      </action>
+      <action name="actionWithEmptyDefaultParameters">
+        <domainExtension domain="CoreMW">
+          <extension name="admOpId" value="5"/>
+        </domainExtension>
+        <returnType>
+          <void/>
+        </returnType>
+        <parameter name="num1">
+          <in/>
+          <dataType>
+            <int32/>
+          </dataType>
+        </parameter>
+        <parameter name="num2">
+          <in/>
+          <dataType>
+            <int32/>
+          </dataType>
+        </parameter>
+      </action>
+      <action name="emptyAction">
+        <domainExtension domain="CoreMW">
+          <extension name="admOpId" value="5"/>
+        </domainExtension>
+        <returnType>
+          <void/>
+        </returnType>
+      </action>
+      <action name="actionWithMultiValuedAttributes">
+        <domainExtension domain="CoreMW">
+          <extension name="admOpId" value="7"/>
+        </domainExtension>
+        <returnType>
+          <void/>
+        </returnType>
+        <parameter name="numbers">
+          <in/>
+          <dataType>
+            <sequence>
+              <int32/>
+              <minLength>1</minLength>
+              <maxLength>4</maxLength>
+              <seqDefaultValue>
+                <defaultValue>34</defaultValue>
+                <defaultValue>56</defaultValue>
+                <defaultValue>1</defaultValue>
+                <defaultValue>55</defaultValue>
+              </seqDefaultValue>
+            </sequence>
+          </dataType>
+        </parameter>
+        <parameter name="strings">
+          <in/>
+          <dataType>
+            <sequence>
+              <string/>
+              <minLength>1</minLength>
+              <maxLength>2</maxLength>
+              <seqDefaultValue>
+                <defaultValue>John,Doe</defaultValue>
+                <defaultValue>Jane,Doe</defaultValue>
+              </seqDefaultValue>
+            </sequence>
+          </dataType>
+        </parameter>
+        <parameter name="booleans">
+          <in/>
+          <dataType>
+            <sequence>
+              <boolean/>
+              <minLength>1</minLength>
+              <maxLength>3</maxLength>
+              <seqDefaultValue>
+                <defaultValue>true</defaultValue>
+                <defaultValue>false</defaultValue>
+                <defaultValue>false</defaultValue>
+              </seqDefaultValue>
+            </sequence>
+          </dataType>
+        </parameter>
+        <parameter name="floats">
+          <in/>
+          <dataType>
+            <sequence>
+              <derivedDataTypeRef name="DerivedFloat">
+                <mimName>EcimActions</mimName>
+              </derivedDataTypeRef>
+              <minLength>1</minLength>
+              <maxLength>3</maxLength>
+              <seqDefaultValue>
+                <defaultValue>34.5</defaultValue>
+                <defaultValue>53.5</defaultValue>
+                <defaultValue>34.6</defaultValue>
+              </seqDefaultValue>
+            </sequence>
+          </dataType>
+        </parameter>
+      </action>
+      <action name="actionWithDerivedDataTypes">
+        <domainExtension domain="CoreMW">
+          <extension name="admOpId" value="32"/>
+        </domainExtension>
+        <returnType>
+          <derivedDataTypeRef name="MyDerivedInteger(positiveRange)">
+            <mimName>EcimActions</mimName>
+          </derivedDataTypeRef>
+        </returnType>
+        <parameter name="derivedEnum">
+          <in/>
+          <dataType>
+            <enumRef name="equipmentList">
+              <defaultValue>slotMachine</defaultValue>
+              <mimName>EcimActions</mimName>
+            </enumRef>
+          </dataType>
+        </parameter>
+        <parameter name="derivedFloat">
+          <in/>
+          <dataType>
+            <derivedDataTypeRef name="MyDerivedFloat(infinitRange)">
+              <defaultValue>45.0</defaultValue>
+              <mimName>EcimActions</mimName>
+            </derivedDataTypeRef>
+          </dataType>
+        </parameter>
+        <parameter name="derivedInt">
+          <in/>
+          <dataType>
+            <derivedDataTypeRef name="MyDerivedInteger(positiveRange)">
+              <defaultValue>34</defaultValue>
+              <mimName>EcimActions</mimName>
+            </derivedDataTypeRef>
+          </dataType>
+        </parameter>
+        <parameter name="derivedString">
+          <in/>
+          <dataType>
+            <derivedDataTypeRef name="DerivedString">
+              <mimName>EcimActions</mimName>
+            </derivedDataTypeRef>
+          </dataType>
+        </parameter>
+      </action>
+      <action name="actionEcimIntegerReturn">
+        <description>qwe</description>
+        <domainExtension domain="CoreMW">
+          <extension name="admOpId" value="22"/>
+        </domainExtension>
+        <returnType>
+          <derivedDataTypeRef name="Actions_actionEcimIntegerReturn_returnType">
+            <mimName>EcimActions</mimName>
+          </derivedDataTypeRef>
+        </returnType>
+      </action>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+  </mim>
+  <interMim>
+    <relationship name="Root_to_Actions">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="true"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>RootMom</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="Actions">
+            <mimName>EcimActions</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

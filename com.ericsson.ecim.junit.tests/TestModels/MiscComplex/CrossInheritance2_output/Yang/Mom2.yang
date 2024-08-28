@@ -1,0 +1,49 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 17, 2015 4:49:44 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "Mom2" {
+	namespace "urn:com:ericsson:ecim:Mom2";
+	prefix "Mom2";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	revision "2015-04-17" {
+		ericsson:correction "1";
+		ericsson:release "1";
+		ericsson:version "1";
+	}
+
+	list "ManagedElement" {
+		key "id";
+		list "C" {
+			key "id";
+			min-elements 1;
+			max-elements 1;
+			uses Mom1:C;
+		}
+
+		uses Mom2:ManagedElement;
+	}
+
+	grouping "ManagedElement" {
+		leaf "propInModel2" {
+			type string;
+		}
+
+		leaf "id" {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+		leaf "propInModel1" {
+			type string;
+		}
+
+	}
+
+}

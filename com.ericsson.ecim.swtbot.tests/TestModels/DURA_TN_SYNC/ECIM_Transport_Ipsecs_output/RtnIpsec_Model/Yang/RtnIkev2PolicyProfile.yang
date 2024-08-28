@@ -1,0 +1,143 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:46:00 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RtnIkev2PolicyProfile" {
+	namespace "urn:com:ericsson:ecim:RtnIkev2PolicyProfile";
+	prefix "RtnIkev2PolicyProfile";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RtnIpsec {
+		prefix "RtnIpsec";
+	}
+
+	description "Ipsec Ikev2PolicyProfile package";
+
+	revision "2015-10-13" {
+		ericsson:contact "EAB/FJP/TA UABERPE";
+		ericsson:release "2";
+		ericsson:version "1";
+		ericsson:correction "0";
+		ericsson:author "EAB/FJP/TA UABERPE";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport" {
+		list "Ikev2PolicyProfile" {
+			key "ikev2PolicyProfileId";
+			max-elements 1;
+			uses RtnIkev2PolicyProfile:Ikev2PolicyProfile;
+		}
+
+	}
+
+	grouping "Ikev2PolicyProfile" {
+		description "Common information for multiple IKE sessions to be instantiated on a managed element.
+
+One or more Ikev2Session instances might refer to this instance.";
+		leaf "ikev2PolicyProfileId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "credential" {
+			type string {
+				pattern "(.*=.*,)*NodeCredential=.*";
+			}
+
+			description "Reference to the managed element own credential to be used in IKEv2 negotiation. 
+
+Valid reference is NodeCredential in Certificate Management Branch.
+If credential and trustCategory are not specified, then preshared key-based authentication is selected. The referring Ikev2Session instances must have preshared keys installed.";
+			ericsson:restricted;
+		}
+
+		leaf "trustCategory" {
+			type string {
+				pattern "(.*=.*,)*TrustCategory=.*";
+			}
+
+			description "Reference to a  trusted certificates group.
+
+Valid reference is TrustCategory in Certificate Management Branch.
+If credential and trustedCertificates are not specified, then pre-shared key based authentication is selected. The referring Ikev2Session instances have to have pre-shared keys installed.";
+			ericsson:restricted;
+		}
+
+		list "ikev2Proposal" {
+			min-elements 1;
+			max-elements 2;
+			config true;
+			description "An ordered list of IKE proposals to be used for IKE SA negotiation.
+
+At least one IKE proposal must be specified. The first one in the list has the highest priority. Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			ericsson:restricted;
+			uses RtnIkev2PolicyProfile:ikev2Proposal;
+		}
+
+		leaf "ikeSaLifetime" {
+			type uint32 {
+				range "60..5000";
+			}
+
+			mandatory true;
+			description
+			"Lifetime for IKE SA. In order for the node to have completed the rekeying process before the lifetime expires, the node will initiate rekeying according to a soft lifetime. The soft lifetime is calculated as  (0.8+0.1*R)*ikeSaLifetime, where R is a random factor between 0 and 1. ";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use.";
+		}
+
+		leaf "dpdTime" {
+			type uint32 {
+				range "30..1800";
+			}
+
+			mandatory true;
+			description "The maximum time  to detect that a IKE SA is down.  
+
+If the SA is down, an attempt is made to re-establish the SA.
+If this attempt fails, an alarm is issued.";
+			ericsson:restricted;
+		}
+
+		leaf-list "reservedBy" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description
+			"Contains a list of MO instances that reserve this MO instance.";
+		}
+
+		leaf "ikeDscp" {
+			type uint8 {
+				range "0..63";
+			}
+
+			mandatory true;
+			description
+			"The DSCP value that the node will use when transmitting IKE messages.";
+			ericsson:restricted;
+		}
+
+	}
+
+}

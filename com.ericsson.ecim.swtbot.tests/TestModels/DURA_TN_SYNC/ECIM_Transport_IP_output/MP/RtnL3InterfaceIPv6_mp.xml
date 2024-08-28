@@ -1,0 +1,893 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Oct 14, 2015 9:50:47 PM using:
+	* com.ericsson.ecim.m2m 3.0.2.qualifier
+	* com.ericsson.ecim.dsl 3.0.2.qualifier
+	* com.ericsson.ecim.edm 3.0.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+    <createdBy>
+      <signature>EAB/FJP/TA UABERPE</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>EAB/FJP/TA UABERPE</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="0" date="" docNo="" name="RtnL3InterfaceIPv6" namespace="urn:com:ericsson:ecim:RtnL3InterfaceIPv6" namespacePrefix="rtnl3interfaceipv6" organization="" release="5" revision="" version="4">
+    <description>IPv6-addressed termination point; interface on an IPv6 routing domain.</description>
+    <domainExtension domain="ECIM">
+      <extension name="ecimMomName" value="ECIM_T_L3_InterfaceIPv6"/>
+      <extension name="ecimMomVersion" value="1"/>
+      <extension name="ecimMomRelease" value="1"/>
+      <extension name="ecimMomCorrection" value="0"/>
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <implements correction="0" name="ECIM_T_L3_InterfaceIPv6" release="1" version="1"/>
+    <enum name="OperState">
+      <description>The operational states of a resource.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="6"/>
+        <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="DISABLED">
+        <description> The resource is  totally inoperable.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="ENABLED">
+        <description> The resource is partially or fully operable.</description>
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="AvailStatus">
+      <description>The availability status is used to qualify the operational state.&#13;
+ It indicates why the operational state has changed its value. </description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="6"/>
+        <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="IN_TEST">
+        <description>The resource is undergoing a test procedure. &#13;
+If the administrative state is locked or  shutting down then normal users are precluded from using the resource.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="FAILED">
+        <description>The resource has an internal fault that prevents it from operating.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="POWER_OFF">
+        <description>The resource requires power to be applied and is not powered on.</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="OFF_LINE">
+        <description>The resource requires a routine operation to be performed.&#13;
+This routine operation is to place the resource online and make it available for use. The operation may be manual or automatic, or both. The operational state is disabled.</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="OFF_DUTY">
+        <description>The resource has been made inactive by an internal control process.</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY">
+        <description>The resource cannot operate because some other resource on which it depends is unavailable.</description>
+        <value>5</value>
+      </enumMember>
+      <enumMember name="DEGRADED">
+        <description>The service available from the resource is degraded in some respect.</description>
+        <value>6</value>
+      </enumMember>
+      <enumMember name="NOT_INSTALLED">
+        <description>The resource represented by the managed object is not present, or is incomplete.</description>
+        <value>7</value>
+      </enumMember>
+      <enumMember name="LOG_FULL">
+        <description>This indicates a log full condition.</description>
+        <value>8</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_LOCKED">
+        <description>The administrative state of a resource that this resource depends on is locked.&#13;
+ or the availability status of the other resource is dependency locked.  </description>
+        <value>9</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_FAILED">
+        <description>The availability status of a resource that this resource depends on is failed or dependency failed.</description>
+        <value>10</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_SHUTTINGDOWN">
+        <description>The administrative state of a resource that this resource depends on is shutting down.&#13;
+ or the availability status of the other resource is dependency shutting down. </description>
+        <value>11</value>
+      </enumMember>
+    </enum>
+    <enum name="Origin">
+      <description>Possible origins of an assigned IP address.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="5"/>
+        <extension name="originatingMimName" value="RtnL3Library"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="STATIC">
+        <description>Statically configured resource.</description>
+        <value>0</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature OriginSTATIC</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="DHCP">
+        <description>Source of the resource is DHCP.</description>
+        <value>1</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature OriginDHCP</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="IKEV2">
+        <description>Source of the resource is Internet Key Exchange (IKEv2).</description>
+        <value>2</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature OriginIKEV2</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="SYSTEM_DEFAULT">
+        <description>System default (automatically added) resource.</description>
+        <value>3</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature OriginSystemDefault</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="NDP">
+        <description>Source of the resource is NDP.&#13;
+</description>
+        <value>4</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature OriginNDP</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="LINK_LOCAL_DYNAMIC">
+        <description>Link local resource.</description>
+        <value>5</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature OriginLINK_LOCAL_DYNAMIC</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+    </enum>
+    <enum name="BasicAdmState">
+      <description>The basic administrative states for a resource.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="6"/>
+        <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="LOCKED">
+        <description> The resource is administratively prohibited from performing services for its users.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="UNLOCKED">
+        <description>The resource is administratively permitted to perform services for its users. &#13;
+This is independent of its inherent operability.</description>
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <derivedDataType name="EcimEmpty">
+      <description>This type represents a leaf that has no value, it conveys information by its presence or absence.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="6"/>
+        <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <baseType>
+        <boolean/>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="Ipv6AddressAndPrefixLengthStr">
+      <description>Unicast Ipv6Address (colon separated, rfc4291, without leading 0s) / prefix_length 0-128.&#13;
+&#13;
+Example: 2001:DB8::8:800:200C:417A/64</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="3"/>
+        <extension name="originatingMimName" value="RtnCommonLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <baseType>
+        <string>
+          <validValues>(^\s*((((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){7}(([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){6}(:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){5}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,2})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){4}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,3})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){3}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,4})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){2}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,5})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):)(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,6})|:))|(:(:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,7}))|((0:){5}|(0:){4}:|(0:){3}:(0:){0,1}|(0:){2}:(0:){0,2}|0::(0:){0,3}|::(0:){0,4})[fF][fF][fF][fF]:(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})(%.+)?\s*)/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8])$</validValues>
+        </string>
+      </baseType>
+      <validationRules>
+        <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[(^\s*((((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){7}(([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){6}(:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){5}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,2})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){4}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,3})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){3}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,4})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){2}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,5})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):)(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,6})|:))|(:(:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,7}))|((0:){5}|(0:){4}:|(0:){3}:(0:){0,1}|(0:){2}:(0:){0,2}|0::(0:){0,3}|::(0:){0,4})[fF][fF][fF][fF]:(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})(%.+)?\s*)/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8])$]]></rule>
+      </validationRules>
+    </derivedDataType>
+    <derivedDataType name="RtnL3InterfaceIPv6_InterfaceIPv6_mtu">
+      <baseType>
+        <uint32>
+          <range>
+            <min>1280</min>
+            <max>9000</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>1280</min>
+              <max>9000</max>
+            </subrange>
+          </ranges>
+        </uint32>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="RtnL3InterfaceIPv6_InterfaceIPv6_neighborDiscoveryTimeout">
+      <baseType>
+        <uint32>
+          <range>
+            <min>0</min>
+            <max>3600000</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>0</min>
+              <max>3600000</max>
+            </subrange>
+          </ranges>
+          <unit>ms</unit>
+        </uint32>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="RtnL3InterfaceIPv6_InterfaceIPv6_neighborSolicitationInterval">
+      <baseType>
+        <uint32>
+          <range>
+            <min>1</min>
+            <max>3600000</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>1</min>
+              <max>3600000</max>
+            </subrange>
+          </ranges>
+          <unit>ms</unit>
+        </uint32>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="RtnL3InterfaceIPv6_InterfaceIPv6_routesHoldDownTimer">
+      <baseType>
+        <uint16>
+          <range>
+            <min>1</min>
+            <max>300</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>1</min>
+              <max>300</max>
+            </subrange>
+          </ranges>
+          <unit>s</unit>
+        </uint16>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="RtnL3InterfaceIPv6_InterfaceIPv6_dscpNdp">
+      <baseType>
+        <uint8>
+          <range>
+            <min>0</min>
+            <max>63</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>0</min>
+              <max>63</max>
+            </subrange>
+          </ranges>
+        </uint8>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="RtnL3InterfaceIPv6_InterfaceIPv6_userLabel">
+      <baseType>
+        <string>
+          <lengthRange>
+            <min>1</min>
+            <max>128</max>
+          </lengthRange>
+          <stringLength>
+            <subrange>
+              <min>1</min>
+              <max>128</max>
+            </subrange>
+          </stringLength>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="RtnL3InterfaceIPv6_AddressIPv6_userLabel">
+      <baseType>
+        <string>
+          <lengthRange>
+            <min>1</min>
+            <max>128</max>
+          </lengthRange>
+          <stringLength>
+            <subrange>
+              <min>1</min>
+              <max>128</max>
+            </subrange>
+          </stringLength>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <class name="InterfaceIPv6">
+      <description>IPv6-addressed termination point; interface on an IPv6 Routing Function. &#13;
+&#13;
+</description>
+      <validationRules>
+        <rule exceptionText="" format="ECIM_Schematron_1.0" name="InterfaceIPv6"><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+	<pattern>
+		<rule>
+		<assert test='@encapsulation'><value-of select="."/> The attribute encapsulation must be set </assert>
+		</rule>
+	</pattern>
+</schema>]]></rule>
+      </validationRules>
+      <root/>
+      <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+	<pattern>
+		<rule>
+		<assert test='@encapsulation'><value-of select="."/> The attribute encapsulation must be set </assert>
+		</rule>
+	</pattern>
+</schema>]]></dependenciesScript>
+      <attribute name="mtu">
+        <description>The maximum transmission unit (MTU) for IPv6.</description>
+        <dataType>
+          <derivedDataTypeRef name="RtnL3InterfaceIPv6_InterfaceIPv6_mtu">
+            <defaultValue>1500</defaultValue>
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+        <disturbances>Changing this attribute causes traffic disturbances.</disturbances>
+      </attribute>
+      <attribute name="interfaceIPv6Id">
+        <description>Value component of the RDN. &#13;
+</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="neighborDiscoveryTimeout">
+        <description>Timeout value for the neighbor entry. &#13;
+&#13;
+Configures how long the remote IPv6 node is considered reachable after the reachability confirmation event has occurred. &#13;
+A value of zero means that entries are never cleared from the cache.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="RtnL3InterfaceIPv6_InterfaceIPv6_neighborDiscoveryTimeout">
+            <defaultValue>30000</defaultValue>
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature NeighborDiscoveryTimeout</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="neighborSolicitationInterval">
+        <description>Interval between the retransmitted neighbor solicitation messages on an interface. </description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="RtnL3InterfaceIPv6_InterfaceIPv6_neighborSolicitationInterval">
+            <defaultValue>1000</defaultValue>
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature NeighborSolicitationInterval</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="bfdProfile">
+        <description>BFD profile used for BFD sessions running on the interface. &#13;
+&#13;
+BFD is not enabled on the interface when it is null.&#13;
+&#13;
+Optional to support - Flag: if-feature InterfaceIPv6BfdProfile</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <moRef name="BfdProfile">
+            <mimName>RtnBfdProfile</mimName>
+          </moRef>
+        </dataType>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature InterfaceIPv6BfdProfile</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="loopback">
+        <description>Encapsulation option for loopback interface.&#13;
+&#13;
+Dependencies: One of the attributes encapsulation and loopback must be set, but not both at the same time.&#13;
+</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="EcimEmpty">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+        <dependencies>&lt;schema xmlns="http://purl.oclc.org/dsdl/schematron"&gt;&#13;
+                    &lt;pattern&gt;&#13;
+                        &lt;rule&gt;&#13;
+                        &lt;assert test='not (@loopback and @encapsulation)'&gt; loopback and encapsulation are either-or configuration for IP interface.&lt;/assert&gt;&#13;
+                        &lt;/rule&gt;&#13;
+                    &lt;/pattern&gt;&#13;
+               &lt;/schema&gt;</dependencies>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature InterfaceIPv6Loopback</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="reservedBy">
+        <description>Contains a list of MO instances that reserve this MO instance.</description>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <moRef name="ManagedObject"/>
+            <minLength>0</minLength>
+          </sequence>
+        </dataType>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature InterfaceIPv6ReservedBy</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="routesHoldDownTimer">
+        <description>Specifies the holddown timer used for static routes that use this interface.
+ 
+When this attribute is set, a holddown timer is started when the conditions for a static route to become available have been fulfilled. When the holddown timer expires, the route becomes available.
+ 
+When not set, there is no hold-down timer for routes.
+ 
+This attribute does NOT affect the operational state of the interface.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="RtnL3InterfaceIPv6_InterfaceIPv6_routesHoldDownTimer">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="egressQosMarking">
+        <description>The DSCP to PCP map used for marking DSCP tagged packets with a PCP value. The packets marked are either host originated or routed into the QoS domain.
+
+If empty, the DSCP values are mapped to PCP values according to the following:
+
+pcp0 = 0
+pcp1   (empty)
+pcp2 = 10,12,14
+pcp3 = 18,20,22
+pcp4 = 8,16,26,28
+pcp5 = 34,36,38,46
+pcp6 = 32,40,48
+pcp7 = 51,54</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <moRef name="DscpPcpMap">
+            <mimName>RtnQosProfiles</mimName>
+          </moRef>
+        </dataType>
+      </attribute>
+      <attribute name="dscpNdp">
+        <description>The Differentiated Services Code Point (DSCP) value for Neighbor Discovery Protocol (NDP). 
+</description>
+        <dataType>
+          <derivedDataTypeRef name="RtnL3InterfaceIPv6_InterfaceIPv6_dscpNdp">
+            <defaultValue>48</defaultValue>
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="aclEgress">
+        <description>A reference to an ACL MO applied in the egress direction. 
+If this attribute is empty, no ACL MO filtering will take place in the egress direction.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <moRef name="AclIpv6">
+            <mimName>RtnIPv6ACLPolicy</mimName>
+          </moRef>
+        </dataType>
+        <preliminary/>
+        <dependencies>This attribute can be set only when encapsulation refers to a VlanPort, an EthernetPort, or a Bridge MO.
+ 
+The referenced AclIpv6 MO must have at least one AclEntryIpv6 as a child.
+Only AclIpv6 MOs within the same router are allowed in an ACL association. 
+</dependencies>
+      </attribute>
+      <attribute name="aclIngress">
+        <description>A reference to an ACL MO applied in the ingress direction. 
+If this attribute is empty, no ACL MO filtering will take place in the ingress direction.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <moRef name="AclIpv6">
+            <mimName>RtnIPv6ACLPolicy</mimName>
+          </moRef>
+        </dataType>
+        <preliminary/>
+        <dependencies>This attribute can be set only when encapsulation refers to a VlanPort, an EthernetPort, or a Bridge MO.
+ 
+The referenced AclIpv6 MO must have at least one AclEntryIpv6 as a child.
+Only AclIpv6 MOs within the same router are allowed in an ACL association.
+</dependencies>
+      </attribute>
+      <attribute name="encapsulation">
+        <description>Reference to the underlying encapsulation, which can be an EthernetPort MO or a VlanPort MO. 
+For InterfaceIPv4, this attribute can also refer to a Bridge MO or an IpsecTunnel MO.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+        <dependencies>A VlanPort MO and an InterfaceIPv4 MO or InterfaceIPv6 MO cannot refer to the same EthernetPort MO.
+Applicable for InterfaceIPv4: One of the attributes encapsulation and loopback must be set, but not both at the same time.
+Applicable for InterfaceIPv6: This attribute must be set. 
+If InterfaceIPv4 and InterfaceIPv6 encapsulates the same VlanPort they must reside in the same router.
+If InterfaceIPv4 and InterfaceIPv6 encapsulates the same EthernetPort they must reside in the same router.</dependencies>
+        <disturbances>Changing this attribute causes traffic disturbances.</disturbances>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use. &#13;
+</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="RtnL3InterfaceIPv6_InterfaceIPv6_userLabel">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="operationalState">
+        <description>The operational state. </description>
+        <readOnly/>
+        <dataType>
+          <enumRef name="OperState">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+      <attribute name="availabilityStatus">
+        <description>The availability status.
+It contains details about operationalState. </description>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <enumRef name="AvailStatus">
+              <mimName>RtnL3InterfaceIPv6</mimName>
+            </enumRef>
+            <minLength>0</minLength>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="administrativeState">
+        <description>Administrative state of the L3 interface. &#13;
+&#13;
+When LOCKED, the connection to the L3 stack is disabled and no L3 packets are received, transmitted or routed through.&#13;
+ &#13;
+Optional to support - Flag: if-feature L3IfAdministrativeState</description>
+        <dataType>
+          <enumRef name="BasicAdmState">
+            <defaultValue>UNLOCKED</defaultValue>
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="AddressIPv6">
+      <description>Assigned IPv6 address including information about the subnet it resides on.&#13;
+</description>
+      <attribute name="origin">
+        <description>Specifies who provides this address; if not STATIC, the address field is read-only. &#13;
+&#13;
+</description>
+        <readOnly/>
+        <dataType>
+          <enumRef name="Origin">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </enumRef>
+        </dataType>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature AddressIPv6Origin</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="addressIPv6Id">
+        <description>The value component of the RDN. &#13;
+</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="address">
+        <description>IPv6 address + "/" + prefix length&lt;0-128&gt;. &#13;
+&#13;
+ </description>
+        <mandatory/>
+        <dataType>
+          <derivedDataTypeRef name="Ipv6AddressAndPrefixLengthStr">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use. &#13;
+</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="RtnL3InterfaceIPv6_AddressIPv6_userLabel">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="reservedBy">
+        <description>Contains a list of MO instances that reserve this MO instance.</description>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <moRef name="ManagedObject"/>
+            <minLength>0</minLength>
+          </sequence>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="OamAccessPoint_accessPoint_to_AddressIPv6_reservedBy">
+      <biDirectionalAssociation>
+        <associationEnd name="accessPoint">
+          <hasClass name="AddressIPv6">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="OamAccessPoint">
+            <mimName>ComSysM</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+    <relationship name="InterfaceIPv6_to_AddressIPv6">
+      <containment>
+        <parent>
+          <hasClass name="InterfaceIPv6">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="AddressIPv6">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+    <relationship name="InterfaceIPv6_encapsulation_to_EthernetPort_reservedBy">
+      <biDirectionalAssociation>
+        <associationEnd name="encapsulation">
+          <hasClass name="EthernetPort">
+            <mimName>RtnL2EthernetPort</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="InterfaceIPv6">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+    <relationship name="InterfaceIPv6_encapsulation_to_VlanPort_reservedBy">
+      <biDirectionalAssociation>
+        <associationEnd name="encapsulation">
+          <hasClass name="VlanPort">
+            <mimName>RtnL2VlanPort</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="InterfaceIPv6">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+    <relationship name="InterfaceIPv6_egressQosMarking_to_DscpPcpMap_reservedBy">
+      <biDirectionalAssociation>
+        <associationEnd name="egressQosMarking">
+          <hasClass name="DscpPcpMap">
+            <mimName>RtnQosProfiles</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="InterfaceIPv6">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+    <relationship name="InterfaceIPv6_aclEgress_to_AclIpv6_reservedBy">
+      <preliminary/>
+      <biDirectionalAssociation>
+        <associationEnd name="aclEgress">
+          <hasClass name="AclIpv6">
+            <mimName>RtnIPv6ACLPolicy</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="InterfaceIPv6">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+    <relationship name="InterfaceIPv6_aclIngress_to_AclIpv6_reservedBy">
+      <preliminary/>
+      <biDirectionalAssociation>
+        <associationEnd name="aclIngress">
+          <hasClass name="AclIpv6">
+            <mimName>RtnIPv6ACLPolicy</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="InterfaceIPv6">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+  </mim>
+  <interMim>
+    <relationship name="Host_to_InterfaceIPv6">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="false"/>
+      </domainExtension>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature L3HostFeature</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Host">
+            <mimName>RtnL3Host</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="InterfaceIPv6">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </interMim>
+  <interMim>
+    <relationship name="Router_to_InterfaceIPv6">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="false"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Router">
+            <mimName>RtnL3Router</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="InterfaceIPv6">
+            <mimName>RtnL3InterfaceIPv6</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>256</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

@@ -1,0 +1,1171 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 4:30:24 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "DMXFunctionsMOM" {
+	namespace "urn:com:ericsson:ecim:DMXFunctionsMOM";
+	prefix "DMXFunctionsMOM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import DmxTypeMOM {
+		prefix "DmxTypeMOM";
+	}
+
+	import ComTop {
+		prefix "ComTop";
+	}
+
+	description "DMX Functions";
+
+	revision "2015-04-20" {
+		ericsson:version "1";
+		ericsson:release "1";
+	}
+
+	augment "/ComTop:ManagedElement" {
+		list "DMXFunctionsRoot" {
+			key "dmxFunctionsId";
+			list "GroupM" {
+				key "groupManagementId";
+				min-elements 1;
+				max-elements 1;
+				list "Network" {
+					key "networkId";
+					min-elements 3;
+					uses DMXFunctionsMOM:Network;
+				}
+
+				list "Cable" {
+					key "cableId";
+					uses DMXFunctionsMOM:Cable;
+				}
+
+				list "MultiGroupVlan" {
+					key "multigroupVlanId";
+					uses DMXFunctionsMOM:MultiGroupVlan;
+				}
+
+				list "Group" {
+					key "groupId";
+					min-elements 1;
+					list "Manager" {
+						key "managerId";
+						max-elements 32;
+						uses DMXFunctionsMOM:Manager;
+					}
+
+					list "Vlan" {
+						key "vlanId";
+						min-elements 4;
+						list "AdditionalPort" {
+							key "additionalPortId";
+							uses DMXFunctionsMOM:AdditionalPort;
+						}
+
+						list "ExcludedPort" {
+							key "excludedPortId";
+							uses DMXFunctionsMOM:ExcludedPort;
+						}
+
+						uses DMXFunctionsMOM:Vlan;
+					}
+
+					list "Blade" {
+						key "bladeId";
+						min-elements 1;
+						max-elements 1;
+						list "BridgePort" {
+							key "bridgePortId";
+							uses DMXFunctionsMOM:BridgePort;
+						}
+
+						list "Aggregator" {
+							key "aggregatorId";
+							uses DMXFunctionsMOM:Aggregator;
+						}
+
+						uses DMXFunctionsMOM:Blade;
+					}
+
+					list "Link" {
+						key "lonkId";
+						uses DMXFunctionsMOM:Link;
+					}
+
+					uses DMXFunctionsMOM:Group;
+				}
+
+				uses DMXFunctionsMOM:GroupM;
+			}
+
+			list "Transport" {
+				key "transportId";
+				min-elements 1;
+				max-elements 1;
+				list "Bridge" {
+					key "bridgeId";
+					list "Vlan" {
+						key "vlanId";
+						min-elements 1;
+						max-elements 4096;
+						list "AdditionalPort" {
+							key "additionalPortId";
+							uses DMXFunctionsMOM:AdditionalPort;
+						}
+
+						list "ExcludedPort" {
+							key "excludedPortId";
+							uses DMXFunctionsMOM:ExcludedPort;
+						}
+
+						uses DMXFunctionsMOM:Vlan;
+					}
+
+					list "SubnetVlan" {
+						key "subnetVlanId";
+						uses DMXFunctionsMOM:SubnetVlan;
+					}
+
+					list "Aggregator" {
+						key "aggregatorId";
+						uses DMXFunctionsMOM:Aggregator;
+					}
+
+					list "Port" {
+						key "portId";
+						list "ProtocolVlan" {
+							key "protocolVlanId";
+							uses DMXFunctionsMOM:ProtocolVlan;
+						}
+
+						uses DMXFunctionsMOM:Port;
+					}
+
+					uses DMXFunctionsMOM:Bridge;
+				}
+
+				uses DMXFunctionsMOM:Transport;
+			}
+
+			uses DMXFunctionsMOM:DMXFunctionsRoot;
+		}
+
+	}
+
+	grouping "DMXFunctionsRoot" {
+		description "Root";
+		leaf "dmxFunctionsId" {
+			type string;
+			mandatory true;
+			description "DMX Functions Key";
+			ericsson:restricted;
+		}
+
+		leaf "userLable" {
+			type string;
+			default "";
+			description "Label for free use.";
+		}
+
+	}
+
+	grouping "GroupM" {
+		description "Group Management.
+";
+		leaf "groupManagementId" {
+			type string;
+			mandatory true;
+			description "The group management instance identity. ";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			mandatory true;
+			description "User defined name. ";
+		}
+
+	}
+
+	grouping "Network" {
+		description "Group related networks.";
+		leaf "networkId" {
+			type string;
+			mandatory true;
+			description "Network identifier";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			default "";
+			description "User defined name. ";
+		}
+
+		leaf "subNetwork" {
+			type ECIM_CommonLibrary:IpDNSAddress;
+			config true;
+			description "Internal network address.";
+		}
+
+		leaf "ipV4Address" {
+			type ECIM_CommonLibrary:IpDNSAddress;
+			description "Host IP address.";
+		}
+
+		leaf "netmask" {
+			type ECIM_CommonLibrary:IpDNSAddress;
+			config true;
+			description "netmask";
+		}
+
+		leaf "controlVlan" {
+			type int16;
+			config true;
+			description "Vlan dedicated for network";
+		}
+
+		leaf "switchSide" {
+			type DmxTypeMOM:SwitchSide;
+			config true;
+			description "Network whereabouts in DMX.";
+		}
+
+	}
+
+	grouping "Cable" {
+		description "equipment ccable class";
+		leaf "cableId" {
+			type string;
+			mandatory true;
+			description "<p>Key Attribute, A cable connecting two connectors.</p>";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			mandatory true;
+			description "Label for free use.";
+		}
+
+		leaf "cableType" {
+			type DmxTypeMOM:CableGender;
+			config true;
+			description "Vlan classification. A 'public' VLAN may span over several BGs.
+";
+		}
+
+		leaf "endpoint1" {
+			type string;
+			description
+			"Identity of first switch frontport where the cable is connected. Is in the format <shelfId>-<slotId>:<portId>, for example 0-25:GE2.";
+		}
+
+		leaf "endpoint2" {
+			type string;
+			description
+			"Identity of second switch frontport where the cable is connected. Is in the format <shelfId>-<slotId>:<portId>, for example 1-25:GE2.";
+		}
+
+	}
+
+	grouping "MultiGroupVlan" {
+		description "Multi Group Vlan. ";
+		leaf "multigroupVlanId" {
+			type string;
+			mandatory true;
+			description "The VLAN-ID that uniquely identifies a VLAN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			default "";
+			description "User defined name.";
+		}
+
+		leaf "groupMembers" {
+			type string;
+			description "A set of Groups the are allowed to use this vlan.";
+		}
+
+	}
+
+	grouping "Group" {
+		description "Class Group";
+		leaf "groupId" {
+			type string;
+			mandatory true;
+			description "The blade group identity.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			default "";
+			description "User defined name.";
+		}
+
+		leaf "administrativeState" {
+			type DmxTypeMOM:AdmState;
+			description "Administrative state of the blade.";
+		}
+
+		leaf "operationalState" {
+			type DmxTypeMOM:Opstate;
+			config true;
+			description "Operational state of the blade group as perceived by DMX.";
+		}
+
+		leaf "vlanTaggedFrameUsage" {
+			type boolean;
+			description "Included blades ability to use VLAN tagged frames.";
+		}
+
+	}
+
+	grouping "Manager" {
+		description "cLASS Manager";
+		leaf "managerId" {
+			type string;
+			mandatory true;
+			description "The blade group manager identification.";
+			ericsson:restricted;
+		}
+
+		leaf "collapsedNetIpV4Address" {
+			type ECIM_CommonLibrary:IpDNSAddress;
+			description "Application host IP address on the collapsed network.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			default "";
+			description "User defined name. ";
+		}
+
+		leaf "rightNetIpV4Address" {
+			type ECIM_CommonLibrary:IpDNSAddress;
+			description "Application host IP address on the right network.";
+		}
+
+		leaf "bladeStatusSubscriber" {
+			type boolean;
+			description "Subscribes to changes in blade status.";
+		}
+
+		leaf "groupLinkStatusSubscriber" {
+			type boolean;
+			description
+			"Subscribes to changes in blade-link status (back plane links).";
+		}
+
+		leaf "lefyNetIpV4Address" {
+			type ECIM_CommonLibrary:IpDNSAddress;
+			description "<p>Application host IP address on the left network.</p>";
+		}
+
+		leaf "shelfLinkStatusSubscriber" {
+			type boolean;
+			description
+			"Subscribes to changes in shelf-link status (front plane links).";
+		}
+
+		leaf "externalLinkStatusSubscriber" {
+			type boolean;
+			description "Subscribes to changes in external network-link status.";
+		}
+
+		leaf "bladeEventSubscriber" {
+			type boolean;
+			description "Subscribes to blade system events.";
+		}
+
+	}
+
+	grouping "Link" {
+		description "Class Link";
+		leaf "lonkId" {
+			type string;
+			mandatory true;
+			description "Link Id.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			default "";
+			description "User defined name. ";
+		}
+
+		leaf "linkType" {
+			type DmxTypeMOM:LinkType;
+			config true;
+			description
+			"Vlan classification. A 'public' VLAN may span over several BGs.";
+		}
+
+		leaf "endpoint" {
+			type string;
+			description
+			"Identity of switch frontport where the external system is connected. Is in the format <shelfId>-<slotId>:<portId>, for example 0-25:GE2.";
+		}
+
+	}
+
+	grouping "Blade" {
+		description "Class Blade";
+		leaf "bladeId" {
+			type string;
+			mandatory true;
+			description "blade Id.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			mandatory true;
+			description "Label for free use.";
+		}
+
+	}
+
+	grouping "BridgePort" {
+		description "Bridge Port.";
+		leaf "bridgePortId" {
+			type string;
+			mandatory true;
+			description
+			"Identity of a switch backplane port. Is in the format <shelfId>-<slotId>:<portId>, for example 0-25:BP10.";
+			ericsson:restricted;
+		}
+
+		leaf "userLable" {
+			type string;
+			default "";
+			description "Label for free use.";
+		}
+
+	}
+
+	grouping "Aggregator" {
+		description "Aggregator ";
+		leaf "aggregatorId" {
+			type string;
+			mandatory true;
+			description "Link aggregator.";
+			ericsson:restricted;
+		}
+
+		leaf "userLable" {
+			type string;
+			default "";
+			description "Label for free use.";
+		}
+
+	}
+
+	grouping "Vlan" {
+		description "Vlan";
+		leaf "vlanId" {
+			type string;
+			mandatory true;
+			description "The VLAN-ID that uniquely identifies a VLAN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			default "";
+			description "User defined name.";
+		}
+
+		leaf "vlanType" {
+			type DmxTypeMOM:VlanType;
+			config true;
+			description
+			"Vlan classification. A 'public' VLAN may span over several BGs.";
+		}
+
+		leaf "memberPorts" {
+			type string;
+			config true;
+			description "A set of ports the are assigned for this vlan.";
+		}
+
+		leaf "untaggedMemberPorts" {
+			type string;
+			config true;
+			description
+			"A set of ports the are assigned for this vlan and will transmit egress packets untagged.";
+		}
+
+		leaf "memberPortAssignment" {
+			type DmxTypeMOM:MemberPortAssignment;
+			description
+			"Defines which blade ports that will become member ports when blades are inserted.";
+		}
+
+	}
+
+	grouping "AdditionalPort" {
+		description "Additional Port";
+		leaf "additionalPortId" {
+			type string;
+			mandatory true;
+			description
+			"Identity of a switch frontport, member of the VLAN. Is in the format <shelfId>-<slotId>:<portId>, for example 0-25:GE2.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			default "";
+			description "User defined name. ";
+		}
+
+	}
+
+	grouping "ExcludedPort" {
+		description "Switch backplane port that shold NOT be member of the VLAN. ";
+		leaf "excludedPortId" {
+			type string;
+			mandatory true;
+			description
+			"Identity of a switch backplane port that shold NOT be member of the VLAN. Is in the format <shelfId>-<slotId>:<portId>, for example 0-25:BP10.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			default "";
+			description "User defined name.";
+		}
+
+	}
+
+	grouping "Transport" {
+		description "Class Transport";
+		leaf "userLabel" {
+			type string;
+			default " ";
+			description "Label for free use. ";
+		}
+
+		leaf "transportId" {
+			type DmxTypeMOM:SubnetVlanId;
+			mandatory true;
+			description "Ip address/Netmask";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "SubnetVlan" {
+		description "SubnetVlan ";
+		leaf "subnetVlanId" {
+			type DmxTypeMOM:SubnetVlanId;
+			mandatory true;
+			description "Ip address/Netmask";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "Port" {
+		description "Port";
+		leaf "portId" {
+			type DmxTypeMOM:PortId;
+			mandatory true;
+			description "The port identity.";
+			ericsson:restricted;
+		}
+
+		leaf "portAddress" {
+			type string;
+			config true;
+			description "The port's MAC-address";
+		}
+
+		leaf "operState" {
+			type string;
+			config true;
+			description "The current operative state of the port.";
+		}
+
+		leaf "defaultVlan" {
+			type DmxTypeMOM:VlanId;
+			description "The VLAN that untagged packets will be assigned to.";
+		}
+
+		leaf "adminState" {
+			type DmxTypeMOM:AdminState;
+			description "The intended state of the port.";
+		}
+
+		leaf "defaultUserPriority" {
+			type DmxTypeMOM:DefaultUserPriority;
+			description "The default ingress user uriority of this port";
+		}
+
+		leaf "numberOfEgressTrafficClasses" {
+			type DmxTypeMOM:NumberOfEgressTrafficClasses;
+			config true;
+			description "The number of egress traffic classes supported on this port.";
+		}
+
+		leaf "trafficClassPcp0" {
+			type DmxTypeMOM:TrafficClassPcp;
+			description
+			"<p>The traffic class a received frame with PCP=0 is mapped to.;</p>";
+		}
+
+		leaf "trafficClassPcp1" {
+			type DmxTypeMOM:TrafficClassPcp;
+			description
+			"<p>The traffic class a received frame with PCP=1 is mapped to.;</p>";
+		}
+
+		leaf "trafficClassPcp2" {
+			type DmxTypeMOM:TrafficClassPcp;
+			description
+			"<p>The traffic class a received frame with PCP=2 is mapped to.;</p>";
+		}
+
+		leaf "trafficClassPcp3" {
+			type DmxTypeMOM:TrafficClassPcp;
+			description
+			"<p>The traffic class a received frame with PCP=3 is mapped to.;</p>";
+		}
+
+		leaf "trafficClassPcp4" {
+			type DmxTypeMOM:TrafficClassPcp;
+			description
+			"<p>The traffic class a received frame with PCP=4 is mapped to.;</p>";
+		}
+
+		leaf "trafficClassPcp5" {
+			type DmxTypeMOM:TrafficClassPcp;
+			description
+			"<p>The traffic class a received frame with PCP50 is mapped to.;</p>";
+		}
+
+		leaf "trafficClassPcp6" {
+			type DmxTypeMOM:TrafficClassPcp;
+			description
+			"<p>The traffic class a received frame with PCP=6 is mapped to.;</p>";
+		}
+
+		leaf "trafficClassPcp7" {
+			type DmxTypeMOM:TrafficClassPcp;
+			description
+			"<p>The traffic class a received frame with PCP=7 is mapped to.;</p>";
+		}
+
+		leaf "acceptableFrameTypes" {
+			type DmxTypeMOM:AcceptableFrameTypes;
+			description
+			"When set to onlyVlanTagged, untagged and priority tagged frames will be discarded.";
+		}
+
+		leaf "ingressFiltering" {
+			type DmxTypeMOM:IngressFiltering;
+			description
+			"When set to enabled, the device will discard incoming frames for VLANs that do not include this port.";
+		}
+
+		leaf "adminStpState" {
+			type DmxTypeMOM:AdminState;
+			description "The state of the port.";
+		}
+
+		leaf "adminStpPriority" {
+			type DmxTypeMOM:PortAdminStpPriority;
+			description "The spanning tree priority";
+		}
+
+		leaf "stpForwardingState" {
+			type string;
+			config true;
+			description "The port's current spanning tree state";
+		}
+
+		leaf "adminStpPathCost" {
+			type DmxTypeMOM:AdminStpPathCost;
+			description "This port's path cost towards the spanning tree root.";
+		}
+
+		leaf "operStpPathCost" {
+			type uint32;
+			config true;
+			description "This port's path cost towards the spanning tree root.";
+		}
+
+		leaf "stpDesignatedRoot" {
+			type string;
+			config true;
+			description "The bridge identifier of the root bridge.";
+		}
+
+		leaf "stpDesignatedCost" {
+			type uint32;
+			config true;
+			description "The path cost of the designated port.";
+		}
+
+		leaf "stpDesignatedBridge" {
+			type string;
+			config true;
+			description
+			"The bridge indentifier of the bridge this port considers the designated bridge.";
+		}
+
+		leaf "stpDesignatedPort" {
+			type DmxTypeMOM:StpPort;
+			description "<p>The port identifier of the designated bridge.</p>";
+		}
+
+		leaf "stpForwardTransitions" {
+			type uint32;
+			config true;
+			description
+			"The number of times this port has transitioned from learning to forwarding state.";
+		}
+
+		leaf "operStpEdgePort" {
+			type string;
+			config true;
+			description "The operational state of the edge port.";
+		}
+
+		leaf "adminStpEdgePort" {
+			type DmxTypeMOM:AdminStpEdgePort;
+			description
+			"If set to true, this port will be assumed to be an edge port.";
+		}
+
+		leaf "adminStpPointToPoint" {
+			type DmxTypeMOM:AdminStpPointToPoint;
+			description
+			"If set to true, this port will be treated as connected to a point-to-point link.";
+		}
+
+		leaf "operStpPointToPoint" {
+			type string;
+			config true;
+			description "The operational state of the point-to-point attribute.";
+		}
+
+		leaf "adminStpProtocolMigration" {
+			type DmxTypeMOM:AdminStpProtocolMigration;
+			description
+			"When operating in rapid spanning tree (RSTP) mode, writing true to this object forces this port to transmit RSTP Bridge Protocol Data Units (BPDUs).";
+		}
+
+		leaf "adminAggregatorActorKey" {
+			type uint32;
+			description " ";
+		}
+
+		leaf "adminAggregatorActorSystemPrio" {
+			type uint32;
+			description " ";
+		}
+
+		leaf "adminAggregatorPartnerSystemPr" {
+			type uint32;
+			description " ";
+		}
+
+		leaf "adminAggregatorPartnerKey" {
+			type uint32;
+			description " ";
+		}
+
+		leaf "adminAggregatorActorPriority" {
+			type uint32;
+			description " ";
+		}
+
+		leaf "adminAggregatorPartnerPort" {
+			type uint32;
+			description " ";
+		}
+
+		leaf "adminAggregatorPartnerPriority" {
+			type uint32;
+			description " ";
+		}
+
+		leaf "operAggregatorPartnerPort" {
+			type uint32;
+			description " ";
+		}
+
+		leaf "aggregatorModeOfOper" {
+			type DmxTypeMOM:AggregatorModeOfOperation;
+			description " ";
+		}
+
+		leaf "operAggregatorActorKey" {
+			type uint32;
+			config true;
+			description " ";
+		}
+
+		leaf "operAggregatorPartnerSystemPri" {
+			type uint32;
+			config true;
+			description " ";
+		}
+
+		leaf "operAggregatorPartnerSystemId" {
+			type string;
+			config true;
+			description " ";
+		}
+
+		leaf "operAggregatorPartnerKey" {
+			type uint32;
+			config true;
+			description " ";
+		}
+
+		leaf "selectedAggregatorId" {
+			type uint32;
+			config true;
+			description " ";
+		}
+
+		leaf "attachedAggregatorId" {
+			type uint32;
+			config true;
+			description " ";
+		}
+
+		leaf "aggregatorActorPort" {
+			type string;
+			config true;
+			description " ";
+		}
+
+		leaf "aggregatorActorSystemId" {
+			type string;
+			config true;
+			description " ";
+		}
+
+		leaf "aggregateOrIndividual" {
+			type DmxTypeMOM:AggregateOrIndividual;
+			config true;
+			description " ";
+		}
+
+		leaf "operAggregatorPartnerPortPrio" {
+			type uint32;
+			description " ";
+		}
+
+		leaf "mirroringDirection" {
+			type DmxTypeMOM:MirroringDirection;
+			description "Type of mirroring.";
+		}
+
+		leaf "mirroringToPort" {
+			type DmxTypeMOM:StpPort;
+			description
+			"<p>Port to which mirrored packets will be copied, if set to none the function is disabled.</p>";
+		}
+
+		leaf "inOctets" {
+			type uint32;
+			config true;
+			description "The number of octets received on the port.";
+		}
+
+		leaf "inUnicast" {
+			type uint32;
+			config true;
+			description "The number of unicast packets received on the port.";
+		}
+
+		leaf "inMulticast" {
+			type uint32;
+			config true;
+			description "The number of multicast packets received on the port.";
+		}
+
+		leaf "inBroadcast" {
+			type uint32;
+			config true;
+			description "The number of broadcast packets received on the port.";
+		}
+
+		leaf "inDiscards" {
+			type uint32;
+			config true;
+			description
+			"The number of packets received on the port which have been discarded.";
+		}
+
+		leaf "inErrors" {
+			type uint32;
+			config true;
+			description
+			"The number of packets that contained errors received on the port.";
+		}
+
+		leaf "outOctets" {
+			type uint32;
+			config true;
+			description "The number of octets transmitted on the port.";
+		}
+
+		leaf "outUnicast" {
+			type uint32;
+			config true;
+			description "The number of unicast packets transmitted on the port.";
+		}
+
+		leaf "outMulticast" {
+			type uint32;
+			config true;
+			description "The number of multicast packets transmitted on the port.";
+		}
+
+		leaf "outBroadcast" {
+			type uint32;
+			config true;
+			description "The number of broadcast packets transmitted on the port.";
+		}
+
+		leaf "outDiscards" {
+			type uint32;
+			config true;
+			description
+			"The number of packets that should have been transmitted on the port, but have been discarded.";
+		}
+
+		leaf "outErrors" {
+			type uint32;
+			config true;
+			description
+			"The number of packets that should have been transmitted on the port but were not because of errors.";
+		}
+
+		leaf "lacPDUsRx" {
+			type uint32;
+			config true;
+			description " ";
+		}
+
+		leaf "markerPDUsRx" {
+			type uint32;
+			config true;
+			description " ";
+		}
+
+		leaf "illegalSlowProtocolRx" {
+			type uint32;
+			config true;
+			description " ";
+		}
+
+		leaf "lacPDUsTx" {
+			type uint32;
+			config true;
+			description " ";
+		}
+
+		leaf "markerPDUsTx" {
+			type uint32;
+			config true;
+			description " ";
+		}
+
+		leaf "markerResponsePDUsTx" {
+			type uint32;
+			config true;
+			description " ";
+		}
+
+		leaf "unknownSlowProtocolRx" {
+			type uint32;
+			config true;
+			description " ";
+		}
+
+	}
+
+	grouping "ProtocolVlan" {
+		description " ";
+		leaf "protocolVlanId" {
+			type DmxTypeMOM:ProtocolVlanId;
+			mandatory true;
+			description
+			"The protocol in format: FrameType:Ethertype. Allowed framtypes are ethernet, rfc1042 and llcOther. Ethertype must have values between 0000 and FFFF.";
+			ericsson:restricted;
+		}
+
+		leaf "vlan" {
+			type DmxTypeMOM:VlanId;
+			description
+			"The vlan that packets corresponding to frameType and protocol will be assigned to.";
+		}
+
+	}
+
+	grouping "Bridge" {
+		description " ";
+		leaf "bridgeId" {
+			type DmxTypeMOM:BridgeId;
+			mandatory true;
+			description "The Shelf and Slot.";
+			ericsson:restricted;
+		}
+
+		leaf "agingTime" {
+			type DmxTypeMOM:AginTime;
+			description
+			"The timeout period in seconds for aging out dynamically learnt forwarding information.";
+		}
+
+		leaf "bridgeAddress" {
+			type string;
+			config true;
+			description "The MAC-address used by the bridge. ";
+		}
+
+		leaf "numberOfPorts" {
+			type uint32;
+			config true;
+			description "The number of ports.";
+		}
+
+		leaf "maxNumberOfVlans" {
+			type uint32;
+			config true;
+			description "The maximum number of vlans.";
+		}
+
+		leaf "numberOfVlans" {
+			type uint32;
+			config true;
+			description "The current number of vlans. ";
+		}
+
+		leaf "operStpMaxAge" {
+			type DmxTypeMOM:Decimal64;
+			default "0";
+			config true;
+			description "Current max age in seconds.";
+		}
+
+		leaf "adminStpTxHoldCount" {
+			type uint32;
+			description "The limit for transmission rate. ";
+		}
+
+		leaf "timeSinceLastStpTopologyChange" {
+			type uint32;
+			config true;
+			description "The time in seconds since the last topology change. ";
+		}
+
+		leaf "numberOfStpTopologyChanges" {
+			type uint32;
+			config true;
+			description "The number of topology changes. ";
+		}
+
+		leaf "stpRootPathCost" {
+			type uint32;
+			config true;
+			description "The cost of the path to the root seen from this bridge.";
+		}
+
+		leaf "adminStpPriority" {
+			type DmxTypeMOM:AdminStpPriority;
+			description "Spanning tree priority.";
+		}
+
+		leaf "adminStpMaxAge" {
+			type DmxTypeMOM:AdminStpMaxAge;
+			description "The maximum age in seconds, used when the bridge is root.";
+		}
+
+		leaf "stpRootPort" {
+			type DmxTypeMOM:StpPort;
+			config true;
+			description
+			"The port that offers the lowest cost path from this bridge to the root bridge.";
+		}
+
+		leaf "operStpHelloTime" {
+			type DmxTypeMOM:Decimal64;
+			config true;
+			description
+			"The time between the transmission of configuration bridge PDUs.";
+		}
+
+		leaf "adminStpHelloTime" {
+			type DmxTypeMOM:AdminStpHelloTime;
+			description
+			"The value that all bridges use for HelloTime when this bridge is acting as the root.";
+		}
+
+		leaf "operStpHoldTime" {
+			type DmxTypeMOM:Decimal64;
+			config true;
+			description
+			"The interval in seconds during which no more than two Configuration bridge PDUs shall be transmitted by this node.";
+		}
+
+		leaf "adminStpForwardDelay" {
+			type DmxTypeMOM:AdminStpForwardDelay;
+			description
+			"The value that all bridges use for ForwardDelay when  this bridge is acting as the root.";
+		}
+
+		leaf "operStpForwardDelay" {
+			type DmxTypeMOM:Decimal64;
+			config true;
+			description
+			"The value in seconds determines how long the port stays in each of the Listening and Learning states, which precede the Forwarding state.";
+		}
+
+		leaf "stpDesignatedRoot" {
+			type string;
+			config true;
+			description "The bridge identifier of the root of the spanning tree.";
+		}
+
+		leaf "adminStpVersion" {
+			type DmxTypeMOM:AdminStpVersion;
+			description "Spanning tree or Rapid Spanning tree.";
+		}
+
+		leaf "operStpVersion" {
+			type string;
+			config true;
+			description "The version of the Spanning Tree Protocol.";
+		}
+
+		leaf "learnedEntryDiscards" {
+			type uint32;
+			config true;
+			description
+			"The total number of Forwarding Database entries that have been or would have been learned, but have been discarded due to a lack of storage space.";
+		}
+
+	}
+
+}

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/" xmlns:Documentation="http://www.eclipse.org/papyrus/documentation" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CoreMWProfile/ pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw http:///schemas/ECIMBaseProfile/ pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ">
+  <uml:Model xmi:id="_DGS64IULEeShx7XrX2zKPA" name="ReqEtPort">
+    <ownedComment xmi:id="_mlnusIUVEeShx7XrX2zKPA">
+      <body>EtPort model.</body>
+    </ownedComment>
+    <packageImport xmi:id="_p1gkYIUQEeShx7XrX2zKPA">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_iT7qACCSEd-Egr3-YAWs7Q?EcimDataType?"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_6X_fQIUQEeShx7XrX2zKPA" name="ReqEtPort">
+      <ownedComment xmi:id="_6X_fQYUQEeShx7XrX2zKPA" annotatedElement="_6X_fQIUQEeShx7XrX2zKPA">
+        <body>EtPort</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_6X_fQoUQEeShx7XrX2zKPA" name="EtPort">
+        <ownedComment xmi:id="_6X_fQ4UQEeShx7XrX2zKPA">
+          <body>This MO represents a physical connector toward the TDM Network. The physical connector can be situated on a board FRU.
+
+Dependencies: All EtPort MOs must be configured on the same FieldReplaceableUnit. 
+
+All EtPort MOs must be configured on the primary core FieldReplaceableUnit.</body>
+        </ownedComment>
+        <ownedRule xmi:id="_Sv4UwKugEeSCppuaR-F1IA" name="EtPort" constrainedElement="_6X_fQoUQEeShx7XrX2zKPA">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_Sv470KugEeSCppuaR-F1IA">
+            <language>Schematron</language>
+            <body>&lt;schema xmlns=&quot;http://purl.oclc.org/dsdl/schematron&quot;>
+    &lt;pattern>         
+        &lt;rule>
+        &lt;assert test='every $etPortId in @etPortId satisfies (($etPortId eq &quot;ET_A&quot;) or ($etPortId eq &quot;ET_B&quot;) or ($etPortId eq &quot;ET_C&quot;) or ($etPortId eq &quot;ET_D&quot;))'> Invalid etPortId for EtPort=&quot;&lt;value-of select=&quot;@etPortId&quot;/>&quot;. The value of etPortId must be ET_A, ET_B, ET_C or ET_D  &lt;/assert>
+        &lt;assert test='every $fruId in ../../FieldReplaceableUnit/EtPort/../@fieldReplaceableUnitId satisfies $fruId = ../@fieldReplaceableUnitId'>&lt;value-of select=&quot;.&quot;/>: All EtPort MOs must be configured on the same FieldReplaceableUnit.&lt;/assert>
+        &lt;assert test='every $fruId in /ManagedElement/NodeSupport/MpClusterHandling/@primaryCoreRef/@fieldReplaceableUnitId satisfies $fruId = ../@fieldReplaceableUnitId'>&lt;value-of select=&quot;.&quot;/>: All EtPort MOs must be configured on the primary core FieldReplaceableUnit.&lt;/assert>
+        &lt;/rule>
+    &lt;/pattern>
+&lt;/schema>
+</body>
+          </specification>
+        </ownedRule>
+        <ownedAttribute xmi:id="_6X_fRoUQEeShx7XrX2zKPA" name="etPortId" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_6X_fR4UQEeShx7XrX2zKPA">
+            <body>The value component of the RDN.
+
+The value must match the corresponding connector label on the unit (any spaces are replaced by underscore). </body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6X_fSYUQEeShx7XrX2zKPA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6X_fSIUQEeShx7XrX2zKPA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_6X_fSoUQEeShx7XrX2zKPA" name="userLabel" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_6X_fS4UQEeShx7XrX2zKPA">
+            <body>Label for free use.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6X_fTYUQEeShx7XrX2zKPA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6X_fTIUQEeShx7XrX2zKPA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_6X_fToUQEeShx7XrX2zKPA" name="reservedBy" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_6X_fT4UQEeShx7XrX2zKPA">
+            <body>Contains a list of MO instances that reserve this MO instance.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/EcimManagedObject?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6X_fUYUQEeShx7XrX2zKPA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6X_fUIUQEeShx7XrX2zKPA" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_aC37oIUcEeShx7XrX2zKPA" name="availabilityStatus" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_aDC6wIUcEeShx7XrX2zKPA">
+            <body>The availability status.
+
+It contains details about operationalState.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#_k2VdcDrxEeOzd4qf6-nnMQ?ECIM_CommonLibrary/ECIM_CommonLibrary/AvailStatus?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aDHzQIUcEeShx7XrX2zKPA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aDHzQYUcEeShx7XrX2zKPA" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ssjzkIUcEeShx7XrX2zKPA" name="operationalState" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_sssWcYUcEeShx7XrX2zKPA">
+            <body>The operational state.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#__lAE8JdbEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/OperState?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sszrMYUcEeShx7XrX2zKPA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sszrMoUcEeShx7XrX2zKPA" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_8AyFMIUUEeShx7XrX2zKPA" name="FieldReplaceableUnit_to_EtPort" memberEnd="_8AyFMYUUEeShx7XrX2zKPA _8AysQYUUEeShx7XrX2zKPA">
+        <ownedEnd xmi:id="_8AyFMYUUEeShx7XrX2zKPA" name="toFieldReplaceableUnit" visibility="public" association="_8AyFMIUUEeShx7XrX2zKPA">
+          <type xmi:type="uml:Class" href="ReqFieldReplaceableUnit.uml#_KJMMseG2EeOeCLgdgGkvIw?ReqFieldReplaceableUnit/ReqFieldReplaceableUnit/FieldReplaceableUnit?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_8AzTUYUUEeShx7XrX2zKPA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_8AzTUIUUEeShx7XrX2zKPA" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_8AysQYUUEeShx7XrX2zKPA" name="toEtPort" visibility="public" type="_6X_fQoUQEeShx7XrX2zKPA" aggregation="composite" association="_8AyFMIUUEeShx7XrX2zKPA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_8A4L0YUUEeShx7XrX2zKPA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_8A4L0IUUEeShx7XrX2zKPA" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_6YAtYIUQEeShx7XrX2zKPA" name="ReqEtPort_">
+      <ownedComment xmi:id="_6YAtYYUQEeShx7XrX2zKPA">
+        <body>Decision MOM for ReqTnPort.
+
+Shall not be visible.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_6YAtYoUQEeShx7XrX2zKPA" name="Root" isAbstract="true">
+        <ownedComment xmi:id="_6YAtY4UQEeShx7XrX2zKPA">
+          <body>Decision MO for ReqTnPort.
+
+Shall not be visible.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_6YAtZIUQEeShx7XrX2zKPA" name="DURA">
+        <packagedElement xmi:type="uml:Class" xmi:id="_6YAtZYUQEeShx7XrX2zKPA" name="Model"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_f6tn0IUTEeShx7XrX2zKPA" name="" client="_DGS64IULEeShx7XrX2zKPA">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.uml#_5vlRYnhQEd-OM9oMWC6jJQ?ECIM%20Core%20MW%20Guidelines?"/>
+    </packagedElement>
+    <profileApplication xmi:id="_DGS7FIULEeShx7XrX2zKPA">
+      <eAnnotations xmi:id="_DGS7FYULEeShx7XrX2zKPA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_DGS7FoULEeShx7XrX2zKPA">
+      <eAnnotations xmi:id="_DGS7F4ULEeShx7XrX2zKPA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/documentation#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://PAPYRUS_DOCUMENTATION/Papyrus.profile.uml#_H9068AEYEeCIz8iAxBJnfA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_uDSMYIUQEeShx7XrX2zKPA">
+      <eAnnotations xmi:id="_9dgrEHGnEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_9dgrEXGnEeWKa6xc8cMmlg" key="Version" value="1.0.2"/>
+        <details xmi:id="_9dgrEnGnEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_9dgrE3GnEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_9dgrFHGnEeWKa6xc8cMmlg" key="Date" value="2015-09-04"/>
+        <details xmi:id="_9dgrFXGnEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_uDSzcIUQEeShx7XrX2zKPA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_Br2_QBSXEd-ZjqYFUyJzOw"/>
+    </profileApplication>
+    <profileApplication xmi:id="_wSjgUIUQEeShx7XrX2zKPA">
+      <eAnnotations xmi:id="_vUZuuJ0SEeW4ma0yeKsZYQ" source="PapyrusVersion">
+        <details xmi:id="_vUZuuZ0SEeW4ma0yeKsZYQ" key="Version" value="1.0.6"/>
+        <details xmi:id="_vUZuup0SEeW4ma0yeKsZYQ" key="Comment" value=""/>
+        <details xmi:id="_vUZuu50SEeW4ma0yeKsZYQ" key="Copyright" value=""/>
+        <details xmi:id="_vUZuvJ0SEeW4ma0yeKsZYQ" key="Date" value="2015-12-07"/>
+        <details xmi:id="_vUZuvZ0SEeW4ma0yeKsZYQ" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_9dy-8HGnEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_9dy-8XGnEeWKa6xc8cMmlg" key="Version" value="1.0.5"/>
+        <details xmi:id="_9dy-8nGnEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_9dy-83GnEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_9dy-9HGnEeWKa6xc8cMmlg" key="Date" value="2015-08-24"/>
+        <details xmi:id="_9dy-9XGnEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_wSkHYIUQEeShx7XrX2zKPA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_cUcakNQkEd63X4o72aQidQ"/>
+    </profileApplication>
+  </uml:Model>
+  <CoreMWProfile:CmwModel xmi:id="_IMYXAGW_EeWG3arGTiu4Mw" base_Model="_DGS64IULEeShx7XrX2zKPA"/>
+  <ECIMBaseProfile:EcimModel xmi:id="_IO6toGW_EeWG3arGTiu4Mw" base_Model="_DGS64IULEeShx7XrX2zKPA" createdBy="EAB/FJP/TA UABERPE" approvedBy="EAB/FJP/TA UABERPE"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_IO6toWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Package="_6X_fQIUQEeShx7XrX2zKPA" author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" date="" docNo="" revision="" version="2" release="0" organization="" correction="0"/>
+  <CoreMWProfile:CmwMom xmi:id="_IMYXAWW_EeWG3arGTiu4Mw" base_Package="_6X_fQIUQEeShx7XrX2zKPA" immNamespace="NONE"/>
+  <CoreMWProfile:CmwClass xmi:id="_IMYXAmW_EeWG3arGTiu4Mw" base_Class="_6X_fQoUQEeShx7XrX2zKPA"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_IO6tomW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Class="_6X_fQoUQEeShx7XrX2zKPA" isLegacyRoot="true"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_IO6to2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="The value must be ET_A, ET_B, ET_C or ET_D." disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_6X_fRoUQEeShx7XrX2zKPA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_IMYXA2W_EeWG3arGTiu4Mw" base_Property="_6X_fSoUQEeShx7XrX2zKPA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_IO6tpGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" length="1..128" range="" unit="" resolution="" multiplicationFactor="" pattern="" isNotifiable="true" base_Property="_6X_fSoUQEeShx7XrX2zKPA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_IMiIAGW_EeWG3arGTiu4Mw" base_Property="_6X_fToUQEeShx7XrX2zKPA" isConfigurable="true" isPersistent="true"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_IO6tpWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" length="" pattern="" isNotifiable="true" base_Property="_6X_fToUQEeShx7XrX2zKPA"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_IO6tpmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Package="_6YAtYIUQEeShx7XrX2zKPA" author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" date="" docNo="" revision="" version="0" release="0" organization="" correction="0"/>
+  <CoreMWProfile:CmwMom xmi:id="_IMiIAWW_EeWG3arGTiu4Mw" base_Package="_6YAtYIUQEeShx7XrX2zKPA" immNamespace="MOM_NAME"/>
+  <ECIMBaseProfile:EcimAbstractMoClass xmi:id="_IO6tp2W_EeWG3arGTiu4Mw" base_Class="_6YAtYoUQEeShx7XrX2zKPA" hideGroupName="" specification="" status="OBSOLETE" statusInformation=""/>
+  <ECIMBaseProfile:EcimDecisions xmi:id="_IO6tqGW_EeWG3arGTiu4Mw" base_Package="_6YAtZIUQEeShx7XrX2zKPA"/>
+  <ECIMBaseProfile:EcimDecision xmi:id="_IO6tqWW_EeWG3arGTiu4Mw" base_Class="_6YAtZYUQEeShx7XrX2zKPA"/>
+  <CoreMWProfile:CmwContribution xmi:id="_IMiIAmW_EeWG3arGTiu4Mw" splitImmDn="false" base_Association="_8AyFMIUUEeShx7XrX2zKPA"/>
+  <ECIMBaseProfile:EcimContribution xmi:id="_IO6tqmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_8AyFMIUUEeShx7XrX2zKPA" isNotifiable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_IMiIA2W_EeWG3arGTiu4Mw" base_Property="_aC37oIUcEeShx7XrX2zKPA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_IO6tq2W_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_aC37oIUcEeShx7XrX2zKPA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_IMiIBGW_EeWG3arGTiu4Mw" base_Property="_ssjzkIUcEeShx7XrX2zKPA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_IO6trGW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_ssjzkIUcEeShx7XrX2zKPA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_IMiIBWW_EeWG3arGTiu4Mw" base_Property="_6X_fRoUQEeShx7XrX2zKPA" isPersistent="true"/>
+  <ECIMBaseProfile:EcimSchematronConstraint xmi:id="_IO6trWW_EeWG3arGTiu4Mw" interfaceVersion="1.0" interfaceName="ECIM_Schematron" base_Constraint="_Sv4UwKugEeSCppuaR-F1IA"/>
+  <Documentation:Documentation xmi:id="_DJmZoGW_EeWG3arGTiu4Mw" base_Comment="_6X_fQYUQEeShx7XrX2zKPA"/>
+  <Documentation:Documentation xmi:id="_DJmZoWW_EeWG3arGTiu4Mw" base_Comment="_6X_fQ4UQEeShx7XrX2zKPA"/>
+  <Documentation:Documentation xmi:id="_DJmZomW_EeWG3arGTiu4Mw" base_Comment="_6X_fR4UQEeShx7XrX2zKPA"/>
+  <Documentation:Documentation xmi:id="_DJmZo2W_EeWG3arGTiu4Mw" base_Comment="_6X_fS4UQEeShx7XrX2zKPA"/>
+  <Documentation:Documentation xmi:id="_DJmZpGW_EeWG3arGTiu4Mw" base_Comment="_6X_fT4UQEeShx7XrX2zKPA"/>
+  <Documentation:Documentation xmi:id="_DJmZpWW_EeWG3arGTiu4Mw" base_Comment="_6YAtYYUQEeShx7XrX2zKPA"/>
+  <Documentation:Documentation xmi:id="_DJmZpmW_EeWG3arGTiu4Mw" base_Comment="_6YAtY4UQEeShx7XrX2zKPA"/>
+  <Documentation:Documentation xmi:id="_DJmZp2W_EeWG3arGTiu4Mw" base_Comment="_mlnusIUVEeShx7XrX2zKPA"/>
+  <Documentation:Documentation xmi:id="_DJmZqGW_EeWG3arGTiu4Mw" base_Comment="_aDC6wIUcEeShx7XrX2zKPA"/>
+  <Documentation:Documentation xmi:id="_DJmZqWW_EeWG3arGTiu4Mw" base_Comment="_sssWcYUcEeShx7XrX2zKPA"/>
+</xmi:XMI>

@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Jul 11, 2013 1:56:19 PM using:
+	* com.ericsson.ecim.m2m 2.7.0.qualifier
+	* com.ericsson.ecim.dsl 2.7.0.qualifier
+	* com.ericsson.ecim.edm 2.7.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>EJNOLSZ</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="EJNOLSZ" contact="EAB/FLE/BG Anders Eriksson S-O" date="2013-03-18" docNo="" name="ComSaTop" namespace="urn:com:ericsson:ecim:ComSaTop" namespacePrefix="comsatop" organization="EAB/FLE/BG" release="0" revision="" version="1">
+        <description>This model contains the singleton, root Managed Object Class, ManagedElement under which the complete model is contained.&#13;
+Directly under ManagedElement are managed-function level classes SystemFunctions, Transport, Equipment  and the root MOC of any managed functions. The Equipment Root MOC is in the Equipment MOM.  The root MOC for a managed function is hosted in the managed function MOM.&#13;
+</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_Top"/>
+            <extension name="ecimMomVersion" value="2"/>
+            <extension name="ecimMomRelease" value="0"/>
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <implements name="ECIM_Top" release="0" version="2"/>
+        <struct name="ProductIdentity">
+            <description>Contains product information for a Managed Element and Managed Function(s).&#13;
+This entity is deprecated.</description>
+            <structMember name="productNumber">
+                <description>The product number in Ericsson's ABC format.&#13;
+See Ericsson Corporate Basic Standards for information.</description>
+                <string/>
+            </structMember>
+            <structMember name="productRevision">
+                <description>The product revision in the form R[1-9][A-Z].&#13;
+See Ericsson Corporate Basic Standards for information.</description>
+                <string/>
+            </structMember>
+            <structMember name="productDesignation">
+                <description>The product designation is the common name for the product.  </description>
+                <string/>
+            </structMember>
+        </struct>
+        <enum name="SchemaFormat">
+            <description>The Schema formats of the supported data models. </description>
+            <enumMember name="MP_DTD">
+                <description>The data model format is XML based on mp.dtd.</description>
+                <value>0</value>
+            </enumMember>
+        </enum>
+        <enum name="BasicAdmState">
+            <description>The basic administrative states for a resource.</description>
+            <enumMember name="LOCKED">
+                <description>The resource is administratively prohibited from performing services for its users.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="UNLOCKED">
+                <description> The resource is administratively permitted to perform services for its users.&#13;
+This is independent of its inherent operability.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="OperState">
+            <description>The operational states of a resource.</description>
+            <enumMember name="DISABLED">
+                <description>  The resource is  totally inoperable.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ENABLED">
+                <description>The resource partially or fully operable.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="AdmState">
+            <description>The administrative state of a resource. </description>
+            <enumMember name="LOCKED">
+                <description>The resource is administratively prohibited from performing services for its users.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="UNLOCKED">
+                <description>The resource is administratively permitted to perform services for its users.&#13;
+This is independent of its inherent operability.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="SHUTTINGDOWN">
+                <description>Use of the resource is administratively permitted to existing instances of use only.&#13;
+While the system remains in the shutting down state the manager may at any time cause the managed object to revert to the locked state.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <class name="ManagedElement">
+            <description>The top-level class in the Common Information Model is Managed Element root Managed Object Class.&#13;
+From this class, all model entities are contained.  The MOC has attributes that provide information on the Managed Element Identity, primary location and the products it contains.  </description>
+            <systemCreated/>
+            <root/>
+            <attribute name="managedElementId">
+                <description>Contains the identity of a release of the product type being managed.&#13;
+An empty value indicates that the product type does not provide explicit release identity.&#13;
+</description>
+                <mandatory/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="siteLocation">
+                <description>A freetext attribute describing the geographic location of a Managed Element.&#13;
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>A freetext string for additional information to assist Managed Element identification.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="productIdentity">
+                <description>Contains product information for the Managed Element and its Managed Function(s).&#13;
+This attribute is deprecated.</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <structRef name="ProductIdentity">
+                            <mimName>ECIM_CommonLibrary</mimName>
+                        </structRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+                <deprecated/>
+            </attribute>
+            <attribute name="localDateTime">
+                <description>This is the local date and time for the Managed Element.&#13;
+The following format is used: YYYY-MM-DDThh:mm:ss&#13;
+&#13;
+The meaning of each field is as follows:&#13;
+YYYY is a 4-digit year.&#13;
+MM is the month within the year (starting with 01).&#13;
+DD is the day within the month (starting with 01).&#13;
+T is used as time designator to indicate the start of the time of day component in the expression.&#13;
+hh is the hour within the day (24-hour clock, starting with 00).&#13;
+mm is the minute within the hour (starting with 00).&#13;
+ss is the second within the minute (starting with 00).&#13;
+&#13;
+The hyphen [-] and the colon [:] are used as separators within the date and time of day expressions, respectively.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>19</min>
+                            <max>19</max>
+                        </lengthRange>
+                        <validValues>^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+)*$</validValues>
+                    </string>
+                </dataType>
+                <specification>ISO 8601:2004(E)</specification>
+            </attribute>
+            <attribute name="timeZone">
+                <description>This is the timeZone that the Managed Element resides in.&#13;
+The possible values for this attribute are defined in the public-domain zoneinfo (or Olson) database.&#13;
+Locations are identified by a string indicating the continent or ocean and then the name of the location, which is typically the largest city within the region. &#13;
+See http://www.twinsun.com/tz/tz-link.htm for more information.&#13;
+&#13;
+Example: Europe/Stockholm&#13;
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="dateTimeOffset">
+                <description>Difference between the value of the localDateTime attribute and UTC (Coordinated Universal Time).</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>6</min>
+                            <max>6</max>
+                        </lengthRange>
+                        <validValues>^([+|-])(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9])$</validValues>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="dnPrefix">
+                <description>It provides naming context allowing the managed objects to be partitioned into logical domains.&#13;
+A Distingushed Name (DN) is defined by 3GPP TS 32.300  which splits the DN in a DN Prefix and Local DN for example DN format: dnPrefix=&lt;DN Prefix&gt;, localDn =&lt;Local DN&gt;&#13;
+Fault Management: dnPrefix does not impact Fault Management since an NMS recognises a ME by IP address&#13;
+Performance Management: The dnPrefix is present in the PM Data file (ROP File)  if the dnPrefix attribute is specified, that is, not an empty string.&#13;
+Example: DC=ericsson.se,g3SubNetwork=Sweden&#13;
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="managedElementType">
+                <description>The type of product being managed.&#13;
+For example the type could be  RBS or CSCF.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="release">
+                <description>The release of the type of product specified by the attribute managedElementType.&#13;
+It commonly contains the Managed Element release, for example L12.0, 13A, R1A </description>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="networkManagedElementId">
+                <description>Replaces the value component of the RDN in the COM Northbound Interface. 
+This attribute shall, if used, be set to a simple alphanumeric value. The value should be unique within the network namespace.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SystemFunctions">
+            <description>This model has a structural purpose to group the management of the system functions of the Managed Element.</description>
+            <systemCreated/>
+            <attribute name="systemFunctionsId">
+                <description>The value component of the RDN.&#13;
+</description>
+                <mandatory/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Transport">
+            <description>This is a container for common transport functions used within the Managed Element. &#13;
+&#13;
+</description>
+            <systemCreated/>
+            <attribute name="transportId">
+                <description>The value component of the RDN.&#13;
+</description>
+                <mandatory/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Legacy">
+            <description>Introduced to support deprecated types</description>
+            <filter>hidden</filter>
+            <attribute name="legacyId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+                <filter>hidden</filter>
+            </attribute>
+            <attribute name="admState">
+                <description>Legacy  attribute deprecated in ECIM_Top and moved to ECIM_CommonLibrary.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="AdmState">
+                        <mimName>ComSaTop</mimName>
+                    </enumRef>
+                </dataType>
+                <filter>hidden</filter>
+            </attribute>
+            <attribute name="basicAdmState">
+                <description>Legacy  attribute deprecated in ECIM_Top and moved to ECIM_CommonLibrary.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <mimName>ComSaTop</mimName>
+                    </enumRef>
+                </dataType>
+                <filter>hidden</filter>
+            </attribute>
+            <attribute name="ipDNSAddress">
+                <description>Legacy  attribute deprecated in ECIM_Top and moved to ECIM_CommonLibrary.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>1</min>
+                            <max>253</max>
+                        </lengthRange>
+                        <validValues>(^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\s*$)|(^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]))*$)</validValues>
+                    </string>
+                </dataType>
+                <filter>hidden</filter>
+            </attribute>
+            <attribute name="operState">
+                <description>Legacy  attribute deprecated in ECIM_Top and moved to ECIM_CommonLibrary.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="OperState">
+                        <mimName>ComSaTop</mimName>
+                    </enumRef>
+                </dataType>
+                <filter>hidden</filter>
+            </attribute>
+            <attribute name="schemaFormat">
+                <description>Legacy  attribute deprecated in ECIM_Top and moved to ECIM_CommonLibrary.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="SchemaFormat">
+                        <mimName>ComSaTop</mimName>
+                    </enumRef>
+                </dataType>
+                <filter>hidden</filter>
+            </attribute>
+            <attribute name="dateTime">
+                <description>Legacy  attribute deprecated in ECIM_Top and moved to ECIM_CommonLibrary.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>20</min>
+                            <max>31</max>
+                        </lengthRange>
+                        <validValues>^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+)*(([\+|\-](0[0-9]|1[0-9]|2[0-4])(:[0-5][0-9])?)|(Z))$</validValues>
+                    </string>
+                </dataType>
+                <filter>hidden</filter>
+            </attribute>
+        </class>
+        <relationship name="ManagedElement_to_SystemFunctions">
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>ComSaTop</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SystemFunctions">
+                        <mimName>ComSaTop</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ManagedElement_to_Transport">
+            <description>Containment association of the Transport MOC.</description>
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>ComSaTop</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Transport">
+                        <mimName>ComSaTop</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ManagedElement_to_Legacy">
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>ComSaTop</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Legacy">
+                        <mimName>ComSaTop</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <mib name="ComSaTopTopInstances" release="0" version="1">
+        <object parentDn="">
+            <hasClass name="ManagedElement">
+                <mimName>ComSaTop</mimName>
+            </hasClass>
+            <slot name="managedElementId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="ManagedElement=1">
+            <hasClass name="Transport">
+                <mimName>ComSaTop</mimName>
+            </hasClass>
+            <slot name="transportId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="ManagedElement=1">
+            <hasClass name="SystemFunctions">
+                <mimName>ComSaTop</mimName>
+            </hasClass>
+            <slot name="systemFunctionsId">
+                <value>1</value>
+            </slot>
+        </object>
+    </mib>
+</models>

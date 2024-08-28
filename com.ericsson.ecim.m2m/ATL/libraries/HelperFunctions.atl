@@ -1,0 +1,1816 @@
+-- /**
+-- * These functions capture complex logic, that can be encapsulated in functions, for the M2M transform from ECIM UML to MP XML
+-- * 
+-- * Author: Ronan Barrett
+-- * Date: 12/07/2010
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+--
+-- */
+
+
+library HelperFunctions;
+
+--Loop over all the element's stereotype properties related to EcimInlineProperties and see if any are set
+helper context UML!TypedElement def : hasInlinePropertiesSet() : Boolean =
+	--Before doing anything ensure there is an Ecim Sterotype applied. There must be one and only one
+	if(self.hasEcimAppliedStereotype())
+	then
+		--First retrieve the stereotype that holds all the inline properties
+		--Then loop over the stereotype properties and get the values, discarding OclUndefindes and ''
+		let allInlineProps : Set(UML!NamedElement) = self.getEcimAppliedStereotype().getProfile().getOwnedStereotype('EcimInlineProperties').getOwnedAttributes() in
+		let booleanInlinePropsWhereFalseMeansNotSet : Set(UML!Element) = allInlineProps->select(e|e.name='isPassphrase') in
+		let stringInlineProps : Set(UML!Element) = allInlineProps->reject(e|e.name='isPassphrase') in
+		if ((stringInlineProps->collect(e|self.getValue(self.getEcimAppliedStereotype(),e.name))->reject(e|e.oclIsUndefined())->reject(e|e='')->size() > 0 
+			or
+			booleanInlinePropsWhereFalseMeansNotSet->collect(e|self.getValue(self.getEcimAppliedStereotype(),e.name))->reject(e|e=false)->size() > 0)
+			and self.type.getNearestPackageName() = 'EcimDataType')
+		then
+			true--The Element has set some of the inline properties
+		else
+			false--The Element has *not* set some of the inline properties
+		endif
+	else
+		false
+	endif;
+
+helper context UML!Element def : getNearestPackageName() : String =
+	if self.getNearestPackage().oclIsUndefined() then
+		''
+	else
+		self.getNearestPackage().name
+	endif;
+
+--Get the datatype parents name
+helper context UML!TypedElement def : getTypeName() : String =
+	if self.type.oclIsTypeOf(UML!DataType)
+	then	
+		if self.type.general->size() = 0
+		then
+			self.type.name--There were no parents so return the datatype name
+		else
+			if thisModule.isCPP()
+			then
+				self.type.general.first().name--The transform is in CPP mode and a parent was found. Return its name.
+			else
+				''--A parent exists but the transform is not in CPP mode. Return an empty string.
+			endif
+		endif
+	else
+		''--Something other than a DataType was passed in so we cannot process the name
+	endif;
+
+--See if the type is a derived type of not
+helper context UML!Type def : isDerivedType() : Boolean =
+	if(self.hasStereotype('ECIM Base Profile::EcimDerivedString') or self.hasStereotype('ECIM Base Profile::EcimDerivedInteger') or self.hasStereotype('ECIM Base Profile::EcimDerivedFloat') or self.hasStereotype('ECIM Base Profile::EcimDerivedBoolean'))
+	then
+		true
+	else
+		false
+	endif;
+
+--See if the type is a derived type of not
+helper context UML!Type def : isDerivedStringType() : Boolean =
+	if(self.hasStereotype('ECIM Base Profile::EcimDerivedString'))
+	then
+		true
+	else
+		false
+	endif;
+	
+--The Derived Type name should follow the pattern ContainersContainerName_ContainerName_TypedElementName to be sure it is unique in the MOM
+helper def : CreateDerivedTypeName(s: UML!TypedElement) : String =
+	s.eContainer().eContainer().name+'_'+s.eContainer().name+'_'+s.name;
+
+--Note: It is really important the only one Stereotype from the ECIM Base Profile is ever applied to a UML Element as the following
+--helper requires this to be true. Of course you can apply stereotypes from other profiles :)
+helper context UML!Element def : getEcimAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'ECIM Base Profile').first()
+	else
+		OclUndefined
+	endif;
+
+--Note: It is really important the only one Stereotype from the CPP Profile is ever applied to a UML Element as the following
+--helper requires this to be true. Of course you can apply stereotypes from other profiles :)
+helper context UML!Element def : getCppAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'CppProfile').first()
+	else
+		OclUndefined
+	endif;
+
+--Retrieve domain extensions if any exist
+helper def : getDomainExtensions(s : OclAny) : Set(UML!Property) =
+	s.getAppliedStereotypes()->collect(e|e.getAllAttributes())->flatten()->select(e|not e.getAppliedStereotype('EcimDomainExtension::DomainExtension').oclIsUndefined());
+
+-- Returns true if supplied value contains something 
+helper def : hasValue(s: OclAny) : Boolean =
+	if (s.oclIsUndefined()) then
+		false
+	else
+		let stringValue:String = s.toString().trim() in
+		if (stringValue = '' or stringValue = 'OclUndefined') then
+			false
+		else
+			true
+		endif
+	endif;
+	
+--Retrieve the value(s) for an extension
+helper def : getExtensionValue(prop : UML!Property, stProperty : UML!Property) : String = 
+	--Retrieve the concrete stereotype which contains or inherits the stereotype property we want to probe for extension values
+	let st : UML!Stereotype = prop.getAppliedStereotypes()->select(e|e.getAllAttributes()->select(f|f.getQualifiedName()=stProperty.getQualifiedName())->size() > 0)->first() in
+	let extensionValue : OclAny = prop.getValue(st,stProperty.name) in
+	if(extensionValue.oclIsTypeOf(Sequence(OclAny)))
+	then
+		--handle multi-values by adding a comma between valeus
+		let tmp : String = extensionValue->collect(v|thisModule.formatExtensionValue(v)+',')->sum() in
+		if (tmp.oclIsUndefined())
+		then
+			''
+		else
+			--trim the trailing comma
+			tmp.substring(1, tmp.size()-1)
+		endif
+	else
+		thisModule.formatExtensionValue(extensionValue)
+	endif;
+
+--Format the extension value based on type 
+helper def : formatExtensionValue(extensionValue : OclAny) : String = 
+	if(extensionValue.oclIsKindOf(UML!NamedElement))
+	then
+		extensionValue.getName()
+	else
+		extensionValue.toString()
+	endif; 	  
+ 	  
+--Check to see if an Element has an Ecim Stereotype applied
+helper context UML!Element def : hasEcimAppliedStereotype() : Boolean = 
+	if(self.hasStereotypeApplied())
+	then
+			if(self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'ECIM Base Profile').size() > 0)
+			then
+				true
+			else
+				false
+			endif
+	else
+		false
+	endif;
+
+--Check to see if an Element has an CoreMW Stereotype applied 
+-- TEMPORARY UNTIL COM CAN HANDLE SEVERAL DOMAIN EXTENSION TAGS!!
+helper context UML!Element def : hasCoreMWAppliedStereotype() : Boolean = 
+	if(self.hasStereotypeApplied())
+	then
+			if(self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'CoreMW Profile').size() > 0)
+			then
+				true
+			else
+				false
+			endif
+	else
+		false
+	endif;
+
+helper context UML!Element def : getCoreMWAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		if (self.hasCoreMWAppliedStereotype())
+		then
+			self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'CoreMW Profile').first()
+		else
+			OclUndefined
+		endif
+	else
+		OclUndefined
+	endif;
+
+
+--This helper navigates the stereotype hierarchy of a Class to see if it has a stereotype that extends EcimGeneralMoClass. if it
+--does then it is an MOC
+helper context UML!Element def : isEcimMOC() : Boolean =
+	if(self.oclIsTypeOf(UML!Class) and self.hasEcimAppliedStereotype())
+	then
+		if(self.getEcimAppliedStereotype()->allParents()->select(e|e.name = 'EcimGeneralMoClass')->size() > 0)
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+
+--returns true if the element to which the function is called has the specified stereotype applied
+helper context UML!Element def: hasStereotype(name : String) : Boolean =
+	not self.getAppliedStereotype(name).oclIsUndefined();
+
+--returns true if the element to which the function is called does not have the specified stereotype applied
+helper context UML!Element def: hasNotGotStereotype(name : String) : Boolean =
+	self.getAppliedStereotype(name).oclIsUndefined();
+
+--returns true if the element has at least one stereotype applied
+helper context UML!Element def: hasStereotypeApplied() : Boolean =
+	self.getAppliedStereotypes()->size() > 0;
+
+-- TODO: The CoreMW immNamespace property is included here since COM cannot handle two domain extensions
+-- When COM does, the immNamespace code should be removed and the generic handling activated instead.
+helper def : defineEcimMomImplementsType(mom: UML!Package) : MP!ImplementsType =
+	if not mom.hasStereotype('ECIM Base Profile::EcimMom') then
+		OclUndefined
+	else
+	let ecimMomName : String = mom.getValue(mom.getAppliedStereotype('ECIM Base Profile::EcimMom'),'ecimMomName') in
+	let	ecimMomVersion : String = mom.getValue(mom.getAppliedStereotype('ECIM Base Profile::EcimMom'),'ecimMomVersion') in
+	let	ecimMomRelease : String = mom.getValue(mom.getAppliedStereotype('ECIM Base Profile::EcimMom'),'ecimMomRelease') in
+	let	ecimMomCorrection : String = mom.getValue(mom.getAppliedStereotype('ECIM Base Profile::EcimMom'),'ecimMomCorrection') in
+	let hasEcimMomInfo : Boolean = ecimMomName <> OclUndefined and ecimMomVersion <> OclUndefined and ecimMomRelease <> OclUndefined and ecimMomName <> '' and ecimMomVersion <> '' and ecimMomRelease <> '' in
+	if (hasEcimMomInfo and ecimMomName <> mom.name)
+	then
+		thisModule.CreateEcimMomImplementsType(ecimMomName, ecimMomVersion, ecimMomRelease, ecimMomCorrection)
+	else
+		OclUndefined
+	endif
+	endif;
+		
+-- TODO: The CoreMW immNamespace property is included here since COM cannot handle two domain extensions
+-- When COM does, the immNamespace code should be removed and the generic handling activated instead.
+helper def : defineEcimMomDomainExtensionType(mom: UML!Package) : MP!DomainExtensionType =
+	if not mom.hasStereotype('ECIM Base Profile::EcimMom') then
+		OclUndefined
+	else
+	let ecimMomName : String = mom.getValue(mom.getAppliedStereotype('ECIM Base Profile::EcimMom'),'ecimMomName') in
+	let	ecimMomVersion : String = mom.getValue(mom.getAppliedStereotype('ECIM Base Profile::EcimMom'),'ecimMomVersion') in
+	let	ecimMomRelease : String = mom.getValue(mom.getAppliedStereotype('ECIM Base Profile::EcimMom'),'ecimMomRelease') in
+	let	ecimMomCorrection : String = mom.getValue(mom.getAppliedStereotype('ECIM Base Profile::EcimMom'),'ecimMomCorrection') in
+	let hasEcimMomInfo : Boolean = ecimMomName <> OclUndefined and ecimMomVersion <> OclUndefined and ecimMomRelease <> OclUndefined and ecimMomName <> '' and ecimMomVersion <> '' and ecimMomRelease <> '' in
+	if (hasEcimMomInfo)
+	then
+		if (mom.hasCoreMWAppliedStereotype())
+		then
+			thisModule.CreateEcimMomDomainExtensionType(ecimMomName, ecimMomVersion, ecimMomRelease, ecimMomCorrection, mom.getValue(mom.getCoreMWAppliedStereotype(),'immNamespace').name)
+		else
+			thisModule.CreateEcimMomDomainExtensionType(ecimMomName, ecimMomVersion, ecimMomRelease, ecimMomCorrection, OclUndefined)
+		endif
+	else
+		if (mom.hasCoreMWAppliedStereotype())
+		then
+			thisModule.CreateEcimMomDomainExtensionType(OclUndefined, OclUndefined, OclUndefined, OclUndefined, mom.getValue(mom.getCoreMWAppliedStereotype(),'immNamespace').name)
+		else
+			OclUndefined
+		endif
+	endif
+	endif;
+	
+	
+helper def : defineEcimLibraryDomainExtensionType(mom: UML!Package) : MP!DomainExtensionType =
+	let ecimMomName : String = mom.getValue(mom.getAppliedStereotype('ECIM Base Profile::EcimLibrary'),'ecimLibraryName') in
+	let	ecimMomVersion : String = mom.getValue(mom.getAppliedStereotype('ECIM Base Profile::EcimLibrary'),'ecimLibraryVersion') in
+	let	ecimMomRelease : String = mom.getValue(mom.getAppliedStereotype('ECIM Base Profile::EcimLibrary'),'ecimLibraryRelease') in
+	let	ecimMomCorrection : String = mom.getValue(mom.getAppliedStereotype('ECIM Base Profile::EcimLibrary'),'ecimLibraryCorrection') in
+	let hasEcimMomInfo : Boolean = ecimMomName <> OclUndefined and ecimMomVersion <> OclUndefined and ecimMomRelease <> OclUndefined and ecimMomName <> '' and ecimMomVersion <> '' and ecimMomRelease <> '' in
+	if (hasEcimMomInfo)
+	then
+		if (mom.hasCoreMWAppliedStereotype())
+		then
+			thisModule.CreateEcimMomDomainExtensionType(ecimMomName, ecimMomVersion, ecimMomRelease, ecimMomCorrection, mom.getValue(mom.getCoreMWAppliedStereotype(),'immNamespace').name)
+		else
+			thisModule.CreateEcimMomDomainExtensionType(ecimMomName, ecimMomVersion, ecimMomRelease, ecimMomCorrection, OclUndefined)
+		endif
+	else
+		if (mom.hasCoreMWAppliedStereotype())
+		then
+			thisModule.CreateEcimMomDomainExtensionType(OclUndefined, OclUndefined, OclUndefined, OclUndefined, mom.getValue(mom.getCoreMWAppliedStereotype(),'immNamespace').name)
+		else
+			OclUndefined
+		endif
+	endif;
+	
+	
+helper def : defineStructMemberDomainExtensionType(structMember: UML!Property) : MP!DomainExtensionType =
+	let isKey : Boolean = structMember.getValue(structMember.getAppliedStereotype('ECIM Base Profile::EcimStructMember'),'isKey') in
+	
+	if (isKey <> OclUndefined and isKey = true)
+	then
+		thisModule.CreateDomainExtensionType('ECIM', 'isKey', isKey)
+	else
+		if (structMember.lower = 0 and structMember.upper = 1)
+		then
+			if (thisModule.isCOM())
+			then
+				thisModule.CreateDomainExtensionType('ECIM', 'isNillable', true)
+			else
+				OclUndefined
+			endif
+		else
+			OclUndefined
+		endif
+	endif;
+	
+helper def : defineAttributeDomainExtensionType(attribute: UML!Property) : MP!DomainExtensionType =
+	if (attribute.lower = 0 and attribute.upper = 1)
+	then
+		if (thisModule.isCOM())
+		then
+			thisModule.CreateDomainExtensionType('ECIM', 'isNillable', true)
+		else
+			OclUndefined
+		endif
+	else
+		OclUndefined
+	endif;
+
+helper def : defineParameterDomainExtensionType(param: UML!Parameter) : MP!DomainExtensionType =
+	if (param.lower = 0 and param.upper = 1)
+	then
+		if (thisModule.isCOM())
+		then
+			thisModule.CreateDomainExtensionType('ECIM', 'isNillable', true)
+		else
+			OclUndefined
+		endif
+	else
+		OclUndefined
+	endif;
+	
+--The namespace is a urn combined with the name of the MOM
+helper def : defineNamespace(mom: UML!Package) : String =
+	'urn:com:ericsson:ecim:'+mom.name;
+
+
+--The namespacePrefix is the name of the MOM in lower case
+helper def : defineNamespacePrefix(momName : String) : String =
+	momName.toLowerCase();
+		
+--If a relationship has no name defined the autogenerate one based on the ends of the relationship
+helper def : defineRelationshipName(classifier : UML!Association) : String =
+	if(classifier.name <> OclUndefined and classifier.name <> '')
+	then
+		classifier.name
+	else
+		classifier.memberEnd->select(e|e.aggregation=#none)->at(1).type.name
+		+'_to_'+
+		classifier.memberEnd->select(e|e.aggregation=#composite)->at(1).type.name
+	endif;
+
+--If a relationship has no name defined the autogenerate one based on the ends of the relationship
+helper def : defineBiDirRelationshipName(association : UML!Association, serverProperty : UML!Property, clientProperty : UML!Property) : String =
+	if(association.name <> OclUndefined and association.name <> '')
+	then
+		association.name
+	else
+		clientProperty.type.name+'_'+serverProperty.name
+		+'_to_'+
+		serverProperty.type.name+'_'+clientProperty.name
+	endif;
+
+--This helper checks the profile for the read only flag as UML classes don't actually have a read only flag
+helper def : isClassReadOnly(classifier : UML!Class) : MP!ReadOnlyType =
+	if(classifier.getValue(classifier.getEcimAppliedStereotype(),'isReadOnly'))
+	then
+		thisModule.CreateReadOnlyType()
+	else
+		OclUndefined
+	endif;
+
+--This helper checks the profile for the system created flag 
+helper def : isSystemCreated(classifier : UML!Class) : MP!SystemCreatedType =
+	if(classifier.getValue(classifier.getEcimAppliedStereotype(),'isSystemCreated'))
+	then
+		thisModule.CreateSystemCreatedType()
+	else
+		OclUndefined
+	endif;
+								
+
+--This helper is different to isClassReadOnly as UML properties actually have a read only flag
+helper def : isPropertyReadOnly(classifier : UML!Property) : MP!ReadOnlyType =
+	if(classifier.isReadOnly)
+	then
+		thisModule.CreateReadOnlyType()
+	else
+		OclUndefined
+	endif;
+
+--The end will always be a classifier, if set, so no need to check for other types
+helper def : isAbstractEnd(classifier : UML!Class) : Boolean =
+	if(classifier.oclIsUndefined())
+	then
+		false
+	else
+		if(classifier.isAbstract)
+		then
+			true
+		else
+			false
+		endif
+	endif;	
+
+--
+helper def : isAbstract(classifier : UML!Class) : MP!InterfaceOnlyType =
+	if(classifier.isAbstract)
+	then
+		thisModule.CreateInterfaceOnlyType()
+	else
+		OclUndefined
+	endif;	
+
+--Get the Status off an element locally i.e. do not traverse to a DerivedType value
+helper def : isPreliminary(classifier : UML!Element) : MP!PreliminaryType =
+	--TODO: Fix this to test against enum types rather than strings
+	if(classifier.getValue(classifier.getEcimAppliedStereotype(),'status').name = 'PRELIMINARY')
+	then
+		thisModule.CreatePreliminaryType()
+	else
+		OclUndefined
+	endif;
+
+
+--Get the Status off an element locally i.e. do not traverse to a DerivedType value
+helper def : isDeprecated(classifier : UML!Element) : MP!DeprecatedType =
+	--TODO: Fix this to test against enum types rather than strings
+	if(classifier.getValue(classifier.getEcimAppliedStereotype(),'status').name = 'DEPRECATED')
+	then
+		thisModule.CreateDeprecatedType()
+	else
+		OclUndefined
+	endif;
+
+--Get the Status off an element locally i.e. do not traverse to a DerivedType value
+helper def : isObsolete(classifier : UML!Element) : MP!ObsoleteType =
+	--TODO: Fix this to test against enum types rather than strings
+	if(classifier.getValue(classifier.getEcimAppliedStereotype(),'status').name = 'OBSOLETE')
+	then
+		thisModule.CreateObsoleteType()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isOrdered(classifier : UML!Property) : MP!OrderedType =
+	if(classifier.isOrdered)
+	then
+		thisModule.CreateOrderedType()
+	else
+		OclUndefined
+	endif;
+
+--The max is only created when it is not -1
+helper def : isMaxUnbounded(max : Integer) : MP!MaxType =
+	if(max <> -1)
+	then
+		thisModule.CreateMaxType(max.toString())
+	else
+		OclUndefined
+	endif;
+
+--The maxLength in sequence datatype is only created when it is not -1
+helper def : isMaxLengthSequenceUnbounded(max : Integer) : MP!MaxLengthType =
+	if(max <> -1)
+	then
+		thisModule.CreateMaxLengthTypeSimple(max.toString())
+	else
+		OclUndefined
+	endif;
+
+
+--TODO:Comment me
+helper def : isInType(direction : UML!ParameterDirectionKind) : MP!InType =
+	if(direction = #"in")
+	then
+		thisModule.CreateInType()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isNonUnique(classifier : UML!Property) : MP!NonUniqueType =
+	if(not classifier.isUnique)
+	then
+		thisModule.CreateNonUniqueType()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isNoNotification(classifier : UML!Classifier) : MP!NoNotificationType =
+	if(not classifier.getValue(classifier.getEcimAppliedStereotype(),'isNotifiable'))--Note:There is a "not" here as isNotifiable must be false
+	then
+		thisModule.CreateNoNotificationType()
+	else
+		if (classifier.hasStereotype('ECIM Base Profile::EcimKeyAttribute'))
+		then -- On request from Peter Labraaten, artefact pending
+			thisModule.CreateNoNotificationType()  
+		else
+			OclUndefined
+		endif
+	endif;
+
+--TODO:Comment me
+helper def : isRestricted(classifier : UML!Classifier) : MP!RestrictedType =
+	if(classifier.getValue(classifier.getEcimAppliedStereotype(),'isRestricted'))
+	then
+		thisModule.CreateRestrictedType()
+	else
+		OclUndefined
+	endif;
+
+--DEPRECATED ECIM MM RevC
+--helper def : isNonPersistent(classifier : UML!Classifier) : MP!NonPersistentType =
+--	if(not classifier.getValue(classifier.getEcimAppliedStereotype(),'isPersistent'))--Note:There is a "not" here as isPersistent must be false
+--	then
+--		thisModule.CreateNonPersistentType()
+--	else
+--		OclUndefined
+--	endif;
+
+--TODO:Comment me
+helper def : isKey(classifier : UML!Classifier) : MP!KeyType =
+	if(classifier.getValue(classifier.getEcimAppliedStereotype(),'isKey'))
+	then
+		thisModule.CreateKeyType()
+	else
+		OclUndefined
+	endif;
+
+helper def : isMandatory(classifier : UML!Property) : MP!MandatoryType =
+	if(classifier.lower >= 1 and (classifier.default = OclUndefined or classifier.default = ''))
+	then
+		thisModule.CreateMandatoryType()
+	else
+		OclUndefined
+	endif;
+
+helper def : isNillable(me : UML!MultiplicityElement) : MP!IsNillableType =
+	if(me.lower = 0 and me.upper = 1)
+	then
+		thisModule.CreateIsNillableType()
+	else
+		OclUndefined
+	endif;
+
+--Get the Length Range off an element or datatype or a derived datatype
+helper def : hasLengthRange(element : UML!Element) : MP!LengthRangeType =
+	let length : String = if not element.oclIsKindOf(UML!TypedElement) then element.getValue(element.getEcimAppliedStereotype(),'length') else if(element.type.isDerivedType()) then element.type.getValue(element.type.getEcimAppliedStereotype(),'length') else element.getValue(element.getEcimAppliedStereotype(),'length') endif endif in
+	if(length <> OclUndefined and length <> '')
+	then
+		thisModule.CreateLengthRangeType(length)	
+	else
+		OclUndefined
+	endif;
+
+--Get the String Length off an element or datatype or a derived datatype
+helper def : hasStringLength(element : UML!Element) : MP!StringLengthType =
+	let length : String = if not element.oclIsKindOf(UML!TypedElement) then element.getValue(element.getEcimAppliedStereotype(),'length') else if(element.type.isDerivedType()) then element.type.getValue(element.type.getEcimAppliedStereotype(),'length') else element.getValue(element.getEcimAppliedStereotype(),'length') endif endif in
+	if(length <> OclUndefined and length <> '')
+	then
+		thisModule.CreateStringLengthType(length)	
+	else
+		OclUndefined
+	endif;
+
+--Create an operation/action return type if one was specified
+helper def : hasReturnType (returnParams : Sequence(UML!Parameter)) : MP!ReturnTypeType =
+	--check to ensure there was a return parameter defined
+	if(returnParams->size() > 0)
+	then
+		--we only support one return type so select the first one
+		thisModule.ResolveReturnType(returnParams.first())
+	else
+		thisModule.CreateVoidType()
+	endif;
+
+--Get the range off an element or datatype or a derived datatype
+helper def : hasRange (element : UML!Element) : MP!RangeType =
+	let range : String = if not element.oclIsKindOf(UML!TypedElement) then element.getValue(element.getEcimAppliedStereotype(),'range') else if(element.type.isDerivedType()) then element.type.getValue(element.type.getEcimAppliedStereotype(),'range') else element.getValue(element.getEcimAppliedStereotype(),'range') endif endif in
+	if(range <> OclUndefined and range <> '')
+	then
+		thisModule.CreateRangeType(range)	
+	else
+		OclUndefined
+	endif;
+
+--Get the ranges off an element or datatype or a derived datatype
+helper def : hasRanges (element : UML!Element) : MP!RangesType =
+	let range : String = if not element.oclIsKindOf(UML!TypedElement) then element.getValue(element.getEcimAppliedStereotype(),'range') else if(element.type.isDerivedType()) then element.type.getValue(element.type.getEcimAppliedStereotype(),'range') else element.getValue(element.getEcimAppliedStereotype(),'range') endif endif in
+	if(range <> OclUndefined and range <> '')
+	then
+		thisModule.CreateRangesType(range)	
+	else
+		OclUndefined
+	endif;
+
+--Get the Hide Group Name off an element locally i.e. do not traverse to a DerivedType value
+helper def : hasFilter(element : UML!Element) : MP!FilterType =
+	let hideGroup : String = element.getValue(element.getEcimAppliedStereotype(),'hideGroupName') in	
+	if(hideGroup <> OclUndefined and hideGroup <> '')
+	then
+		thisModule.CreateFilterType(hideGroup)
+	else
+		OclUndefined
+	endif;
+
+--Get the Status Information off an element locally i.e. do not traverse to a DerivedType value
+helper def : hasStatusInformation(element : UML!Element) : MP!StatusInformationType =
+	let statusInformation : String = element.getValue(element.getEcimAppliedStereotype(),'statusInformation') in 
+	if(statusInformation <> OclUndefined and statusInformation <> '')
+	then
+		thisModule.CreateStatusInformationType(statusInformation)
+	else
+		OclUndefined
+	endif;
+
+--Get the Specification off an element locally i.e. do not traverse to a DerivedType value
+helper def : hasSpecification(element : UML!Element) : MP!SpecificationType =
+	let specification : String = element.getValue(element.getEcimAppliedStereotype(),'specification') in
+	if(specification <> OclUndefined and specification <> '')
+	then
+		thisModule.CreateSpecificationType(specification)
+	else
+		OclUndefined
+	endif;
+
+--Get the Fraction Digits off an element or datatype or a derived datatype
+helper def : hasFractionDigits (element : UML!Element) : String =
+	let fractionDigits : String = if not element.oclIsKindOf(UML!TypedElement) then element.getValue(element.getEcimAppliedStereotype(),'fractionDigits') else if(element.type.isDerivedType()) then element.type.getValue(element.type.getEcimAppliedStereotype(),'fractionDigits') else element.getValue(element.getEcimAppliedStereotype(),'fractionDigits') endif endif in
+	if(fractionDigits <> OclUndefined and fractionDigits <> '')
+	then
+		fractionDigits	
+	else
+		OclUndefined
+	endif;
+
+--Retrive the domain from the DomainExtension
+helper def : hasDomain (property : UML!Property) : String =
+	let domain : String = property.getValue(property.getAppliedStereotypes()->first(),'domain').toString() in
+	if(domain <> OclUndefined and domain <> '')
+	then
+		domain	
+	else
+		OclUndefined
+	endif;
+
+--Get the Unit off a datatype or a derived datatype
+helper def : hasUnit (element : UML!Element) : MP!UnitType =
+	let unit : String = if not element.oclIsKindOf(UML!TypedElement) then element.getValue(element.getEcimAppliedStereotype(),'unit') else if(element.type.isDerivedType()) then element.type.getValue(element.type.getEcimAppliedStereotype(),'unit') else element.getValue(element.getEcimAppliedStereotype(),'unit') endif endif in
+	if(unit <> OclUndefined and unit <> '')
+	then
+		thisModule.CreateUnitType(unit)	
+	else
+		OclUndefined
+	endif;
+
+--Get the Unit off an element or datatype or a derived datatype
+helper def : hasUnitAsString (element : UML!Element) : String =
+	let unit : String = if not element.oclIsKindOf(UML!TypedElement) then element.getValue(element.getEcimAppliedStereotype(),'unit') else if(element.type.isDerivedType()) then element.type.getValue(element.type.getEcimAppliedStereotype(),'unit') else element.getValue(element.getEcimAppliedStereotype(),'unit') endif endif in
+	if(unit <> OclUndefined and unit <> '')
+	then
+		unit	
+	else
+		OclUndefined
+	endif;
+
+--Get the Resolution off an element or datatype or a derived datatype
+helper def : hasResolution (element : UML!Element) : MP!ResolutionType =
+	let resolution : String = if not element.oclIsKindOf(UML!TypedElement) then element.getValue(element.getEcimAppliedStereotype(),'resolution') else if(element.type.isDerivedType()) then element.type.getValue(element.type.getEcimAppliedStereotype(),'resolution') else element.getValue(element.getEcimAppliedStereotype(),'resolution') endif endif in
+	if(resolution <> OclUndefined and resolution <> '')
+	then
+		thisModule.CreateResolutionType(resolution)	
+	else
+		OclUndefined
+	endif;
+
+--Get the Multiplication Factor off an element or datatype or a derived datatype
+helper def : hasMultiplicationFactor (element : UML!Element) : MP!MultiplicationFactorType =
+	let multiplicationFactor : String = if not element.oclIsKindOf(UML!TypedElement) then element.getValue(element.getEcimAppliedStereotype(),'multiplicationFactor') else if(element.type.isDerivedType()) then element.type.getValue(element.type.getEcimAppliedStereotype(),'multiplicationFactor') else element.getValue(element.getEcimAppliedStereotype(),'multiplicationFactor') endif endif in
+	if(multiplicationFactor <> OclUndefined and multiplicationFactor <> '')
+	then
+		thisModule.CreateMultiplicationFactorType(multiplicationFactor)	
+	else
+		OclUndefined
+	endif;
+
+helper def : getPatternValue(element : UML!Element) : String =
+	thisModule.getStringProperty(element, 'pattern');
+
+helper def : getPatternErrorMsgValue(element : UML!Element) : String =
+	thisModule.getStringProperty(element, 'patternErrorMsg');
+	
+helper def : getStringProperty(element : UML!Element, propertyName : String) : String =
+	let appliedStereotype : UML!Stereotype = element.getEcimAppliedStereotype() in
+	let superStereotypes: OrderedSet(UML!Class) = appliedStereotype.getSuperClasses() in
+	let hasRightStereotype : Boolean = appliedStereotype.name = 'EcimAttribute_RO' or appliedStereotype.name = 'EcimAttribute_RW' or appliedStereotype.name = 'EcimDerivedString' 
+		-- Gets the EcimParameter, superStereotypes has just gives one level up
+		or superStereotypes->select(e|e.name= 'EcimInlineProperties')->size()>0 in
+	if (hasRightStereotype)
+	then
+		if element.oclIsKindOf(UML!TypedElement) 
+		then 
+			if(element.type.isDerivedStringType()) 
+			then 
+				element.type.getValue(element.type.getEcimAppliedStereotype(),propertyName) 
+			else 
+				element.getValue(appliedStereotype,propertyName) 
+			endif 
+		else
+			element.getValue(appliedStereotype,propertyName) 
+		endif
+	else
+		OclUndefined
+	endif;
+
+--Get the Valid Values off an element or datatype or a derived datatype
+helper def : hasValidValues (element : UML!Element) : MP!ValidValuesType =
+	let pattern : String = thisModule.getPatternValue(element) in
+	if(pattern <> OclUndefined and pattern <> '')
+	then
+		thisModule.CreateValidValuesType(pattern)	
+	else
+		OclUndefined
+	endif;
+
+--Get the pattern off an element or datatype or a derived datatype and put in a ValidationRule
+helper def : getValidationRuleWithRegexp(element : UML!Element) : MP!ValidationRulesType =
+	let patternRule : Sequence(String) = thisModule.getPatternRule(element) in
+	let validationRules : Set(Sequence(String)) = thisModule.getValidationRulesSetFromConstraints(
+													if (element.oclIsTypeOf(UML!Property)) 
+													then 
+														thisModule.getValidationRulesConstraintsOnProperty(element) 
+													else 
+													if (element.oclIsTypeOf(UML!DataType)) 
+													then 
+														element.ownedRule->select(e|e.hasStereotype('ECIM Base Profile::EcimValidationRule'))
+													else
+														OclUndefined
+													endif
+													endif) in
+	let combinedSet : Set(Sequence(String)) = if (not patternRule.oclIsUndefined()) then
+												  if (not validationRules.oclIsUndefined()) then
+												      Set{patternRule}.union(validationRules)
+												  else
+												  	  Set{patternRule}
+												  endif
+											  else 
+												  if (not validationRules.oclIsUndefined()) then
+												      validationRules
+												  else
+												  	  OclUndefined
+												  endif	
+											  endif in
+	if (not combinedSet.oclIsUndefined()) then 
+		if (combinedSet->size() > 0) then
+			thisModule.CreateValidationRuleTypeFromSet(combinedSet)
+		else
+			OclUndefined
+		endif
+	else
+		OclUndefined
+	endif;
+
+	
+-- Returns a sequence with information from the 'pattern' and 'patternErrorMsg' properties on Attributes and DerivedStrings.
+-- The returned sequence has structure {name, format, errorMsg, body}
+helper def : getPatternRule(element : UML!Element) : Sequence(String)  =
+	let pattern : String = thisModule.getPatternValue(element) in
+	let patternErrorMsg : OclAny = thisModule.getPatternErrorMsgValue(element) in
+	let patternErrorMsgString : String = thisModule.mapOclUndefinedToEmptyString(patternErrorMsg) in
+	if(pattern <> OclUndefined and pattern <> '')
+	then
+		  Sequence{'Pattern Constraint', 'posix_ere', patternErrorMsgString, pattern} 
+		else
+		  OclUndefined
+	endif;
+	
+	
+-- Returns a set of sequence with information from the 'validationRules' constraints.
+-- Supplied element is assumed to be a class property
+helper def : getValidationRulesConstraintsOnProperty(p : UML!Property) : Set(UML!Constraint)  =
+	let valRulConstraints : Set(UML!Constraint) =  p.class.ownedRule->select(e|e.hasStereotype('ECIM Base Profile::EcimValidationRule'))
+												 ->select(e|e.constrainedElement->exists(ce|ce.name=p.name)) in
+	valRulConstraints;
+
+
+helper def : getValidationRulesSetFromConstraints(constraints : Set(UML!Constraint)) : Set(Sequence(String))  =
+	if (constraints.oclIsUndefined()) then
+		OclUndefined
+	else
+		constraints->collect(e| Sequence{e.name, 
+											   thisModule.mapLanguage(e.getSpecification().getLanguages().first()),
+											   thisModule.mapOclUndefinedToEmptyString(e.getValue(e.getEcimAppliedStereotype(),'message')),
+											   e.specification.stringValue()})		
+	endif;
+	
+helper def : mapOclUndefinedToEmptyString(s : OclAny) : String =
+	if (s.oclIsUndefined()) then
+	   ''
+	else
+		s.toString()
+	endif;
+
+helper def : mapLanguage(s : String) : String =
+	if (s = 'POSIX ERE') then
+	   'posix_ere'
+	else
+	if (s = 'XSD RE') then
+	   'xsd_re'
+	else
+		''
+	endif
+	endif;
+
+--Get the isPassphrase off an element or datatype or a derived datatype
+helper def : hasIsPassphrase (element : UML!Element) : MP!IsPassphraseType =
+	let isPassphrase : Boolean = if not element.oclIsKindOf(UML!TypedElement)
+								 then 
+										element.getValue(element.getEcimAppliedStereotype(),'isPassphrase') 
+								 else 
+								 		if(element.type.isDerivedType()) 
+								 		then 
+												element.type.getValue(element.type.getEcimAppliedStereotype(),'isPassphrase')
+								 		else 
+												element.getValue(element.getEcimAppliedStereotype(),'isPassphrase') 
+								 		endif 
+								 endif in
+	if(isPassphrase <> OclUndefined and isPassphrase = true)
+	then
+		MP!IsPassphraseType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+
+--Check to see if an enumeration literal has a value
+helper def : hasLiteralValue(classifier : UML!Classifier) : MP!ValueType =
+	let vs : UML!ValueSpecification = classifier.specification in
+	if(vs <> OclUndefined)
+	then
+		--create the default value by converting the value to a string
+		thisModule.CreateValueType(vs.stringValue())
+	else
+		--no value was assigned to the literal
+		OclUndefined
+	endif;
+
+--Get the Length off an element or datatype or a derived datatype
+helper def : hasMinLength (element : UML!Element) : MP!MinLengthType =
+	let minLength : String =  if not element.oclIsKindOf(UML!TypedElement) then element.getValue(element.getEcimAppliedStereotype(),'length') else if(element.type.isDerivedType()) then element.type.getValue(element.type.getEcimAppliedStereotype(),'length') else element.getValue(element.getEcimAppliedStereotype(),'length') endif endif in 
+	if(minLength <> OclUndefined)
+	then
+		thisModule.CreateMinLengthType(minLength)
+	else
+		OclUndefined
+	endif;
+
+
+--Derived types should always have a base type. This helper deligates finding out the base type.
+helper def : hasBaseType(classifier : UML!Classifier) : MP!BaseTypeType =
+	--we only support datatypes having one classifier
+	if(classifier.general->size() = 1)
+	then
+		thisModule.BaseTypeMappingRules(classifier)
+	else
+		OclUndefined
+	endif;
+
+helper def : hasMimNameType(classifier : UML!Classifier) : MP!MimNameType =
+	--TODO: save value in var using let
+	if(classifier <> OclUndefined)
+	then
+		thisModule.CreateMimNameType(classifier.name)
+	else
+		OclUndefined
+	endif;
+
+helper def : hasMimVersionType(classifier : UML!Classifier) : MP!MimVersionType =
+	let version : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'version') in
+	if(version <> OclUndefined and version <> '')
+	then
+	    --artf16833: No mim version in cross mim references
+		--thisModule.CreateMimVersionType(version)
+		OclUndefined
+	else
+		OclUndefined
+	endif;
+
+--Get the Length off an element or datatype or a derived datatype
+helper def : hasMaxLength (element : UML!Element) : MP!MaxLengthType =
+	let maxLength : String =  if not element.oclIsKindOf(UML!TypedElement) then element.getValue(element.getEcimAppliedStereotype(),'length') else if(element.type.isDerivedType()) then element.type.getValue(element.type.getEcimAppliedStereotype(),'length') else element.getValue(element.getEcimAppliedStereotype(),'length') endif endif in 
+	if(maxLength <> OclUndefined)
+	then
+		thisModule.CreateMaxLengthType(maxLength)
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : hasDataTypeConstraint(classifier : UML!Classifier) : MP!PreconditionType =
+	--TODO: save value in var using let
+	let constraints : Sequence(UML!Constraint) = UML!Constraint.allInstances()->select(e|e.context = classifier) in
+	--make sure there is a constrain defined for this classifier type
+	if(constraints->size() > 0)
+	then
+		--TODO:Currently we assume there is 0/1 constraint defined, is there a rule on how many there can be?
+		constraints->collect(e|thisModule.ConstraintToValidValuesType(e))
+	else
+		OclUndefined
+	endif;
+
+----TODO:Comment me
+--helper def : hasDependenciesScript(classifier : UML!Classifier) : String =
+--	if(not classifier.ownedRule.oclIsUndefined())
+--	then
+--		thisModule.CreateDependenciesScriptType(classifier)
+--	else
+--		OclUndefined
+--	endif;
+
+--TODO:Comment me
+--helper def : hasConstraint(classifier : UML!Classifier) : MP!PreconditionType =
+--	--TODO: save value in var using let
+--	if(classifier.getValue(classifier.getEcimAppliedStereotype(),'constraint') <> OclUndefined)
+--	then
+--		thisModule.CreatePreconditionType(classifier.getValue(classifier.getEcimAppliedStereotype(),'constraint').toString())
+--	else
+--		OclUndefined
+--	endif;
+
+--Generate dependenciesScript in case constraint has been defined and this is not a DWAXE MP XML
+--This function removes Optionality constraints as they should never be outputted here
+--TODO:Currently we assume there is 0/1 constraint defined, is there a rule on how many there can be?)
+helper def : hasConstraint(classifier : UML!Classifier) : MP!DependenciesScriptType =
+	let validRules : OrderedSet(UML!Constraint) = classifier.ownedRule->select(e|e.hasStereotype('ECIM Base Profile::EcimSchematronConstraint')) in
+	if(validRules->size() > 0 and not thisModule.isDWAXE())
+	then
+		thisModule.CreateDependenciesScriptType(validRules.first())
+	else
+		OclUndefined
+	endif;
+
+--Get the language of an OpaqueExpression. We assume only only langauge is set.
+helper def : getLanguage(c : UML!Constraint) : String =
+	let spec : UML!Specification = c.getSpecification() in
+	if(spec.oclIsTypeOf(UML!OpaqueExpression))
+	then
+		spec.getLanguages().first()
+	else
+		''
+	endif;
+
+--TODO:Comment me
+helper def : hasDescription(classifier : UML!Classifier) : String =
+	--TODO: save value in var using let
+	if(classifier.ownedComment.size() > 0)
+	then
+		--TODO:Currently we only support one comment on a UML classifier. Is there ever a requirement for more?
+		-- e.g. long description and short description as mentioned in DSL IP
+		thisModule.CreateDescriptionType(classifier.ownedComment.first().body)
+	else
+		OclUndefined
+	endif;
+
+--Create a default if one was specified. not an empty string '' or "" is not the same
+--as OclUndefined
+helper def : hasDefault(classifier : UML!Classifier) : MP!DefaultValueType =
+
+	if(classifier.default <> OclUndefined)--a default was specified
+	then
+		if(classifier.default = '""')--a default can be empty quotes, if so they should be stripped out and an empty default created
+		then
+			thisModule.CreateBlankDefaultValueType()
+		else
+			--a blank default or some default was specified
+			thisModule.CreateDefaultValueType(classifier)
+		endif
+	else
+		--no default was specified
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : hasSequenceDefault(classifier : UML!Classifier) : MP!SeqDefaultValueType =
+	let default : String = classifier.default in
+	--TODO: save value in var using let
+	if(default <> OclUndefined and default <> '')
+	then
+		thisModule.CreateSeqDefaultValueType(classifier)
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : hasIsExclusive(classifier : UML!Classifier) : MP!IsExclusiveType =
+	let isExclusive : Boolean = classifier.getValue(classifier.getEcimAppliedStereotype(),'isExclusive') in
+	if(isExclusive <> OclUndefined and isExclusive = true)
+	then
+		thisModule.CreateIsExclusiveType()
+	else
+		OclUndefined
+	endif;
+
+
+
+--TODO:Comment me
+helper def : hasDependencies(classifier : UML!Classifier) : MP!DependenciesType =
+	let dependencies : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'dependencies') in
+	if(dependencies <> OclUndefined and dependencies <> '')
+	then
+		thisModule.CreateDependenciesType(dependencies)
+	else
+		OclUndefined
+	endif;
+
+--Only return constraints for non decision models
+--Note:As decision constraints can be anywhere in the model we must check all constraints everytime
+helper def : getDecisionPoints(element : UML!Element) : OrderedSet(UML!Constraint) =
+	if(thisModule.isDecisionModel() or thisModule.isDWAXE())
+	then
+		OrderedSet{}
+	else
+		--note we perform the match using the custom getUniqueElementEncoding method as not all elements have fully qualified names e.g. generalizations
+		UML!Constraint.allInstances()->select(e|e.getConstrainedElements()->collect(f|f.getUniqueElementEncoding)->flatten()->includes(element.getUniqueElementEncoding) and thisModule.getLanguage(e).equals('Optionality'))
+		
+		--ideal code below which does not every match
+		--UML!Constraint.allInstances()->select(e|e.getConstrainedElements()->includes(element))
+	endif;
+
+--here we try and get a unique handle for all elements. not all elements have a name!
+--note:this is not 100% robust but UML does not have a unique way of addressing elements without using the xmiId, which would
+--require a java call to get it working correctly
+helper context UML!Element def : getUniqueElementEncoding : String =
+	if(self.oclIsKindOf(UML!Association))
+	then
+		self.getNearestPackage().getQualifiedName().concat(self.getMemberEnds().toString())
+	else
+		if(self.oclIsKindOf(UML!NamedElement))
+		then
+			if(self.getQualifiedName().oclIsUndefined())
+			then
+				self.getNearestPackage().getQualifiedName().concat(self.getOwner().name).concat(self.oclType().toString())
+			else
+				self.getQualifiedName()
+			endif
+		else
+			if(self.oclIsKindOf(UML!Generalization))
+			then
+				self.getGeneral().getQualifiedName().concat(self.getSpecific().getQualifiedName())
+			else
+				self.getNearestPackage().getQualifiedName().concat(self.getOwner().name).concat(self.oclType().toString())
+			endif
+		endif
+	endif;
+	
+	
+--Create decision points if there are any.
+helper def : hasDecisionPoint(element : UML!Element) : MP!DecisionPointType =
+	let decisionPoints : OrderedSet(UML!Constraint) = thisModule.getDecisionPoints(element)  in
+	if(decisionPoints.size() > 0)
+	then
+		thisModule.CreateDecisionPointType(decisionPoints)
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : hasDisturbances(classifier : UML!Classifier) : MP!DisturbancesType =
+	let disturbances : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'disturbances') in
+	if(disturbances <> OclUndefined and disturbances <> '')
+	then
+		thisModule.CreateDisturbancesType(disturbances)
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : hasTakesEffect(classifier : UML!Classifier) : MP!TakesEffectType =
+	let takesEffect : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'takesEffect') in
+	if(takesEffect <> OclUndefined and takesEffect <> '')
+	then
+		thisModule.CreateTakesEffectType(takesEffect)
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : hasSideEffects(classifier : UML!Classifier) : MP!SideEffectsType =
+	let sideEffects : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'sideEffects') in
+	if(sideEffects <> OclUndefined and sideEffects <> '')
+	then
+		thisModule.CreateSideEffectsType(sideEffects)
+	else
+		OclUndefined
+	endif;
+
+--** Start CPP Specific Meta-Properties **
+helper def : isLockBeforeModify(classifier : UML!Classifier) : MP!LockBeforeModifyType =
+	if(classifier.getValue(classifier.getCppAppliedStereotype(),'lockBeforeModify'))
+	then
+		MP!LockBeforeModifyType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+helper def : isLockBeforeDelete(classifier : UML!Classifier) : MP!LockBeforeDeleteType =
+	if(classifier.getValue(classifier.getCppAppliedStereotype(),'lockBeforeDelete'))
+	then
+		MP!LockBeforeDeleteType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+helper def : isTransactionRequired(classifier : UML!Classifier) : MP!TransactionRequiredType =
+	if(classifier.getValue(classifier.getCppAppliedStereotype(),'transactionRequired'))
+	then
+		MP!TransactionRequiredType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--Get the Undefined Value off a datatype
+helper def : hasUndefinedValue(te : UML!TypedElement) : MP!UndefinedValueType =
+	let stereotype : UML!Stereotype = te.getCppAppliedStereotype() in --not all elements have a CPP stereotype so check to see if it exists first
+	let undefinedValue : String = if not stereotype.oclIsUndefined() then te.getValue(stereotype,'undefinedValue') else OclUndefined endif in
+	if(undefinedValue <> OclUndefined and undefinedValue <> '')
+	then
+		thisModule.CreateUndefinedValueType(undefinedValue)
+	else
+		OclUndefined
+	endif;
+
+helper def : hasTransactionConstraints(classifier : UML!Classifier) : MP!TransactionConstraintsType =
+	let transactionConstraints : String = classifier.getValue(classifier.getCppAppliedStereotype(),'transactionConstraints') in
+	if(transactionConstraints <> OclUndefined and transactionConstraints <> '')
+	then
+		thisModule.CreateTransactionConstraintsType(transactionConstraints)
+	else
+		OclUndefined
+	endif;
+
+helper def : hasCondition(classifier : UML!Classifier) : MP!ConditionType =
+	let condition : String = classifier.getValue(classifier.getCppAppliedStereotype(),'condition') in
+	if(condition <> OclUndefined and condition <> '')
+	then
+		thisModule.CreateConditionType(condition)
+	else
+		OclUndefined
+	endif;
+
+helper def : hasCounterType(classifier : UML!Classifier) : MP!CounterTypeType =
+	let counterType : String = classifier.getValue(classifier.getCppAppliedStereotype(),'counterType') in
+	if(counterType <> OclUndefined and counterType <> '')
+	then
+		thisModule.CreateCounterType(counterType)
+	else
+		OclUndefined
+	endif;
+
+helper def : hasSamplingRate(classifier : UML!Classifier) : MP!SamplingRateType =
+	let samplingRate : String = classifier.getValue(classifier.getCppAppliedStereotype(),'samplingRate') in
+	if(samplingRate <> OclUndefined and samplingRate <> '')
+	then
+		thisModule.CreateSamplingRateType(samplingRate)
+	else
+		OclUndefined
+	endif;
+
+helper def : hasScanner(classifier : UML!Classifier) : MP!ScannerType =
+	let scanner : String = classifier.getValue(classifier.getCppAppliedStereotype(),'scanner') in
+	if(scanner <> OclUndefined and scanner <> '')
+	then
+		thisModule.CreateScannerType(scanner)
+	else
+		OclUndefined
+	endif;
+
+helper def : hasCounterReset(classifier : UML!Classifier) : MP!CounterResetType =
+	let counterReset : String = classifier.getValue(classifier.getCppAppliedStereotype(),'counterReset') in
+	if(counterReset <> OclUndefined and counterReset <> '')
+	then
+		thisModule.CreateCounterResetType(counterReset)
+	else
+		OclUndefined
+	endif;
+
+helper def : hasCounterContext(classifier : UML!Classifier) : MP!CounterContextType =
+	let counterContext : String = classifier.getValue(classifier.getCppAppliedStereotype(),'counterContext') in
+	if(counterContext <> OclUndefined and counterContext <> '')
+	then
+		thisModule.CreateCounterContextType(counterContext)
+	else
+		OclUndefined
+	endif;
+
+helper def : hasGetValue(classifier : UML!Classifier) : MP!GetValueType =
+	let getValue : String = classifier.getValue(classifier.getCppAppliedStereotype(),'getValue') in
+	if(getValue <> OclUndefined and getValue <> '')
+	then
+		thisModule.CreateGetValueType(getValue)
+	else
+		OclUndefined
+	endif;
+--** End CPP Specific Meta-Properties **
+
+--TODO:Comment me
+helper def : hasPrecondition(classifier : UML!Classifier) : MP!PreconditionType =
+	let precondition : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'precondition') in
+	if(precondition <> OclUndefined and precondition <> '')
+	then
+		thisModule.CreatePreconditionType(precondition)
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : hasApprovedByName(classifier : UML!Classifier) : MP!ApprovedByType =
+	let approvedByName : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'approvedBy') in
+	if(approvedByName <> OclUndefined and approvedByName <> '')
+	then
+		thisModule.CreateApprovedByType(approvedByName)
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : hasCreatedByName(classifier : UML!Classifier) : MP!CreatedByType =
+	let createdBy : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'createdBy') in
+	if(createdBy <> OclUndefined and createdBy <> '')
+	then
+		thisModule.CreateCreatedByType(createdBy)	
+	else
+		OclUndefined
+	endif;
+
+--Create a MomTitle. If none is specified set it to an empty string as it is mandatory in MP DTD
+helper def : hasTitle(classifier : UML!Classifier) : MP!MomTitleType =
+	let title : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'title') in
+	if(title <> OclUndefined and title <> '')
+	then
+		thisModule.CreateMomTitleType(title)
+	else
+		thisModule.CreateMomTitleType('')
+	endif;
+
+--Create a SubTitle. If none is specified set it to an empty string as it is mandatory in MP DTD
+helper def : hasSubTitle(classifier : UML!Classifier) : MP!MomSubTitleType =
+	let subTitle : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'subTitle') in
+	if(subTitle <> OclUndefined and subTitle <> '')
+	then
+		thisModule.CreateMomSubTitleType(subTitle)
+	else
+		thisModule.CreateMomSubTitleType('')
+	endif;
+
+--Create a DocNum. If none is specified set it to an empty string as it is mandatory in MP DTD
+helper def : hasDocNum(classifier : UML!Classifier) : MP!DocNumType =
+	let docNo : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'docNo') in
+	if(docNo <> OclUndefined and docNo <> '')
+	then
+		thisModule.CreateDocNumType(docNo)
+	else
+		thisModule.CreateDocNumType('')
+	endif;
+
+--Create a DocLang. If none is specified set it to an empty string as it is mandatory in MP DTD
+helper def : hasDocLang(classifier : UML!Classifier) : MP!DocLangType =
+	let docLang : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'docLang') in
+	if(docLang <> OclUndefined and docLang <> '')
+	then
+		thisModule.CreateDocLangType(docLang)
+	else
+		thisModule.CreateDocLangType('')
+	endif;
+
+--Create a DocRev. If none is specified set it to an empty string as it is mandatory in MP DTD
+helper def : hasDocRev(classifier : UML!Classifier) : MP!DocRevType =
+	let docRev : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'docRev') in
+	if(docRev <> OclUndefined and docRev <> '')
+	then
+		thisModule.CreateDocRevType(docRev)
+	else
+		thisModule.CreateDocRevType('')
+	endif;
+
+--Create a DocDate. If none is specified set it to an empty string as it is mandatory in MP DTD
+helper def : hasDocDate(classifier : UML!Classifier) : MP!DocDateType =
+	let docDate : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'docDate') in
+	if(docDate <> OclUndefined and docDate <> '')
+	then
+		thisModule.CreateDocDateType(docDate)
+	else
+		thisModule.CreateDocDateType('')
+	endif;
+
+-- Replaces '\,' with ',''
+helper def : removeEscapeCommaCharacters(s : String) : String =
+	if(not s.oclIsUndefined()) then
+		let result : String = s.regexReplaceAll('\\\\,',',') in
+		if (result = '""') then
+			''
+		else
+			result
+		endif
+	else
+		s
+	endif;
+
+helper def : isKeyAttribute(p : UML!Property) : Boolean =
+	p.hasStereotype('ECIM Base Profile::EcimKeyAttribute');
+
+
+--  *******************************************************************************************
+--  "Remove runtime dependencies to referred constructs" stuff starts here
+--
+
+helper def : getOwningOrCurrentPackage(t : UML!TypedElement) : UML!Package =
+	if (thisModule.isDWAXE())
+	then
+		-- If DWAXE MP we return the package where the actual type is defined
+		t.type.getNearestPackage()
+	else
+		-- Else we return the package the typed element belongs to
+		-- but if package is library then current package is returned
+		let mim:UML!Package = t.getNearestPackage() in
+		if (mim.hasStereotype('ECIM Base Profile::EcimLibrary'))
+		then
+			t.getCurrentPackage()
+		else
+			mim
+		endif
+	endif;
+	
+helper def : getOwningOrCurrentPackageForStructMember(t : UML!TypedElement) : UML!Package =
+	if (thisModule.isDWAXE())
+	then
+		-- If DWAXE MP we return the package where the actual type is defined
+		t.type.getNearestPackage()
+	else
+		t.getCurrentPackage()
+	endif;
+
+
+-- Looks up all directly referenced types. 
+helper def : lookupAllTypes(s :UML!Package) : Sequence(UML!Type) = 
+	if (thisModule.isDWAXE())
+	then
+		s.allOwnedElements()
+	else
+		let typedElementsFromProperties : Sequence(UML!TypedElement)= 
+			s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->collect(e|e.attribute)->flatten()->collect(t|t.type)->flatten() in
+		let typedElementsFromParameters : Sequence(UML!TypedElement)= 
+			s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->collect(e|e.ownedOperation)->flatten()->collect(o|o.ownedParameter)->flatten()->collect(t|t.type)->flatten() in
+		typedElementsFromProperties->union(typedElementsFromParameters).asSet()
+	endif;	
+		
+			
+			
+-- Adds structs member types if referenced from the input sequence
+helper def : addStructMemberTypes(firstLevelTypes : Sequence(UML!Type)) :  Sequence(UML!Type) =
+	let structMemberTypes : Sequence(UML!Type) =
+		firstLevelTypes->select(e|e.oclIsTypeOf(UML!Class))->select(e|not e.isAbstract and e.hasStereotype('ECIM Base Profile::EcimStruct'))->
+			collect(e|e.attribute)->flatten()->collect(t|t.type)->flatten() in
+	structMemberTypes->union(firstLevelTypes).asSet();
+	
+	
+-- Returns all used enumerations in the supplied package
+helper def : lookupAllUsedEnumerations(s : UML!Package) : Sequence(UML!Enumeration) =
+	thisModule.addStructMemberTypes(thisModule.lookupAllTypes(s))->
+		select(e|e.oclIsTypeOf(UML!Enumeration))->select(e|e.hasStereotype('ECIM Base Profile::EcimEnumeration'));
+
+-- Returns all used derived datatypes in the supplied package
+helper def : lookupAllUsedDerivedDatatypes(s : UML!Package) : Sequence(UML!DataType) =
+	thisModule.addStructMemberTypes(thisModule.lookupAllTypes(s))->
+		select(e|e.oclIsTypeOf(UML!DataType))->select(s|s.hasStereotype('ECIM Base Profile::EcimDerivedString') or s.hasStereotype('ECIM Base Profile::EcimDerivedInteger') or s.hasStereotype('ECIM Base Profile::EcimDerivedFloat') or s.hasStereotype('ECIM Base Profile::EcimDerivedBoolean'));
+
+-- Returns all used exceptions in the supplied package
+helper def : lookupAllUsedExceptions(s : UML!Package) : Sequence(UML!Class) =
+	s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->collect(e|e.ownedOperation)->flatten()->collect(o|o.raisedException)->flatten()->asSet()->
+		select(e|e.oclIsTypeOf(UML!Class))->select(e|not e.isAbstract and e.hasStereotype('ECIM Base Profile::EcimException'));	
+
+-- Returns all used structs in the supplied package
+helper def : lookupAllUsedStructs(s : UML!Package) : Sequence(UML!Class) =
+	thisModule.lookupAllTypes(s)->
+		select(e|e.oclIsTypeOf(UML!Class))->select(e|not e.isAbstract and e.hasStereotype('ECIM Base Profile::EcimStruct'));	
+
+
+-- Returns all struct member typed elements for structs not in the same package as the supplied package
+helper def : lookupAllStructMembersFromOtherModels(s :UML!Package) : Sequence(UML!TypedElement) = 
+		let typesFromProperties : Sequence(UML!Type)= 
+			s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->collect(e|e.attribute)->flatten()->collect(t|t.type)->flatten() in
+		let typesFromParameters : Sequence(UML!Type)= 
+			s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->collect(e|e.ownedOperation)->flatten()->collect(o|o.ownedParameter)->flatten()->collect(t|t.type)->flatten() in
+		let allTypes:Sequence(UML!Type) = typesFromProperties->union(typesFromParameters).asSet() in
+		allTypes->select(e|e.oclIsTypeOf(UML!Class))->select(e|not e.isAbstract and e.hasStereotype('ECIM Base Profile::EcimStruct'))->
+						  select(e|e.getNearestPackage().name <> s.name)->collect(e|e.attribute)->flatten();	
+
+
+
+--
+--  "Remove runtime dependencies to referred constructs" stuff ends here
+--  *******************************************************************************************
+	
+
+--  *******************************************************************************************
+--  Instance Modeling stuff starts here
+--
+
+--Get the key attribute (naming attribute) from a class based on its stereotype
+helper context UML!Class def : getKeyAttribute() : OclAny = 
+	if(self.isEcimMOC())
+	then
+		if(self.keyCount() > 0)
+		then
+			self.getAllAttributes()->select(e|e.hasEcimAppliedStereotype())->select(e|e.getValue(e.getEcimAppliedStereotype(),'isKey')).first()
+		else
+			--there is no key attribute defined on the class
+			OclUndefined
+		endif
+	else
+		if(self.isEcimStruct())
+		then
+			-- if struct the key attribute is named 'id' 
+			'id'
+		else
+			--there is no key attribute defined on the struct
+			OclUndefined
+		endif
+	endif;
+		
+helper context UML!Class def : keyCount() : Integer =
+	self.getAllAttributes()->select(e|e.hasEcimAppliedStereotype())->select(e|e.getValue(e.getEcimAppliedStereotype(),'isKey'))->size();		
+		
+--Checks if any type is an EcimMOC or not.
+helper context UML!Type def : isEcimMOC() : Boolean =
+	if(self.oclIsKindOf(UML!Class))
+	then
+		if(self.hasEcimAppliedStereotype())
+		then
+			if(self.getEcimAppliedStereotype()->allParents()->select(e|e.name = 'EcimGeneralMoClass')->size() > 0)
+			then
+				true
+			else
+				false
+			endif
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+--Checks if any type is an abstract EcimMOC or not.
+helper context UML!Type def : isAbstractEcimMOC() : Boolean =
+	if(self.oclIsKindOf(UML!Class))
+	then
+		if(self.hasEcimAppliedStereotype())
+		then
+			if(self.hasStereotype('ECIM Base Profile::EcimAbstractMoClass'))
+			then                                                                 
+				true
+			else
+				false
+			endif
+		else
+			false
+		endif
+	else
+		false
+	endif;
+	
+		
+-- Checks if given instance specification is an EcimStruct
+helper def : isEcimStruct(is : UML!InstanceSpecification) : Boolean =
+	let type: UML!Type = is.classifier.first() in
+	type.isEcimStruct();
+
+
+--Checks if any type is an EcimStruct or not.
+helper context UML!Type def : isEcimStruct() : Boolean =
+	if(self.oclIsKindOf(UML!Class))
+	then
+		if(self.hasEcimAppliedStereotype())
+		then
+			self.hasStereotype('ECIM Base Profile::EcimStruct')
+    	else
+    		false
+		endif
+	else
+		false
+	endif;
+
+-- Returns true if class is named 'ManagedElement' or has isLegacyRoot=true or is part of an EcimContribution relationship
+-- However if there are more than 1 root class (i.e. child ends to EcimContributions), false is returned!
+helper def : isClassRoot(c : UML!Class) : Boolean =
+	let contributions:Set(UML!Element) = c.getNearestPackage().allOwnedElements()->select(e | e.oclIsTypeOf(UML!Association))->select(e| not e.getAppliedStereotype('ECIM Base Profile::EcimContribution').oclIsUndefined()) 
+	in
+	let rootClasses:Set(UML!Class) = contributions->collect(e|e.memberEnd)->flatten()->select(e|e.aggregation=#composite)->collect(p|p.type)->asSet()
+	in
+	if (rootClasses->size()>1)
+	then
+		false
+	else
+		c.name='ManagedElement'
+		or
+		c.getValue(c.getEcimAppliedStereotype(),'isLegacyRoot')
+		or
+		rootClasses->includes(c)
+	endif;
+
+	--TODO:Comment me
+helper def : isYangRoot(c : UML!Class) : Boolean =
+	if(c.getValue(c.getEcimAppliedStereotype(),'yangRoot'))
+	then
+		true
+	else
+		false
+	endif;
+	
+	
+helper def : getParentDn(is : UML!InstanceSpecification) : String = 
+	let dn : String = thisModule.dnBuilder(is, '', true) in
+	let lastCommaPosition : Integer = dn.lastIndexOf(',') in
+	if (lastCommaPosition > 0)
+	then
+		dn.substring(1, lastCommaPosition)
+	else
+		''
+	endif;
+
+
+--This helper is used many times to build up the DN
+helper def : dnNameHelper(is : UML!InstanceSpecification, last : Boolean) : String = 
+	let separator : String = ',' in
+	--we assume that an InstanceSpecification can have only one classifier, a reasonable assumption
+	let keyAttribute : OclAny = is.classifier.first().getKeyAttribute() in
+	let className : String = is.classifier.first().name in
+	--check to see if this is the last piece of the DN or not
+	
+	if(not last)
+	then
+	    if (is.classifier.first().hasStereotype('ECIM Base Profile::EcimStruct') or is.classifier.first().keyCount() <> 1)
+	    then
+		    -- this is a struct or a zero/multi key class and has an 'id' key that is not part of UML
+		    separator + className + '=' + is.name
+		else
+		    --build up the DN. the last part of the DN needs no separator at the end of it
+		    separator + className + '=' + is.getSlotValue(keyAttribute)
+		endif
+	else
+	    if (is.classifier.first().hasStereotype('ECIM Base Profile::EcimStruct') or is.classifier.first().keyCount() <> 1)
+	    then
+		   -- this is a struct or a zero/multi key class and has an 'id' key that is not part of UML
+		   className + '=' + is.name
+		else
+		   --build up the DN. the last part of the DN needs no separator at the end of it
+		   className + '=' + is.getSlotValue(keyAttribute)
+		endif
+	endif;	
+
+--generate a name for a key for classes with 0 or multi keys
+helper def : generateKeyName(class : UML!Class) : String =
+	--the generated name is the name of the class with its first character lowered
+	--class.name.substring(1,1).toLower() + if class.name.size() > 1 then class.name.substring(2,class.name.size()) else '' endif + 'Id';
+	'id';--the simple id name	
+	
+--This recursive helper builds up the DN based on the dependency links between UML InstanceSpecification
+--The DN is KeyAttributeName=KeyAttributeValue,(DependencyTarget)KeyAttributeName=KeyAttributeValue,(DependencyTarget)KeyAttributeName=KeyAttributeValue
+helper def : dnBuilder(is : UML!InstanceSpecification, dn : String, leaf : Boolean) : String = 
+	--match leafs
+	if(leaf)
+	then
+		--match leafs with no dependency links
+	 	if(is.clientDependency->size() = 0)
+	 	then
+			thisModule.dnNameHelper(is,true)
+		else
+			thisModule.dnBuilder(is.clientDependency.first().target->at(1), thisModule.dnNameHelper(is, false), false)		
+		endif			
+	else--non leafs
+		--match non leafs with no dependency links
+	 	if(is.clientDependency->size() = 0)
+	 	then
+			thisModule.dnNameHelper(is,true).concat(dn)
+		else
+			thisModule.dnBuilder(is.clientDependency.first().target->at(1), thisModule.dnNameHelper(is,false).concat(dn), false)		
+		endif
+	endif;
+
+-- Find a slot, matching a specific name, on an InstanceSpecification and return the slot value
+helper context UML!InstanceSpecification def : getSlotValue(property : UML!Property) : String = 
+	let matchingSlot : Sequence(UML!Slot) = self.slot->select(e|e.definingFeature->getName() = property.name) in
+	
+	--ensure there is a matching slot before trying to get the value
+	if(matchingSlot->size() > 0)
+	then
+		--ensure the slot actually has a value
+		if(matchingSlot->at(1).value->size() > 0)
+		then
+			--return the slot value
+			thisModule.getSlotValues(matchingSlot->at(1)).at(1)
+		else
+			--the slot had no value so return an empty string
+			''	
+		endif
+	else
+		--there was no slot having the name passed in
+		''
+	endif;
+
+ 
+ helper def : getSlotValues(slot : UML!Slot) : Sequence(String) = 
+    	let mySet : Sequence(String) = Sequence{} in
+		if (slot.value.size() = 0) 
+		then
+			Sequence{''}
+		else 
+			let val : UML!InstanceSpecification = slot.value.first() in			
+			if (val.oclIsKindOf(UML!LiteralNull))
+		then
+			Sequence{''}
+		else if (val.oclIsKindOf(UML!LiteralString))
+		then
+		    slot.value->select(e|e.oclIsKindOf(UML!LiteralString))->collect(e|mySet.append(thisModule.removeEscapeCommaCharacters(e.value.toString())))->flatten()
+		else if (val.oclIsKindOf(UML!OpaqueExpression))
+		then
+		    slot.value->select(e|e.oclIsKindOf(UML!OpaqueExpression))->collect(e|mySet.append(thisModule.removeEscapeCommaCharacters(e.stringValue())))->flatten()
+		else if (val.oclIsKindOf(UML!LiteralInteger))
+		then
+			slot.value->select(e|e.oclIsKindOf(UML!LiteralInteger))->collect(e|mySet.append(e.value.toString()))->flatten()
+	    else if (val.oclIsKindOf(UML!LiteralBoolean))
+	    then
+			slot.value->select(e|e.oclIsKindOf(UML!LiteralBoolean))->collect(e|mySet.append(e.booleanValue().toString()))->flatten()
+		else if (val.oclIsKindOf(UML!InstanceValue))
+		then
+			let valType : UML!Classifier = val.owner.definingFeature.type in
+			if (valType.oclIsKindOf(UML!Enumeration))
+	    	then
+				slot.value->select(e|e.owner.definingFeature.type.oclIsKindOf(UML!Enumeration))->collect(e|mySet.append(e.instance.name))->flatten()
+			else if (valType.isEcimMOC())
+		    then 
+				slot.value->select(e|e.owner.definingFeature.type.isEcimMOC())->collect(e|mySet.append(thisModule.dnBuilder(e.instance, '', true)))->flatten()
+			else if (valType.isAbstractEcimMOC())
+		    then 
+				slot.value->select(e|e.owner.definingFeature.type.isAbstractEcimMOC())->collect(e|mySet.append(thisModule.dnBuilder(e.instance, '', true)))->flatten()
+			else
+				OclUndefined
+			endif
+			endif
+			endif
+		else
+			OclUndefined
+		endif
+		endif
+		endif
+		endif
+		endif
+		endif
+	endif;
+    
+    helper def : getInstancePackageName(package : UML!Package) : String = 
+    	if (package.owner.oclIsKindOf(UML!Package))
+    	then
+			if (package.owner.hasStereotype('ECIM Base Profile::EcimMom'))
+			then
+				package.owner.name + package.name
+			else
+				package.name
+			endif
+		else
+			package.name
+		endif;
+      	
+      	
+--
+--  Instance Modeling stuff ends here
+--  *******************************************************************************************
+
+helper def : getCanCreateCanDeleteAsDomainExtension() : String = 
+	PARAM!Parameter.allInstancesFrom('IN2')->select(e|e.name='canCreateCanDeleteAsDomainExtension')->first().value;
+
+helper def : generateCanCreateCanDeleteAsDomainExtension() : Boolean = 
+	if (thisModule.getCanCreateCanDeleteAsDomainExtension() = 'false')
+	then
+		false
+	else
+		true
+	endif;
+
+helper def : getXmiId() : String = 
+	PARAM!Parameter.allInstancesFrom('IN2')->select(e|e.name='xmiId')->first().value;
+
+helper def : getMpFormat() : String = 
+	PARAM!Parameter.allInstancesFrom('IN2')->select(e|e.name='mpFormat')->first().value;
+
+helper def : getIsDecisionModel() : String = 
+	PARAM!Parameter.allInstancesFrom('IN2')->select(e|e.name='isDecisionModel')->first().value;
+
+helper def : getDecisionModelName(p: UML!Package) : String = 
+	if (thisModule.isDecisionModel())
+	then
+		p.getModel().allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.hasStereotype('ECIM Base Profile::EcimDecision'))->first().getName()
+	else
+		OclUndefined
+	endif;
+
+helper def : isDecisionModel() : Boolean = 
+	if (thisModule.getIsDecisionModel() = 'true')
+	then
+		true
+	else
+		false
+	endif;
+
+helper def : isCPP() : Boolean = 
+	if (thisModule.getMpFormat() = 'CPP')
+	then
+		true
+	else
+		false
+	endif;
+
+helper def : isCOM() : Boolean = 
+	if (thisModule.getMpFormat() = 'COM')
+	then
+		true
+	else
+		false
+	endif;
+
+helper def : isDWAXE() : Boolean = 
+	if (thisModule.getMpFormat() = 'DWAXE')
+	then
+		true
+	else
+		false
+	endif;
+
+
+helper def: currentPackage : UML!Package = OclUndefined;
+
+helper context UML!Element def : getCurrentPackage() : UML!Package = 
+	thisModule.currentPackage;
+
+
+helper def : getDomainExtensionForOriginatingMomInfo(owningPackage: UML!Package, originatingPackage : UML!Package) : MP!DomainExtensionType =
+	let version : String = originatingPackage.getValue(originatingPackage.getEcimAppliedStereotype(), 'version') in
+	let release : String = originatingPackage.getValue(originatingPackage.getEcimAppliedStereotype(), 'release') in
+	let extensions : Map(String,String) = Map{('originatingMimName',originatingPackage.name), ('originatingMimVersion',version), ('originatingMimRelease',release)} in
+	if (owningPackage.name <> originatingPackage.name)
+	then
+		thisModule.CreateGenericDomainExtensionType2('ECIM', extensions)
+	else
+		OclUndefined
+	endif;
+	
+	
+helper def : getDomainExtensionForFilter(element : UML!Element) : MP!DomainExtensionType =
+	let hideGroup : String = element.getValue(element.getEcimAppliedStereotype(),'hideGroupName') in	
+	if(hideGroup <> OclUndefined and hideGroup <> '')
+	then
+		let extensions : Map(String,String) = Map{('filter',hideGroup)} in
+		thisModule.CreateGenericDomainExtensionType2('ECIM', extensions)
+	else
+		OclUndefined
+	endif;
+	
+
+helper def : getDomainExtensionForOriginatingMomInfoPlusFilter(element : UML!Element, owningPackage: UML!Package, originatingPackage : UML!Package) : MP!DomainExtensionType =
+	let hideGroup : String = element.getValue(element.getEcimAppliedStereotype(),'hideGroupName') in
+	let version : String = originatingPackage.getValue(originatingPackage.getEcimAppliedStereotype(), 'version') in
+	let release : String = originatingPackage.getValue(originatingPackage.getEcimAppliedStereotype(), 'release') in
+	if (owningPackage.name <> originatingPackage.name)
+	then
+		let originatingExtension : Map(String,String) = Map{('originatingMimName',originatingPackage.name), ('originatingMimVersion',version), ('originatingMimRelease',release)} in
+		if (hideGroup <> OclUndefined and hideGroup <> '')
+		then
+			let allExtensions : Map(String,String) = originatingExtension.union(Map{('filter',hideGroup)}) in
+			thisModule.CreateGenericDomainExtensionType2('ECIM', allExtensions)
+		else
+			thisModule.CreateGenericDomainExtensionType2('ECIM', originatingExtension)
+		endif
+	else
+		if (hideGroup <> OclUndefined and hideGroup <> '')
+		then
+			let filterExtension : Map(String,String) = Map{('filter',hideGroup)} in
+			thisModule.CreateGenericDomainExtensionType2('ECIM', filterExtension)
+		else
+			OclUndefined
+		endif
+	endif;
+
+--TODO:Comment me
+--helper def : getApplicationTag(owningPackage: UML!Package, originatingPackage : UML!Package) : MP!ApplicationTagType =
+--	let version : String = originatingPackage.getValue(originatingPackage.getEcimAppliedStereotype(), 'version') in
+--	let release : String = originatingPackage.getValue(originatingPackage.getEcimAppliedStereotype(), 'release') in
+--	if (owningPackage.name <> originatingPackage.name)
+--	then
+--		thisModule.CreateApplicationTagType('Data Type originated from [' + originatingPackage.name + ' ' + version + '.' + release+']')
+--	else
+--		OclUndefined
+--	endif;
+

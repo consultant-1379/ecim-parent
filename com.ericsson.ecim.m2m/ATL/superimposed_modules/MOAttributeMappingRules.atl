@@ -1,0 +1,162 @@
+-- /**
+-- * This transform maps the different EcimAttribute types (persistent,mandatory,key etc) to MP.ecore AttributeType
+-- *
+-- * Note: It would have been nice to have these rules layered as they are in the ECIM Profile but this is not possible as
+-- * ATL does not support multiple inheritance, making this impossible. We do have one layer of inheritance though.
+-- *
+-- * superimposition-dependencies: ECIMtoMP 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 03/02/2010
+-- */
+
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module MOAttributeMappingRules;
+create OUT : MP from IN : UML;
+
+--This rule captures the common mappings all MOC attribute types have
+--Note:We don't use a using clause here as it will cause the other rules to run incorrectly i.e. Don't cache domain extensions here
+lazy abstract rule EcimGeneralAttributeToAttributeType
+{
+	from s: UML!Property(s.oclIsTypeOf(UML!Property))
+	to t: MP!AttributeType
+	(
+		name <- s.name,
+		description <- thisModule.hasDescription(s),
+		noNotification <- thisModule.isNoNotification(s),
+		isNillable <- thisModule.isNillable(s),
+		dataType <- thisModule.ResolveDataType(s),
+		restricted <- thisModule.isRestricted(s),
+			
+		--Support the ECIMGeneralProperties
+		deprecated <- thisModule.isDeprecated(s),
+		obsolete <- thisModule.isObsolete(s),
+		preliminary <- thisModule.isPreliminary(s),
+		statusInformation <- thisModule.hasStatusInformation(s),		
+		filter <- thisModule.hasFilter(s),
+		specification <- thisModule.hasSpecification(s),
+		decisionPoint <- thisModule.hasDecisionPoint(s),
+		
+		--Support the ECIMCpiBehaviourProperties
+		dependencies <- thisModule.hasDependencies(s),
+		disturbances <- thisModule.hasDisturbances(s),
+		takesEffect  <- thisModule.hasTakesEffect(s),
+		precondition <- thisModule.hasPrecondition(s),
+		sideEffects <- thisModule.hasSideEffects(s),
+		
+		validationRules <- if ((thisModule.isCOM() and s.hasInlinePropertiesSet()) or 
+								s.type.hasStereotype('ECIM Base Profile::EcimDerivedString')) then
+								OclUndefined -- the validationRules is outputted as part of the derived string type
+						   else
+								thisModule.getValidationRuleWithRegexp(s)
+						   endif
+		--CPP properties that are not supported		
+		--applicationTag <-
+		--feature <-
+		--indexed <-
+		--interfaceOnly <-
+		--local <-
+		--restartType <-
+		--static <-
+		--undefined <-
+		--visibility <- 
+		
+		--Note:UML does not support constraints on attributes, you must set
+		--the constraint on the owning class. We support that!		
+		--dependenciesScript --This is not used as constraints on attributes can be placed on the owning class
+	)
+}	
+
+--This concrete rule fires for any UML properties with EcimPersistentKeyAttribute applied. 
+--It creates a KeyType,MandatoryType and ReadOnlyType in the output.
+lazy rule PropertyToEcimKeyAttributeType extends EcimGeneralAttributeToAttributeType {
+	from s: UML!Property(s.hasStereotype('ECIM Base Profile::EcimKeyAttribute'))
+	using 
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(s);	
+	}		
+	to t: MP!AttributeType 
+	(
+		key <- thisModule.isKey(s),
+		mandatory <- thisModule.isMandatory(s)
+	)
+	do
+	{
+		--generate domainExtensions if there are any
+		if (domainExtensions->size() > 0)
+		{
+			--before creating the extensions we group them by domain so that they can be outputted together
+			t.domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,s));
+		}
+	}		
+}
+
+--This rule fires for any UML properties with EcimAttribute_RW stereotype applied. 
+lazy rule PropertyToReadWriteAttributeType extends EcimGeneralAttributeToAttributeType {
+	from s: UML!Property(s.hasStereotype('ECIM Base Profile::EcimAttribute_RW'))
+	using 
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(s);	
+	}		
+	to t: MP!AttributeType 
+	(
+		mandatory <- thisModule.isMandatory(s),		
+		domainExtension <- thisModule.defineAttributeDomainExtensionType(s),
+		
+		lockBeforeModify <- if thisModule.isCPP() then thisModule.isLockBeforeModify(s) else OclUndefined endif,
+		transactionConstraints <- if thisModule.isCPP() then thisModule.hasTransactionConstraints(s) else OclUndefined endif,
+		transactionRequired <- if thisModule.isCPP() then thisModule.isTransactionRequired(s) else OclUndefined endif
+	)
+	do
+	{
+		--generate domainExtensions if there are any
+		if (domainExtensions->size() > 0)
+		{
+			--before creating the extensions we group them by domain so that they can be outputted together
+			t.domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,s));
+		}
+	}		
+}
+
+--This rule fires for any UML properties with EcimAttribute_RO stereotype applied. 
+--It creates a NonPersistentType and ReadOnlyType in the output.
+lazy rule PropertyToReadOnlyAttribute extends EcimGeneralAttributeToAttributeType {
+	from s: UML!Property(s.hasStereotype('ECIM Base Profile::EcimAttribute_RO') and not (s.hasStereotype('CppProfile::CppAttribute') and s.name.startsWith('pm')))
+	using 
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(s);		
+	}		
+	to t: MP!AttributeType 
+	(
+		--DEPRECATED: nonPersistent <- thisModule.isNonPersistent(s),
+		readOnly <- thisModule.isPropertyReadOnly(s),
+		domainExtension <- thisModule.defineAttributeDomainExtensionType(s),
+		
+		--Supported CPP specific properties
+		lockBeforeModify <- if thisModule.isCPP() then thisModule.isLockBeforeModify(s) else OclUndefined endif,
+		transactionConstraints <- if thisModule.isCPP() then thisModule.hasTransactionConstraints(s) else OclUndefined endif,
+		transactionRequired <- if thisModule.isCPP() then thisModule.isTransactionRequired(s) else OclUndefined endif,
+		condition <- if thisModule.isCPP() then thisModule.hasCondition(s) else OclUndefined endif,
+		counterType <- if thisModule.isCPP() then thisModule.hasCounterType(s) else OclUndefined endif,
+		samplingRate <- if thisModule.isCPP() then thisModule.hasSamplingRate(s) else OclUndefined endif,
+		scanner <- if thisModule.isCPP() then thisModule.hasScanner(s) else OclUndefined endif,
+		counterReset <- if thisModule.isCPP() then thisModule.hasCounterReset(s) else OclUndefined endif,
+		counterContext <- if thisModule.isCPP() then thisModule.hasCounterContext(s) else OclUndefined endif,
+		getValue <- if thisModule.isCPP() then thisModule.hasGetValue(s) else OclUndefined endif
+		
+	)
+	do
+	{
+		--generate domainExtensions if there are any
+		if (domainExtensions->size() > 0)
+		{
+			--before creating the extensions we group them by domain so that they can be outputted together
+			t.domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,s));
+		}
+	}	
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+      <extension
+         point="org.eclipse.papyrus.uml.extensionpoints.UMLLibrary">
+      <library
+            description="IMSUDM Guidelines"
+            name="IMSUDM_GUIDELIB"
+            path="pathmap://IMSUDM_GUIDELIB/ImsUdmGuidelines.uml">
+      </library>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.uri_mapping">
+      <mapping
+            source="pathmap://IMSUDM_GUIDELIB/"
+            target="platform:/plugin/com.ericsson.ecim.imsudm/guidelines/">
+      </mapping>
+   </extension>
+   <extension
+         id="IMSUDM UMLProfiles"
+         name="IMSUDM UMLProfiles"
+         point="org.eclipse.papyrus.uml.extensionpoints.UMLProfile">
+      <profile
+            name="IMSUDM"
+            path="pathmap://ECIM_IMSUDM/IMSUDM.profile.uml">
+      </profile>
+   </extension>
+
+   <extension point="org.eclipse.uml2.uml.dynamic_package">
+     <profile uri="http:///schemas/IMSUDM/" location="platform:/plugin/com.ericsson.ecim.imsudm/profiles/IMSUDM.profile.uml"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.emf.ecore.uri_mapping">
+      <mapping
+            source="pathmap://ECIM_IMSUDM/"
+            target="platform:/plugin/com.ericsson.ecim.imsudm/profiles/">
+      </mapping>
+   </extension>
+   <extension
+         point="com.ericsson.ecim.umlmod">
+      <umlmodifier
+            class="com.ericsson.ecim.imsudm.umlutils.HideGroupName2CategoryMigrator">
+      </umlmodifier>
+      <umlmodifier
+            class="com.ericsson.ecim.imsudm.umlutils.ImsUdmProfileApplier">
+      </umlmodifier>
+   </extension>
+  <extension
+         point="com.ericsson.ecim.umlmod">
+      <umlmodifier
+            class="com.ericsson.ecim.imsudm.umlutils.Cmw2ImsUdmProfileConverter">
+      </umlmodifier>
+      <umlmodifier
+            class="com.ericsson.ecim.imsudm.umlutils.ImsUdm2CmwProfileConverter">
+      </umlmodifier>
+  </extension>   
+</plugin>

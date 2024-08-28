@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2014 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Sep 10, 2014 11:57:33 AM using:
+	* com.ericsson.ecim.m2m 2.11.2.qualifier
+	* com.ericsson.ecim.dsl 2.11.2.qualifier
+	* com.ericsson.ecim.edm 2.11.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+  </momMetaData>
+  <mim author="EHSWOLM" contact="Thomas Wolmer" date="2011-03-11" docNo="" name="ComTop" namespace="urn:com:ericsson:ecim:ComTop" namespacePrefix="comtop" organization="EAB/FLJ/GRB" release="1" revision="" version="3">
+    <description>ECIM Top Level Model. This is the root level for the Ericsson Common Information Model. It contains the singleton, root Managed Object Class, ManagedElement under which the complete model is contained. Directly under ManagedElement are managed-function level classes SystemFunctions, Equipment, Transport and the root MOC of any managed functions. </description>
+    <domainExtension domain="ECIM">
+      <extension name="ecimMomName" value="ECIM_Top"/>
+      <extension name="ecimMomVersion" value="1"/>
+      <extension name="ecimMomRelease" value="0"/>
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <implements name="ECIM_Top" release="0" version="1"/>
+    <struct name="ProductIdentity">
+      <description>A struct that contains product designation, number and revision information.  </description>
+      <structMember name="productNumber">
+        <description>The product number in Ericsson ABC format.  See Ericsson Corporate Basic Standards for information.</description>
+        <string/>
+      </structMember>
+      <structMember name="productRevision">
+        <description>The product revision in the form R[1-9][A-Z].  See Ericsson Corporate Basic Standards for information.</description>
+        <string/>
+      </structMember>
+      <structMember name="productDesignation">
+        <description>The product designation is the common name for the product.  </description>
+        <string/>
+      </structMember>
+    </struct>
+    <derivedDataType name="DateTimeWithoutOffset">
+      <description>DateTimeWithoutOffset represents date and time data using strings with the example format "YYYY-MM-DDThh:mm:ss.SSS"
+        (excluding quotes).&lt;br /&gt;
+         &lt;br /&gt;
+         A DateTimeWithoutOffset string consists of a date part followed by a time part. The time part represents local time.&lt;br /&gt;
+         &lt;br /&gt;
+         The following pattern describes the DateTimeWithoutOffset format in detail:&lt;br /&gt;
+         &lt;br /&gt;
+         YYYY-MM-DDThh:mm:ss[.S+]&lt;br /&gt;
+         &lt;br /&gt;
+         Where:&lt;br /&gt;
+         [A]&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = A is optional&lt;br /&gt;
+         [A|B]&amp;nbsp;&amp;nbsp; = A or B or left out (optional)&lt;br /&gt;
+         YYYY&amp;nbsp;&amp;nbsp;&amp;nbsp; = four digit year&lt;br /&gt;
+         MM&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = two digit month (01=January, etc.)&lt;br /&gt;
+         DD&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = two digit day of month (01 through 31)&lt;br /&gt;
+         T&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = time designator (shows start of time component)&lt;br /&gt;
+         hh&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = two digits of hour (00 through 59, AM/PM not allowed)&lt;br /&gt;
+         mm&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = two digits of minute (00 through 59)&lt;br /&gt;
+         ss&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = two digits of second (00 through 59, leap second not allowed)&lt;br /&gt;
+         S+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = one or more digits of decimal fraction of a second&lt;br /&gt;
+         &lt;br /&gt;
+         DateTimeWithoutOffset values are compliant with ISO 8601 "Representation of dates and times" but are restricted according
+        to RFC 3339 "Date and Time on the Internet: Timestamps". The DateTimeWithoutOffset format has been further
+        restricted:&lt;br /&gt;
+         &lt;br /&gt;
+         - T designators must be upper case.&lt;br /&gt;
+         - T may not be exchanged with other characters such as space.&lt;br /&gt;
+         - '.' (dot) must be used to indicate start of fractions of seconds (ISO 8601 also allows comma).&lt;br /&gt;
+         - Using 60 as value for second to indicate leap second is not allowed.&lt;br /&gt;</description>
+      <baseType>
+        <string>
+          <lengthRange>
+            <min>19</min>
+            <max>19</max>
+          </lengthRange>
+          <stringLength>
+            <subrange>
+              <min>19</min>
+              <max>19</max>
+            </subrange>
+          </stringLength>
+          <validValues>^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+)*$</validValues>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="EcimEmpty">
+      <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence. </description>
+      <baseType>
+        <boolean/>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="DifferenceFromUTC">
+      <description>Difference between the value of the localDateTime attribute and UTC (Coordinated Universal Time).&#13;
+&#13;
+The following format shall be used&#13;
+&#13;
+[+/-]hh:mm&#13;
+&#13;
+It shall be expressed as positive (i.e. with the leading plus sign [+]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day.&#13;
+&#13;
+Example:  +01:00</description>
+      <baseType>
+        <string>
+          <lengthRange>
+            <min>6</min>
+            <max>6</max>
+          </lengthRange>
+          <stringLength>
+            <subrange>
+              <min>6</min>
+              <max>6</max>
+            </subrange>
+          </stringLength>
+          <validValues>^([+|-])(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9])$</validValues>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <class name="ManagedElement">
+      <description>The top-level class in the Common Information Model is the ManagedElement root MOC.  From this class, all model entities are contained.  &#13;
+The MOC has attributes that provide information on the managed elements identity, primary location and the products it contains.  </description>
+      <systemCreated/>
+      <root/>
+      <attribute name="managedElementId">
+        <description>The value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="siteLocation">
+        <description>This is a freetext attribute used for storing geographic or postal address data to assist staff in locating physical equipment.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>A freetext string for additional information to assist Managed Element identification.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="productIdentity">
+        <description>The product identities are used to clearly identify the product numbers and revisions that form this Managed Element.  This may refer to a single product or to several products that constitute managed functions within this Managed Element instance.&#13;
+</description>
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <structRef name="ProductIdentity">
+              <mimName>ComTop</mimName>
+            </structRef>
+            <minLength>0</minLength>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="localDateTime">
+        <description>This is the local date and time for the ManagedElement.&#13;
+&#13;
+The following format shall be used.&#13;
+&#13;
+YYYY-MM-DDThh:mm:ss&#13;
+&#13;
+The meaning of each field is as follows:&#13;
+YYYY is a 4-digit year.&#13;
+MM is the month within the year (starting with 01).&#13;
+DD is the day within the month (starting with 01).&#13;
+T shall be used as time designator to indicate the start of the time of day component in the expression.&#13;
+hh is the hour within the day (24-hour clock, starting with 00).&#13;
+mm is the minute within the hour (starting with 00).&#13;
+ss is the second within the minute (starting with 00).&#13;
+&#13;
+The hyphen [-] and the colon [:] shall be used as separators within the date and time of day expressions, respectively.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="DateTimeWithoutOffset">
+            <mimName>ComTop</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+        <specification>ISO 8601:2004(E)</specification>
+      </attribute>
+      <attribute name="timeZone">
+        <description>This is the timeZone that the Managed Element resides in.&#13;
+&#13;
+The possible values for this attribute are defined in the public-domain zoneinfo (or Olson) database.&#13;
+&#13;
+Locations are identified by a string indicating the continent or ocean and then the name of the location, which is typically the largest city within the region. &#13;
+See http://www.twinsun.com/tz/tz-link.htm for more information.&#13;
+&#13;
+Example: Europe/Stockholm&#13;
+</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="dateTimeOffset">
+        <description>Difference between the value of the localDateTime attribute and UTC (Coordinated Universal Time).</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="DifferenceFromUTC">
+            <mimName>ComTop</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="networkManagedElementId">
+        <description>Replaces the value component of the RDN in the COM Northbound Interface. This attribute shall, if used, be set to a simple alphanumeric value. &#13;
+The value should be unique within the network namespace.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="SystemFunctions">
+      <description>The SystemFunctions MOC is the container class for all common functions provided by the managed element.  Examples of these functions include Fault and Performance Management, System and Heartbest Management amongst others.  The common functions are categorised as either Common Base or Common Optional.  Common Base functions are always present regardless of node type while Common Optional functions may be present depending on the necessary capabilities of the node.  </description>
+      <systemCreated/>
+      <attribute name="systemFunctionsId">
+        <description>The value component of the RDN. It shall always be equal to "1".</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="Transport">
+      <description>The Transport MOC is the container for all transport related functions used within the managed element.  Its usage is dependent on the node type; where the node's primary function is to handle transport functions, the necessary fragments may be included directly within an applications xyzFunctions branch.  If the node's primary function is something other than transport handling, then the required transport fragments shall be contain by this MOC.  </description>
+      <systemCreated/>
+      <attribute name="transportId">
+        <description>The value component of the RDN. It shall always be equal to "1".</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="ManagedElement_to_SystemFunctions">
+      <containment>
+        <parent>
+          <hasClass name="ManagedElement">
+            <mimName>ComTop</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="SystemFunctions">
+            <mimName>ComTop</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+        <notCreatable/>
+        <notDeleteable/>
+      </containment>
+    </relationship>
+    <relationship name="ManagedElement_to_Transport">
+      <description>Containment association of the Transport MOC</description>
+      <containment>
+        <parent>
+          <hasClass name="ManagedElement">
+            <mimName>ComTop</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="Transport">
+            <mimName>ComTop</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+        <notCreatable/>
+        <notDeleteable/>
+      </containment>
+    </relationship>
+  </mim>
+</models>

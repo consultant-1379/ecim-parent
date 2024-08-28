@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Copyright (c) 2014 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Sep 23, 2014 4:41:38 PM using:
+	* com.ericsson.ecim.m2m 2.11.2.qualifier
+	* com.ericsson.ecim.dsl 2.11.2.qualifier
+	* com.ericsson.ecim.edm 2.11.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="" contact="" date="" docNo="" name="AMom" namespace="urn:com:ericsson:ecim:AMom" namespacePrefix="amom" organization="" release="1" revision="" version="1">
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <class name="TheRoot">
+            <root/>
+            <attribute name="theRootId">
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="isGood">
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <boolean>
+                        <defaultValue>true</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FmAlarmModel">
+            <root/>
+            <attribute name="fmAlarmModelId">
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FmAlarmType">
+            <attribute name="fmAlarmTypeId">
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="TheRoot_to_FmAlarmModel">
+            <containment>
+                <parent>
+                    <hasClass name="TheRoot">
+                        <mimName>AMom</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FmAlarmModel">
+                        <mimName>AMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="FmAlarmModel_to_FmAlarmType">
+            <containment>
+                <parent>
+                    <hasClass name="FmAlarmModel">
+                        <mimName>AMom</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FmAlarmType">
+                        <mimName>AMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="Fm_to_FmAlarmModel">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="false"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="Fm">
+                        <mimName>FM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FmAlarmModel">
+                        <mimName>AMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    <mib name="AMomInstances" release="1" version="1">
+        <object parentDn="">
+            <hasClass name="TheRoot">
+                <mimName>AMom</mimName>
+            </hasClass>
+            <slot name="theRootId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="Fm=1,FmAlarmModel=2">
+            <hasClass name="FmAlarmType">
+                <mimName>AMom</mimName>
+            </hasClass>
+            <slot name="fmAlarmTypeId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="Fm=1">
+            <hasClass name="FmAlarmModel">
+                <mimName>AMom</mimName>
+            </hasClass>
+            <slot name="fmAlarmModelId">
+                <value>2</value>
+            </slot>
+        </object>
+        <object parentDn="Fm=1,FmAlarmModel=1">
+            <hasClass name="FmAlarmType">
+                <mimName>AMom</mimName>
+            </hasClass>
+            <slot name="fmAlarmTypeId">
+                <value>2</value>
+            </slot>
+        </object>
+        <object parentDn="Fm=1,FmAlarmModel=1">
+            <hasClass name="FmAlarmType">
+                <mimName>FM</mimName>
+            </hasClass>
+            <slot name="fmAlarmTypeId">
+                <value>1</value>
+            </slot>
+            <slot name="majorType">
+                <value>193</value>
+            </slot>
+            <slot name="minorType">
+                <value>52356343</value>
+            </slot>
+            <slot name="moClasses">
+                <value>MomX::MocY</value>
+            </slot>
+            <slot name="specificProblem">
+                <value>CO2 Level is too High</value>
+            </slot>
+            <slot name="eventType">
+                <value>ENVIRONMENTALALARM</value>
+            </slot>
+            <slot name="probableCause">
+                <value>418</value>
+            </slot>
+            <slot name="isStateful">
+                <value>true</value>
+            </slot>
+            <slot name="additionalText">
+                <value>Nothing to report</value>
+            </slot>
+        </object>
+        <object parentDn="Fm=1">
+            <hasClass name="FmAlarmModel">
+                <mimName>FM</mimName>
+            </hasClass>
+            <slot name="fmAlarmModelId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="Fm=1,FmAlarmModel=1">
+            <hasClass name="FmAlarmType">
+                <mimName>FM</mimName>
+            </hasClass>
+            <slot name="fmAlarmTypeId">
+                <value>1</value>
+            </slot>
+            <slot name="majorType">
+                <value>193</value>
+            </slot>
+            <slot name="minorType">
+                <value>64562342</value>
+            </slot>
+            <slot name="moClasses">
+                <value>MomA::MocB</value>
+            </slot>
+            <slot name="specificProblem">
+                <value>Man got to get some coffe.</value>
+            </slot>
+            <slot name="eventType">
+                <value>SECURITYSERVICEORMECHANISMVIOLATION</value>
+            </slot>
+            <slot name="probableCause">
+                <value>418</value>
+            </slot>
+            <slot name="isStateful">
+                <value>false</value>
+            </slot>
+            <slot name="additionalText">
+                <value>What can I say?</value>
+            </slot>
+        </object>
+    </mib>
+</models>

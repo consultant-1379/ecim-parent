@@ -1,0 +1,54 @@
+module multikey {
+
+  namespace "urn:com:ericsson:yang:multikey";
+
+  prefix "multikey";
+  
+    import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+  organization
+    "Ericsson AB.";
+
+  contact
+    "Web:   <http://www.ericsson.com>";
+
+  description
+    "This YANG module defines the configuration data
+    and operational state data for Context in IPOS.
+
+    Copyright (c) 2014 Ericsson AB.
+    All rights reserved.";
+
+  revision 2014-09-15 {
+    description
+      "Initial revision.";
+    reference
+      "A YANG Data Model for Routing Management
+      draft-ietf-netmod-routing-cfg-15.";
+    ericsson:correction 1;
+	ericsson:release 1;
+	ericsson:version 1;
+  }
+
+  list simpleListMultiKey {
+  	   key "leafA leafB";
+       leaf leafA {
+             type uint32;
+       }
+       leaf leafB{
+       		type uint32;
+       }
+  } 
+  
+    list simpleListSingleKey {
+  	   key "leafA";
+       leaf leafA {
+             type uint32;
+       }
+       leaf-list leafListB{
+       		type uint32;
+       }
+  } 
+}

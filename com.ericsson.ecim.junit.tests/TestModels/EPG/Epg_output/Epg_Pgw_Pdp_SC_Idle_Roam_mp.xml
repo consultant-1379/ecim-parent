@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_Pdp_SC_Idle_Roam" namespace="urn:com:ericsson:ecim:Epg_Pgw_Pdp_SC_Idle_Roam" namespacePrefix="epg_pgw_pdp_sc_idle_roam" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="2">
+        <description>Idle timeout settings</description>
+        <enum name="MeasurementType">
+            <description>Point of reference for time measurement</description>
+            <enumMember name="since-creation">
+                <description>Relative to the PDP context creation time</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="since-update">
+                <description>Relative to the PDP context update time</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="Timeout">
+            <description>Maximum consecutive idle minutes for a context</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>1</min>
+                        <max>525600</max>
+                    </range>
+                    <unit>minutes</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="Roaming">
+            <description>Timeout settings based on roaming</description>
+            <root/>
+            <attribute name="roamingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Pdp_SC_Idle_Roam</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Pdp_SC_Idle_Roam</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="measurementType">
+                <description>Point of reference for time measurement</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="MeasurementType">
+                        <mimName>Epg_Pgw_Pdp_SC_Idle_Roam</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="idletimeout_roaming">
+            <containment>
+                <parent>
+                    <hasClass name="IdleTimeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Roaming">
+                        <mimName>Epg_Pgw_Pdp_SC_Idle_Roam</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

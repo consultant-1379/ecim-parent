@@ -1,0 +1,102 @@
+-- /**
+-- * This transform takes a YANG model as input and generates a ECIM compliant model (UML) as output.
+-- * NOTE: All restrictions should be noted here
+-- * 
+-- * superimposition-dependencies: 
+-- * library-dependencies: HelperFunctions.atl
+-- * Yang Model Dependencies: ericsson-yang-extensions.yang
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 22/08/2014
+-- */
+
+-- ECIMMM must be pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml in launcher
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI YANG=http://www.ericsson.com/2010/Yang
+
+module YangListToEcimClass;
+
+--Note:IN2 is for the augments model. One must be present if we do it like this. We could alternatively write a HOT to allow many augment files in. We also need to
+--think about how this will be called via the GUI/CLI
+create OUT : UML from IN : YANG, ECIM_MM : UML, YANG_MM : UML, ECIM_DT : UML, ECIM : UML, YANG_GM : UML, IN2 : YANG,-- IN3 : YANG
+	IN3: YANG, IN4: YANG, IN5: YANG, IN6: YANG, IN7: YANG, IN8: YANG, IN9: YANG, IN10: YANG, 
+	IN11: YANG, IN12: YANG, IN13: YANG, IN14: YANG, IN15: YANG, IN16: YANG, IN17: YANG, IN18: YANG, IN19: YANG, IN20: YANG, 
+	IN21: YANG, IN22: YANG, IN23: YANG, IN24: YANG, IN25: YANG, IN26: YANG, IN27: YANG, IN28: YANG, IN29: YANG, IN30: YANG, 
+	IN31: YANG, IN32: YANG, IN33: YANG, IN34: YANG, IN35: YANG, IN36: YANG, IN37: YANG, IN38: YANG, IN39: YANG, IN40: YANG, 
+	IN41: YANG, IN42: YANG, IN43: YANG, IN44: YANG, IN45: YANG, IN46: YANG, IN47: YANG, IN48: YANG, IN49: YANG, IN50: YANG, 
+	IN51: YANG, IN52: YANG, IN53: YANG, IN54: YANG, IN55: YANG, IN56: YANG, IN57: YANG, IN58: YANG, IN59: YANG, IN60: YANG, 
+	IN61: YANG, IN62: YANG, IN63: YANG, IN64: YANG, IN65: YANG, IN66: YANG, IN67: YANG, IN68: YANG, IN69: YANG, IN70: YANG, 
+	IN71: YANG, IN72: YANG, IN73: YANG, IN74: YANG, IN75: YANG, IN76: YANG, IN77: YANG, IN78: YANG, IN79: YANG, IN80: YANG, 
+	IN81: YANG, IN82: YANG, IN83: YANG, IN84: YANG, IN85: YANG, IN86: YANG, IN87: YANG, IN88: YANG, IN89: YANG, IN90: YANG, 
+	IN91: YANG, IN92: YANG, IN93: YANG, IN94: YANG, IN95: YANG, IN96: YANG, IN97: YANG, IN98: YANG, IN99: YANG, IN100: YANG; 
+
+uses HelperFunctions;
+
+rule ListToClass
+{
+	--TODO:Remove the temporary RpcParameter check and support it
+	from s : YANG!ListWithStatus((s.oclIsTypeOf(YANG!ListWithStatus) and not s.eContainer().oclIsTypeOf(YANG!Grouping) and (s.eContainer().oclIsKindOf(YANG!AbstractModule) or thisModule.filterAugmentsWrapper(s.eContainer()))))
+	using
+	{
+		--st : UML!Stereotype = thisModule.computePropertyStereotype(s);
+		childClasses : Set(UML!Class)  = OclUndefined;
+		childElements : Set(YANG!DataDefinition) = thisModule.recurseOverElementsRemovingChoices(s);
+		yangStereotype : UML!Stereotype = UML!Stereotype.allInstancesFrom('YANG_MM')->select(e|e.name='YangClass')->first();
+		ecimMoClassStereotype : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimMoClass')->first();
+		reference : String = if s.reference.oclIsUndefined() then OclUndefined else s.reference endif;			
+	}	
+	to class : UML!Class
+	(
+		name <- s.name,
+		--TODO:Yang can have many keys so we should support marking the leafs that are part of the key
+		ownedAttribute <- childElements->select(e|e.oclIsTypeOf(YANG!Leaf))->union(thisModule.getReleventAugmentElementsByType(s,YANG!Leaf))->collect(e|thisModule.CreateLeafToProperty(e,s)),
+		ownedAttribute <- childElements->select(e|e.oclIsTypeOf(YANG!LeafList))->union(thisModule.getReleventAugmentElementsByType(s,YANG!LeafList))->collect(e|thisModule.CreateLeafListToProperty(e,s)),
+		ownedAttribute <- childElements->select(e|e.oclIsTypeOf(YANG!Uses))->collect(e|thisModule.getUsesLeafs(e,Set{}))->flatten()->collect(e|thisModule.CreateLeafToProperty(e,s)),
+		ownedAttribute <- childElements->select(e|e.oclIsTypeOf(YANG!Uses))->collect(e|thisModule.getUsesLeafLists(e,Set{}))->flatten()->collect(e|thisModule.CreateLeafListToProperty(e,s)),
+		ownedAttribute <- key,--always create a key	
+		ownedComment <- thisModule.hasDescription(s),
+		nestedClassifier <- s.children->select(e|e.oclIsTypeOf(YANG!Choice))
+		
+	),
+	key : UML!Property
+	(
+		name <- s.name+'Id',
+		type <- UML!DataType.allInstancesFrom('ECIM_DT')->select(e|e.name='EcimString')->first(),
+		isReadOnly <- true
+	)
+	do
+	{
+		--create classes based on the Yang child nodes. every child class also gets a containment association
+		childClasses <- childElements->select(e|e.oclIsTypeOf(YANG!ListWithStatus) or e.oclIsTypeOf(YANG!Container))->collect(e|thisModule.CreateClass(s,e,class,Set{}));
+		childClasses->collect(childClass|thisModule.CreateAssociation(s, class, childClass, false));
+		--create classes based on the Yang child "uses" nodes. every child class "used" also gets a containment association
+		childClasses <- childElements->select(e|e.oclIsTypeOf(YANG!Uses))->collect(e|thisModule.getUsesListsAndContainers(e,Set{}))->flatten()->collect(e|thisModule.CreateClass(s,e,class,Set{}));
+		childClasses->collect(childClass|thisModule.CreateAssociation(s, class, childClass, false));			
+		--create associations to classes that this element is augmented by
+		--TODO:The last argument to the CreateAssociation method should be the child UML class. At the moment we pass in the child YANG element. Somehow it works! Maybe it won't always. Check it.
+		thisModule.getReleventAugmentElementsByType(s, YANG!ListWithStatus)->collect(e|thisModule.CreateAssociation(s, class, e, true));
+		thisModule.getReleventAugmentElementsByType(s, YANG!Container)->collect(e|thisModule.CreateAssociation(s, class, e, true));
+		--create associations to classes that this element is contributed by
+		thisModule.getReleventContibutionElementsByType(s, YANG!ListWithStatus)->collect(e|thisModule.CreateAssociation(s, class, e, true));
+		thisModule.getReleventContibutionElementsByType(s, YANG!Container)->collect(e|thisModule.CreateAssociation(s, class, e, true));
+		
+		if(not s.unique.oclIsUndefined())
+		{
+			thisModule.createUniqueConstraint(class,s.unique);	
+		}
+		
+		thisModule.isYangRoot(s,class,ecimMoClassStereotype);
+		
+		
+		--print out the choice details if any. later this will be moved to a meta-property
+		--s.children->select(e|e.oclIsTypeOf(YANG!Choice))->collect(e|thisModule.expandChoiceStatement(e));		
+		if(not reference.oclIsUndefined())
+		{
+			class.setValue(yangStereotype,'reference', reference);
+		}
+		class.applyStereotype(yangStereotype);
+		
+		class.applyStereotype(UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimMoClass')->first());
+		key.applyStereotype(UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimKeyAttribute')->first());	
+	}
+}

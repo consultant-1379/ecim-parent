@@ -1,0 +1,298 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:24:20 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RsyncRadioEquipmentClock" {
+	namespace "urn:com:ericsson:ecim:RsyncRadioEquipmentClock";
+	prefix "RsyncRadioEquipmentClock";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RsyncSynchronization {
+		prefix "RsyncSynchronization";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RsyncSyncLibrary {
+		prefix "RsyncSyncLibrary";
+	}
+
+	description "Transport Synchronization radio equipment clock.";
+
+	revision "2015-10-13" {
+		ericsson:version "3";
+		ericsson:contact "EAB/FJP/TA UABJOCL";
+		ericsson:correction "1";
+		ericsson:release "0";
+		ericsson:author "EAB/FJP/TA UABJOCL";
+	}
+
+	augment
+	"/ECIM_Top:ManagedElement/ECIM_Top:Transport/RsyncSynchronization:Synchronization"
+	{
+		list "RadioEquipmentClock" {
+			key "radioEquipmentClockId";
+			max-elements 1;
+			list "RadioEquipmentClockReference" {
+				key "radioEquipmentClockReferenceId";
+				max-elements 8;
+				uses RsyncRadioEquipmentClock:RadioEquipmentClockReference;
+			}
+
+			uses RsyncRadioEquipmentClock:RadioEquipmentClock;
+		}
+
+	}
+
+	typedef "RadioEquipmentClockState" {
+		type enumeration {
+			enum "FREE_RUNNING" {
+				value 1;
+			}
+
+			enum "FREQUENCY_LOCKED" {
+				value 2;
+			}
+
+			enum "FREQUENCY_HOLDOVER" {
+				value 3;
+			}
+
+			enum "TIME_OFFSET_LOCKED" {
+				value 4;
+			}
+
+			enum "TIME_OFFSET_HOLDOVER" {
+				value 5;
+			}
+
+			enum "RNT_TIME_LOCKED" {
+				value 6;
+			}
+
+			enum "RNT_TIME_HOLDOVER" {
+				value 7;
+			}
+
+			enum "UNKNOWN" {
+				value 8;
+			}
+
+		}
+
+		description "The state of the radio equipment clock. ";
+	}
+
+	grouping "RadioEquipmentClock" {
+		description "This MO class models a clock for a radio base station. ";
+		leaf "radioEquipmentClockId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "currentRadioClockReference" {
+			type string {
+				pattern "(.*=.*,)*RadioEquipmentClockReference=.*";
+			}
+
+			config true;
+			description
+			"The currently selected reference to the RadioEquipmentClock MO. The attribute is empty if no clock reference is selected. ";
+		}
+
+		leaf-list "radioClockPriorityTable" {
+			type string {
+				pattern "(.*=.*,)*RadioEquipmentClockReference=.*";
+			}
+
+			config true;
+			max-elements 8;
+			description
+			"All configured synchronization reference MOs in the order of priority.";
+		}
+
+		leaf "radioClockState" {
+			type RsyncRadioEquipmentClock:RadioEquipmentClockState;
+			mandatory true;
+			config true;
+			description "The state of the RadioEquipmentClock MO.
+";
+		}
+
+		leaf "selectionProcessMode" {
+			type RsyncSyncLibrary:SelectionProcessMode;
+			mandatory true;
+			description "Specifies whether quality processing is enabled.";
+		}
+
+		container "minQualityLevel" {
+			presence "This Container points to a Struct which has no key.";
+			description
+			"Minimum value of the quality level for all three telecom options, that is required for a source to be accepted as an active synchronization reference.";
+			uses RsyncSyncLibrary:QualityLevelValue;
+		}
+
+		leaf "clockOperQuality" {
+			type RsyncSyncLibrary:QualityLevel;
+			mandatory true;
+			config true;
+			description
+			"The operational quality of the selected synchronization reference.";
+		}
+
+		leaf "nodeGroupRole" {
+			type RsyncSyncLibrary:NodeGroupRole;
+			mandatory true;
+			config true;
+			description "The role of the node as a Node Group Member.";
+		}
+
+		leaf "clockSettledQuality" {
+			type RsyncSyncLibrary:QualityLevel;
+			mandatory true;
+			config true;
+			description "The settled quality of the Radio Equipment Clock.";
+		}
+
+	}
+
+	grouping "RadioEquipmentClockReference" {
+		description
+		"Models a generic synchronization reference for the radio equipment clock. The specific interface or protocol the reference will use, is configured through the attribute encapsulation.
+
+Dependencies: Two or more RadioEquipmentClockReference cannot have the same priority.";
+		leaf "radioEquipmentClockReferenceId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "administrativeState" {
+			type ECIM_CommonLibrary:AdmState;
+			mandatory true;
+			description "The administrative state.
+";
+		}
+
+		leaf-list "availabilityStatus" {
+			type ECIM_CommonLibrary:AvailStatus;
+			config true;
+			description
+			"The availability status.
+
+It contains details about operationalState.
+";
+		}
+
+		leaf "operationalState" {
+			type ECIM_CommonLibrary:OperState;
+			mandatory true;
+			config true;
+			description "The operational state.";
+		}
+
+		leaf "holdOffTime" {
+			type uint16 {
+				range "300..5000";
+			}
+
+			mandatory true;
+			description
+			"Specifies the time from fault detection to switch of reference.";
+		}
+
+		leaf "useQLFrom" {
+			type RsyncSyncLibrary:QLFrom;
+			mandatory true;
+			description
+			"Specifies whether the quality level received from network or from the attribute adminQuality is used.";
+		}
+
+		leaf "syncRefType" {
+			type RsyncSyncLibrary:SyncRefType;
+			mandatory true;
+			config true;
+			description "Indicates the type of synchronization reference.";
+		}
+
+		leaf "waitToRestoreTime" {
+			type uint16 {
+				range "0..800";
+			}
+
+			mandatory true;
+			description
+			"Specifies time from fault cease to switch back to a reference with higher priority.";
+		}
+
+		leaf "priority" {
+			type int8 {
+				range "1..8";
+			}
+
+			mandatory true;
+			description "Specifies the priority of the synchronization reference.";
+		}
+
+		leaf "operQualityLevel" {
+			type RsyncSyncLibrary:QualityLevel;
+			mandatory true;
+			config true;
+			description
+			"Indicates the quality level used by the process for the synchronization reference selection.
+
+If useQLFrom is set to RECEIVED_QL, the quality level extracted from the underlying reference is indicated.
+If useQLFrom is set to ADMIN_QL, the quality level specified by the attribute adminQualityLevel is indicated.";
+		}
+
+		container "adminQualityLevel" {
+			presence "This Container points to a Struct which has no key.";
+			description
+			"Specifies the quality level value to override the received quality level, if useQLFrom is set to ADMIN_QL  for all three telecom options.";
+			uses RsyncSyncLibrary:QualityLevelValue;
+		}
+
+		leaf "encapsulation" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			mandatory true;
+			description
+			"Reference to the underlying encapsulation.
+
+The underlying encapsulation can be FrequencySyncIO, TimeSyncIO, EthernetPort, BoundaryOrdinaryClock or NtpFrequencySync MO.";
+		}
+
+		leaf "referenceStatus" {
+			type RsyncSyncLibrary:ReferenceStatus;
+			config true;
+			description "The status of a synchronization reference.
+";
+		}
+
+		leaf "receivedQualityLevel" {
+			type RsyncSyncLibrary:QualityLevel;
+			mandatory true;
+			config true;
+			description
+			"Indicates the received quality level for the underlying reference.
+Note that some types of references lack quality level information.";
+		}
+
+	}
+
+}

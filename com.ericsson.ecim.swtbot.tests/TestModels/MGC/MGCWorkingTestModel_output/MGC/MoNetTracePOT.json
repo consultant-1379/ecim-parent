@@ -1,0 +1,239 @@
+{
+		"name" : "MoNetTrace" ,
+		"ss7" : "false" ,
+		"visible" : "true" ,
+		"desc" : "\nTrace Sessions for MGC Signaling Tracing.\n    " ,
+		"filename" : "MoNetTracePOT.json" ,
+		"max_entries" : "1" ,
+		"modid" : "0" ,
+		"attrs" : {
+				"netTraceId" : {
+						"name" : "netTraceId" ,
+						"keytype" : "ECIM_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "The MoClass key of the netTrace" ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "false"
+				} ,
+				"netTraceReference" : {
+						"name" : "netTraceReference" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThe parameter is a globally unique ID provided by the OSS-RC. Trace Session Referance is divided into Country (MCC), Operator (MNC), and Trace ID.\nMCC: MCC is in BCD format, 3 digits in length.\nMNC: MNC is in BCD format, 1 to 3 digits in length, with no filler digit for MNCs less than 3 digits.\nTrace ID: Trace ID is in hexadecimal format, 6 digits in length, and hex letters, A to F, are capitalized.\n      "
+						,
+						"types" : "derived10_12_[0-9A-F]{10,12}" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"netTraceOriginatingUserID" : {
+						"name" : "netTraceOriginatingUserID" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThe Originating User ID is the E.164 representation of the (Additional) Calling Number. Defining both Originating User ID and Terminating User ID will not be mandatory; 'either of them' or 'both of them' is a valid configuration. Any other triggering events are not supported.\n      "
+						,
+						"types" : "derived0_32_[0-9A-E\+]{0,32}" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"netTraceTerminatingUserID" : {
+						"name" : "netTraceTerminatingUserID" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThe Terminating User ID is the E.164 representation of the Called Number. Defining both Originating User ID and Terminating User ID will not be mandatory; 'either of them' or 'both of them' is a valid configuration. Any other triggering events are not supported.\n      "
+						,
+						"types" : "derived0_32_[0-9A-E\+]{0,32}" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"netTraceDepth" : {
+						"name" : "netTraceDepth" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nMGC supports the Minimum Trace depth on all the interfaces. Maximum Trace depth is supported only on the SIP interface. Other trace depth values are not supported.\n      " ,
+						"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"netTraceCollectionEntityAddress" : {
+						"name" : "netTraceCollectionEntityAddress" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThe Trace Collection Entity Address contains the IP address of the management system to which the trace records shall be transferred. MGC support IPv4 address only. The user ID, password, and the directory to transfer the trace records are set in the SFTP Server Configuration table for Service for NetTrace.\n      "
+						,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"netTracePriority" : {
+						"name" : "netTracePriority" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThe Trace Priority parameter is an optional proprietary parameter. The Trace Priority shall be an enumerated parameter with the following possible values: \n1 - Low\n2 - Medium \n3 - High\nIf the parameter is omitted, the default priority is Medium.\n      "
+						,
+						"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"netTraceTimeout" : {
+						"name" : "netTraceTimeout" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThe parameter specifies the duration of the trace session in seconds. When a trace session is activated, a timer with the specified timeout will be started. After the timer expiry, the trace session will be automatically deactivated and a notification with specific reason will be sent to OSS-RC. \nIf the parameter is not specified, MGC uses a default timeout value, 24 hours, to protect MGC from indefinite trace sessions. The timeout value, 0, indicates no timer will be started and the trace session is deactivated only after the deactivation request is received from OSS-RC.\n      "
+						,
+						"types" : "EcimUInt64" ,
+						"default" : "86400" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"netTraceStatus" : {
+						"name" : "netTraceStatus" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThe status for Trace Session. A new Trace Session should always use status eTracing. If the status is eStopping, it means the Trace Session should be deactivated but it still have some Trace Recording session for this Trace Session, and it will be deactivated automatically when the Trace Recording Session finished.\n      "
+						,
+						"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>}" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "true" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "true"
+				} ,
+				"netTraceHitCounter" : {
+						"name" : "netTraceHitCounter" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nUsed for generate the Trace Recording Session Reference. It is hidden in the GUI.\n      " ,
+						"types" : "EcimUInt64" ,
+						"default" : "0" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "true" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "true"
+				} ,
+				"netTraceStarttime" : {
+						"name" : "netTraceStarttime" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe time when insert the Trace Session.\n      " ,
+						"types" : "EcimUInt64" ,
+						"default" : "0" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "true" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "true"
+				}
+		} ,
+		"actions" : {
+				"netTraceAction" : {
+						"name" : "netTraceAction" ,
+						"admOpId" : "0" ,
+						"paras" : {
+								"netTraceActionValue" : {
+										"name" : "netTraceActionValue" ,
+										"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>}" ,
+										"default" : ""
+								}
+						} ,
+						"result" : {
+								"types" : "EcimString" ,
+								"default" : ""
+						}
+				}
+		} ,
+		"codecs" : {
+		} ,
+		"brs" : {
+		} ,
+		"enums" : {
+				"enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" : {
+						"name" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"attrs" : {
+								"eLow" : {
+										"default" : "2" ,
+										"name" : "eLow"
+								} ,
+								"eMedium" : {
+										"default" : "3" ,
+										"name" : "eMedium"
+								} ,
+								"eHigh" : {
+										"default" : "1" ,
+										"name" : "eHigh"
+								}
+						}
+				} ,
+				"enumSequence {IN6!<unnamed>, IN6!<unnamed>}" : {
+						"name" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>}" ,
+						"attrs" : {
+								"eKeepBeginTime" : {
+										"default" : "1" ,
+										"name" : "eKeepBeginTime"
+								} ,
+								"eResetBeginTime" : {
+										"default" : "2" ,
+										"name" : "eResetBeginTime"
+								}
+						}
+				}
+		} ,
+		"deriveds" : {
+				"derived10_12_[0-9A-F]{10,12}" : {
+						"name" : "derived10_12_[0-9A-F]{10,12}" ,
+						"stereotypes" : "EcimDerivedString" ,
+						"basetype" : "EcimString" ,
+						"length" : "10..12" ,
+						"range" : "" ,
+						"pattern" : "[0-9A-F]{10,12}"
+				} ,
+				"derived0_32_[0-9A-E\+]{0,32}" : {
+						"name" : "derived0_32_[0-9A-E\+]{0,32}" ,
+						"stereotypes" : "EcimDerivedString" ,
+						"basetype" : "EcimString" ,
+						"length" : "0..32" ,
+						"range" : "" ,
+						"pattern" : "[0-9A-E\+]{0,32}"
+				}
+		}
+}

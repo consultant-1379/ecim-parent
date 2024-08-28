@@ -1,0 +1,263 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 10:51:16 AM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "MMRevBStuff" {
+	namespace "urn:com:ericsson:ecim:MMRevBStuff";
+	prefix "MMRevBStuff";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import MomA {
+		prefix "MomA";
+	}
+
+	description "qwe";
+
+	revision "2015-04-20" {
+		ericsson:version "1";
+		ericsson:release "1";
+	}
+
+	augment "/MomA:Root" {
+		list "MMRevBRootMoc" {
+			key "rootId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "ServerMoc" {
+				key "serverMocId";
+				uses MMRevBStuff:ServerMoc;
+			}
+
+			list "ConcreteClient" {
+				key "concreteClientId";
+				uses MMRevBStuff:ConcreteClient;
+			}
+
+			list "ConcreteClient2" {
+				key "concreteClient2Id";
+				min-elements 1;
+				max-elements 1;
+				uses MMRevBStuff:ConcreteClient2;
+			}
+
+			uses MMRevBStuff:MMRevBRootMoc;
+		}
+
+	}
+
+	typedef "EnumX" {
+		type enumeration {
+			enum "ONE" {
+				value 1;
+				description "qwe";
+			}
+
+			enum "MINUSONE" {
+				value -1;
+			}
+
+			enum "TWO" {
+				value 2;
+				description "qwe";
+			}
+
+			enum "THREE" {
+				value 3;
+			}
+
+		}
+
+		description "qwe";
+	}
+
+	typedef "EnumY" {
+		type enumeration {
+			enum "TWO" {
+				value 2;
+				description "qwe";
+			}
+
+			enum "FOUR" {
+				value 4;
+			}
+
+			enum "THREE" {
+				value 3;
+			}
+
+		}
+
+		description "qwe";
+	}
+
+	typedef "EnumZ" {
+		type enumeration {
+			enum "THREE" {
+				value 3;
+			}
+
+		}
+
+		description "qwe";
+	}
+
+	typedef "MyDerivedFloat" {
+		type decimal64 {
+			fraction-digits 1;
+		}
+
+		description "qwe";
+	}
+
+	grouping "StructX" {
+		description "qwe";
+		choice "StructX" {
+			leaf "xSm1" {
+				type string;
+				description "qwe";
+			}
+
+			leaf "ySm1" {
+				type int32;
+				description "qwe";
+			}
+
+		}
+
+	}
+
+	grouping "StructY" {
+		description "qwe";
+		choice "StructY" {
+			leaf "ySm1" {
+				type int32;
+				description "qwe";
+			}
+
+			leaf "privateYSm" {
+				type int16;
+				description "qwe";
+			}
+
+		}
+
+	}
+
+	grouping "MMRevBRootMoc" {
+		description "qwe";
+		leaf "rootId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		container "structYAttribute" {
+			presence "This Container points to a Struct which has no key.";
+			description "qwe";
+			uses MMRevBStuff:structYAttribute;
+		}
+
+		container "structXAttribute" {
+			presence "This Container points to a Struct which has no key.";
+			description "qwe";
+			uses MMRevBStuff:structXAttribute;
+		}
+
+		leaf "enumYAttribute" {
+			type MMRevBStuff:EnumY;
+			description "qwe";
+		}
+
+		leaf "enumXAttribute" {
+			type MMRevBStuff:EnumX;
+			description "qwe";
+		}
+
+		leaf "derivedFloatAttr" {
+			type MMRevBStuff:MyDerivedFloat;
+			description "qwe";
+		}
+
+		ericsson:actionX {
+			description "qwe";
+		}
+
+	}
+
+	grouping "ServerMoc" {
+		description "qwe";
+		leaf "serverMocId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf-list "reservedByCC" {
+			type string {
+				pattern "(.*=.*,)*ConcreteClient=.*";
+			}
+
+			config true;
+			description "qwe";
+		}
+
+		leaf-list "reservedByAC" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description "qwe";
+		}
+
+		ericsson:prelAction {
+			description "qwe";
+		}
+
+	}
+
+	grouping "ConcreteClient" {
+		description "qwe";
+		leaf "concreteClientId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf "uses" {
+			type string {
+				pattern "(.*=.*,)*ServerMoc=.*";
+			}
+
+			description "qwe";
+		}
+
+	}
+
+	grouping "ConcreteClient2" {
+		description "qwe";
+		leaf "concreteClient2Id" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf "uses" {
+			type string {
+				pattern "(.*=.*,)*ServerMoc=.*";
+			}
+
+			description "qwe";
+		}
+
+	}
+
+}

@@ -1,0 +1,88 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 14, 2015 9:51:04 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RtnL3Host" {
+	namespace "urn:com:ericsson:ecim:RtnL3Host";
+	prefix "RtnL3Host";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	description "IP termination.";
+
+	revision "2015-10-14" {
+		ericsson:author "EAB/FJP/TA UABERPE";
+		ericsson:release "3";
+		ericsson:correction "0";
+		ericsson:contact "EAB/FJP/TA UABERPE";
+		ericsson:version "1";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport" {
+		list "Host" {
+			key "hostId";
+			uses RtnL3Host:Host;
+		}
+
+	}
+
+	grouping "Host" {
+		description "Representation of an IP domain for traffic termination. 
+
+Optional to support - Flag: if-feature L3HostHost";
+		leaf "hostId" {
+			type string;
+			mandatory true;
+			description "Value component of the RDN. 
+";
+			ericsson:restricted;
+		}
+
+		leaf "ttl" {
+			type int32 {
+				range "1..255";
+			}
+
+			mandatory true;
+			description "Default TTL value. 
+
+The default value is inserted into the Time-To-Live (TTL) field of the IPv4 header of datagrams originated at this entity, whenever a TTL value is not supplied by the transport layer protocol.
+
+Optional to support - Flag: if-feature L3HostTtl
+";
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use. 
+
+Optional to support - Flag: if-feature L3HostUserLabel";
+		}
+
+		leaf "hopLimit" {
+			type int32 {
+				range "0..255";
+			}
+
+			mandatory true;
+			description "IPv6 default hop limit. 
+
+The default value is inserted into the Hop Limit field of the IPv6 header of datagrams originated at this entity whenever
+a Hop Limit value is not supplied by the transport layer protocol.
+
+Optional to support - Flag: if-feature L3HostHopLimit";
+		}
+
+	}
+
+}

@@ -1,0 +1,91 @@
+module Choice {
+
+  namespace "urn:com:ericsson:yang:Choice";
+  
+  prefix "Choice";
+  
+	import ericsson-yang-extensions {
+		prefix ericssonx;
+	}
+	
+  organization
+    "Ericsson AB.";
+
+  contact
+    "Web:   <http://www.ericsson.com>";
+
+  description
+    "This YANG module defines the configuration data
+    and operational state data for Context in IPOS.
+
+    Copyright (c) 2014 Ericsson AB.
+    All rights reserved.";
+
+	revision "2014-09-04" {
+		ericssonx:correction 1;
+		ericssonx:release 1;
+		ericssonx:version 1;
+	}
+
+//TODO:Improve with test-cases for all choice possibilities
+list List {
+	key z;
+	leaf z
+	{
+		type string;
+	}
+	choice ChoiceA
+	{
+		case a
+		{
+			leaf a{type string;}
+		}
+		case b
+		{
+			leaf b{type string;}
+		}		
+	}
+	choice ChoiceB
+	{
+		case a
+		{
+			leaf c{type string;}
+		}
+		case b
+		{
+			leaf d{type string;}
+		}		
+	}
+	/*
+	TODO: Because of a bug in recurseOverElementsRemovingChoices in the ATL the following container will not be processed
+	* The bug happens when a choice is mixed with list/containers at the same nesting level. It causes the list/container to
+	* not be processed.
+
+	container transfer {
+	         choice myChoice {
+	             default a;
+	             case a {
+	                 leaf a {
+	                     type uint16;
+	                 }
+	             }
+	             case b {
+	                 leaf b {
+	                     type uint16;
+	                 }
+	             }
+	             case c {
+	                 choice innerChoice{
+	                 	case a{leaf c{type string;}}
+	                 	case b{
+	                 		choice innerInnerChoice{
+	                 			case a{leaf d{type string;}}
+	                 			case b{leaf e{type string;}}
+	                	}
+	                 	}
+	                 }
+	             }  
+	         }
+	     } */
+ } 	 
+}

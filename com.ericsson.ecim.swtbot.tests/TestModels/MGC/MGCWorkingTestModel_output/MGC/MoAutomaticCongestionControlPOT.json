@@ -1,0 +1,99 @@
+{
+		"name" : "MoAutomaticCongestionControl" ,
+		"ss7" : "false" ,
+		"visible" : "true" ,
+		"desc" : "\nConfiguration data for MGC Automatic \nCongestion Control functionality.\n    " ,
+		"filename" : "MoAutomaticCongestionControlPOT.json" ,
+		"max_entries" : "1" ,
+		"modid" : "0" ,
+		"attrs" : {
+				"automaticCongestionControlId" : {
+						"name" : "automaticCongestionControlId" ,
+						"keytype" : "ECIM_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "The MoClass key of the automaticCongestionControl" ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "false"
+				} ,
+				"accCongestionLevelFilteringTime" : {
+						"name" : "accCongestionLevelFilteringTime" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nValues (1..60): Number of consecutive times \nconsistently higher or lower Congestion \nLevel (CL) Congestion must be \ndetected (detected once per second) in order \nto obtain reliable change of the current \nCongestion Level.                           \n\nValue 0: No supervision of Congestion \nLevel is done. Congestion Level is set \npermanently CL0 (No congestion).\n      "
+						,
+						"types" : "derived0_60" ,
+						"default" : "2" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"accCongestionLevel1Limit" : {
+						"name" : "accCongestionLevel1Limit" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nFiltered (see Congestion Level Filtering \nTime) delay in processing processor capacity \nrequests to indicate congestion level 1 \n(CL1) to Automatic Congestion Control System \n(ACC).\n      " ,
+						"types" : "derived500_10000" ,
+						"default" : "950" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"accCongestionLevel2Limit" : {
+						"name" : "accCongestionLevel2Limit" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nFiltered (see \nCongestion Level Filtering Time) delay in \nprocessing processor capacity requests to \nindicate congestion level 2 (CL2) to \nAutomatic Congestion Control System (ACC).\n      " ,
+						"types" : "derived550_20000" ,
+						"default" : "1000" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				}
+		} ,
+		"actions" : {
+		} ,
+		"codecs" : {
+		} ,
+		"brs" : {
+		} ,
+		"enums" : {
+		} ,
+		"deriveds" : {
+				"derived0_60" : {
+						"name" : "derived0_60" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "0..60" ,
+						"pattern" : ""
+				} ,
+				"derived500_10000" : {
+						"name" : "derived500_10000" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "500..10000" ,
+						"pattern" : ""
+				} ,
+				"derived550_20000" : {
+						"name" : "derived550_20000" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "550..20000" ,
+						"pattern" : ""
+				}
+		}
+}

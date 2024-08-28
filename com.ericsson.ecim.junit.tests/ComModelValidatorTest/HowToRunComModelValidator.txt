@@ -1,0 +1,23 @@
+
+Manually
+
+1) Download maf_model_validator from https://eforge.ericsson.se/sf/frs/do/listReleases/projects.maf/frs.official_releases
+
+2) Follow instructions given in maf_model_validator's README file to setup environment,
+
+3) Export all test models from com.ericsson.ecim.junit.tests/TestModels
+
+4) Export script runComModelValidatorOnEtTestModels.py and place it in the root directory containing all test models.
+
+5) Execute script runComModelValidatorOnEtTestModels.py
+
+Automatic by Jenkins
+
+1) Install as above 
+
+2) Create symbolic link from /local/scratch/maf_model_validator to the following script (change paths where necessary):
+
+#!/bin/bash
+LD_LIBRARY_PATH=/home/erajaik/prj/maf_model_validator/maf_model_validator_r2a27:${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH
+/home/erajaik/prj/maf_model_validator/maf_model_validator_r2a27/maf_model_validator -q $@

@@ -1,0 +1,102 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-sep-04 14:47:38 using 
+    * com.ericsson.ecim.yang.m2m 2.11.2.qualifier
+*/
+module Augment {
+	namespace "urn:com:ericsson:ecim:Augment";
+	prefix Augment;
+	import ericsson-yang-extensions {
+		prefix ericssonx;
+	}
+ 
+	import simple {
+		prefix "simple-a";
+	}
+
+	organization "Ericsson";
+	description "asdf";
+
+	revision "2014-09-04" {
+		ericssonx:correction 1;
+		ericssonx:release 1;
+		ericssonx:version 1;
+	}
+
+    list AugmentTestList {
+		key leafA;
+		leaf leafA {
+             type uint32;
+       }
+	}    
+ 
+	//add a leaf to a container
+	augment "/simple-a:simpleContainer" {
+         leaf augmentedLeafA {
+             type string;
+         }
+     }
+
+	//add a leaf to a list
+	augment "/simple-a:simpleList" {
+         leaf augmentedLeafB {
+             type string;
+         }
+     }
+
+	//add a leaf-list to a container
+	augment "/simple-a:simpleContainer" {
+        leaf-list augmentedLeafListB {
+             type string;
+         }
+     }
+
+	//add a leaf-list to a list
+	augment "/simple-a:simpleList" {
+         leaf-list augmentedLeafListB {
+             type string;
+         }
+     }
+      
+ 	//add a list to a container
+	augment "/simple-a:simpleContainer" {
+        list augmentedListInsideContainer{
+        	key augmentedLeaf;
+	        leaf augmentedLeaf {
+	             type string;
+	         }	
+        }
+     }
+
+
+	//add a list to a list
+	augment "/simple-a:simpleList" {
+         list augmentedListInsideList{
+         	key augmentedLeaf;
+	        leaf augmentedLeaf {
+	             type string;
+	         }	
+        }
+     }
+
+ 	//add a list to a container in a container
+	augment "/simple-a:containerParent/simple-a:containerChild" {
+        list augmnetedListInsideContainerInsideContainer{
+        	key augmentedLeaf;
+	        leaf augmentedLeaf {
+	             type string;
+	         }	
+        }
+     }
+
+	//add a list to a list in a list
+	augment "/simple-a:listParent/simple-a:listChild" {
+		list augmnetedListInsideListInsideList{
+	        key augmentedLeaf;
+	        leaf augmentedLeaf {
+	             type string;
+	         }	
+        }
+     }
+ }

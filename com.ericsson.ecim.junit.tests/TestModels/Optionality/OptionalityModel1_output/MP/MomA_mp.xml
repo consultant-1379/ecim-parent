@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2014 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Sep 10, 2014 11:49:11 AM using:
+	* com.ericsson.ecim.m2m 2.11.2.qualifier
+	* com.ericsson.ecim.dsl 2.11.2.qualifier
+	* com.ericsson.ecim.edm 2.11.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+  </momMetaData>
+  <mim author="" contact="" correction="1" date="" docNo="" name="MomA" namespace="urn:com:ericsson:ecim:MomA" namespacePrefix="moma" organization="" release="1" revision="" version="1">
+    <description>none</description>
+    <modelFeatures modelType="Template">
+      <modelFeature featureType="basic" name="A"/>
+      <modelFeature featureType="basic" name="B"/>
+      <modelFeature featureType="basic" name="C"/>
+      <modelFeature featureType="basic" name="D"/>
+      <modelFeature featureType="basic" name="E"/>
+      <modelFeature featureType="basic" name="F"/>
+      <modelFeature featureType="basic" name="G"/>
+      <modelFeature featureType="basic" name="Space Feature"/>
+    </modelFeatures>
+    <class name="MocA">
+      <description>none</description>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature A</decisionStatement>
+      </decisionPoint>
+      <action name="actionA">
+        <returnType>
+          <string/>
+        </returnType>
+        <parameter name="paramA">
+          <in/>
+          <dataType>
+            <int16/>
+          </dataType>
+        </parameter>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature C</decisionStatement>
+        </decisionPoint>
+      </action>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="attributeA">
+        <description>none</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <int16/>
+        </dataType>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature A AND B</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="crossModelTypeAttribute">
+        <description>none</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <moRef name="Root">
+            <mimName>MomB</mimName>
+          </moRef>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MocB">
+      <description>done</description>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature (A OR B OR C OR D OR E)</decisionStatement>
+      </decisionPoint>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MocC">
+      <description>none</description>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature A AND B AND C</decisionStatement>
+      </decisionPoint>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="Root">
+      <root/>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MocD">
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature (A AND B) OR C</decisionStatement>
+      </decisionPoint>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MocE">
+      <description>none</description>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature ((A AND B) OR C) AND (D AND E)</decisionStatement>
+      </decisionPoint>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MocF">
+      <description>noine</description>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature Z</decisionStatement>
+      </decisionPoint>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MocG">
+      <description>none</description>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature F AND NOT G</decisionStatement>
+      </decisionPoint>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MocH">
+      <description>x</description>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature NOT A</decisionStatement>
+      </decisionPoint>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MocI">
+      <description>none</description>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature NOT A AND NOT (B AND C) AND NOT (D OR E) OR NOT (F OR G)</decisionStatement>
+      </decisionPoint>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MocL">
+      <description>none</description>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature "Space Feature"</decisionStatement>
+      </decisionPoint>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="Root_to_MocA">
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature A</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>MomA</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MocA">
+            <mimName>MomA</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Root_to_MocB">
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature (A OR B OR C OR D OR E)</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>MomA</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MocB">
+            <mimName>MomA</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Root_to_MocC">
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature A AND B AND C</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>MomA</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MocC">
+            <mimName>MomA</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Root_to_MocD">
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature (A AND B) OR C</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>MomA</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MocD">
+            <mimName>MomA</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Root_to_MocE">
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature ((A AND B) OR C) AND (D AND E)</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>MomA</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MocE">
+            <mimName>MomA</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Root_to_MocI">
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature NOT A AND NOT (B AND C) AND NOT (D OR E) OR NOT (F OR G)</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>MomA</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MocI">
+            <mimName>MomA</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Root_to_MocF">
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature Z</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>MomA</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MocF">
+            <mimName>MomA</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Root_to_MocH">
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature NOT A</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>MomA</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MocH">
+            <mimName>MomA</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Root_to_MocL">
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature "Space Feature"</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>MomA</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MocL">
+            <mimName>MomA</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Root_to_MocG">
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature F AND NOT G</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>MomA</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MocG">
+            <mimName>MomA</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+  </mim>
+</models>

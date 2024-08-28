@@ -1,0 +1,172 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Aug 17, 2015 2:59:02 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.1.qualifier
+*/
+module "Ch83Mom_UML" {
+	namespace "urn:com:ericsson:ecim:Ch83Mom_UML";
+	prefix "Ch83Mom_UML";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	description
+	"This is the MOM as it is supposed to be modelled in UML with all the new features.";
+
+	revision "2015-08-17" {
+		ericsson:version "1";
+		ericsson:release "1";
+	}
+
+	list "Root" {
+		key "bId";
+		list "F" {
+			key "cId";
+			max-elements 2;
+			list "D" {
+				key "dId";
+				uses Ch83Mom_UML:D;
+			}
+
+			list "E" {
+				key "eId";
+				uses Ch83Mom_UML:E;
+			}
+
+			uses Ch83Mom_UML:F;
+		}
+
+		list "G" {
+			key "cId";
+			max-elements 1;
+			list "D" {
+				key "dId";
+				uses Ch83Mom_UML:D;
+			}
+
+			list "E" {
+				key "eId";
+				uses Ch83Mom_UML:E;
+			}
+
+			uses Ch83Mom_UML:G;
+		}
+
+		uses Ch83Mom_UML:Root;
+	}
+
+	typedef "DerivedStringType1" {
+		type string {
+			pattern "[ABCDEFGH]";
+		}
+
+	}
+
+	grouping "Root" {
+		description "Root";
+		leaf "bId" {
+			type string;
+			mandatory true;
+			description "bId";
+			ericsson:restricted;
+		}
+
+		leaf "bAttr1" {
+			type int16;
+			description "Attribute description...";
+		}
+
+		leaf "a1" {
+			type string {
+				pattern ".*";
+			}
+
+		}
+
+		leaf "a2" {
+			type Ch83Mom_UML:DerivedStringType1;
+		}
+
+	}
+
+	grouping "D" {
+		description "D";
+		leaf "dId" {
+			type string;
+			mandatory true;
+			description "dId";
+			ericsson:restricted;
+		}
+
+		leaf "dAttr1" {
+			type int16;
+			description "Attribute description...";
+		}
+
+	}
+
+	grouping "E" {
+		description "E";
+		leaf "eId" {
+			type string;
+			mandatory true;
+			description "eId";
+			ericsson:restricted;
+		}
+
+		leaf "eAttr1" {
+			type int16;
+			description "Attribute description...";
+		}
+
+	}
+
+	grouping "F" {
+		description "F";
+		leaf "fAttr1" {
+			type int16;
+			description "Attribute description...";
+		}
+
+		leaf "cId" {
+			type string;
+			mandatory true;
+			description "cId";
+			ericsson:restricted;
+		}
+
+		leaf "cAttr1" {
+			type int16;
+			description "Attribute description...";
+		}
+
+	}
+
+	grouping "G" {
+		description "G";
+		leaf "gAttr1" {
+			type int16;
+			description "Attribute description...";
+		}
+
+		leaf "fAttr1" {
+			type int16;
+			description "Attribute description...";
+		}
+
+		leaf "cId" {
+			type string;
+			mandatory true;
+			description "cId";
+			ericsson:restricted;
+		}
+
+		leaf "cAttr1" {
+			type int16;
+			description "Attribute description...";
+		}
+
+	}
+
+}

@@ -1,0 +1,444 @@
+-- /**
+-- * This transformation converts a UML Class element to a JSON file.
+-- *
+-- * superimposition-dependencies: CommonRules.atl
+-- * library-dependencies: HelperFunctions.atl
+-- *
+-- * Author: Ronan Barrett, Andreas Jakobik
+-- * Date: 27/06/2012
+-- */
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI JSON=http://www.ericsson.com/ecim/mgc/Json
+-- @nsURI PARAM=http://ericsson.com/ECIM/ParameterModel
+
+module UmlClassToMgcJson;
+create OUT : JSON from IN : UML, IN2 : PARAM;
+
+uses HelperFunctions;
+
+--Map a UML Class/ECIM MOC to a Json Object
+rule ClassToObject
+{
+	from s : UML!Class(s.oclIsTypeOf(UML!Class) and s.name = thisModule.getParameterValue('class'))
+	to t : JSON!Object
+	(
+	    members <- name,
+		members <- ss7,
+		members <- visible,
+		members <- desc,
+		members <- filename,
+		members <- max_entries,
+		members <- modid,
+		members <- attrMember,
+		members <- actionMember,
+		members <- codecsMember,
+		members <- brsMember,
+		members <- enumMember,
+		members <- derivedsMember
+	),
+	name : JSON!Member ( 
+		key <- 'name',
+		value <- thisModule.CreateJsonStringValue(s.name)
+	),
+	ss7 : JSON!Member ( 
+		key <- 'ss7',
+		value <- thisModule.getSs7(s)
+	),	
+	visible : JSON!Member ( 
+		key <- 'visible',
+		value <- thisModule.getVisible(s)
+	),	
+	desc : JSON!Member ( 
+		key <- 'desc',
+		value <- thisModule.getDescription(s)
+	),
+	filename : JSON!Member ( 
+		key <- 'filename',
+		value <- thisModule.CreateJsonStringValue(thisModule.getFileName(s.name))
+	),
+	max_entries : JSON!Member ( 
+		key <- 'max_entries',
+		value <- thisModule.getMaxEntries(s)
+	),	
+	modid : JSON!Member ( 
+		key <- 'modid',
+		value <- thisModule.getModid(s)
+	),	
+	attrMember : JSON!Member (
+		key <- 'attrs',
+		value <- attrs
+	),
+	attrs : JSON!Object (
+		members <- s.attribute->select(e|e.association.oclIsUndefined() and e.owner.name = thisModule.getParameterValue('class'))	
+	),
+	actionMember : JSON!Member (
+		key <- 'actions',
+		value <- actions
+	),
+	actions : JSON!Object (
+		members <- s.ownedOperation->select(e|e.owner.name = thisModule.getParameterValue('class'))
+	),
+	codecsMember : JSON!Member (
+		key <- 'codecs',
+		value <- codecs
+	),
+	codecs : JSON!Object (
+		members <- s.attribute->select(e|e.type.oclIsTypeOf(UML!Enumeration) and thisModule.isCodecTC(e.type.name))->collect(e|e.type)->asSet()
+		->union(s.ownedOperation->collect(o|o.ownedParameter)->flatten()->select(e|e.type.oclIsTypeOf(UML!Enumeration) and thisModule.isCodecTC(e.type.name))->collect(e|e.type)->asSet())
+	),
+	brsMember : JSON!Member (
+		key <- 'brs',
+		value <- brs
+	),
+	brs : JSON!Object (
+	),	
+	enumMember : JSON!Member (
+		key <- 'enums',
+		value <- enums
+	),
+	enums : JSON!Object (
+		members <- s.attribute->select(e|e.type.oclIsTypeOf(UML!Enumeration) and not thisModule.isCodecTC(e.type.name))->collect(e|e.type)->asSet()
+		->union(s.ownedOperation->collect(o|o.ownedParameter)->flatten()->select(e|e.type.oclIsTypeOf(UML!Enumeration) and not thisModule.isCodecTC(e.type.name))->collect(e|e.type)->asSet())
+	),
+	derivedsMember : JSON!Member (
+		key <- 'deriveds',
+		value <- deriveds
+	),
+	deriveds : JSON!Object (
+		members <- s.attribute->select(e|thisModule.isEcimDerivedDatatype(e.type))->collect(e|e.type)->asSet()
+		->union(s.ownedOperation->collect(o|o.ownedParameter)->flatten()->select(e|thisModule.isEcimDerivedDatatype(e.type))->collect(e|e.type)->asSet())
+	)
+}
+
+--Map a UML DataType/ECIM DerivedType to a Json Member
+rule DerivedDatatypeToMember 
+{
+	from s: UML!DataType(thisModule.isEcimDerivedDatatype(s))
+	to t: JSON!Member
+	(
+		key <- 'derived'+s.name,
+		value <- derivedObject
+	),
+	derivedObject : JSON!Object (
+		members <- name,
+		members <- stereotypes,
+		members <- basetype,
+		members <- length,
+		members <- range,
+		members <- pattern
+	),
+	name : JSON!Member (
+		key <- 'name',
+		value <- thisModule.CreateJsonStringValue('derived'+s.name)
+	),
+	stereotypes : JSON!Member (
+		key <- 'stereotypes',
+		value <- thisModule.getDerivedDatatypeStereotypeName(s)
+	),
+	basetype : JSON!Member (
+		key <- 'basetype',
+		value <- thisModule.getBaseType(s)
+	),
+	length : JSON!Member (
+		key <- 'length',
+		value <- thisModule.getLength(s)  
+	),
+	range : JSON!Member (
+		key <- 'range',
+		value <- thisModule.getRangeFromDataType(s)
+	),
+	pattern : JSON!Member (
+		key <- 'pattern',
+		value <- thisModule.getPattern(s)
+	)
+}
+
+--Map a UML Property/ECIM Attribute to a Json Member
+rule PropertyToMember
+{
+	from s : UML!Property(s.oclIsTypeOf(UML!Property) and s.association.oclIsUndefined() and s.owner.name = thisModule.getParameterValue('class'))
+	to t : JSON!Member
+	(
+		key <- s.name,
+		value <- y
+	),
+	y : JSON!Object (
+		members <- name,
+		members <- keytype,
+		members <- keyorder,
+		members <- desc,
+		members <- types,
+--		members <- range,
+		members <- default,
+		members <- category,
+		members <- changereq,
+		members <- visible,
+		members <- maxaccess,
+		members <- realtime
+--		members <- validc,
+--		members <- lower,
+--		members <- upper
+	),
+	name : JSON!Member ( 
+		key <- 'name',
+		value <- thisModule.CreateJsonStringValue(s.name)
+	),
+	desc : JSON!Member ( 
+		key <- 'desc',
+		value <- thisModule.getDescription(s)
+	),
+	keytype : JSON!Member ( 
+		key <- 'keytype',
+		value <- thisModule.getKeyType(s)
+	),	
+	keyorder : JSON!Member ( 
+		key <- 'keyorder',
+		value <- thisModule.getKeyOrder(s)
+	),	
+	types : JSON!Member ( 
+		key <- 'types',
+		value <- thisModule.getType(s)
+	),
+	range : JSON!Member ( 
+		key <- 'range',
+		value <- thisModule.getRange(s)
+	),
+	default : JSON!Member ( 
+		key <- 'default',
+		value <- thisModule.getDefault(s)
+	),
+	category : JSON!Member ( 
+		key <- 'category',
+		value <- thisModule.getCategory(s)
+	),
+	changereq : JSON!Member ( 
+		key <- 'changereq',
+		value <- thisModule.getChangereq(s)
+	),
+	visible : JSON!Member ( 
+		key <- 'visible',
+		value <-  thisModule.getVisible(s)
+	),
+	maxaccess : JSON!Member ( 
+		key <- 'maxaccess',
+		value <- thisModule.getMaxAccess(s)
+	),
+	realtime : JSON!Member ( 
+		key <- 'realtime',
+		value <- thisModule.getRealtime(s)
+	),
+	validc : JSON!Member ( 
+		key <- 'validc', 
+		value <- thisModule.getValidc(s)
+	),
+		lower : JSON!Member (
+		key <- 'lower',
+		value <- thisModule.CreateJsonStringValue(s.lower.toString())
+	),
+	upper : JSON!Member (
+		key <- 'upper',
+		value <- thisModule.CreateJsonStringValue(s.upper.toString())
+	)
+}
+
+--Map a UML Operation/ECIM Action to a Json Member
+rule OperationToMember
+{
+	from s : UML!Operation(s.oclIsTypeOf(UML!Operation) and s.owner.name = thisModule.getParameterValue('class'))
+	to t : JSON!Member
+	(
+		key <- s.name,
+		value <- y
+	),
+	y : JSON!Object (
+		members <- name,
+		members <- admOpId,
+		members <- parasMember,
+		-- adds a EcimResult to members, if provided in the model 
+		members <- s.ownedParameter->collect(e| 
+			if thisModule.isEcimResult(e) then thisModule.CreateResultMember(e) else OclUndefined endif
+		)
+	),
+	name : JSON!Member ( 
+		key <- 'name',
+		value <- thisModule.CreateJsonStringValue(s.name)
+	),
+	admOpId : JSON!Member (
+		key <- 'admOpId',
+		value <- thisModule.getAdmOpId(s)
+	),
+	parasMember : JSON!Member (
+		key <- 'paras',
+		value <- if s.ownedParameter.size() = 0 then OclUndefined else paras endif
+	),
+	paras : JSON!Object (
+		members <- s.ownedParameter->collect(e|
+			if thisModule.isEcimParameter(e) then thisModule.CreateParameterMember(e) else OclUndefined endif
+		)
+	)
+}
+
+--Map, when called, a UML Parameter/ECIM Result to a Json Member
+rule CreateResultMember(p : UML!Parameter)
+{
+	to t : JSON!Member
+	(
+		key <- 'result',
+		value <- paramObject
+	),
+	paramObject : JSON!Object (
+		members <- types,
+		members <- default
+	),
+	types : JSON!Member (
+		key <- 'types',
+		value <- thisModule.getType(p)
+	),
+	default : JSON!Member (
+		key <- 'default',
+		value <- thisModule.CreateJsonStringValue(p.default)
+	)
+	do
+	{
+		t;--always return t from a called rule
+	}
+}
+
+--Map, when called, a UML Parameter/ECIM Action Parameter to a Json Member
+rule CreateParameterMember(p : UML!Parameter)
+{
+	to t : JSON!Member
+	(
+		key <- p.name,
+		value <- paramObject
+	),
+	paramObject : JSON!Object (
+		
+		members <- name,
+		members <- types,
+		members <- default
+	),
+	name : JSON!Member (
+			key <- 'name',
+			value <- thisModule.CreateJsonStringValue(p.name)
+	),
+	types : JSON!Member (
+		key <- 'types',
+		value <- thisModule.getType(p)
+	),
+	default : JSON!Member (
+		key <- 'default',
+		value <- thisModule.CreateJsonStringValue(p.default)
+	)
+	do
+	{
+		t;--always return t from a called rule
+	}
+}
+
+--Map a UML Enumeration/ECIM Enumeration to a Json Member
+rule CreateEnumToMember
+{
+	
+	from s : UML!Enumeration
+	using
+	{
+		codecsMap : Map(Integer,JSON!Array) = thisModule.createCodecsBitMap();
+	}
+	to t : JSON!Member
+	(
+		key <- if(thisModule.isCodecTC(s.name)) then s.name else thisModule.prefixString('enum',s.name) endif, --prefix the enumeration name
+		value <- if(thisModule.isCodecTC(s.name)) then codecStructure else enumStructure endif
+	),
+	--normal structure
+	enumStructure : JSON!Object (
+		members <- name,
+		members <- attrMember
+	),
+	name : JSON!Member ( 
+		key <- 'name',
+		value <- thisModule.CreateJsonStringValue(thisModule.prefixString('enum',s.name))
+	),
+	attrMember : JSON!Member (
+		key <- 'attrs',
+		value <- attrs
+	),
+	attrs : JSON!Object (
+		members <- s.ownedLiteral->collect(e|thisModule.CreateEnumMember(e))
+	),
+	
+	--custom structure for special case when dealing with codecs
+	codecStructure : JSON!Object (
+		members <- bitsMember,
+		members <- codecName
+	),
+	codecName : JSON!Member ( 
+		key <- 'name',
+		value <- thisModule.CreateJsonStringValue(s.name)
+	),
+	bitsMember : JSON!Member (
+		key <- 'bits',
+		value <- bits
+	),
+	bits : JSON!Array (
+	)
+	do
+	{	
+		--Checks whether enum is codec structure, if so fill it with information provided from the enumLiteral list
+		if(thisModule.isCodecTC(s.name)) {	
+			for(e in s.ownedLiteral) 
+			{
+				-- insert pair of values in the correct position of the codecs map
+				-- Note: codecs map is already sorted, so only need to insert new element in the correct position 
+				codecsMap <- codecsMap->including(
+					thisModule.getCodecsBitMapSequence().indexOf(e.specification.stringValue()),
+					thisModule.CreateEnumArray(e.name,e.specification.stringValue()));
+			}
+			-- Need to sort the keys first, so that when retrieving the values they are already sorted
+			-- Unfortunately, such step was required because every time we convert a Map into a Collect it gets unsorted
+			bits.values <- codecsMap->getKeys()->asSequence()->collect(e | codecsMap.get(e));
+		}
+	}
+}
+
+--Map, when called, a UML Enumeration Literal/ECIM Enumeration Member to a Json Member
+rule CreateEnumMember(literal : UML!EnumerationLiteral)
+{
+	to t : JSON!Member
+	(
+		key <- literal.name,
+		value <- literalObject
+	),
+	literalObject : JSON!Object (
+		members <- default,
+		members <- name
+	),
+	default : JSON!Member (
+		key <- 'default',
+		value <- thisModule.CreateJsonStringValue(literal.specification.stringValue())
+	),
+	name : JSON!Member (
+		key <- 'name',
+		value <- thisModule.CreateJsonStringValue(literal.name)
+	)
+	do
+	{
+		t;--always return t from a called rule
+	}
+}
+
+--Map, when called, a pair of strings to a Json Array
+rule CreateEnumArray(name : String, value : String)
+{
+	to t : JSON!Array
+	(
+		values <- Sequence{
+			thisModule.CreateJsonStringValue(name),
+			thisModule.CreateJsonStringValue(value)
+		}
+	)
+	do
+	{
+		t;--always return t from a called rule
+	}
+}

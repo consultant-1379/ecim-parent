@@ -1,0 +1,696 @@
+-- /**
+-- * These helpers assist in the transformation from an ECIM complaint model (UML) to a TSP MIM.
+-- * 
+-- * Author: Ronan Barrett
+-- * Date: 27/04/2011
+-- */
+
+library HelperFunctions;
+
+--The TSP application subtrees are placed under the tsp_mim:Node MO in TSP but in DX ET they are modelled as children of 
+--the ManagedElement MO. To overcome this difference, the reference to ECIM_Top:ManagedElement or ComTop:ManagedElement 
+--shall be replaced with a reference to tsp_mim:Node inside the <relationship> tags.
+helper def : manipulateParentName(name : String) : String =
+	if(name = 'ECIM_Top:ManagedElement' or name = 'ComTop:ManagedElement' or
+	   name = 'ECIM_Top_mim:ManagedElement' or name = 'ComTop_mim:ManagedElement') then
+		'tsp_mim:Node' 
+	else
+		name
+	endif;
+
+-- All MOM names must end in "_mim" unless it already does.
+helper def : addUnderscoreMim(name : String) : String =
+	if (name.oclIsUndefined()) then
+		name
+	else
+		if(name.endsWith('_mim')) then
+			name
+		else
+			name.concat('_mim')
+		endif
+	endif;
+
+--The CommonTypes_mim library from TSP defines the "integer", "integerKeyString" and "float" types. When these types are 
+--used by an application, the generated TSP/vDicos XML file should simply say <integer/> or <float/> type names (built-in 
+--types in TSP/vDicos modeling environment) to achieve backward compatibility for existing TSP/vDicos MIMs that use those types.
+helper def : isSpecialDataType(name : String) : Boolean =
+	if(name.toLower() = 'commontypes_mim:integer' or name.toLower() = 'commontypes_mim:integerkeystring' or name.toLower() = 'commontypes_mim:float' or name.toLower() = 'commontypes_mim:datetime') then
+		true
+	else
+		false
+	endif;
+
+--Note: It is really important that only one Stereotype from the ECIM Base Profile is ever applied to a UML Element as the following
+--helper requires this to be true. Of course you can apply stereotypes from other profiles :)
+helper context UML!Element def : getEcimAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'ECIM Base Profile').first()
+	else
+		OclUndefined
+	endif;
+
+--Note: It is really important the only one Stereotype from the Core MW Profile is ever applied to a UML Element as the following
+--helper requires this to be true. Of course you can apply stereotypes from other profiles :)
+helper context UML!Element def : getCoreMWAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'CoreMW Profile').first()
+	else
+		OclUndefined
+	endif;
+
+helper context UML!Element def : getVdicosAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'VDicosProfile').first()
+	else
+		OclUndefined
+	endif;
+
+--Check to see if an Element has an Ecim Stereotype applied
+helper context UML!Element def : hasEcimAppliedStereotype() : Boolean = 
+	if(self.hasStereotypeApplied())
+	then
+			if(self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'ECIM Base Profile').size() > 0)
+			then
+				true
+			else
+				false
+			endif
+	else
+		false
+	endif;
+
+--returns true if the element to which the function is called has the specified stereotype applied
+helper context UML!Element def: hasStereotype(name : String) : Boolean =
+	not self.getAppliedStereotype(name).oclIsUndefined();
+
+--returns true if the element to which the function is called does not have the specified stereotype applied
+helper context UML!Element def: hasNotGotStereotype(name : String) : Boolean =
+	self.getAppliedStereotype(name).oclIsUndefined();
+
+--returns true if the element has at least one stereotype applied
+helper context UML!Element def: hasStereotypeApplied() : Boolean =
+	self.getAppliedStereotypes()->size() > 0;
+
+--This helper navigates the stereotype hierarchy of a Class to see if it has a stereotype that extends EcimGeneralMoClass. if it
+--does then it is an MOC
+helper context UML!Class def : isEcimMOC() : Boolean =
+	if(self.hasEcimAppliedStereotype())
+	then
+		if(self.getEcimAppliedStereotype()->allParents()->select(e|e.name = 'EcimGeneralMoClass')->size() > 0)
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+--This helper navigates the stereotype hierarchy of a Class to see if it has a stereotype that extends EcimGeneralMoClass. if it
+--does then it is an MOC
+helper def : isEcimStruct(dt: UML!DataType) : Boolean =
+	if(dt.oclIsTypeOf(UML!Class))
+	then
+		dt.isEcimStruct()
+    else
+    	false
+	endif;
+
+
+--This helper navigates the stereotype hierarchy of a Class to see if it has a stereotype that extends EcimGeneralMoClass. if it
+--does then it is an MOC
+helper context UML!Class def : isEcimStruct() : Boolean =
+	if(self.hasEcimAppliedStereotype())
+	then
+		self.hasStereotype('ECIM Base Profile::EcimStruct')
+    else
+    	false
+	endif;
+
+--This helper navigates the stereotype hierarchy of a Property to see if it has a stereotype that extends EcimReadOnlyAttribute. if it
+--does then it is EcimReadOnlyAttribute
+helper context UML!Property def : isEcimReadOnlyAttribute() : Boolean =
+	if(self.hasEcimAppliedStereotype())
+	then
+		if(self.getAppliedStereotypes()->select(e|e.name = 'EcimAttribute_RO')->size() > 0)
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+--This helper navigates the stereotype hierarchy of a Class to see if it has a stereotype that extends EcimGeneralType. if it
+--does then it is a ECIM type that is not an MOC e.g. AlarmType or PMType
+helper context UML!Class def : isEcimType() : Boolean =
+	if(self.hasEcimAppliedStereotype())
+	then
+		if(self.getEcimAppliedStereotype()->allParents()->select(e|e.name = 'EcimGeneralType')->size() > 0)
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+--TODO:Comment me
+helper def : hasDescription(classifier : UML!Classifier) : String =
+	--TODO: save value in var using let
+	if(classifier.ownedComment.size() > 0)
+	then
+		--TODO:Currently we only support one comment on a UML classifier. Is there ever a requirement for more?
+		-- e.g. long description and short description as mentioned in DSL IP
+		thisModule.CreateDescriptionType(classifier.ownedComment.first().body)
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isAbstract(classifier : UML!Classifier) : TSP_MIM!AbstractType =
+	if(classifier.isAbstract)
+	then
+		TSP_MIM!AbstractType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : hasBaseClass(classifier : UML!Classifier) : TSP_MIM!BaseClassType =
+	if(classifier.general->size() > 0)
+	then
+		thisModule.CreateBaseClassType(classifier)
+	else
+		OclUndefined
+	endif;
+
+--If JIM-Application is among the inherited classes, then use this name.
+--Otherwise take the first one (in this case there should be only one but we do not check for that)
+helper def : getBaseClassName(classifier : UML!Classifier) : String =
+	let jimAppClassifier : UML!Classifier = classifier.general->select(e|e.name='JIM-Application')->first() in
+	let hasJIMapplication : Boolean = not jimAppClassifier.oclIsUndefined() in
+	if (hasJIMapplication)
+	then
+		if (jimAppClassifier.getNearestPackage() <> classifier.getNearestPackage())
+		then
+			thisModule.addUnderscoreMim(jimAppClassifier.getNearestPackage().name) + ':' + jimAppClassifier.name
+		else
+			jimAppClassifier.name
+		endif
+	else 
+		let generalClassifier : UML!Classifier = classifier.general->first() in
+	    if generalClassifier.getNearestPackage() <> classifier.getNearestPackage()
+		then 
+			thisModule.addUnderscoreMim(generalClassifier.getNearestPackage().name) + ':' + generalClassifier.name 
+		else 
+			generalClassifier.name 
+		endif
+	endif;
+	
+--Returns true of classifier inherits both JIM-Application and any other (abstract) class.
+--This is the only case where multiple inheritance is allowed. 
+helper def : inheritsJIMapplicationAndOtherClass(classifier : UML!Classifier) : Boolean =
+	if(classifier.general->size() > 1)
+	then
+		let jimAppClassifier : UML!Classifier = classifier.general->select(e|e.name='JIM-Application') in
+		not jimAppClassifier.oclIsUndefined()
+	else
+		false
+	endif;
+
+--This helper checks if systemCreated tag is outputted. The isSystemCreated flag is no longer used as input, the canCreate/canDelete properties
+-- having the supplied class as child determine the outcome.
+-- All the class' contribution and containment relationships must have canCreate=false and canDelete=false in order for systemCreated to be returned.
+
+--Check to see if a class has the isSystemCreated flag
+helper def : hasSystemCreated(classifier : UML!Classifier) : Boolean =
+	if(classifier.isEcimMOC())
+	then
+		if(classifier.getValue(classifier.getEcimAppliedStereotype(),'isSystemCreated'))
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+--TODO:Comment me and reuse code from method below
+helper def : isSystemCreated(classifier : UML!Classifier) : TSP_MIM!SystemCreatedType =
+	if(thisModule.hasSystemCreated(classifier))
+	then
+		TSP_MIM!SystemCreatedType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+
+helper def : isMandatory(classifier : UML!Property) : TSP_MIM!MandatoryType =
+	if(classifier.lower >= 1)
+	then
+		TSP_MIM!MandatoryType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isPropertyReadOnly(classifier : UML!Property) : TSP_MIM!ReadOnlyType =
+	if(classifier.isReadOnly)
+	then
+		TSP_MIM!ReadOnlyType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isRestricted(classifier : UML!Classifier) : TSP_MIM!RestrictedType =
+	if(classifier.getValue(classifier.getEcimAppliedStereotype(),'isRestricted'))
+	then
+		TSP_MIM!RestrictedType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isKey(classifier : UML!Classifier) : TSP_MIM!KeyType =
+	if(classifier.getValue(classifier.getEcimAppliedStereotype(),'isKey'))
+	then
+		TSP_MIM!KeyType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isNonPersistent(classifier : UML!Classifier) : TSP_MIM!NonPersistentType =
+	if(not classifier.getValue(classifier.getCoreMWAppliedStereotype(),'isPersistent'))
+	then
+		TSP_MIM!NonPersistentType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : getPattern (classifier : UML!Classifier) : String =
+	let pattern : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'pattern') in
+	if(pattern <> OclUndefined and pattern <> '')
+	then
+		pattern	
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : getLength (classifier : UML!Classifier) : String =
+	let length : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'length') in
+	if(length <> OclUndefined and length <> '')
+	then
+		if (length.indexOf(',') < 1) -- for now output length only if single length is defined
+		then
+			thisModule.CreateLengthRangeTypeOnString(length)	
+		else
+			OclUndefined
+		endif
+	else
+		OclUndefined
+	endif;
+
+--get the LDAP Object Id. 
+--The commented code is not needed as vDicos do this work already elsewhere. 
+helper def : getLDAPObjectId (classifier : UML!NamedElement) : String =
+	let ldapObjectId : String = classifier.getValue(classifier.getVdicosAppliedStereotype(),'ldapObjectId') in
+	if(ldapObjectId <> OclUndefined and ldapObjectId <> '')
+	then
+		ldapObjectId
+	else
+		OclUndefined
+	endif;
+--	let ldapParentObjectId : String = if classifier.owner.oclIsTypeOf(UML!Class) or classifier.owner.oclIsTypeOf(UML!Package) then classifier.owner.getValue(classifier.owner.getVdicosAppliedStereotype(),'ldapObjectId') else '' endif in
+--	let ldapPackageObjectId : String = if classifier.owner <> classifier.getNearestPackage() then classifier.getNearestPackage().getValue(classifier.getNearestPackage().getVdicosAppliedStereotype(),'ldapObjectId') else '' endif in
+--	if(ldapObjectId <> OclUndefined and ldapObjectId <> '')
+--	then
+--		if(ldapObjectId.substring(1, 1) = '.')--when an Object ID begins with . then the owners Object ID must be prepended
+--		then
+--			--ensure the package has an ldapParentObjectId before using it
+--			if(ldapParentObjectId <> OclUndefined and ldapParentObjectId <> '' )
+--			then
+--				--if no Object Id is specified use the MOM Object
+--				if(ldapParentObjectId.substring(1, 1) = '.')
+--				then
+--					if(ldapPackageObjectId <> OclUndefined and ldapPackageObjectId <> '' )
+--					then	
+--						ldapPackageObjectId + ldapParentObjectId + ldapObjectId--combine package id, parent id and local id
+--					else
+--						ldapObjectId--no package id so use local id
+--					endif
+--				else
+--					ldapParentObjectId + ldapObjectId--combine parent id and local id
+--				endif
+--			else
+--				ldapObjectId--just use the direct id as parent did not have a '.'
+--			endif
+--		else
+--			ldapObjectId--just use the direct id as element did not have a '.'
+--		endif
+--	else
+--		--ensure the package has an Object ID before assigning it
+--		if(ldapPackageObjectId <> OclUndefined and ldapPackageObjectId <> '' )
+--		then
+--			--see if there is a parent id to append or not
+--			if(ldapParentObjectId <> OclUndefined and ldapParentObjectId <> '' )
+--			then
+--				--if no Object Id is specified use the MOM Object
+--				if(ldapParentObjectId.substring(1, 1) = '.')
+--				then
+--					ldapPackageObjectId + ldapParentObjectId--combine parent and package id	as parent is '.'
+--				else
+--					ldapParentObjectId--just use the direct id as element did not have a '.'
+--				endif
+--			else
+--				--if no Object Id is specified use the MOM Object
+--				ldapPackageObjectId
+--			endif
+--		else
+--			--see if there is a parent id to append or not
+--			if(ldapParentObjectId <> OclUndefined and ldapParentObjectId <> '' )
+--			then
+--				ldapParentObjectId--we know the package id is empty so just show the parent id
+--			else
+--				OclUndefined--no ids anywhere!
+--			endif
+--		endif
+--	endif;
+
+--Retieve the From value
+helper def : getFrom (classifier : UML!Classifier) : String =
+	let fromValue : String = classifier.getValue(classifier.getVdicosAppliedStereotype(),'from') in
+	if(fromValue <> OclUndefined and fromValue <> '')
+	then
+		fromValue	
+	else
+		OclUndefined
+	endif;
+
+--Retieve the confdTargetNamespace value
+helper def : getConfdTargetNamespace (classifier : UML!Classifier) : String =
+	let confdTargetNamespace : String = classifier.getValue(classifier.getVdicosAppliedStereotype(),'confdTargetNamespace') in
+	if(confdTargetNamespace <> OclUndefined and confdTargetNamespace <> '')
+	then
+		confdTargetNamespace	
+	else
+		OclUndefined
+	endif;
+
+helper def : isSingletonBoolean(classifier : UML!Classifier) : Boolean =
+	--A class is a singleton if lower bound and upper bounds are 1 in a containment of contribution when it is the child
+	--This flag is only valid if isSystemCreated=true
+	if (thisModule.hasSystemCreated(classifier) and 
+			classifier.getAssociations()->collect(e|e.memberEnd)->flatten()->
+			select(e|e.type = classifier and e.aggregation = #composite)->
+			select(e|e.lower = 1 and e.upper =1)->size() > 0)
+	then
+		true 
+	else
+		false 
+	endif;
+
+--See if a Class is a singleton or not
+helper def : isSingleton(classifier : UML!Classifier) : TSP_MIM!SingletonType =
+	--A class is a singleton if lower bound and upper bounds are 1 in a containment of contribution when it is the child
+	--This flag is only valid if isSystemCreated=true
+	if(thisModule.isSingletonBoolean(classifier))
+	then
+		TSP_MIM!SingletonType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isHideInLdap(classifier : UML!Classifier) : TSP_MIM!HideInLdapType =
+	let isHideInLdap : Boolean = classifier.getValue(classifier.getVdicosAppliedStereotype(),'hideInLdap') in	
+	if(isHideInLdap)
+	then
+		TSP_MIM!HideInLdapType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isHideInConfd(classifier : UML!Classifier) : TSP_MIM!HideInConfdType =
+	let isHideInConfd : Boolean = classifier.getValue(classifier.getVdicosAppliedStereotype(),'hideInConfd') in	
+	if(isHideInConfd)
+	then
+		TSP_MIM!HideInConfdType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isSensitive(classifier : UML!Classifier) : TSP_MIM!SensitiveType =
+	let isSensitive : Boolean = classifier.getValue(classifier.getVdicosAppliedStereotype(),'sensitive') in	
+	if(isSensitive)
+	then
+		TSP_MIM!SensitiveType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isSystemMaintained(classifier : UML!Classifier) : TSP_MIM!SystemMaintainedType =
+	let isSystemMaintained : Boolean = classifier.getValue(classifier.getVdicosAppliedStereotype(),'systemMaintained') in	
+	if(isSystemMaintained)
+	then
+		TSP_MIM!SystemMaintainedType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--Check to see if the current framework is JIM or not
+helper def : isJIM(package : UML!Package) : Boolean =
+	let literal : UML!EnumerationLiteral = thisModule.getCMFramework(package) in	
+	if(not literal.oclIsUndefined())
+	then
+		if(literal.specification.integerValue() = 0)
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+--Check to see if the current framework is CDM or not
+helper def : isCDM(package : UML!Package) : Boolean =
+	let literal : UML!EnumerationLiteral = thisModule.getCMFramework(package) in	
+	if(not literal.oclIsUndefined())
+	then
+		if(literal.specification.integerValue() = 2)
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+--Retrieve the cmFramework meta-property if it is set
+helper def : getCMFramework(package : UML!Package) : UML!EnumerationLiteral =
+	if(package.hasStereotype('VDicosProfile::VDicosMom'))
+	then
+		package.getValue(package.getVdicosAppliedStereotype(),'cmFramework')
+	else
+		OclUndefined
+	endif;	
+
+--TODO:Comment me
+helper def : isReducedLoggingAllowed(classifier : UML!Classifier) : TSP_MIM!ReducedLoggingAllowedType =
+	let isReducedLoggingAllowed : Boolean = classifier.getValue(classifier.getVdicosAppliedStereotype(),'reducedLoggingAllowed') in	
+	if(isReducedLoggingAllowed)
+	then
+		TSP_MIM!ReducedLoggingAllowedType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--TODO:Comment me
+helper def : isCached(classifier : UML!Classifier) : TSP_MIM!ReducedLoggingAllowedType =
+	let isCached : Boolean = classifier.getValue(classifier.getCoreMWAppliedStereotype(),'isCached') in	
+	if(isCached)
+	then
+		TSP_MIM!CachedType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--Check to see if the class is runtime or not. Only valid for CDM framework.
+helper def : isRuntime(classifier : UML!Classifier) : TSP_MIM!RuntimeType =
+	let isConfigurable : Boolean = classifier.getValue(classifier.getCoreMWAppliedStereotype(),'isConfigurable') in	
+	if(not isConfigurable and thisModule.isCDM(classifier.getNearestPackage()))
+	then
+		TSP_MIM!RuntimeType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--Is this type to be used in many places or not?
+helper def : isSharedType(classifier : UML!Classifier) : Boolean =
+	let isSharedType : Boolean = if classifier.hasStereotype('VDicosProfile::VDicosType') then classifier.getValue(classifier.getVdicosAppliedStereotype(),'isSharedType') else false endif in	
+	if(isSharedType)
+	then
+		true
+	else
+		false
+	endif;
+
+--We use the parameter cardinality to see if the paramater is optional or not
+helper def : isOptional(param : UML!Parameter) : TSP_MIM!OptionalType =
+	if(param.lower = 0)
+	then
+		TSP_MIM!OptionalType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--We use the property cardinality to see if the paramater is deletable or not. Only valid for CDM framework.
+helper def : isDeletable(prop : UML!Property) : TSP_MIM!DeletableType =
+	if(prop.lower = 0 and thisModule.isCDM(prop.getNearestPackage()))
+	then
+		TSP_MIM!DeletableType.newInstance()
+	else
+		OclUndefined
+	endif;
+
+--Get the range as defined on a DerivedNumeric
+helper def : getRange (classifier : UML!Classifier) : String =
+	let range : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'range') in
+	if(range <> OclUndefined and range <> '')
+	then
+		if (range.indexOf(',') < 1) -- for now range only if single range is defined
+		then
+			range	
+		else
+			OclUndefined
+		endif
+	else
+		OclUndefined
+	endif;
+
+
+--Return LDAP info if some is defined
+helper def : getLdapTypeInfo (classifier : UML!Property) : TSP_MIM!LdapTypeInfoType =
+	let equality : String = classifier.getValue(classifier.getVdicosAppliedStereotype(),'equality') in
+	let substr : String = classifier.getValue(classifier.getVdicosAppliedStereotype(),'substr') in
+	let ordering : String = classifier.getValue(classifier.getVdicosAppliedStereotype(),'ordering') in
+	let syntax : String = classifier.getValue(classifier.getVdicosAppliedStereotype(),'syntax') in	
+	let ldapTypeInfoType : TSP_MIM!LdapTypeInfoType = thisModule.CreateLdapTypeInfoType(equality,substr,ordering,syntax) in
+	
+	--only create the LdapTypeInfoType when at least one value was filled in
+	if(ldapTypeInfoType.oclIsUndefined())
+	then
+		OclUndefined
+	else
+		ldapTypeInfoType
+	endif;
+
+	
+helper def : getTspNameFromClassifier (s : UML!Classifier) : String =
+	if not s.getVdicosAppliedStereotype().oclIsUndefined() and thisModule.isJIM(s.getNearestPackage())
+	then
+		thisModule.getTspName(s.name, s.getValue(s.getAppliedStereotype('VDicosProfile::VDicosClass'),'tspName'))
+	else	
+		s.name
+	endif;
+	
+	
+helper def : getTspName (ecimName : String, tspName : String) : String =
+	if(not tspName.oclIsUndefined())
+	then
+		if (tspName <> '') then
+			tspName
+		else
+			ecimName
+		endif
+	else
+		ecimName
+	endif;
+	
+-- Replaces '\,' with ',''
+helper def : removeEscapeCommaCharacters(s : String) : String =
+	if(not s.oclIsUndefined()) then
+		s.regexReplaceAll('\\\\,',',')
+	else
+		s
+	endif;
+
+
+helper def : isTypeBoolean(s : UML!TypedElement) : Boolean =
+	if (s.type.name = 'EcimBoolean') then
+		true
+	else if s.type.oclIsTypeOf(UML!DataType) and s.type.hasStereotype('ECIM Base Profile::EcimDerivedBoolean') then
+		true
+	else
+		false
+	endif
+	endif;
+
+
+helper def : IMS_EXTENSION_EXTENDER : String = 'IMS';
+helper def : IMS_EXTENSION_NAME : String = 'IMS extensions for PDB and OSS';
+helper def : IMS_EXTENSION_VERSION : String = '1';
+helper def : IMS_EXTENSION_RELEASE : String = '0';
+
+helper def : TSP_EXTENSION_EXTENDER : String = 'TSP';
+helper def : TSP_EXTENSION_NAME : String = 'TSP extensions';
+helper def : TSP_EXTENSION_VERSION : String = '1';
+helper def : TSP_EXTENSION_RELEASE : String = '0';
+
+helper def  : hasCategory(s : UML!Class) : TSP_MIM!XMLTypeDocumentRoot = 
+	let hideGroup : String = s.getValue(s.getEcimAppliedStereotype(),'hideGroupName') in
+		if(hideGroup <> OclUndefined and hideGroup <> '') 
+		then 
+			thisModule.CreateCategoryType(hideGroup)
+		else 
+			thisModule.CreateCategoryType('')
+		endif;
+
+helper def  : hasDependencies(s : UML!Class) : TSP_MIM!XMLTypeDocumentRoot = 
+	let deps : String = s.getValue(s.getEcimAppliedStereotype(),'dependencies') in
+		if(deps <> OclUndefined and deps <> '') 
+		then 
+			thisModule.CreateDependenciesType(deps)
+		else 
+			thisModule.CreateDependenciesType('')
+		endif;
+
+helper def  : hasTakesEffect(s : UML!Class) : TSP_MIM!XMLTypeDocumentRoot = 
+	let takesEffect : String = s.getValue(s.getEcimAppliedStereotype(),'takesEffect') in
+		if(takesEffect <> OclUndefined and takesEffect <> '') 
+		then 
+			thisModule.CreateTakesEffectType(takesEffect)
+		else 
+			thisModule.CreateTakesEffectType('')
+		endif;
+
+helper def  : isOrdered(s : UML!Property) : TSP_MIM!XMLTypeDocumentRoot = 
+		if(s.isOrdered and (s.upper > 1 or s.upper = -1)) 
+		then 
+			thisModule.CreateOrderedType('true')
+		else 
+			thisModule.CreateOrderedType('false')
+		endif;
+
+helper def  : isUnique(s : UML!Property) : TSP_MIM!XMLTypeDocumentRoot = 
+		if(s.isUnique and (s.upper > 1 or s.upper = -1)) 
+		then 
+			thisModule.CreateUniqueType('true')
+		else 
+			thisModule.CreateUniqueType('false')
+		endif;

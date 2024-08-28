@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Dec 7, 2015 9:35:35 AM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="ETXAVED" contact="EAB/FLE/EU Vahagn Avedian" correction="0" date="2015-02-12" docNo="" name="ECIM_Equipment" namespace="urn:com:ericsson:ecim:ECIM_Equipment" namespacePrefix="ecim_equipment" organization="EAB" release="1" revision="A" variant="Switching" version="2">
+        <description>ECIM Equipment Fragment</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_Equipment"/>
+            <extension name="ecimMomVersion" value="2"/>
+            <extension name="ecimMomRelease" value="1"/>
+            <extension name="ecimMomCorrection" value="0"/>
+        </domainExtension>
+        <modelFeatures modelType="Derived">
+            <modelFeature featureType="basic" name="Switching"/>
+        </modelFeatures>
+        <class name="Equipment">
+            <description>This is the Equipment MO.</description>
+            <root/>
+            <attribute name="equipmentId">
+                <description>Unique identifier for this object instance.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>User friendly name for equipment object.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="ManagedElement_to_Equipment">
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>ECIM_Top</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Equipment">
+                        <mimName>ECIM_Equipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

@@ -1,0 +1,521 @@
+-- /**
+-- * These helpers assist in the transformation from an ECIM complaint model (UML) to a Yang compliant model.
+-- * 
+-- * Author: Ronan Barrett and Andreas Jakobik
+-- * Date: 23/04/2012
+-- */
+-- @nsURI PARAM=http://ericsson.com/ECIM/ParameterModel
+-- @path YANG=/com.ericsson.yang/model/Yang.ecore
+
+library HelperFunctions;
+
+--Don't allow nesting of lists to be longer than 20 levels
+helper def : listNestingMaxLevel : Integer = 20;
+
+--This helper will return the first, and only, paramater defining the package name. This is needed as a Yang sub-module must be in a 
+--seperate file, unlike UML which supports many packages in a single model.
+helper def : getParameter() : String = 
+	PARAM!Parameter.allInstancesFrom('IN2')->first().name;
+
+--returns a set of all the EcimContributions in a Model
+helper context UML!Package def: getContributions() : Set(UML!Association) =
+	self.ownedElement->select(e|e.hasStereotype('ECIM Base Profile::EcimContribution'));
+
+--returns a set of all the EcimContributions in a Model
+helper context UML!Package def: getContainments() : Set(UML!Association) =
+	self.ownedElement->select(e|e.hasStereotype('ECIM Base Profile::EcimContainment'));
+
+
+--Convert between built-in ECIM and Yang types. Also works for enumerations
+helper def : convertEcimTypeToYANGType(type : UML!DataType) : String =
+	let typeMap : Map(String,String) = 
+		Map
+		{
+			('EcimInt8','int8'),
+			('EcimInt16','int16'),
+			('EcimInt32','int32'),
+			('EcimUInt8','uint8'),
+			('EcimUInt16','uint16'),
+			('EcimUInt32','uint32'),
+			('EcimInt64','int64'),
+			('EcimUInt64','uint64'),
+			('EcimInteger','int64'),
+			('EcimString','string'),
+			('EcimBoolean','boolean'),
+			('EcimFloat','decimal64')
+		}
+	in
+	--check the classifier has been assigned a type
+	if(type <> OclUndefined)
+	then
+		if(type.hasEcimAppliedStereotype())
+		then
+			--assign a built in type
+			typeMap.get(type.general.first().name)
+		else
+			--assign a type for enumerations
+			typeMap.get(type.name)
+		endif	
+	else
+		OclUndefined
+	endif;	
+	
+--TODO:The patterns here must be more specific
+helper def : getMoRefPattern(element : UML!TypedProperty) : String =
+	if(element.type.oclIsTypeOf(UML!Class)) then
+		if(element.type.isAbstract) then	
+			'(.*=.*,)*.*=.*'--Abstract types can be set to any type so the pattern is quite loose
+		else
+			'(.*=.*,)*'+element.type.name+'=.*'--The MoRef is the part of the pattern
+		endif
+	else
+		OclUndefined--The type was not an MoRef so don't set a pattern
+	endif;
+
+--Convert a TypedProperty element to a type in the form of a string
+helper def : getTypeAsString(element : UML!TypedProperty) : String =
+	if thisModule.isBuiltInType(element) then
+		thisModule.convertEcimTypeToYANGType(element.type)--convert the built in type
+	else
+		if(element.type.oclIsTypeOf(UML!Enumeration) or element.type.oclIsTypeOf(UML!DataType) or element.type.hasStereotype('ECIM Base Profile::EcimStruct')) then
+			--prefix the enumeration/datatype/struct if it comes from a different package.
+			--if(element.type.getNearestPackage() <> element.getNearestPackage()) then 
+				--Note:because of a pyang bug all types are prefixed. See http://code.google.com/p/pyang/issues/detail?id=86
+				element.type.getNearestPackage().name +':'+element.type.name 
+			--else 
+			--	element.type.name 
+			--endif
+		else
+			--the type must be a Class
+			if(element.type.oclIsTypeOf(UML!Class)) then
+				'string'--MoRefs get mapped to a "string" with a pattern
+			else
+				OclUndefined--This should never happen as we don't recognise this type
+			endif
+		endif
+	endif;		
+		
+--Only return a value if we are to set restricted="true" as XText expects this. Note: Structs don't have this property at all.
+helper def : isRestricted(classifier : UML!Classifier) : OclAny =
+	if(not classifier.hasStereotype('ECIM Base Profile::EcimStructMember'))
+	then
+		if(classifier.getValue(classifier.getEcimAppliedStereotype(),'isRestricted'))
+		then
+			thisModule.CreateExtensionProperty('ericsson', 'restricted')
+		else
+			OclUndefined
+		endif
+	else
+		OclUndefined
+	endif;
+
+--See if a datatype is one of the built-in ones or not
+helper def : isBuiltInType(classifier : UML!TypedProperty) : Boolean =
+	let buildInTypes : Sequence(String) = 
+		Sequence
+		{'EcimInt8','EcimInt16','EcimInt32','EcimUInt8','EcimUInt16','EcimUInt32','EcimInt64','EcimUInt64','EcimInteger','EcimString','EcimBoolean','EcimFloat'}
+	in
+	--check the classifier has been assigned a type
+	if(classifier.type <> OclUndefined)
+	then
+		if(classifier.type.hasEcimAppliedStereotype())
+		then
+			--get the generalized ECIM type of the applied derived type then use the map to resolve to YANG type
+			
+			let dtName : String = classifier.type.general.first() in
+			if (buildInTypes->contains(dtName)) then
+				true
+			else
+				false
+			endif
+		else
+			let dtName : String = classifier.type.name in		
+			if (buildInTypes->contains(dtName)) then
+				true
+			else
+				false
+			endif
+		endif
+	else		
+		false
+	endif;	
+	
+--Returns true if the element to which the function is called has the specified stereotype applied
+helper context UML!Element def: hasStereotype(name : String) : Boolean =
+	not self.getAppliedStereotype(name).oclIsUndefined();
+
+
+--Returns true if the element to which the function is called does not have the specified stereotype applied
+helper context UML!Element def: hasNotGotStereotype(name : String) : Boolean =
+	self.getAppliedStereotype(name).oclIsUndefined();
+
+--Get correction value.
+helper context UML!Package def: getCorrectionValue : YANG!Property =
+	let correction : String = self.getValue(self.getEcimAppliedStereotype(),'correction') in
+	if correction.oclIsUndefined() or correction.equals('') then
+		OclUndefined
+	else
+		thisModule.CreateExtensionPropertyString('ericsson', 'correction', correction)
+	endif;
+
+--Get release value.
+helper context UML!Package def: getReleaseValue : YANG!Property =
+	let release : String = self.getValue(self.getEcimAppliedStereotype(),'release') in
+	if release.oclIsUndefined() or release.equals('') then
+		OclUndefined
+	else
+		thisModule.CreateExtensionPropertyString('ericsson', 'release', release)
+	endif;
+
+--Get version value.
+helper context UML!Package def: getVersionValue : YANG!Property =
+	let version : String = self.getValue(self.getEcimAppliedStereotype(),'version') in
+	if version.oclIsUndefined() or version.equals('') then
+		OclUndefined
+	else
+		thisModule.CreateExtensionPropertyString('ericsson', 'version', version)
+	endif;
+
+--Get organization value.
+helper context UML!Package def: getOrganizationValue : String =
+	let organization : String = self.getValue(self.getEcimAppliedStereotype(),'organization') in
+	if organization.oclIsUndefined() or organization.equals('') then
+		OclUndefined
+	else
+		organization
+	endif;
+
+--Get specification value.
+helper context UML!Package def: getSpecificationValue : YANG!Property =
+	let specification : String = self.getValue(self.getEcimAppliedStereotype(),'specification') in
+	if specification.oclIsUndefined() or specification.equals('') then
+		OclUndefined
+	else
+		thisModule.CreateExtensionPropertyString('ericsson', 'specification', specification)
+	endif;
+
+--Get statusInformation value.
+helper context UML!Package def: getStatusInformationValue : YANG!Property =
+	let statusInformation : String = self.getValue(self.getEcimAppliedStereotype(),'statusInformation') in
+	if statusInformation.oclIsUndefined() or statusInformation.equals('') then
+		OclUndefined
+	else
+		thisModule.CreateExtensionPropertyString('ericsson', 'statusInformation', statusInformation)
+	endif;
+
+--Get date. If none is set return an empty string so a Java method can set it
+helper context UML!Package def: getDateValue : String =
+	let date : String = self.getValue(self.getEcimAppliedStereotype(),'date') in
+	if date.oclIsUndefined() or date.equals('') then
+		''
+	else
+		date
+	endif;
+
+--Get author value.
+helper context UML!Package def: getAuthorValue : YANG!Property =
+	let author : String = self.getValue(self.getEcimAppliedStereotype(),'author') in
+	if author.oclIsUndefined() or author.equals('') then
+		OclUndefined
+	else
+		thisModule.CreateExtensionPropertyString('ericsson', 'author', author)
+	endif;
+
+--Get contact value.
+helper context UML!Package def: getContactValue : YANG!Property =
+	let contact : String = self.getValue(self.getEcimAppliedStereotype(),'contact') in
+	if contact.oclIsUndefined() or contact.equals('') then
+		OclUndefined
+	else
+		thisModule.CreateExtensionPropertyString('ericsson', 'contact', contact)
+	endif;
+
+--Get docNo value.
+helper context UML!Package def: getDocNoValue : YANG!Property =
+	let docNo : String = self.getValue(self.getEcimAppliedStereotype(),'docNo') in
+	if docNo.oclIsUndefined() or docNo.equals('') then
+		OclUndefined
+	else
+		thisModule.CreateExtensionPropertyString('ericsson', 'docNo', docNo)
+	endif;
+
+--Get revision value.
+helper context UML!Package def: getRevisionValue : YANG!Property =
+	let revision : String = self.getValue(self.getEcimAppliedStereotype(),'revision') in
+	if revision.oclIsUndefined() or revision.equals('') then
+		OclUndefined
+	else
+		thisModule.CreateExtensionPropertyString('ericsson', 'revision', revision)
+	endif;
+
+--Retrieve the UML element description and return as a String
+helper def : hasDescription(classifier : UML!Classifier) : String =
+	if(classifier.ownedComment.size() > 0)
+	then
+		--handle special charachters here
+		if(not classifier.ownedComment.first().body.oclIsUndefined())
+		then
+			classifier.ownedComment.first().body.regexReplaceAll('"', '')
+		else
+			OclUndefined			
+		endif
+	else
+		OclUndefined
+	endif;
+
+--Check to see if a UML property is the key or not
+helper def : isKey(classifier : UML!Classifier) : Boolean =
+	if(classifier.owner.hasStereotype('ECIM Base Profile::EcimMoClass') or classifier.owner.hasStereotype('ECIM Base Profile::EcimStruct') and classifier.hasStereotypeApplied())
+	then
+		if(classifier.getValue(classifier.getEcimAppliedStereotype(),'isKey'))
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;	
+	
+
+--get the Struct key if there is one
+helper def : getKey(classifier : UML!Classifier) : UML!Property =
+	if(classifier.hasStereotype('ECIM Base Profile::EcimStruct'))
+	then
+		classifier.attribute->select(e|thisModule.isKey(e))->first()
+	else
+		OclUndefined
+	endif;
+
+--This function check to see if a struct is exclusive or not
+helper def: isExclusive(classifier : UML!Classifier) : Boolean =
+	if(classifier.hasStereotype('ECIM Base Profile::EcimStruct'))
+	then
+		if(classifier.getValue(classifier.getEcimAppliedStereotype(),'isExclusive'))
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;	
+
+--Note: It is really important the only one Stereotype from the ECIM Base Profile is ever applied to a UML Element as the following
+--helper requires this to be true. Of course you can apply stereotypes from other profiles :)
+helper context UML!Element def : getEcimAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'ECIM Base Profile').first()
+	else
+		OclUndefined
+	endif;
+
+--Returns true if the element has at least one stereotype applied
+helper context UML!Element def: hasStereotypeApplied() : Boolean =
+	self.getAppliedStereotypes()->size() > 0;
+	
+--This function handles the odd yang behaviour where Mantaory being set has a value of true and unset has
+--no existence at all
+helper context UML!MultiplicityElement def: isMandatory : OclAny =
+	if self.lower = 0 then OclUndefined else true endif;
+
+
+
+--This function handles the odd yang/xtext behaviour where Config being unset has a value of false and set to false has
+--no existence at all
+helper context UML!Property def: isConfig : OclAny =
+	if(self.hasStereotype('ECIM Base Profile::EcimKeyAttribute')) then
+		OclUndefined--keys are config true so output nothing
+	else
+		if self.isReadOnly then 
+			true 
+		else
+			OclUndefined
+		endif
+	endif;
+	
+
+--Check to see if an Element has an Ecim Stereotype applied
+helper context UML!Element def : hasEcimAppliedStereotype() : Boolean = 
+	if(self.hasStereotypeApplied())
+	then
+			if(self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'ECIM Base Profile').size() > 0)
+			then
+				true
+			else
+				false
+			endif
+	else
+		false
+	endif;
+
+
+--Retrieve the resolution property defined on a DerivedFloat
+helper def : getResolution (typ: YANG!DataType, classifier : UML!Classifier) : Integer =
+	let resolution : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'resolution') in
+	if(resolution <> OclUndefined and resolution <> '')
+	then
+		typ.computeFractionDigits(resolution)	
+	else
+		1--if no value is set assume 1
+	endif;
+
+--Retrieve the pattern property defined on a DerivedString
+helper def : getPattern (classifier : UML!Classifier) : String =
+	let pattern : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'pattern') in
+	if(pattern <> OclUndefined and pattern <> '')
+	then
+		pattern
+	else
+		OclUndefined
+	endif;
+
+--Retrieve the length property defined on a DerivedString
+helper def : getLength (classifier : UML!Classifier) : String =
+	let length : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'length') in
+	if(length <> OclUndefined and length <> '')
+	then
+		length
+	else
+		OclUndefined
+	endif;
+	
+--Retrieve the range property defined on a DerivedNumeric
+helper def : getRange (classifier : UML!Classifier) : String =
+	let range : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'range') in
+	if(range <> OclUndefined and range <> '')
+	then
+		range
+	else
+		OclUndefined
+	endif;
+
+--Retrieve the specification property
+helper def : getSpecification (classifier : UML!Classifier) : String =
+	let specification : String = classifier.getValue(classifier.getEcimAppliedStereotype(),'specification') in
+	if(specification <> OclUndefined and specification <> '')
+	then
+		specification	
+	else
+		OclUndefined
+	endif;
+
+
+--Convert the UML Status to a Yang one 
+helper context UML!Element def : getStatus() : YANG!StatusKind =
+	let status : String = self.getValue(self.getEcimAppliedStereotype(),'status').name in
+	if(status = 'DEPRECATED')
+	then
+		#deprecated
+	else
+		if(status = 'OBSOLETE')
+		then
+			#obsolete
+		else
+			OclUndefined--the status is current which is the default so don't set it
+		endif
+	endif;
+
+--Get the type of the none composise/aggregation end (non-owning) of the association
+helper context UML!Association def : getSourceEndType() : UML!Class = 
+	self.memberEnd->select(e|e.aggregation=#none)->first().type;
+
+--Get the type of the composite end (owning) of the association
+helper context UML!Association def : getTargetEndType() : UML!Class = 
+	self.memberEnd->select(e|e.aggregation=#composite)->first().type;
+
+--This (recursive)helper is used to build up the DN of an augment statement
+--Note:We use a Sequence so we can build the DN backwards
+helper def : augmentDNBuilder(contrib : UML!Association, p : UML!Package, currentClass : UML!Class, dn : Sequence(String)) : String =
+	let separator : String = '/' in
+	
+	--retrieve all the containment/contribution associations defined in a package and filter for those that target the currentClass
+	--if a contribution was passsed in use that as the starting point
+	let assoc : UML!Association = if contrib.oclIsUndefined() then currentClass.getNearestPackage().ownedElement->select(e|e.oclIsTypeOf(UML!Association) and (e.hasStereotype('ECIM Base Profile::EcimContribution') or e.hasStereotype('ECIM Base Profile::EcimContainment')))->select(e|e.getTargetEndType()=currentClass)->first() else contrib endif in
+
+	--every run of this method will check to see if the class is part of a composition relationship before trying to extend the DN
+	if(not assoc.oclIsUndefined())
+	then
+		--extend the DN to include the composition it is part of. this is a recursive call. if the type is local use the local package name as prefix otherwise use the remote package as prefix
+		thisModule.augmentDNBuilder(OclUndefined, p,assoc.getSourceEndType(),dn.prepend(if (assoc.getSourceEndType().getNearestPackage() = p.getNearestPackage()) then p.name else assoc.getSourceEndType().getNearestPackage().name endif+':'+assoc.getSourceEndType().name+separator))
+	else
+		--the DN is complete so return it. note:we use iterate as a collect leaves the set brackets in
+		dn->iterate(e; res : String = '' | res.concat(e))
+	endif;
+	
+--This (recursive)helper is used to build up the Imports needed for an augment statement
+helper def : augmentImportBuilder(contrib : UML!Association, p : UML!Package, currentClass : UML!Class, il : Sequence(UML!Package)) : Sequence(UML!Package) =
+	
+	--retrieve all the containment/contribution associations defined in a package and filter for those that target the currentClass
+	--if a contribution was passsed in use that as the starting point
+	let assoc : UML!Association = if contrib.oclIsUndefined() then currentClass.getNearestPackage().ownedElement->select(e|e.oclIsTypeOf(UML!Association) and (e.hasStereotype('ECIM Base Profile::EcimContribution') or e.hasStereotype('ECIM Base Profile::EcimContainment')))->select(e|e.getTargetEndType()=currentClass)->first() else contrib endif in
+
+	--every run of this method will check to see if the class is part of a composition relationship before trying to extend the IL
+	if(not assoc.oclIsUndefined())
+	then
+		--extend the IL to include the composition it is part of. this is a recursive call. if the type is local skip it otherwise store the remote package
+		thisModule.augmentImportBuilder(OclUndefined, p,assoc.getSourceEndType(),il.prepend(if (assoc.getSourceEndType().getNearestPackage() = p.getNearestPackage()) then OclUndefined else assoc.getSourceEndType().getNearestPackage() endif))
+	else
+		--the Import list is ready so return it
+		il
+	endif;
+	
+--Retrieve an operation/action return type if one was specified
+helper def : hasReturnType (returnParams : Sequence(UML!Parameter)) : String =
+	--check to ensure there was a return parameter defined
+	if(returnParams->size() > 0)
+	then
+		--we only support one return type so select the first one
+		thisModule.getTypeAsString(returnParams.first())
+	else
+		OclUndefined--No return type was set
+	endif;	
+
+-- Returns true if class is named 'ManagedElement' or has isLegacyRoot=true or is part of an EcimContribution relationship
+-- However if there are more than 1 EcimContributions, false is returned!
+helper def : isClassRoot(c : UML!Class) : Boolean =
+	let contributions:Set(UML!Element) = c.getNearestPackage().allOwnedElements()->select(e| not e.getAppliedStereotype('ECIM Base Profile::EcimContribution').oclIsUndefined())
+	in
+	if (contributions->size()>1)
+	then
+		false
+	else
+		if (not c.getAppliedStereotype('ECIM Base Profile::EcimMoClass').oclIsUndefined())
+		then
+			c.name='ManagedElement'
+			or
+			c.getValue(c.getEcimAppliedStereotype(),'isLegacyRoot')
+			or
+			contributions->select(e|e.memberEnd->exists(m|m.type.name=c.name))->size()>0
+		else
+			false
+		endif
+	endif;
+
+-- Returns false if  supplied element or any of its parent has config=false, otherwise true.
+helper def : isConfigTrue(c : OclAny) : Boolean =	
+	let parent : OclAny = c.eContainer() in
+	if (c.oclIsTypeOf(YANG!Container) or c.oclIsTypeOf(YANG!ListWithStatus) or 
+			c.oclIsTypeOf(YANG!Leaf) or c.oclIsTypeOf(YANG!LeafList))
+	then
+		if (c.config.oclIsUndefined() or c.config=true) 
+		then
+			if (parent.oclIsKindOf(YANG!AbstractModule))
+			then 
+				true
+			else
+				thisModule.isConfigTrue(parent)
+			endif
+		else
+			false
+		endif
+	else
+		if (parent.oclIsKindOf(YANG!AbstractModule))
+		then 
+			true
+		else
+			thisModule.isConfigTrue(parent)
+		endif
+	endif;
+

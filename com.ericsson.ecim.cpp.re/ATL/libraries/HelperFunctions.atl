@@ -1,0 +1,237 @@
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI MP=http://ericsson.com/ECIM/MP
+
+library HelperFunctions;
+
+helper def : getModelName() : String = 
+	PARAM!Parameter.allInstancesFrom('IN2')->select(e|e.name='modelName')->first().value;
+					
+helper def : getEcimStereotype(name : String) : UML!Stereotype =
+    UML!Stereotype.allInstancesFrom('PRO')->select(p | p.name = name)->first();
+
+helper def : getCoreMwStereotype(name : String) : UML!Stereotype =
+    UML!Stereotype.allInstancesFrom('CoreMwPRO')->select(p | p.name = name)->first();
+
+helper def : getCppStereotype(name : String) : UML!Stereotype =
+    UML!Stereotype.allInstancesFrom('CppPRO')->select(p | p.name = name)->first();
+
+--get all the literals associated to the ECIM Profile StatusType Enuemration and store once i.e. CURRENT, OBSOLETE etc.
+helper def : statusValues : Sequence(UML!EnumerationLiteral) = UML!Enumeration.allInstancesFrom('PRO')->select(e|e.name='StatusType')->collect(e|e.ownedLiteral)->flatten();
+
+--Figure out the status of a construct
+helper def : getStatus(dt : MP!DeprecatedType, ot : MP!ObsoleteType, pt : MP!PreliminaryType) : UML!EnumerationLiteral =
+	if(not dt.oclIsUndefined())
+	then
+		thisModule.statusValues->select(e|e.name='DEPRECATED')->first()
+	else
+		if(not ot.oclIsUndefined())
+		then
+			thisModule.statusValues->select(e|e.name='OBSOLETE')->first()
+		else
+			if(not pt.oclIsUndefined())
+			then
+				thisModule.statusValues->select(e|e.name='PRELIMINARY')->first()
+			else
+				thisModule.statusValues->select(e|e.name='CURRENT')->first()
+			endif			
+		endif
+	endif;
+
+helper def : getStatusInformation(dt : MP!DeprecatedType, ot : MP!ObsoleteType, pt : MP!PreliminaryType) : String =
+	if(not dt.oclIsUndefined())
+	then
+		if (dt.getMixedText().oclIsUndefined()) then '' else dt.getMixedText().toString() endif
+	else
+		if(not ot.oclIsUndefined())
+		then
+			if (ot.getMixedText().oclIsUndefined()) then '' else ot.getMixedText().toString() endif
+		else
+			if(not pt.oclIsUndefined())
+			then
+				if (pt.getMixedText().oclIsUndefined()) then '' else pt.getMixedText().toString() endif
+			else
+				''
+			endif			
+		endif
+	endif;
+
+helper context OclAny def : getMixedText() : OclAny =
+    self.getMixed()->collect(e|e.getValue())->first();
+
+helper context OclAny def : getMixedTextAll() : OclAny =
+	let result:String = '' in
+    self.getMixed()->collect(e|e.getValue().toString())->append(result);
+
+helper def : getSimpleStringValue(value : OclAny) : String =
+	if(not value.oclIsUndefined())
+	then
+		value.toString()
+	else
+		''
+	endif;
+
+--returns true if the element to which the function is called has the specified stereotype applied
+helper context UML!Element def: hasStereotype(name : String) : Boolean =
+	not self.getAppliedStereotype(name).oclIsUndefined();
+
+--Get the range as a string. The logic to handle multi-ranges is in the java method getRanges()
+helper def : getRange(s : OclAny) : String =
+	if(not s.range.oclIsUndefined())
+	then
+		s.range.getRanges()
+	else
+		''
+	endif;
+
+--Get the lengthrange as a string. The logic to handle multi-ranges is in the java method getRanges()
+helper def : getLengthRange(s : OclAny) : String =
+	if(not s.lengthRange.oclIsUndefined())
+	then
+    	s.lengthRange.getRanges()
+	else
+		''
+	endif;
+
+--Get the min if one was stated. In none is stated assume zero
+helper context MP!CardinalityType def : getMin() : Integer =
+	if(not self.min.oclIsUndefined())
+	then
+    	self.min.getMixedText().toInteger()
+	else
+		0
+	endif;	
+
+--Get the max if one was stated. In none is stated assume zero
+helper context MP!CardinalityType def : getMax() : Integer =
+	if(not self.max.oclIsUndefined())
+	then
+    	self.max.getMixedText().toInteger()
+	else
+		-1
+	endif;	
+
+--Get the min if one was stated. In none is stated assume zero
+helper context MP!SequenceType def : getMin() : Integer =
+	if(not self.minLength.oclIsUndefined())
+	then
+    	self.minLength.getMixedText().toInteger()
+	else
+		0
+	endif;	
+
+--Get the max if one was stated. In none is stated assume zero
+helper context MP!SequenceType def : getMax() : Integer =
+	if(not self.maxLength.oclIsUndefined())
+	then
+    	self.maxLength.getMixedText().toInteger()
+	else
+		-1
+	endif;	
+
+--Get the min if one was stated. In none is stated assume zero
+helper context MP!RelationshipType def : getMin() : Integer =
+	if(not self.containment.child->collect(e|e.cardinality)->first().min.oclIsUndefined())
+	then
+    	self.containment.child->collect(e|e.cardinality)->first().min.getMixedText().toInteger()
+	else
+		0
+	endif;	
+    
+--Get the max if one was stated. In none is stated assume infinity
+helper context MP!RelationshipType def : getMax() : Integer =
+	if(not self.containment.child->collect(e|e.cardinality)->first().max.oclIsUndefined())
+	then
+    	self.containment.child->collect(e|e.cardinality)->first().max.getMixedText().toInteger()
+	else
+		-1
+	endif;
+
+helper def : getStringValue(value : OclAny) : String =
+	if(not value.oclIsUndefined())
+	then
+		if(not value.getMixedText().oclIsUndefined())
+		then
+			let text : String = value.getMixedText().toString() in
+			if(text <> '')
+			then
+				text
+			else
+				''
+			endif
+		else
+			''
+		endif
+	else
+		''
+	endif;	
+
+--create a UML comment if documentation was provided
+helper def : hasComment(description : MP!DescriptionType) : UML!Comment =
+	if(not description.oclIsUndefined())
+	then
+		if(not description.getMixed().oclIsUndefined())
+		then
+			let text : String = description.getMixedText().toString() in
+			if(text <> '')
+			then
+				thisModule.CreateComment(text)
+			else
+				OclUndefined
+			endif
+		else
+			OclUndefined
+		endif			
+	else
+		OclUndefined
+	endif;	
+
+
+helper def : getSequenceDefaultValue(sdv : MP!SeqDefaultValueType) : String = 
+	let commaSeparatedString : String = sdv.defaultValue->iterate(dv; res: String = '' |
+		res.concat(thisModule.getStringValue(dv)).concat(',')) in
+	if commaSeparatedString.endsWith(',') then
+		commaSeparatedString.substring(1, commaSeparatedString.size()-1)
+	else
+		commaSeparatedString
+	endif;
+
+--Get an integer from an XML Mixed tag. Note: A integer must be specified!
+helper def : getEnumMemberValue(vt : MP!ValueType) : Integer =
+	if(not vt.oclIsUndefined())
+	then
+		if(not vt.getMixed().oclIsUndefined())
+		then
+			vt.getMixed()->collect(e|e.getValue())->first().toInteger()
+		else
+			OclUndefined
+		endif			
+	else
+		OclUndefined
+	endif;
+
+--The RootMoc is an MOC which is not a child of any other MOC and is a parent to other MOCs. It can also be a root if there is only one class in the MOM
+helper context MP!ClassType def: isRoot : Boolean =
+	self.eContainer().class->size()=1 or (MP!RelationshipType->allInstances()->select(e|not e.containment.oclIsUndefined())->flatten()->select(e|e.containment.child->first().hasClass.name.toLower()=self.name.toLower())->size() = 0 and MP!RelationshipType->allInstances()->select(e|not e.containment.oclIsUndefined())->flatten()->select(e|e.containment.parent.hasClass.name.toLower()=self.name.toLower())->size() > 0);
+
+--A simple table of CPP to ECIM Types
+helper def : typesMap : Map(String, String) = Map{
+	('Int64Type','EcimInt64'),
+	('ShortType','EcimInt8'),	
+	('Int8Type','EcimInt8'),
+	('Uint8Type','EcimUInt8'),
+	('Uint16Type','EcimUInt16'),	
+	('Uint32Type','EcimUInt32'),
+	('Uint64Type','EcimUInt64'),
+	('Int16Type','EcimInt16'),	
+	('Int32Type','EcimInt32'),
+	('LonglongType','EcimInt64'),
+	('LongType','EcimInt32')
+	};
+	
+helper def : toInitialLowerCase(s : String) : String = 
+	let firstLetter : String = s.substring(1, 1) in
+	let restOfName : String = s.substring(2, s.size()) in
+	firstLetter.toLower() + restOfName;
+
+	

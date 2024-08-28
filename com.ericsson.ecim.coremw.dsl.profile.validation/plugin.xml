@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?><plugin>
+<extension point="org.eclipse.emf.validation.constraintProviders">
+      <category id="com.ericsson.ecim.coremw.dsl.profile.validation.coremw profile" mandatory="false" name="com.ericsson.ecim.coremw.dsl.profile.validation.coremw profile"/>
+      <constraintProvider cache="false" mode="Batch">
+         <package namespaceUri="http:///schemas/CoreMWProfile/"/>
+         <constraints categories="com.ericsson.ecim.coremw.dsl.profile.validation.coremw profile">
+            <constraint id="CoreMW Profile.CmwAttribute.RWStructAttributeMustPointToConfigStruct" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="RWStructAttributeMustPointToConfigStruct" severity="ERROR" statusCode="3">
+               <message>If a RW attribute has type struct, then the struct must have isConfigurable set to true.</message><![CDATA[-- A CoreMwAttribute which is RW can only point to a CmwStruct which has isConfigurable=true
+let hasStructType:Boolean = not (self.base_Property.type.getAppliedStereotypes()->select(s:Stereotype| s.name = 'CmwStruct')->isEmpty()) in
+if (not (self.base_Property.isReadOnly) and hasStructType)
+then
+	self.base_Property.type.getValue(self.base_Property.type.getAppliedStereotype('CoreMW Profile::CmwStruct'), 'isConfigurable').oclAsType(Boolean)
+else
+	true
+endif]]></constraint>
+            <constraint id="CoreMW Profile.CmwClass.CheckIsConfigurable" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="CheckIsConfigurable" severity="ERROR" statusCode="3">
+               <message>If isConfigurable is false on a class then all its attributes must have isConfigurable set to false.</message><![CDATA[self.isConfigurable=false implies self.base_Class.getAllAttributes()->select(e:Property|e.getAppliedStereotype('CoreMW Profile::CmwAttribute') <> null)->select(e:Property|e.getValue(e.getAppliedStereotype('CoreMW Profile::CmwAttribute'), 'isConfigurable').oclAsType(Boolean)=true)->size()=0]]></constraint>
+            <constraint id="CoreMW Profile.CmwClass.ConfigClassImpliesPersistentRDN" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="ConfigClassImpliesPersistentRDN" severity="ERROR" statusCode="1">
+               <message>ConfigClassImpliesPersistentRDN</message><![CDATA[self.isConfigurable=true implies true]]></constraint>
+            <constraint id="CoreMW Profile.CmwStruct.ConfigStructImpliesConfigStructMembers" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="ConfigStructImpliesConfigStructMembers" severity="ERROR" statusCode="3">
+               <message>If isConfigurable is true on a struct then all its struct members must have isConfigurable set to true.</message><![CDATA[self.isConfigurable=true implies self.base_Class.getAllAttributes()->select(e:Property|e.getAppliedStereotype('CoreMW Profile::CmwStructMember') <> null)->select(e:Property|e.getValue(e.getAppliedStereotype('CoreMW Profile::CmwStructMember'), 'isConfigurable').oclAsType(Boolean)=false)->size()=0]]></constraint>
+            <constraint id="CoreMW Profile.CmwStruct.RuntimeStructImpliesRuntimeStructMembers" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="RuntimeStructImpliesRuntimeStructMembers" severity="ERROR" statusCode="3">
+               <message>If isConfigurable is false on a struct then all its struct members must have isConfigurable set to false.</message><![CDATA[self.isConfigurable=false implies self.base_Class.getAllAttributes()->select(e:Property|e.getAppliedStereotype('CoreMW Profile::CmwStructMember') <> null)->select(e:Property|e.getValue(e.getAppliedStereotype('CoreMW Profile::CmwStructMember'), 'isConfigurable').oclAsType(Boolean)=true)->size()=0]]></constraint>
+            <constraint id="CoreMW Profile.CmwMom.AtMostOneEcimContributionCanHaveSplitImmDnEqualsTrue" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="AtMostOneEcimContributionCanHaveSplitImmDnEqualsTrue" severity="ERROR" statusCode="3">
+               <message>The splitImmDn property can be true on at most one EcimContribution. This EcimMom contains several.</message><![CDATA[let clientClasses:Bag(String) = self.base_Package.ownedElement->select(e|e.oclIsTypeOf(Association))->
+select(e|not e.getAppliedStereotype('CoreMW Profile::CmwContribution').oclIsUndefined())->
+select(e|e.getValue(e.getAppliedStereotype('CoreMW Profile::CmwContribution'),'splitImmDn').oclAsType(Boolean)=true)->
+collect(e|e.oclAsType(Association).ownedElement->select(e|e.oclIsTypeOf(Property))->select(f|f.oclAsType(Property).type.getNearestPackage().name=self.base_Package.name))->flatten()->collect(e|e.oclAsType(Property).type.name)
+in
+clientClasses.size() = clientClasses->asSet().size()]]></constraint>
+         </constraints>
+      </constraintProvider>
+   </extension>
+   <extension point="org.eclipse.emf.validation.constraintBindings">
+      <clientContext id="CmwMomClientContext">
+         <selector class="com.ericsson.ecim.coremw.dsl.profile.validation.selectors.CmwMomClientSelector"/>
+      </clientContext>
+      <binding context="CmwMomClientContext">
+         <constraint ref="com.ericsson.ecim.coremw.dsl.profile.validation.CoreMW Profile.CmwMom.AtMostOneEcimContributionCanHaveSplitImmDnEqualsTrue"/>
+      </binding>
+      <clientContext id="CmwClassClientContext">
+         <selector class="com.ericsson.ecim.coremw.dsl.profile.validation.selectors.CmwClassClientSelector"/>
+      </clientContext>
+      <binding context="CmwClassClientContext">
+         <constraint ref="com.ericsson.ecim.coremw.dsl.profile.validation.CoreMW Profile.CmwClass.CheckIsConfigurable"/>
+         <constraint ref="com.ericsson.ecim.coremw.dsl.profile.validation.CoreMW Profile.CmwClass.ConfigClassImpliesPersistentRDN"/>
+      </binding>
+      <clientContext id="CmwAttributeClientContext">
+         <selector class="com.ericsson.ecim.coremw.dsl.profile.validation.selectors.CmwAttributeClientSelector"/>
+      </clientContext>
+      <binding context="CmwAttributeClientContext">
+         <constraint ref="com.ericsson.ecim.coremw.dsl.profile.validation.CoreMW Profile.CmwAttribute.RWStructAttributeMustPointToConfigStruct"/>
+      </binding>
+      <clientContext id="CmwStructClientContext">
+         <selector class="com.ericsson.ecim.coremw.dsl.profile.validation.selectors.CmwStructClientSelector"/>
+      </clientContext>
+      <binding context="CmwStructClientContext">
+         <constraint ref="com.ericsson.ecim.coremw.dsl.profile.validation.CoreMW Profile.CmwStruct.ConfigStructImpliesConfigStructMembers"/>
+         <constraint ref="com.ericsson.ecim.coremw.dsl.profile.validation.CoreMW Profile.CmwStruct.RuntimeStructImpliesRuntimeStructMembers"/>
+      </binding>
+   </extension>
+</plugin>

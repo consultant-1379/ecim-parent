@@ -1,0 +1,344 @@
+-- /**
+-- * This transform takes an ECIM compliant model (UML) as input and generates an imm.ecore compliant output.
+-- * 
+-- * The output of this transform contains the valid IMM XML.
+-- * The IMM defines the configuration classes and attributes for a SAF based node.
+-- * 
+-- * The transform is modularised so you need to ensure a number of dependencies are added in the launch.
+-- * These dependencies are added in the launcher via superimposition. The dependencies are listed below.
+-- * 
+-- * superimposition-dependencies: CommonRules
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Note: A Parameter Model compliant to PARAM may be passed in. This model defines which type
+-- * of IMM XML to generate i.e. Which Schema type
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 27/04/2010
+-- */
+
+-- @atlcompiler atl2006
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI IMM=http://www.saforum.org/IMMSchema
+-- @nsURI PARAM=http://ericsson.com/ECIM/ParameterModel
+
+module ECIMtoIMM;
+create OUT : IMM from IN : UML, IN2 : PARAM;
+
+uses HelperFunctions;
+
+--Match the UML packages (MOMs) and relate to an IMM MOMs
+rule EcimMOMToIMMContentsType
+{
+	--from s: UML!Package(s.oclIsTypeOf(UML!Package) and (s.hasStereotype('ECIM Base Profile::EcimMom') or s.hasStereotype('ECIM Base Profile::EcimLibrary')))--This will be used when the Launcher is refactored for performance
+	from s: UML!Package(s.oclIsTypeOf(UML!Package) and (s.hasStereotype('ECIM Base Profile::EcimMom') or s.hasStereotype('ECIM Base Profile::EcimLibrary')) and s.__xmiID__ = thisModule.getXmiId())
+	to dr : IMM!DocumentRoot
+	(
+		iMMContents <- ict
+	),
+	ict: IMM!IMMContentsType
+	(
+		--assign all the classes (runtime or config i.e. readonly and readwrite) in the MOM/Package to the IMM MOM
+		--note: ignore abstract classes
+		class <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|not e.isAbstract and (e.owner.hasStereotype('ECIM Base Profile::EcimMom') or e.owner.hasStereotype('ECIM Base Profile::EcimLibrary')) and not e.hasStereotype('ECIM Base Profile::EcimStruct') and not e.hasStereotype('ECIM Base Profile::EcimException')),
+		class <- thisModule.lookupAllUsedStructs(s)->collect(e|thisModule.ClassToClassDefForStructs(e, s))		
+	)
+	do 
+	{
+		dr.setSchemaLocation('http://www.saforum.org/IMMSchema',thisModule.getImmSchemaName());
+	}
+}
+
+--Match the UML classes (runtime or config i.e. readonly and readwrite MOCs) in EcimMom packages and that are not EcimStructs, and relate to an IMM ClassDefs
+rule ClassToClassDef
+{
+	from s: UML!Class(s.oclIsTypeOf(UML!Class) and s.owner.hasStereotype('ECIM Base Profile::EcimMom') and not s.hasStereotype('ECIM Base Profile::EcimStruct') and not s.hasStereotype('ECIM Base Profile::EcimException') and not s.isAbstract)	
+	to t: IMM!ClassDef
+	(
+		--Uncomment line below when COM SA delivers SDP750!
+		name <- thisModule.getClassName(s),
+		--Remove line below when COM SA delivers SDP750!
+		--name <- s.name,
+		category <- thisModule.selectCategory(s),
+		
+		--get all properties, except for ones that are actually relations and not rdn based attributes i.e. non key atts
+		attr <- s.attribute->select(e|e.association.oclIsUndefined())->select(e|not e.isNameGiving())->select(e|not (e.hasStereotype('CppProfile::CppAttribute') and e.name.startsWith('pm')))->collect(e|thisModule.PropertyToAttrDef(e))
+	)
+	do
+	{
+		--assign key (name giving) attributes
+		if (s.keyCount() = 1)
+		{
+			t.rdn <- s.attribute->select(e|e.isNameGiving())->collect(e|thisModule.PropertyToRdnDef(e))->first();
+		}
+		else if(s.keyCount() = 0)
+		{
+			--if there is no key then generate one
+			t.rdn <- thisModule.GenerateRdnDef(s);
+		}
+		else if(s.keyCount() > 1)
+		{
+			--if there are multi-keys then generate one and transform the multi-keys as regular attributes
+			t.rdn <- thisModule.GenerateRdnDef(s);
+			t.attr <- s.attribute->select(e|e.isNameGiving())->collect(e|thisModule.PropertyToAttrDef(e));
+		}		
+	}
+}
+
+--Match the UML classes in EcimMom packages , that are EcimStructs, and relate to an IMM ClassDefs
+rule ClassToClassDefForStructs(s: UML!Class, theOwningPackage : UML!Package)
+{
+--	from s: UML!Class(s.oclIsTypeOf(UML!Class) and (s.owner.hasStereotype('ECIM Base Profile::EcimMom') or s.owner.hasStereotype('ECIM Base Profile::EcimLibrary')) and s.hasStereotype('ECIM Base Profile::EcimStruct') and not s.isAbstract)
+	to t: IMM!ClassDef
+	(
+		name <- thisModule.getClassNameWithPackage(s, theOwningPackage), 
+		category <- thisModule.selectCategory(s),
+		--assign attributes based on whether they are key (name giving) attributes or not
+		rdn <- thisModule.StructPropertyToRdnDef(s),--key atts
+		--get all properties, structs won't have association or key atts
+		attr <- s.attribute->select(e|e.association.oclIsUndefined())->collect(e|thisModule.StructPropertyToAttrDef(e))
+	)
+	do
+	{
+		t;
+	}
+}
+
+--** Start of Rdn rules**
+
+rule GenerateRdnDef(class : UML!Class)
+{
+	to rdn: IMM!RdnDef
+	(
+		name <- thisModule.generateKeyName(class,''),
+		--RDN attributes always have SA_STRING_T
+		type <- #SASTRINGT,
+		--define whether it is a config or runtime category
+		category <- thisModule.selectCategory(class),	
+		--set some flags
+		flag <- if not thisModule.isRuntimeCategory(class) then Sequence{#SA_INITIALIZED} else Sequence{} endif
+	)
+	do
+	{
+		rdn;	
+	}
+}
+
+--Filter for RdnDef types which are always Key Attributes i.e. name giving
+lazy abstract rule PropertyToRdnDef
+{
+	from s: UML!Property(s.oclIsTypeOf(UML!Property) and s.isNameGiving())
+	to t: IMM!RdnDef
+	(
+		name <- thisModule.getRdnName(s),
+		--RDN attributes always have SA_STRING_T
+		type <- #SASTRINGT,
+		--define whether it is a config or runtime category
+		category <- thisModule.selectCategory(s.owner)	
+		
+		--RDNs do not have a default. they are just like ECIM key attributes
+	)
+}
+
+--Refine the PropertyToRdnDef filter for naming attributes in a read write MOC
+lazy rule PropertyToReadWriteRdnType extends PropertyToRdnDef
+{
+	from s: UML!Property(not thisModule.isRuntimeCategory(s.owner))
+	to t: IMM!RdnDef
+	(
+		flag <- Sequence{#SA_INITIALIZED},
+		flag <- thisModule.isNotify(s)
+	)
+}
+
+--Refine the PropertyToRdnDef filter for persistent naming attributes in a read only MOC
+lazy rule PropertyToReadOnlyPersistentRdnType extends PropertyToRdnDef
+{
+	from s: UML!Property(thisModule.isRuntimeCategory(s.owner) and s.getValue(s.getCoreMWAppliedStereotype(),'isPersistent'))
+	to t: IMM!RdnDef
+	(
+			flag <- Sequence{#SA_CACHED,#SA_PERSISTENT},
+			flag <- thisModule.isNotify(s)
+	)
+}
+
+--Refine the PropertyToRdnDef filter for non persistent naming attributes in a read only MOC 
+lazy rule PropertyToReadOnlyNonPersistentRdnType extends PropertyToRdnDef
+{
+	from s: UML!Property(thisModule.isRuntimeCategory(s.owner) and not s.getValue(s.getCoreMWAppliedStereotype(),'isPersistent'))
+	to t: IMM!RdnDef
+	(
+			-- artf107289 : RDN attribute must always be cached
+			flag <- Sequence{#SA_CACHED}		
+	)
+}
+
+--** Start of Attr rules**
+
+--Filter for AttrDef types which are not Key Attributes i.e. not name giving and are not PM attributes
+lazy abstract rule PropertyToAttrDef
+{
+	from s: UML!Property(s.oclIsTypeOf(UML!Property) 
+			and not s.isNameGiving() 
+			and not (s.hasStereotype('CppProfile::CppAttribute') and s.name.startsWith('pm')))
+	to t: IMM!AttrDef
+	(
+		name <- s.name,
+		
+		--Convert ECIM types to SAF types
+		type <- thisModule.convertEcimTypeToIMMType(s),
+
+		--define whether it is a config or runtime category. this value is based on the attribute stereotype
+		category <- thisModule.selectAttributeCategory(s),
+		
+		defaultValue <- thisModule.getDefault(s)
+	)
+}
+
+--Refine the PropertyToAttrDef filter for just read only attributes
+lazy abstract rule PropertyToReadOnlyAttrDef  extends PropertyToAttrDef 
+{
+	from s: UML!Property(s.isReadOnly and not s.isCoreMWConfigurableAttribute())
+	to t: IMM!AttrDef
+	(
+		
+		--extra flags
+	)
+}
+
+--Refine the PropertyToAttrDef filter for just read write attributes
+lazy rule PropertyToReadWriteAttrDef  extends PropertyToAttrDef 
+{
+	from s: UML!Property(not s.isReadOnly or s.isCoreMWConfigurableAttribute())
+	to t: IMM!AttrDef
+	(
+		--extra flags
+		flag <- thisModule.isWritable(s),
+		flag <- thisModule.isMultiValue(s),
+--		flag <- thisModule.isNoDuplicates(s),
+		flag <- thisModule.isNotify(s),
+		flag <- thisModule.isNoDangling(s)
+	)
+}
+
+--Refine the PropertyToReadOnlyAttrDef filter for persistent read only attributes
+lazy rule PropertyToPersistentAttrDef  extends PropertyToReadOnlyAttrDef 
+{
+	from s: UML!Property(s.getValue(s.getCoreMWAppliedStereotype(),'isPersistent'))
+	to t: IMM!AttrDef
+	(
+		--extra flags
+		flag <- Sequence{#SA_PERSISTENT},
+		flag <- thisModule.isWritable(s),
+		flag <- thisModule.isMultiValue(s),
+--		flag <- thisModule.isNoDuplicates(s),
+		flag <- thisModule.isCached(s),
+		flag <- thisModule.isNotify(s)
+	)
+}
+
+--Refine the PropertyToReadOnlyAttrDef filter for non persistent read only attributes
+lazy rule PropertyToNonPersistentAttrDef extends PropertyToReadOnlyAttrDef 
+{
+	from s: UML!Property(not s.getValue(s.getCoreMWAppliedStereotype(),'isPersistent'))
+	to t: IMM!AttrDef
+	(
+		--extra flags
+		flag <- thisModule.isWritable(s),
+		flag <- thisModule.isMultiValue(s),
+--		flag <- thisModule.isNoDuplicates(s),
+		flag <- thisModule.isCached(s),
+		flag <- thisModule.isNotify(s)
+	)
+}
+
+
+--Filter for RdnDef types which are always Key Attributes i.e. name giving
+lazy abstract rule StructPropertyToRdnDef
+{
+	from s: UML!Class
+	to t: IMM!RdnDef
+	(
+		name <- 'id',
+		--Convert ECIM types to SAF types
+		type <- #SASTRINGT
+
+	)
+}
+
+--Refine the PropertyToRdnDef filter for naming attributes in a read write MOC
+lazy rule StructPropertyToConfigRdnType extends StructPropertyToRdnDef
+{
+	from s: UML!Class(not thisModule.isRuntimeCategory(s))
+	to t: IMM!RdnDef
+	(
+		category <- #SACONFIG,	
+		flag <- Sequence{#SA_INITIALIZED},
+		flag <- if thisModule.isIMMR2() then Sequence{#SA_NOTIFY} else Sequence{} endif
+	)
+}
+
+
+
+--Refine the PropertyToRdnDef filter for non persistent naming attributes in a read only MOC 
+lazy rule StructPropertyToRuntimeRdnType extends StructPropertyToRdnDef
+{
+	from s: UML!Class(thisModule.isRuntimeCategory(s))
+	to t: IMM!RdnDef
+	(
+		category <- #SARUNTIME,
+		flag <- Sequence{#SA_CACHED},
+		flag <- if s.attribute->select(e|e.getValue(e.getCoreMWAppliedStereotype(),'isPersistent') = true)->size()>0 then 
+					Sequence{#SA_PERSISTENT}
+				else
+					Sequence{}
+				endif,
+		flag <- if thisModule.isIMMR2() then Sequence{#SA_NOTIFY} else Sequence{} endif
+	)
+}
+
+
+--Filter for AttrDef types which are not Key Attributes i.e. not name giving
+lazy abstract rule StructPropertyToAttrDef
+{
+	from s: UML!Property(s.oclIsTypeOf(UML!Property))
+	to t: IMM!AttrDef
+	(
+		name <- s.name,
+		
+		--Convert ECIM types to SAF types
+		type <- thisModule.convertEcimTypeToIMMType(s),
+		
+		defaultValue <- thisModule.getDefault(s)
+	)
+}
+
+--Refine the PropertyToAttrDef filter for just read only attributes
+lazy rule StructPropertyToRuntimeAttrDef  extends StructPropertyToAttrDef 
+{
+	from s: UML!Property(not s.isCoreMWConfigurableAttribute())
+	to t: IMM!AttrDef
+	(
+		category <- #SARUNTIME,
+		flag <- thisModule.isCached(s),
+		flag <- thisModule.isPersistent(s),
+		flag <- thisModule.isMultiValue(s),
+--		flag <- thisModule.isNoDuplicates(s),
+		flag <- thisModule.isNotify(s)
+	)
+}
+
+--Refine the PropertyToAttrDef filter for just read write attributes
+lazy rule StructPropertyToConfigAttrDef  extends StructPropertyToAttrDef 
+{
+	from s: UML!Property(s.isCoreMWConfigurableAttribute())
+	to t: IMM!AttrDef
+	(
+		category <- #SACONFIG,
+		flag <- thisModule.isWritable(s),
+		flag <- thisModule.isMultiValue(s),
+--		flag <- thisModule.isNoDuplicates(s),
+		flag <- thisModule.isNotify(s),
+		flag <- thisModule.isNoDangling(s)
+	)
+}

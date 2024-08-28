@@ -1,0 +1,825 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:36:04 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ECIM_CertM" {
+	namespace "urn:com:ericsson:ecim:ECIM_CertM";
+	prefix "ECIM_CertM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import ECIM_Security_Management {
+		prefix "ECIM_Security_Management";
+	}
+
+	organization "ETH/XES";
+	description "The ECIM CertM MOM.";
+
+	revision "2013-09-25" {
+		ericsson:version "2";
+		ericsson:release "4";
+		ericsson:author "ETH/XES EBALKOV";
+		ericsson:contact "ETH/XES Balazs Kovacs";
+		ericsson:correction "0";
+	}
+
+	augment
+	"/ECIM_Top:ManagedElement/ECIM_Top:SystemFunctions/ECIM_Security_Management:SecM"
+	{
+		list "CertM" {
+			key "certMId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "EnrollmentServerGroup" {
+				key "enrollmentServerGroupId";
+				list "EnrollmentServer" {
+					key "enrollmentServerId";
+					uses ECIM_CertM:EnrollmentServer;
+				}
+
+				uses ECIM_CertM:EnrollmentServerGroup;
+			}
+
+			list "EnrollmentAuthority" {
+				key "enrollmentAuthorityId";
+				uses ECIM_CertM:EnrollmentAuthority;
+			}
+
+			list "TrustedCertificate" {
+				key "trustedCertificateId";
+				uses ECIM_CertM:TrustedCertificate;
+			}
+
+			list "VendorCredential" {
+				key "vendorCredentialId";
+				max-elements 1;
+				uses ECIM_CertM:VendorCredential;
+			}
+
+			list "NodeCredential" {
+				key "nodeCredentialId";
+				uses ECIM_CertM:NodeCredential;
+			}
+
+			list "TrustCategory" {
+				key "trustCategoryId";
+				uses ECIM_CertM:TrustCategory;
+			}
+
+			list "CertMCapabilities" {
+				key "certMCapabilitiesId";
+				min-elements 1;
+				max-elements 1;
+				uses ECIM_CertM:CertMCapabilities;
+			}
+
+			uses ECIM_CertM:CertM;
+		}
+
+	}
+
+	typedef "KeyInfo" {
+		type enumeration {
+			enum "RSA_1024" {
+				value 0;
+				description "1024-bit long key generated for the RSA algorithm.";
+			}
+
+			enum "RSA_2048" {
+				value 1;
+				description "2048-bit long key generated for the RSA algorithm.";
+			}
+
+			enum "RSA_3072" {
+				value 2;
+				description "3072-bit long key generated for the RSA algorithm.";
+			}
+
+			enum "RSA_4096" {
+				value 3;
+				description "4096-bit long key generated for the RSA algorithm.";
+			}
+
+			enum "ECDSA_160" {
+				value 4;
+				description
+				"A key generated for the ECDSA algorithm with bit-length ranging from 160 bits to 223 bits.";
+			}
+
+			enum "ECDSA_224" {
+				value 5;
+				description
+				"A key generated for the ECDSA algorithm with bit-length ranging from 224 bits to 255 bits.";
+			}
+
+			enum "ECDSA_256" {
+				value 6;
+				description
+				"A key generated for the ECDSA algorithm with bit-length ranging from 256 bits to 383 bits.";
+			}
+
+			enum "ECDSA_384" {
+				value 7;
+				description
+				"A key generated for the ECDSA algorithm with bit-length ranging from 384 bits to 511 bits.";
+			}
+
+			enum "ECDSA_512" {
+				value 8;
+				description
+				"A key generated for the ECDSA algorithm with bit-length of at least 512 bits.";
+			}
+
+		}
+
+		description "Indicates the key type and length in bits.
+
+This enumeration supports Rivest Shamir Adleman (RSA) and Elliptic Curve Digital Signature Algorithm (ECDDSA).";
+	}
+
+	typedef "CertificateState" {
+		type enumeration {
+			enum "NOT_VALID_YET" {
+				value 1;
+				description
+				"Based on the validFrom date, the certificate is not yet valid.";
+			}
+
+			enum "VALID" {
+				value 0;
+				description
+				"Based on the validFrom and validTo dates, the certificate is valid.";
+			}
+
+			enum "EXPIRED" {
+				value 2;
+				description
+				"Based on the validTo date having passed, the certificate expired.";
+			}
+
+			enum "REVOKED" {
+				value 3;
+				description "The certificate was revoked by a trusted CA.";
+			}
+
+		}
+
+		description "Certificate states.";
+	}
+
+	typedef "AuthorityType" {
+		type enumeration {
+			enum "CERTIFICATION_AUTHORITY" {
+				value 0;
+				description "An entity that issues certificates.";
+			}
+
+			enum "REGISTRATION_AUTHORITY" {
+				value 1;
+				description "An intermediate PKI entity, separate from the Certification Authority.
+
+Used for registration purposes and certificate enrollment.";
+			}
+
+		}
+
+		status deprecated;
+		description "Enrollment authority types.
+
+This type is deprecated.";
+	}
+
+	typedef "EnrollmentSupport" {
+		type enumeration {
+			enum "OFFLINE_CSR" {
+				value 0;
+				description "Certificate Signing Request-based (CSR) offline enrollment.
+
+The certificate for a node credential is manually provided by the MS using a CSR in PKCS#10 format.";
+			}
+
+			enum "OFFLINE_PKCS12" {
+				value 1;
+				description "PKCS#12-based offline enrollment.
+
+The node credential is manually provided by the MS using a PKCS#12 format, a certificate accompanied by a private key.";
+			}
+
+			enum "ONLINE_SCEP" {
+				value 2;
+				description
+				"Online enrollment. The node credential is acquired by the Simple Certificate Enrollment Protocol.";
+			}
+
+			enum "ONLINE_CMP" {
+				value 3;
+				description
+				"Online enrollment. The node credential is acquired by the Certificate Management Protocol.";
+			}
+
+		}
+
+		description "Supportable enrollment methods.";
+	}
+
+	typedef "ManagedCertificateState" {
+		type enumeration {
+			enum "ENABLED" {
+				value 0;
+				description "The certificate is enabled.";
+			}
+
+			enum "DISABLED" {
+				value 1;
+				description "The certificate is disabled.";
+			}
+
+		}
+
+		description "The states the MS may set for a certificate.";
+	}
+
+	typedef "FingerprintSupport" {
+		type enumeration {
+			enum "SHA_1" {
+				value 0;
+				description "The SHA-1 secure hash algorithm.";
+			}
+
+			enum "SHA_224" {
+				value 1;
+				description "The SHA-224 secure hash algorithm.";
+			}
+
+			enum "SHA_256" {
+				value 2;
+				description "The SHA-256 secure hash algorithm.";
+			}
+
+			enum "SHA_384" {
+				value 3;
+				description "The SHA-384 secure hash algorithm.";
+			}
+
+			enum "SHA_512" {
+				value 4;
+				description "The SHA-512 secure hash algorithm.";
+			}
+
+		}
+
+		description "The SHA fingerprint algorithm the ME supports.";
+	}
+
+	typedef "EnrollmentProtocol" {
+		type enumeration {
+			enum "SCEP" {
+				value 0;
+				description "Simple Certificate Enrollment Protocol.";
+			}
+
+			enum "CMP" {
+				value 1;
+				description "Certificate Management Protocol.";
+			}
+
+		}
+
+		description "Enrollment protocols.";
+	}
+
+	typedef "RenewalMode" {
+		type enumeration {
+			enum "MANUAL" {
+				value 0;
+				description "Certificate renewal is manually performed by the MS.
+
+This renewal mode requires the MS to start an enrollment by manually invoking one of the enrollment actions.";
+			}
+
+			enum "AUTOMATIC" {
+				value 1;
+				description "Certificate renewal is automatically performed by the ME.";
+			}
+
+		}
+
+		description "Modes for certificate renewal.";
+	}
+
+	typedef "Fingerprint" {
+		type string {
+			pattern "^(([a-fA-F0-9]{2}[:])*([a-fA-F0-9]{2}))$|^(NULL)$";
+		}
+
+		description "A derived string type that allows hexadecimal digits.
+
+The string must be entered in two-digit groups separated by colons. For example: b7:a8:c6:d5:43:fa:50:43";
+	}
+
+	typedef "EcimPasswordString" {
+		type string;
+		description "Password string.";
+	}
+
+	typedef "ExpiryAlarmThresholdRange" {
+		type uint16 {
+			range "1..365";
+		}
+
+		description "Range in days for certificate expiry alarm threshold.";
+	}
+
+	grouping "CertM" {
+		description "The top class of the Certificate Management model. 
+
+Certificate management encompasses management of node credentials and trusted certificates.";
+		leaf "certMId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+		list "reportProgress" {
+			key "actionId";
+			max-elements 1;
+			config true;
+			description "Reports the progress of the ongoing action on this MO.";
+			uses ECIM_CommonLibrary:AsyncActionProgress;
+		}
+
+		leaf "localFileStorePath" {
+			type string;
+			config true;
+			description "Contains a file sytem path for locally stored certificates.
+
+The default directory path on the ME file system where certificates or credential containers are stored. It may store locally generated files or files generated after push download. ";
+		}
+
+	}
+
+	grouping "CertificateContent" {
+		description "The content of the X.509 certificate.";
+		leaf "version" {
+			type string;
+			description "The version of the encoded certificate.";
+		}
+
+		leaf "serialNumber" {
+			type string;
+			description "The serial number of the certificate assigned by the CA.";
+		}
+
+		leaf "signatureAlgorithm" {
+			type string;
+			description
+			"The identifier for the algorithm and hash function used by the CA in signing the certificate.";
+		}
+
+		leaf "issuer" {
+			type string;
+			description
+			"The X.501 distinguished name of the CA that signed and issued the certificate.";
+		}
+
+		leaf "validFrom" {
+			type ECIM_CommonLibrary:DateTime;
+			description "The certificate is valid from this date.";
+		}
+
+		leaf "validTo" {
+			type ECIM_CommonLibrary:DateTime;
+			description "The certificate is valid to this date.";
+		}
+
+		leaf "publicKey" {
+			type string;
+			description "Carries the public key.";
+		}
+
+		leaf "publicKeyAlgorithm" {
+			type string;
+			description
+			" Identifies the algorithm of which this public key is an instance.";
+		}
+
+		leaf "keyUsage" {
+			type string;
+			description
+			"The usage category for which the certificate was issued as defined by X.509 key usage extension.";
+		}
+
+		leaf-list "extensionContent" {
+			type string;
+			description "Contains the X.509 certificate extensions.
+
+An extension string is displayed in Field:Value format.";
+		}
+
+		leaf "subject" {
+			type string;
+			mandatory true;
+			description
+			"The X.501 distinguished name of the subject associated with the public-key.";
+		}
+
+	}
+
+	grouping "TrustedCertificate" {
+		description "Represents a trusted certificate.";
+		leaf "trustedCertificateId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf-list "reservedByCategory" {
+			type string {
+				pattern "(.*=.*,)*TrustCategory=.*";
+			}
+
+			config true;
+			description "Indicates the trust categories this trusted certificate belongs to.
+
+Contains the Distinguished Names of the TrustCategory Managed Objects.";
+		}
+
+		leaf "managedState" {
+			type ECIM_CertM:ManagedCertificateState;
+			mandatory true;
+			description "The state of the trusted certificate set by the MS.
+
+If set to ENABLED, the certificate is trusted and the state of the certificate is represented by certificateState.
+If set to DISABLED, the trusted certificate is quarantined, and thus the trust relationship is suspended.";
+		}
+
+		list "certificateContent" {
+			key "subject";
+			max-elements 1;
+			config true;
+			description "The X.509 content of the certificate.";
+			uses ECIM_CertM:CertificateContent;
+		}
+
+		leaf "certificateState" {
+			type ECIM_CertM:CertificateState;
+			config true;
+			description "The current state of the certificate.";
+		}
+
+	}
+
+	grouping "NodeCredential" {
+		description "Represents the node credential and contains information about the corresponding certificate.
+
+";
+		leaf "nodeCredentialId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+		leaf "subjectName" {
+			type string;
+			description "The X.501 DN to be used in the subject field of the requested certificate.
+
+For instance: C=SE,O=Ericsson,CN=someserialnumber.ericsson.com ";
+			ericsson:restricted;
+		}
+
+		leaf-list "reservedByUser" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description "Indicates the users of this NodeCredential MO.
+
+The users are identified by Distinguished Names of Credential User Managed Objects.";
+		}
+
+		leaf "enrollmentTimer" {
+			type uint16;
+			default "60";
+			description "The enrollment poll timer in minutes. 
+
+If the time indicated by this timer elapses before the enrollment is finished, the enrollment fails.  Used only for online enrollment.";
+		}
+
+		leaf "enrollmentServerGroup" {
+			type string {
+				pattern "(.*=.*,)*EnrollmentServerGroup=.*";
+			}
+
+			description
+			"The DN of the EnrollmentServerGroup used for online enrollments.";
+		}
+
+		leaf "keyInfo" {
+			type ECIM_CertM:KeyInfo;
+			description
+			"Specifies the key type and length that is used for the next enrollment.";
+		}
+
+		list "enrollmentProgress" {
+			key "actionId";
+			max-elements 1;
+			config true;
+			description "Reports the progress of the ongoing enrollment.";
+			uses ECIM_CommonLibrary:AsyncActionProgress;
+		}
+
+		leaf "renewalMode" {
+			type ECIM_CertM:RenewalMode;
+			description "The certificate renewal mode for online enrollment.
+
+Renewals use subjectName, keyInfo and enrollmentServerGroup attributes as inputs.
+
+If configured to AUTOMATIC, manually initiated offline and online renewals fail.
+
+If an automatic enrollment failed alarm is present on the MO, setting this attribute to MANUAL clears the alarm.";
+		}
+
+		leaf "enrollmentAuthority" {
+			type string {
+				pattern "(.*=.*,)*EnrollmentAuthority=.*";
+			}
+
+			description
+			"The DN of the EnrollmentAuthority used for online enrollments.";
+		}
+
+		leaf "expiryAlarmThreshold" {
+			type ECIM_CertM:ExpiryAlarmThresholdRange;
+			mandatory true;
+			description "Threshold value to calculate the date of the alarm indicating the coming expiry of the certificate.
+
+The alarm severity is raised to MINOR in case the remaining time to expiry is reduced to the one third of the configured threshold.
+The alarm severity is raised to MAJOR in case the remaining time to expiry is reduced to the one tenth of the configured threshold or one week.
+The alarm is cleared and a certificate not available alarm is raised when the certificate expires.";
+		}
+
+		leaf "subjectAltName" {
+			type string;
+			description "The FQDN or IP address to be used in the subjectAltName field of the requested certificate. 
+
+For instance: someserialnumber.ericsson.com
+";
+		}
+
+		list "certificateContent" {
+			key "subject";
+			max-elements 1;
+			config true;
+			description "The X.509 content of the certificate.";
+			uses ECIM_CertM:CertificateContent;
+		}
+
+		leaf "certificateState" {
+			type ECIM_CertM:CertificateState;
+			config true;
+			description "The current state of the certificate.";
+		}
+
+	}
+
+	grouping "VendorCredential" {
+		description "Represents the vendor credential pre-installed on the ME.";
+		leaf "vendorCredentialId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		list "certificateContent" {
+			key "subject";
+			max-elements 1;
+			config true;
+			description "The X.509 content of the certificate.";
+			uses ECIM_CertM:CertificateContent;
+		}
+
+		leaf "certificateState" {
+			type ECIM_CertM:CertificateState;
+			config true;
+			description "The current state of the certificate.";
+		}
+
+	}
+
+	grouping "EnrollmentServerGroup" {
+		description "Maintains a group of enrollment servers for load balancing.";
+		leaf "enrollmentServerGroupId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+	}
+
+	grouping "EnrollmentAuthority" {
+		description
+		"Represents a Certification or Registration Authority for certificate enrollment.";
+		leaf "enrollmentAuthorityId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "enrollmentCaCertificate" {
+			type string {
+				pattern "(.*=.*,)*TrustedCertificate=.*";
+			}
+
+			description "The trusted cerificate of the RA or CA used for enrollment authentication.
+
+Represents the certificate by the DN of the appropriate TrustedCertificate MO. 
+
+The RA or CA certificate provided in the PKI response is authenticated by this trusted certificate.
+
+If this attribute has any value, the attribute enrollmentCaFingerprint is ignored.";
+		}
+
+		leaf "enrollmentCaFingerprint" {
+			type ECIM_CertM:Fingerprint;
+			description "The SHA fingerprint of the trusted cerificate of the RA or CA used for enrollment authentication.
+
+If the trusted certificate is not stored on the ME as a TrustedCertificate MO, the enrollmentCaCertificate attribute cannot refer to the appropriate TrustedCertificate MO, so this attribute at least must be provided. If enrollmentCaCertificate references a TrustedCertificate MO, this attribute displays the fingerprint of the certificate defined by enrollmentCaCertificate, and cannot be modified. 
+
+The fingerprint of the trusted certificate provided by the PKI response is calculated and compared to this attribute. If a match is found, the certificate is used for authenticating the CA or RA.
+
+The hash must be calculated by the Secure Hash Algorithm (SHA) algorithm indicated in fingerprintSupport of the CertMCapabilities MO.";
+		}
+
+		leaf "authorityType" {
+			type ECIM_CertM:AuthorityType;
+			status deprecated;
+			description "Indicates the type of the enrollment authority.
+
+Used for the verification of the Public Key Infrastructure (PKI) response message. In case of a Certification Authority (CA), the self-signed certificate of the CA is accepted by ME given that the certificate is configured either in attribute enrollmentCaCertificate or enrollmentCaFingerprint. In case of a Registration Authority (RA), the RA certificate is verified using the CA certificate of the RA configured in attribute enrollmentCaCertificate.
+
+This entity is deprecated as implemented redundant functionality.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+		leaf "enrollmentAuthorityName" {
+			type ECIM_CommonLibrary:DistinguishedName;
+			description "Specifies the name of the issuing CA.
+
+The X.501 distinguished name of the issuing CA used for addressing and reference identity.";
+		}
+
+	}
+
+	grouping "TrustCategory" {
+		description
+		"Represents a group of trusted certificates that can be referenced by Credential Users on the ME.";
+		leaf "trustCategoryId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+		leaf-list "trustedCertificates" {
+			type string {
+				pattern "(.*=.*,)*TrustedCertificate=.*";
+			}
+
+			min-elements 1;
+			description "The list of trusted certificates that belongs to this trust category.
+
+Contains the Distinguished Names of the TrustedCertificate Managed Objects.";
+		}
+
+		leaf-list "reservedByUser" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description "Indicates the users of this TrustCategory MO.
+
+The users are identified by Distinguished Names of Credential User Managed Objects.";
+		}
+
+	}
+
+	grouping "CertMCapabilities" {
+		description "Contains the certificate management capabilities of the ME.";
+		leaf "certMCapabilitiesId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf-list "enrollmentSupport" {
+			type ECIM_CertM:EnrollmentSupport;
+			config true;
+			min-elements 1;
+			description "Indicates the enrollment methods supported by the ME.";
+		}
+
+		leaf "fingerprintSupport" {
+			type ECIM_CertM:FingerprintSupport;
+			config true;
+			description "The secure hash algorithm the ME supports for fingerprint calculation.
+
+The attributes and parameters in the CertM model taking a fingerprint must be provided by calculating the fingerprint using the indicated algorithm.";
+		}
+
+	}
+
+	grouping "EnrollmentServer" {
+		description "Represents an enrollment server.
+
+An enrollment server implements Simple Certificate Enrollment Protocol (SCEP) or the Certificate Management Protocol (CMP).";
+		leaf "enrollmentServerId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+		leaf "enrollmentAuthority" {
+			type string {
+				pattern "(.*=.*,)*EnrollmentAuthority=.*";
+			}
+
+			status deprecated;
+			description "The Certification Authority or Registration Authority used by this enrollment server.
+
+Represents the enrollment authority by the DN of the EnrollmentAuthority MO.
+
+This entity is deprecated. If this attribute is specified, the enrollmentAuthority attribute in the NodeCredential MO referring to the EnrollmentServerGroup MO of this EnrollmentServer MO is ignored.";
+		}
+
+		leaf "uri" {
+			type string;
+			mandatory true;
+			description "The URI of the enrollment server.
+
+The URI consists of a protocol, an IP or DNS address and an optional port number. Specify the optional port designation by appending a colon followed by the port number to the host part, for example, 192.168.33.27:8080. If no port number is provided, the default port is used.
+
+For SCEP, the URI contains the relative URI of the enrollment CA HTTP Common Gateway interface (CGI) script path, which is the resource identifier of the resource on the server which will process the enrollment request.
+
+Example for CMP: http://192.168.33.27:8080 or cmp://192.168.33.27
+Example for SCEP: http://192.168.33.27:8080/cgi-bin/pkiclient.exe";
+		}
+
+		leaf "protocol" {
+			type ECIM_CertM:EnrollmentProtocol;
+			mandatory true;
+			description "The enrollment protocol.";
+		}
+
+	}
+
+}

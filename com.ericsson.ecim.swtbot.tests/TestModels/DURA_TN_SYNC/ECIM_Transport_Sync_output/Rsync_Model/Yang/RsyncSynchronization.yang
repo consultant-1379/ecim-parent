@@ -1,0 +1,77 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:24:17 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RsyncSynchronization" {
+	namespace "urn:com:ericsson:ecim:RsyncSynchronization";
+	prefix "RsyncSynchronization";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RsyncSyncLibrary {
+		prefix "RsyncSyncLibrary";
+	}
+
+	description "ECIM Transport Synchronization Model.
+
+This is the root of Sync fragment.";
+
+	revision "2015-10-13" {
+		ericsson:contact "EAB/FJP/TA UABJOCL";
+		ericsson:correction "2";
+		ericsson:author "EAB/FJP/TA UABJOCL";
+		ericsson:version "1";
+		ericsson:release "3";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport" {
+		list "Synchronization" {
+			key "synchronizationId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			uses RsyncSynchronization:Synchronization;
+		}
+
+	}
+
+	grouping "Synchronization" {
+		description
+		"This MO class is the top class for synchronization management.";
+		leaf "synchronizationId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "telecomStandard" {
+			type RsyncSyncLibrary:TelecomStandard;
+			mandatory true;
+			description
+			"Specifies the regional telecom standard option to I, II, or III for ETSI (European Standard) , ANSI (US Standard) or TTC (Japanese Standard) respectively.
+
+The attribute is not applicable, if RadioEquipmentClock::selectionProcessMode is set to QL_DISABLED. 
+";
+		}
+
+		leaf "fixedPosition" {
+			type boolean;
+			mandatory true;
+			description
+			"Specifies whether the node has a fixed position.
+
+If the node does not move this attribute is set to true. A GNSS receiver may lock its position to enhance the receiver performance.
+If the node may move, for example on a cruise ship, this attribute is set to false. A GNSS receiver needs to continuously track its position.
+";
+		}
+
+	}
+
+}

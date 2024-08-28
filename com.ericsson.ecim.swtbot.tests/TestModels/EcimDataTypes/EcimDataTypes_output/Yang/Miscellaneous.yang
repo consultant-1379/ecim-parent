@@ -1,0 +1,157 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 4:09:11 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "Miscellaneous" {
+	namespace "urn:com:ericsson:ecim:Miscellaneous";
+	prefix "Miscellaneous";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import EcimString {
+		prefix "EcimString";
+	}
+
+	import EcimEnum {
+		prefix "EcimEnum";
+	}
+
+	import EcimInt {
+		prefix "EcimInt";
+	}
+
+	import RootMom {
+		prefix "RootMom";
+	}
+
+	import EcimLibrary {
+		prefix "EcimLibrary";
+	}
+
+	import EcimFloat {
+		prefix "EcimFloat";
+	}
+
+	import EcimStruct {
+		prefix "EcimStruct";
+	}
+
+	revision "2015-04-20" {
+		ericsson:version "3";
+		ericsson:release "2";
+	}
+
+	augment "/RootMom:Root" {
+		list "rootMoClass" {
+			key "id";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "UseOtherMomDataTypes" {
+				key "id";
+				min-elements 1;
+				max-elements 1;
+				uses Miscellaneous:UseOtherMomDataTypes;
+			}
+
+			uses Miscellaneous:rootMoClass;
+		}
+
+	}
+
+	grouping "rootMoClass" {
+		leaf "id" {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+		container "structA" {
+			presence "This Container points to a Struct which has no key.";
+			uses Miscellaneous:structA;
+		}
+
+	}
+
+	grouping "UseOtherMomDataTypes" {
+		leaf "id" {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+		leaf-list "refLibDerivedBool1" {
+			type EcimLibrary:derivedBool1;
+			max-elements 2;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "refLibDerivedFloat1" {
+			type EcimLibrary:derivedFloat1;
+			max-elements 2;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "refLibDerivedInt1" {
+			type EcimLibrary:derivedInt1;
+			max-elements 4;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "refLibDerivedString1" {
+			type EcimLibrary:derivedString;
+			max-elements 6;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "refLibDerivedEnum1" {
+			type EcimLibrary:enum1;
+			max-elements 3;
+		}
+
+		list "refLibStruct1" {
+			max-elements 3;
+			config true;
+			description "Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses Miscellaneous:refLibStruct1;
+		}
+
+		leaf "refAction1" {
+			type string {
+				pattern "(.*=.*,)*Actions=.*";
+			}
+
+		}
+
+		leaf-list "refEnum1" {
+			type EcimEnum:equipmentList;
+			max-elements 3;
+		}
+
+		leaf "refDerivedFloat1" {
+			type EcimFloat:MyDerivedFloat(negativeRange);
+		}
+
+		leaf-list "refDerivedInt1" {
+			type EcimInt:MyDerivedInteger(positiveRange);
+			max-elements 4;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "refDerivedString1" {
+			type EcimString:DerivedString;
+			max-elements 2;
+			ericsson:non-unique-leaf-list;
+		}
+
+		container "refDerivedStruct1" {
+			presence "This Container points to a Struct which has no key.";
+			uses Miscellaneous:refDerivedStruct1;
+		}
+
+	}
+
+}

@@ -1,0 +1,71 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 4:23:10 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "NoRootMom2" {
+	namespace "urn:com:ericsson:ecim:NoRootMom2";
+	prefix "NoRootMom2";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	description "Documentaion.";
+
+	revision "2015-04-20" {
+		ericsson:correction "0";
+		ericsson:release "1";
+		ericsson:version "1";
+	}
+
+	augment "/ECIM_Top:ManagedElement" {
+		list "C2A" {
+			key "c2AId";
+			list "C2B" {
+				key "c2BId";
+				uses NoRootMom2:C2B;
+			}
+
+			uses NoRootMom2:C2A;
+		}
+
+	}
+
+	grouping "C2A" {
+		description "Documentation.";
+		leaf "c2AId" {
+			type string;
+			mandatory true;
+			description "Documentation.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "Documentation.";
+		}
+
+	}
+
+	grouping "C2B" {
+		description "Documentation.";
+		leaf "c2BId" {
+			type string;
+			mandatory true;
+			description "Documentation.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "Documentation.";
+		}
+
+	}
+
+}

@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_RS_PacketMarking" namespace="urn:com:ericsson:ecim:Epg_Pgw_RS_PacketMarking" namespacePrefix="epg_pgw_rs_packetmarking" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="1">
+        <description>Packet marking settings</description>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString21">
+            <description>Must be an access control rule identifier or a range of access control rule identifiers</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>21</max>
+                    </lengthRange>
+                    <validValues>^[0-9]{1,10}([-][0-9]{1,10})?$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="PacketMarking">
+            <description>Packet marking settings</description>
+            <root/>
+            <attribute name="packetMarkingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RS_PacketMarking</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Map">
+            <description>Map of access control rules to a packet marking value</description>
+            <attribute name="mapId">
+                <description>Packet marking value</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="accessControlRule">
+                <description>Access control rule identifier or set of access control rule identifiers mapped to packet marking value</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RS_PacketMarking</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>1</minLength>
+                        <maxLength>512</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="PacketMarking_to_Map">
+            <containment>
+                <parent>
+                    <hasClass name="PacketMarking">
+                        <mimName>Epg_Pgw_RS_PacketMarking</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Map">
+                        <mimName>Epg_Pgw_RS_PacketMarking</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>4095</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="RuleSpace_to_PacketMarking">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="PacketMarking">
+                        <mimName>Epg_Pgw_RS_PacketMarking</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+</models>

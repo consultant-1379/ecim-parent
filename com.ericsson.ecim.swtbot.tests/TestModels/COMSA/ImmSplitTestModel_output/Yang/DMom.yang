@@ -1,0 +1,53 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 2:54:20 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "DMom" {
+	namespace "urn:com:ericsson:ecim:DMom";
+	prefix "DMom";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ComSaTop {
+		prefix "ComSaTop";
+	}
+
+	import CMom {
+		prefix "CMom";
+	}
+
+	import XMom {
+		prefix "XMom";
+	}
+
+	description "Docs...";
+
+	revision "2015-04-20" {
+		ericsson:version "1";
+		ericsson:release "1";
+		ericsson:correction "0";
+	}
+
+	augment "/ComSaTop:ManagedElement/XMom:RootX/CMom:RootC/CMom:ClassC" {
+		list "RootD" {
+			key "rootDId";
+			uses DMom:RootD;
+		}
+
+	}
+
+	grouping "RootD" {
+		description "Docs...";
+		leaf "rootDId" {
+			type string;
+			mandatory true;
+			description "Docs...";
+			ericsson:restricted;
+		}
+
+	}
+
+}

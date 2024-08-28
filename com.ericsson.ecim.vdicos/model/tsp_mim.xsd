@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * Copyright (C) 2009 by Ericsson AB                                       * -->
+<!-- * S - 126 25  STOCKHOLM                                                   * -->
+<!-- * SWEDEN, tel int + 46 8 719 0000                                         * -->
+<!-- *                                                                         * -->
+<!-- * This program may be used and/or copied only with the written permission * -->
+<!-- * from Ericsson AB, or in accordance with the terms and                   * -->
+<!-- * conditions stipulated in the agreement/contract under which the program * -->
+<!-- * has been supplied.                                                      * -->
+<!-- *                                                                         * -->
+<!-- * All rights reserved.                                                    * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!--
+  MIM rules for CMF in TSP 6.0
+  ============================
+  
+  Revision info: 071115
+  
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="mim">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+        <xs:element minOccurs="0" ref="jim"/>
+        <xs:element minOccurs="0" ref="ldapObjectId"/>
+        <xs:element minOccurs="0" ref="confdTargetNamespace"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="dataType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="class"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="relationship"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="version"/>
+      <xs:attribute name="release"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="description">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="extension">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="any">
+          <xs:attribute name="extender" use="required"/>
+          <xs:attribute name="name"/>
+          <xs:attribute name="version" use="required"/>
+          <xs:attribute name="release" use="required"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="jim">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="ldapObjectId" type="xs:string"/>
+  <xs:element name="confdTargetNamespace" type="xs:string"/>
+  <xs:element name="class">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+        <xs:element minOccurs="0" ref="baseClass"/>
+        <xs:element minOccurs="0" ref="abstract"/>
+        <xs:element minOccurs="0" ref="ldapObjectId"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="singleton"/>
+          <xs:element ref="systemCreated"/>
+          <xs:element ref="reducedLoggingAllowed"/>
+        </xs:choice>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="attribute"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="action"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="baseClass">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="abstract">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="singleton">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="systemCreated">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="reducedLoggingAllowed">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="relationship">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+        <xs:element ref="parent"/>
+        <xs:element ref="child"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="child">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="min"/>
+      <xs:attribute name="max"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sequence">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+        <xs:element ref="dataType"/>
+        <xs:element minOccurs="0" ref="lengthRange"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- here, the dataType may not be struct or sequence! -->
+  <xs:element name="struct">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+        <xs:element maxOccurs="unbounded" ref="member"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="member">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+        <xs:element ref="dataType"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- here, the dataType may not be struct or sequence! -->
+  <xs:element name="min" type="xs:string"/>
+  <xs:element name="max" type="xs:string"/>
+  <xs:element name="validValues">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="lengthRange">
+    <xs:complexType>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element ref="min"/>
+          <xs:element minOccurs="0" ref="max"/>
+        </xs:sequence>
+        <xs:element ref="max"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="range">
+    <xs:complexType>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element ref="min"/>
+          <xs:element minOccurs="0" ref="max"/>
+        </xs:sequence>
+        <xs:element ref="max"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="value">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="boolean">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="defaultValue"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="float">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="range"/>
+        <xs:element minOccurs="0" ref="defaultValue"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="integer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="range"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="pattern"/>
+          <xs:element ref="validValues"/>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="defaultValue"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="string">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="lengthRange"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="pattern"/>
+          <xs:element ref="validValues"/>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="defaultValue"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dateTime">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="range"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="pattern"/>
+          <xs:element ref="validValues"/>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="defaultValue"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="defaultValue" type="xs:string"/>
+  <xs:element name="pattern" type="xs:string"/>
+  <xs:element name="dataType">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="struct"/>
+          <xs:element ref="string"/>
+          <xs:element ref="boolean"/>
+          <xs:element ref="integer"/>
+          <xs:element ref="dateTime"/>
+          <xs:element ref="float"/>
+          <xs:element ref="sequence"/>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="ldapTypeInfo"/>
+      </xs:sequence>
+      <xs:attribute name="name"/>
+      <xs:attribute name="name.ref"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ldapTypeInfo">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="equality"/>
+        <xs:element ref="substr"/>
+        <xs:element ref="ordering"/>
+        <xs:element ref="syntax"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="equality" type="xs:string"/>
+  <xs:element name="substr" type="xs:string"/>
+  <xs:element name="ordering" type="xs:string"/>
+  <xs:element name="syntax" type="xs:string"/>
+  <xs:element name="attribute">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+        <xs:element minOccurs="0" ref="ldapObjectId"/>
+        <xs:element minOccurs="0" ref="dataType"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="mandatory"/>
+          <xs:element ref="restricted"/>
+          <xs:element ref="key"/>
+          <xs:element ref="initialValue"/>
+          <xs:element ref="readOnly"/>
+          <xs:element ref="nonPersistent"/>
+          <xs:element ref="sensitive"/>
+          <xs:element ref="hideInConfd"/>
+          <xs:element ref="hideInLdap"/>
+          <xs:element ref="systemMaintained"/>
+          <xs:element ref="runtime"/>
+          <xs:element ref="cached"/>
+          <xs:element ref="deletable"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="from"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    If datatype is missing, then 'name' and 'from' must point to a full
+    attribute definition. If datatype is present, then 'from' must not.
+  -->
+  <xs:element name="initialValue" type="xs:string"/>
+  <xs:element name="key">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="readOnly">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="systemMaintained">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="mandatory">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="restricted">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="nonPersistent">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="sensitive">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="hideInConfd">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="hideInLdap">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="runtime">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="cached">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="deletable">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="action">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+        <xs:element ref="returnType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="parameter"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="sensitive"/>
+          <xs:element ref="reducedLoggingAllowed"/>
+          <xs:element ref="hideInConfd"/>
+          <xs:element ref="hideInLdap"/>
+          <xs:element ref="systemMaintained"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="returnType">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="void"/>
+        <xs:element ref="dataType"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="void">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="parameter">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="extension"/>
+        <xs:element ref="dataType"/>
+        <xs:element minOccurs="0" ref="optional"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="direction" default="in">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="in"/>
+            <xs:enumeration value="out"/>
+            <xs:enumeration value="inout"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="optional">
+    <xs:complexType/>
+  </xs:element>
+  <xs:complexType name="any" mixed="true">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="strict"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

@@ -1,0 +1,75 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 4:21:16 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "NewMomX" {
+	namespace "urn:com:ericsson:ecim:NewMomX";
+	prefix "NewMomX";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ComTop {
+		prefix "ComTop";
+	}
+
+	import MMAS {
+		prefix "MMAS";
+	}
+
+	import CommonLib {
+		prefix "CommonLib";
+	}
+
+	description "qwe";
+
+	revision "2015-04-20" {
+		ericsson:release "1";
+		ericsson:version "1";
+	}
+
+	augment "/ComTop:ManagedElement/MMAS:Mmas" {
+		list "X1" {
+			key "x1Id";
+			list "X2" {
+				key "x12d";
+				max-elements 334;
+				uses NewMomX:X2;
+			}
+
+			uses NewMomX:X1;
+		}
+
+	}
+
+	grouping "X1" {
+		description "qwe";
+		leaf "x1Id" {
+			type int64;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "X2" {
+		description "qwe";
+		leaf "x12d" {
+			type int64;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		container "structAttr1" {
+			presence "This Container points to a Struct which has no key.";
+			description "qwe";
+			uses NewMomX:structAttr1;
+		}
+
+	}
+
+}

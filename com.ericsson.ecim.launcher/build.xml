@@ -1,0 +1,18 @@
+<project name="com.ericsson.ecim.launcher" default="init" basedir=".">
+  <description>
+    Download required jar file
+  </description>
+
+  <target name="init">
+  	<get dest="lib" src="http://eecs.rnd.ki.sw.ericsson.se/customer/dx/et_papyrus_latest/bin/dxet-mpxmlmerge-bin.zip"/>
+  	<unzip dest="lib" src="${basedir}/lib/dxet-mpxmlmerge-bin.zip" >
+  		<patternset>
+  			<include name="dxet-mpxmlmerge/dxet-mpxmlmerge.jar" />
+  		</patternset>
+  	</unzip>
+  	<move file="${basedir}/lib/dxet-mpxmlmerge/dxet-mpxmlmerge.jar" todir="${basedir}/lib"/>
+  	<delete file="${basedir}/lib/dxet-mpxmlmerge-bin.zip"/>
+  	<delete dir="${basedir}/lib/dxet-mpxmlmerge/"/>
+  </target>
+
+</project>

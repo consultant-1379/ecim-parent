@@ -1,0 +1,1757 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_SI_HttpWspRule" namespace="urn:com:ericsson:ecim:Epg_Pgw_SI_HttpWspRule" namespacePrefix="epg_pgw_si_httpwsprule" organization="Ericsson EAB, NDO EPG" release="2" revision="" version="3">
+        <description>HTTP WSP rule</description>
+        <enum name="Track">
+            <description>Event type reported</description>
+            <enumMember name="start">
+                <description>Count start of event</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="complete">
+                <description>Count completion of event</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="Operation">
+            <description>Limit match to operation being performed</description>
+            <enumMember name="delete">
+                <description>Apply rule for DELETE method</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="get">
+                <description>Apply rule for GET method</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="head">
+                <description>Apply rule for HEAD method</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="options">
+                <description>Apply rule for OPTIONS method</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="post">
+                <description>Apply rule for POST method</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="put">
+                <description>Apply rule for PUT method</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="trace">
+                <description>Apply rule for TRACE method</description>
+                <value>7</value>
+            </enumMember>
+            <enumMember name="connect">
+                <description>Apply rule for CONNECT method</description>
+                <value>8</value>
+            </enumMember>
+        </enum>
+        <enum name="AggregatedVolume">
+            <description>Volume type reported for aggregated charging</description>
+            <enumMember name="bearer">
+                <description>Count volume for bearer level</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="application">
+                <description>Count volume for application level</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="RangedString256">
+            <description>string up to 256 tokens</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>256</max>
+                    </lengthRange>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString63">
+            <description>Must be a string beginning with a number or letter and consisting of letters, numbers, dashes and underscores.</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>63</max>
+                    </lengthRange>
+                    <validValues>^[[:alnum:]][[:alnum:]_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="TextContent">
+            <description>Must contain only letters, numbers, underscores or dashes</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>63</max>
+                    </lengthRange>
+                    <validValues>^[\.0-9A-Za-z\_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="PriorityKey">
+            <description>String containing only decimal digits.&#13;
+First digit cannot be zero, range is 1-999999.&#13;
+</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>6</max>
+                    </lengthRange>
+                    <validValues>^[1-9][0-9]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedU32">
+            <description>Ranged Unit 0 .. 4294967295</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>0</min>
+                        <max>4294967295</max>
+                    </range>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString62">
+            <description>Must be a string beginning with a number or letter and consisting of no more than 63 total letters, numbers, dashes and underscores.</description>
+            <baseType>
+                <string>
+                    <validValues>^[A-Za-z0-9][_0-9A-Za-z-]{0,62}$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="HttpWspRule">
+            <description>HTTP WSP rule</description>
+            <root/>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='exists(./Term/@termID)'><name path='.'/>: Missing mandatory managed object 'term'</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <attribute name="httpWspRuleId">
+                <description>Rule name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString63">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Term">
+            <description>Define a service identification term</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='exists(./From/@fromID)'><name path='.'/>: Missing mandatory managed object 'from'</assert>
+            <assert id='set' test='exists(./Then/@thenID)'><name path='.'/>: Missing mandatory managed object 'then'</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <attribute name="name">
+                <description>Term name</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString63">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="termID">
+                <description>Identifier of the term.&#13;
+Determines the term priority based on lexical order.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="PriorityKey">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="From">
+            <description>Define match criteria</description>
+            <attribute name="fromID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Then">
+            <description>Action to take if the 'from' condition is matched</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $rule in ./@editContent satisfies ($rule = /ManagedElement/Epg/Pgw/ServiceIdentification/HttpWspEditRule/@httpWspEditRuleId)'><name path='.'/>,editContent: edit-rule must be configured under [managed-element epg pgw service-identification http-wsp-edit-rule]</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in ./@redirectUnauthorized satisfies (exists(/ManagedElement/Epg/Pgw/License/@automaticRedirection))'><name path='.'/>,redirectUnauthorized: Redirect must be licensed</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="thenID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="payload">
+                <description>Service data flow identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedU32">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="redirectUnauthorized">
+                <description>Redirect the flow if not authorized</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="aggregatedVolume">
+                <description>Volume type reported for aggregated charging</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="AggregatedVolume">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="activateUriTracking">
+                <description>Enable tracking of URI in addition to service data flow</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="editContent">
+                <description>Apply rule to edit content</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString62">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Uri">
+            <description>Match URI settings</description>
+            <attribute name="uriID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="is">
+                <description>True if the value is an exact match</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="startsWith">
+                <description>True if the value matches the start</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="endsWith">
+                <description>True if the value matches the end</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="notIs">
+                <description>True if none of the values are matched</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notStartsWith">
+                <description>True if none of the values match the start</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notEndsWith">
+                <description>True if none of the values match the end</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="contains">
+                <description>True if all the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notContains">
+                <description>True if none of the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="IncludeUriHandling">
+            <description>include uri handling</description>
+            <attribute name="includeUriHandlingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="case">
+                <description>Consider case while processing</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Http">
+            <description>Match HTTP sessions</description>
+            <attribute name="httpID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="operation">
+                <description>Limit match to operation being performed</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <enumRef name="Operation">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </enumRef>
+                        <minLength>0</minLength>
+                        <maxLength>8</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Header">
+            <description>HTTP header options</description>
+            <attribute name="headerID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Host">
+            <description>HTTP 'host' header settings</description>
+            <attribute name="hostID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="is">
+                <description>True if the value is an exact match</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="startsWith">
+                <description>True if the value matches the start</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="endsWith">
+                <description>True if the value matches the end</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="case">
+                <description>Consider case while processing</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="notIs">
+                <description>True if none of the values are matched</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notStartsWith">
+                <description>True if none of the values match the start</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notEndsWith">
+                <description>True if none of the values match the end</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="contains">
+                <description>True if all the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notContains">
+                <description>True if none of the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ExtendedHeader">
+            <description>HTTP extended-header options</description>
+            <attribute name="extendedHeaderID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TextContent">
+            <description>HTTP header with textual content</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='@textContentId = /ManagedElement/Epg/Pgw/ServiceIdentification/ExtendedHeaderDefinition/Http/@textContent'><name path='.'/>: Referenced extended-header must be configured under [managed-element epg pgw service-identification extended-header-definition]</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="textContentId">
+                <description>Match header token</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="TextContent">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="is">
+                <description>True if the value is an exact match</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="startsWith">
+                <description>True if the value matches the start</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="endsWith">
+                <description>True if the value matches the end</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="case">
+                <description>Consider case while processing</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="notIs">
+                <description>True if none of the values are matched</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notStartsWith">
+                <description>True if none of the values match the start</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notEndsWith">
+                <description>True if none of the values match the end</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="contains">
+                <description>True if all the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notContains">
+                <description>True if none of the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ContentType">
+            <description>Content type contained in http body</description>
+            <attribute name="contentTypeID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="case">
+                <description>Consider case while processing</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="is">
+                <description>True if the value is an exact match</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="startsWith">
+                <description>True if the value matches the start</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="endsWith">
+                <description>True if the value matches the end</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="notIs">
+                <description>True if none of the values are matched</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notStartsWith">
+                <description>True if none of the values match the start</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notEndsWith">
+                <description>True if none of the values match the end</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="contains">
+                <description>True if all the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notContains">
+                <description>True if none of the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Wsp">
+            <description>Match WSP sessions</description>
+            <attribute name="wspID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="operation">
+                <description>Limit match to operation being performed</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <enumRef name="Operation">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </enumRef>
+                        <minLength>0</minLength>
+                        <maxLength>8</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Mms">
+            <description>Match MMS sessions</description>
+            <attribute name="mmsID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="mmsNotification">
+                <description>Match notification operation</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="mmsForward">
+                <description>Match forward operation</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="mmsAcknowledge">
+                <description>Match acknowledge operation</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="mmsReadReport">
+                <description>Match read-report operation</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="MmsSend">
+            <description>Settings for send operation</description>
+            <attribute name="mmsSendID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="AnyMmsDestination">
+            <description>Criteria for destinations</description>
+            <attribute name="anyMmsDestinationID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="case">
+                <description>Consider case while processing</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="contains">
+                <description>True if all the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notContains">
+                <description>True if none of the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="MmOrigin">
+            <description>Originator of MMS</description>
+            <attribute name="mmOriginID">
+                <description>nameSingle instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="case">
+                <description>Consider case while processing</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="is">
+                <description>True if the value is an exact match</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="startsWith">
+                <description>True if the value matches the start</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="endsWith">
+                <description>True if the value matches the end</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="notIs">
+                <description>True if none of the values are matched</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notStartsWith">
+                <description>True if none of the values match the start</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notEndsWith">
+                <description>True if none of the values match the end</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="contains">
+                <description>True if all the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notContains">
+                <description>True if none of the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="MmsRetrieve">
+            <description>Settings for retrieve operation</description>
+            <attribute name="mmsRetrieveID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ActivateEventTracking">
+            <description>Settings for event tracking</description>
+            <attribute name="activateEventTrackingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="track">
+                <description>Event type reported</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Track">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="HttpWspRule_to_Term">
+            <containment>
+                <parent>
+                    <hasClass name="HttpWspRule">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Term">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>128</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Term_to_From">
+            <containment>
+                <parent>
+                    <hasClass name="Term">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="From">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Term_to_Then">
+            <containment>
+                <parent>
+                    <hasClass name="Term">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Then">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="From_to_Uri">
+            <containment>
+                <parent>
+                    <hasClass name="From">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Uri">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="From_to_Http">
+            <containment>
+                <parent>
+                    <hasClass name="From">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Http">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="From_to_Wsp">
+            <containment>
+                <parent>
+                    <hasClass name="From">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Wsp">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="From_to_Mms">
+            <containment>
+                <parent>
+                    <hasClass name="From">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Mms">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Http_to_Header">
+            <containment>
+                <parent>
+                    <hasClass name="Http">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Header">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Http_to_ExtendedHeader">
+            <containment>
+                <parent>
+                    <hasClass name="Http">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ExtendedHeader">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Http_to_ContentType">
+            <containment>
+                <parent>
+                    <hasClass name="Http">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ContentType">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Header_to_Host">
+            <containment>
+                <parent>
+                    <hasClass name="Header">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Host">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ExtendedHeader_to_TextContent">
+            <containment>
+                <parent>
+                    <hasClass name="ExtendedHeader">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TextContent">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Wsp_to_ContentType">
+            <containment>
+                <parent>
+                    <hasClass name="Wsp">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ContentType">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Mms_to_MmsSend">
+            <containment>
+                <parent>
+                    <hasClass name="Mms">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="MmsSend">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="MmsSend_to_AnyMmsDestination">
+            <containment>
+                <parent>
+                    <hasClass name="MmsSend">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AnyMmsDestination">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Mms_to_MmsRetrieve">
+            <containment>
+                <parent>
+                    <hasClass name="Mms">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="MmsRetrieve">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="MmsRetrieve_to_MmOrigin">
+            <containment>
+                <parent>
+                    <hasClass name="MmsRetrieve">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="MmOrigin">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Then_to_ActivateEventTracking">
+            <containment>
+                <parent>
+                    <hasClass name="Then">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ActivateEventTracking">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Uri_to_IncludeUriHandling">
+            <containment>
+                <parent>
+                    <hasClass name="Uri">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="IncludeUriHandling">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="ServiceIdentification_to_HttpWspRule">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HttpWspRule">
+                        <mimName>Epg_Pgw_SI_HttpWspRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>512</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

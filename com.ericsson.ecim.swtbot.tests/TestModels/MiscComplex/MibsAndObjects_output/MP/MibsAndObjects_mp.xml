@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Aug 17, 2015 4:19:17 PM using:
+	* com.ericsson.ecim.m2m 3.0.1.qualifier
+	* com.ericsson.ecim.dsl 3.0.1.qualifier
+	* com.ericsson.ecim.edm 3.0.1.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="" contact="" date="" docNo="" name="TheClasses" namespace="urn:com:ericsson:ecim:TheClasses" namespacePrefix="theclasses" organization="" release="1" revision="" version="1">
+        <description>qwe</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <struct name="PersonStruct">
+            <description>qwe</description>
+            <structMember name="firstName">
+                <description>qwe</description>
+                <string/>
+            </structMember>
+            <structMember name="lastName">
+                <description>qwe</description>
+                <string/>
+            </structMember>
+            <structMember name="ssn">
+                <domainExtension domain="ECIM">
+                    <extension name="isKey" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="SsnType">
+                    <mimName>TheClasses</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="gender">
+                <description>qwe</description>
+                <enumRef name="Gender">
+                    <mimName>TheClasses</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="myDn">
+                <description>qwe</description>
+                <moRef name="ClassAbc">
+                    <mimName>TheClasses</mimName>
+                </moRef>
+            </structMember>
+            <structMember name="siblingSsns">
+                <description>qwe</description>
+                <sequence>
+                    <derivedDataTypeRef name="SsnType">
+                        <mimName>TheClasses</mimName>
+                    </derivedDataTypeRef>
+                    <minLength>0</minLength>
+                </sequence>
+            </structMember>
+        </struct>
+        <enum name="Gender">
+            <enumMember name="MALE">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="FEMALE">
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="SsnType">
+            <description>Social Security Data type</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>11</min>
+                        <max>11</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>11</min>
+                            <max>11</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>\d{3}-\d{2}-\d{4}</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="3 grouped digits, for example 713-92-4412" format="posix_ere" name="Pattern Constraint"><![CDATA[\d{3}-\d{2}-\d{4}]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="TheClasses_ClassAbc_lastName">
+            <baseType>
+                <string>
+                    <validValues>[A-Z][a-z]+</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="Name must start with capital letter." format="posix_ere" name="Pattern Constraint"><![CDATA[[A-Z][a-z]+]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <class name="Root">
+            <description>qwe</description>
+            <root/>
+            <attribute name="rootId">
+                <description>123</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="multiStringAttr">
+                <description>wer</description>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                        <maxLength>10</maxLength>
+                        <nonUnique/>
+                        <ordered/>
+                        <seqDefaultValue>
+                            <defaultValue>hej</defaultValue>
+                            <defaultValue>hej</defaultValue>
+                            <defaultValue>svejs</defaultValue>
+                        </seqDefaultValue>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="multiIntAttr">
+                <description>qwe</description>
+                <dataType>
+                    <sequence>
+                        <int32/>
+                        <minLength>0</minLength>
+                        <maxLength>10</maxLength>
+                        <nonUnique/>
+                        <seqDefaultValue>
+                            <defaultValue>2</defaultValue>
+                            <defaultValue>2</defaultValue>
+                            <defaultValue>4</defaultValue>
+                            <defaultValue>5</defaultValue>
+                            <defaultValue>5</defaultValue>
+                        </seqDefaultValue>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="multiBoolAttr">
+                <description>123</description>
+                <dataType>
+                    <sequence>
+                        <boolean/>
+                        <minLength>0</minLength>
+                        <maxLength>10</maxLength>
+                        <nonUnique/>
+                        <seqDefaultValue>
+                            <defaultValue>true</defaultValue>
+                            <defaultValue>false</defaultValue>
+                            <defaultValue>true</defaultValue>
+                        </seqDefaultValue>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ClassAbc">
+            <description>qwe</description>
+            <preliminary/>
+            <attribute name="gender">
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Gender">
+                        <mimName>TheClasses</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="firstName">
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="lastName">
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TheClasses_ClassAbc_lastName">
+                        <mimName>TheClasses</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ssn">
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SsnType">
+                        <mimName>TheClasses</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="myDn">
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <moRef name="ClassAbc">
+                        <mimName>TheClasses</mimName>
+                    </moRef>
+                </dataType>
+            </attribute>
+            <attribute name="siblingSsns">
+                <description>qwe</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="SsnType">
+                            <mimName>TheClasses</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="person">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="PersonStruct">
+                        <mimName>TheClasses</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="manyPersons">
+                <description>qwe</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <structRef name="PersonStruct">
+                            <mimName>TheClasses</mimName>
+                        </structRef>
+                        <minLength>1</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="classAbcId">
+                <description>qwe</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Root_to_ClassAbc">
+            <containment>
+                <parent>
+                    <hasClass name="Root">
+                        <mimName>TheClasses</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ClassAbc">
+                        <mimName>TheClasses</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </mim>
+    
+</models>

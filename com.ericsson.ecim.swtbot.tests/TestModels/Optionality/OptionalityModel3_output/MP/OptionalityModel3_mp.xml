@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Apr 20, 2015 4:27:16 PM using:
+	* com.ericsson.ecim.m2m 3.0.0.qualifier
+	* com.ericsson.ecim.dsl 3.0.0.qualifier
+	* com.ericsson.ecim.edm 3.0.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="" contact="" correction="" date="" docNo="" name="MomC" namespace="urn:com:ericsson:ecim:MomC" namespacePrefix="momc" organization="" release="1" revision="" version="1">
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="A"/>
+            <modelFeature featureType="basic" name="B"/>
+        </modelFeatures>
+        <class name="Root">
+            <attribute name="id">
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="MocA">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature (A AND B) OR (NOT C)</decisionStatement>
+            </decisionPoint>
+            <attribute name="id">
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="MocB">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT (C OR D) AND NOT E</decisionStatement>
+            </decisionPoint>
+            <attribute name="id">
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="a:MocA">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature (A AND B) OR (NOT C)</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="Root">
+                        <mimName>MomC</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="MocA">
+                        <mimName>MomC</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="b:MocB">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT (C OR D) AND NOT E</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="Root">
+                        <mimName>MomC</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="MocB">
+                        <mimName>MomC</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </mim>
+    <mim author="" contact="" correction="" date="" docNo="" name="MomD" namespace="urn:com:ericsson:ecim:MomD" namespacePrefix="momd" organization="" release="1" revision="" version="1">
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="C"/>
+            <modelFeature featureType="basic" name="D"/>
+            <modelFeature featureType="basic" name="E"/>
+        </modelFeatures>
+        <class name="Root">
+            <attribute name="id">
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+    </mim>
+</models>

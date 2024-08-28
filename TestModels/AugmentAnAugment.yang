@@ -1,0 +1,47 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-sep-04 14:47:38 using 
+    * com.ericsson.ecim.yang.m2m 2.11.2.qualifier
+*/
+module AugmentAnAugment {
+	namespace "urn:com:ericsson:ecim:AugmentAnAugment";
+	prefix AugmentAnAugment;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import Augment {
+		prefix "Augment-Local";
+	}
+ 
+	import simple {
+		prefix "simple-x";
+	}
+
+	organization "Ericsson";
+	description "asdf";
+
+	revision "2014-09-04" {
+		ericsson:correction 1;
+		ericsson:release 1;
+		ericsson:version 1;
+	}
+ 
+	//add a leaf to a list in a container. note no quotes on augment to test this too
+	augment /simple-x:simpleContainer/Augment-Local:augmentedListInsideContainer {
+		list augmentedAugmentedList {
+			key augmentedAugmentedLeaf;
+			leaf augmentedAugmentedLeaf {
+				type string;
+			}
+         }
+     }
+
+    list AugmentAnAugmentTestList {
+		key leafA;
+		leaf leafA {
+             type uint32;
+       }
+	}  
+}

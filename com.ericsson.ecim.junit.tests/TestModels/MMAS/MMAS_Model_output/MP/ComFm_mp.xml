@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2014 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2014-mar-17 13:36:57 using:
+	* com.ericsson.ecim.m2m 2.10.0.qualifier
+	* com.ericsson.ecim.dsl 2.10.0.qualifier
+	* com.ericsson.ecim.edm 2.10.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+    <createdBy>
+      <signature>huiping</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>huiping</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim author="" contact="" date="" docNo="" name="ComFm" namespace="urn:com:ericsson:ecim:ComFm" namespacePrefix="comfm" organization="" release="1" revision="A" version="1">
+    <description>This is the ECIM Fault Management (FM) Managed Object Model (MOM) provided by COM. This MOM is used for &#13;
+- Configuring the SNMP target address of the managing application (such as a network managing system) &#13;
+- Configuring the heartbeat interval &#13;
+- Generating the Active Alarm List &#13;
+- Configuring the alarm models</description>
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <enum name="EventType">
+      <description>doc</description>
+      <enumMember name="COMMUNICATIONS_ALARM">
+        <description>empty doc</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="ENVIRONMENTAL_ALARM">
+        <description>empty doc</description>
+        <value>6</value>
+      </enumMember>
+      <enumMember name="EQUIPMENT_ALARM">
+        <description>empty doc</description>
+        <value>5</value>
+      </enumMember>
+      <enumMember name="INTEGRITY_VIOLATION">
+        <description>doc</description>
+        <value>7</value>
+      </enumMember>
+      <enumMember name="OPERATIONAL_VIOLATION">
+        <description>doc</description>
+        <value>8</value>
+      </enumMember>
+      <enumMember name="OTHER">
+        <description>doc</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="PHYSICAL_VIOLATION">
+        <description>doc</description>
+        <value>9</value>
+      </enumMember>
+      <enumMember name="PROCESSING_ERROR_ALARM">
+        <description>doc</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="QUALITY_OF_SERVICE_ALARM">
+        <description>doc</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="SECURITY_SERVICE_OR_MECHANICAL_VIOLATION">
+        <description>doc</description>
+        <value>10</value>
+      </enumMember>
+      <enumMember name="TIME_DOMAIN_VIOLATION">
+        <description>doc</description>
+        <value>11</value>
+      </enumMember>
+    </enum>
+    <enum name="SeverityLevel">
+      <description>empty doc</description>
+      <enumMember name="CLEARED">
+        <description>doc</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="CRITICAL">
+        <description>doc</description>
+        <value>5</value>
+      </enumMember>
+      <enumMember name="INDETERMINATE">
+        <description>doc</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="MAJOR">
+        <description>doc</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="MINOR">
+        <description>doc</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="WARNING">
+        <description>doc</description>
+        <value>2</value>
+      </enumMember>
+    </enum>
+    <derivedDataType name="ProbableCause">
+      <description>The type used for specifying the probable cause.</description>
+      <baseType>
+        <uint32/>
+      </baseType>
+    </derivedDataType>
+    <class name="Fm">
+      <description>This MO is the root of the Fault Management MOM.</description>
+      <root/>
+      <attribute name="fmId">
+        <description>The value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue/>
+          </string>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="FmCapabilities">
+      <description>This class represents the configuration required to receive the alarms generated by the managed elements. There can be one or more instances that will represent the target or targets that can receive these alarm notifications.</description>
+      <attribute name="fmCapabilitiesId">
+        <description>The value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>A label for free use.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue/>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="snmpTargetAddress">
+        <description>The network address where the alarms, alerts and heartbeats will be sent to. The network address consists of an IP address followed optionally by a port number (separated by a colon ':'). The network address must be reachable from the System Controller node. Currently only one network address is supported.&#13;
+ &#13;
+Syntax: ipaddress|hostname[:port] &#13;
+</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>127.0.0.1:1162</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="heartbeatInterval">
+        <description>The interval in seconds when FM sends out a heartbeat SNMP message to the managing application or applications.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint64>
+            <defaultValue>60</defaultValue>
+          </uint64>
+        </dataType>
+      </attribute>
+      <attribute name="communityString">
+        <description>The community string for SNMP messages sent from COM FM.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>COM</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="FmActiveAlarmList">
+      <description>This MO describes the Active Alarm List. This list contains a momentary listing of all problems in the system for which a stateful alarm has been sent but not yet been cleared.&#13;
+The Active Alarm List file is written to the file named by attribute fileName. The text file with the Active Alarms in the cluster has the following format:&#13;
+- The first line is the header and consists of attribute names separated by semicolons.&#13;
+- Each following line contains one alarm.&#13;
+- Each line consists of alarm attribute values separated by semicolons.&#13;
+&#13;
+The following is an example of a text file containing two active alarms:&#13;
+&#13;
+DN;MajorType;MinorType;AdditionalText;Severity;SpecificProblem;SequenceNumber;EventTime;Stateful;EventType;ProbableCause&#13;
+ManagedElement=1,MyApp=1,Logging=1;193;123456789;"Device (/dev/sda5) is 95% full, log level raised to critical";5;MyApp Log Level Raised;2;12656565656;1;1;418;&#13;
+ManagedElement=1,MyApp=1,Pm=1;193;987654321;"Could not find script /opt/myscript.sh";4;MyApp PM Data Collect Error;3;12656565656;1;1;418;</description>
+      <attribute name="fmActiveAlarmListId">
+        <description>The value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue/>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="fileName">
+        <description>The file name to where the Active Alarm List is written.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>/tmp/com_aal.csv</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="lastSequenceNo">
+        <description>The last used sequence number for a stateful alarm which was sent out as an SNMP trap. A managing application (such as a network managing system) can poll this variable in order to detect lost SNMP traps.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <uint64/>
+        </dataType>
+      </attribute>
+      <attribute name="lastChanged">
+        <description>The timestamp when the Active Alarm List was last changed. The value can be used by a managing application (such as network managing system) to initiate an alarm resynchronization procedure.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="generateFile">
+        <description>If the value of this attribute is changed then COM FM will generate a text file containing the Active Alarm List.  The file name where the Active Alarm List will be written to is fetched from attribute fileName. COM FM needs maximum one minute to notice the change of the value for attribute generateFile.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue/>
+          </string>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="FmAlarmModel">
+      <description>The Alarm Model MO represents the sum of the defined alarm types for an application or component.</description>
+      <attribute name="fmAlarmModelId">
+        <description>The value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue/>
+          </string>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="FmAlarmType">
+      <description>This MO defines one particular type of an alarm that can occur, also known as specific problem.</description>
+      <attribute name="fmAlarmTypeId">
+        <description>The value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>A label for free use.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="majorType">
+        <description>This attribute represents together with minorType a unique identification of the alarm type. Different MO classes and instances can share alarm types. If the same MO instance reports the same alarm type it is to be considered as the same alarm.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <uint32/>
+        </dataType>
+      </attribute>
+      <attribute name="minorType">
+        <description>This attribute represents together with majorType a unique identification of the alarm type. Different MO classes and instances can share alarm types. If the same MO instance reports the same alarm type it is to be considered as the same alarm.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <uint32/>
+        </dataType>
+      </attribute>
+      <attribute name="moClasses">
+        <description>Lists all MO classes that possibly could issue an alarm of this type.</description>
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <string/>
+            <minLength>0</minLength>
+            <seqDefaultValue>
+              <defaultValue>0</defaultValue>
+            </seqDefaultValue>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="specificProblem">
+        <description>A unique string for the alarm type. No different alarm types may share specific problem. Specific problem and alarm type are one-to-one.&#13;
+</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="probableCause">
+        <description>The probable cause of this alarm type described in the ERICSSON-ALARM-PC-MIB. The default value is x736UnspecifiedReason.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="ProbableCause">
+            <defaultValue>0</defaultValue>
+            <mimName>ComFm</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="isStateful">
+        <description>Indicates if this is a stateful alarm or a stateless alert. </description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <boolean/>
+        </dataType>
+      </attribute>
+      <attribute name="eventType">
+        <description>The type of event this alarm describes following the X.733 recommendations.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <enumRef name="EventType">
+            <defaultValue>OTHER</defaultValue>
+            <mimName>ComFm</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+      <attribute name="severityLevels">
+        <description>The allowed severity levels for this alarm type.</description>
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <enumRef name="SeverityLevel">
+              <mimName>ComFm</mimName>
+            </enumRef>
+            <minLength>0</minLength>
+            <maxLength>6</maxLength>
+          </sequence>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="Fm_to_FmCapabilities">
+      <containment>
+        <parent>
+          <hasClass name="Fm">
+            <mimName>ComFm</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="FmCapabilities">
+            <mimName>ComFm</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Fm_to_FmActiveAlarmList">
+      <containment>
+        <parent>
+          <hasClass name="Fm">
+            <mimName>ComFm</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="FmActiveAlarmList">
+            <mimName>ComFm</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Fm_to_FmAlarmModel">
+      <containment>
+        <parent>
+          <hasClass name="Fm">
+            <mimName>ComFm</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="FmAlarmModel">
+            <mimName>ComFm</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="FmAlarmModel_to_FmAlarmType">
+      <containment>
+        <parent>
+          <hasClass name="FmAlarmModel">
+            <mimName>ComFm</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="FmAlarmType">
+            <mimName>ComFm</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+  </mim>
+  <interMim>
+    <relationship name="SystemFunctions_to_Fm">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="true"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="SystemFunctions">
+            <mimName>ComTop</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="Fm">
+            <mimName>ComFm</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

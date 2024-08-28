@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Nov 20, 2015 2:30:50 PM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>MOM2HTML Test Model</momTitle>
+        <momSubTitle>-</momSubTitle>
+        <momIdentity>
+            <docNum>1/nnnn-XYZ 123 456/1 </docNum>
+            <docLang>English</docLang>
+            <docRev>PA1</docRev>
+            <docDate>2010-08-10</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>erajaik</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>erajaik</signature>
+        </approvedBy>
+    </momMetaData>
+    <mim author="erajaik" contact="" date="" docNo="" name="RootMom" namespace="urn:com:ericsson:ecim:RootMom" namespacePrefix="rootmom" organization="" release="0" revision="" version="1">
+        <description>This is the root mom.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <struct name="PersonData">
+            <description>A person struct.</description>
+            <structMember name="name">
+                <description>Persons name.</description>
+                <derivedDataTypeRef name="RootMom_PersonData_name">
+                    <mimName>RootMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="age">
+                <description>The persons age.</description>
+                <derivedDataTypeRef name="RootMom_PersonData_age">
+                    <mimName>RootMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <struct name="StructFromLibrary">
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="1"/>
+                <extension name="originatingMimName" value="DukeNukemLibrary"/>
+                <extension name="originatingMimVersion" value="1"/>
+            </domainExtension>
+            <structMember name="sm1">
+                <derivedDataTypeRef name="DukeNukemLibrary_StructFromLibrary_sm1">
+                    <defaultValue>44</defaultValue>
+                    <mimName>RootMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="sm2">
+                <description>qwe</description>
+                <derivedDataTypeRef name="OneToThree">
+                    <defaultValue>2</defaultValue>
+                    <mimName>RootMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="sm3">
+                <description>qwe</description>
+                <derivedDataTypeRef name="DukeNukemLibrary_StructFromLibrary_sm3">
+                    <mimName>RootMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <enum name="AdmState">
+            <description>An enumeration for administrative state.</description>
+            <enumMember name="LOCKED">
+                <description>The function is locked.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="UNLOCKED">
+                <description>The function is unlocked.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="RangeType">
+            <description>Derived numeric type. Note that the range (here 5..10) property must be part of the CPI output.</description>
+            <baseType>
+                <int16>
+                    <range>
+                        <min>5</min>
+                        <max>10</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>5</min>
+                            <max>10</max>
+                        </subrange>
+                    </ranges>
+                </int16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="AbcType">
+            <description>A derived string type. Note that the length (here 5) and pattern/validaValues (here [ABC]*)properties must be part of CPI output!</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>0</min>
+                        <max>5</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>0</min>
+                            <max>5</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>[ABC]+</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[[ABC]+]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="OneToThree">
+            <description>qwe</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="1"/>
+                <extension name="originatingMimName" value="DukeNukemLibrary"/>
+                <extension name="originatingMimVersion" value="1"/>
+            </domainExtension>
+            <baseType>
+                <int8>
+                    <range>
+                        <min>1</min>
+                        <max>3</max>
+                    </range>
+                </int8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RootMom_PersonData_name">
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>0</min>
+                        <max>30</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>0</min>
+                            <max>30</max>
+                        </subrange>
+                    </stringLength>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RootMom_PersonData_age">
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>120</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>120</max>
+                        </subrange>
+                    </ranges>
+                    <unit>year</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RootMom_Foo2_aNumber">
+            <baseType>
+                <int32>
+                    <range>
+                        <min>-100</min>
+                        <max>200</max>
+                        <min>500</min>
+                        <max>1000</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>-100</min>
+                            <max>200</max>
+                        </subrange>
+                        <subrange>
+                            <min>500</min>
+                            <max>1000</max>
+                        </subrange>
+                    </ranges>
+                </int32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="DukeNukemLibrary_StructFromLibrary_sm1">
+            <baseType>
+                <int16>
+                    <range>
+                        <min>-500</min>
+                        <max>500</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>-500</min>
+                            <max>500</max>
+                        </subrange>
+                    </ranges>
+                    <unit>ms</unit>
+                    <resolution>1</resolution>
+                </int16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="DukeNukemLibrary_StructFromLibrary_sm3">
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>0</min>
+                        <max>500</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>0</min>
+                            <max>500</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>[ABCDEFGHIJ0123]+</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[[ABCDEFGHIJ0123]+]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <class name="Root">
+            <description>This is the root MO class.</description>
+            <root/>
+            <attribute name="rootMocId">
+                <description>The key attribute.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="attrX">
+                <description>Bla bla.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="OneToThree">
+                        <defaultValue>2</defaultValue>
+                        <mimName>RootMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="attrY">
+                <description>Struct attribute.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <structRef name="StructFromLibrary">
+                        <mimName>RootMom</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="roIntAttr">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <int16>
+                        <defaultValue>14</defaultValue>
+                    </int16>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Foo">
+            <description>This is class Foo in RootMom.</description>
+            <attribute name="fooId">
+                <description>qwerty</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="person">
+                <description>Holds person info.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="PersonData">
+                        <mimName>RootMom</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="myAbc">
+                <description>An attribute of a derived string type.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="AbcType">
+                        <mimName>RootMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="administrativeState">
+                <description>The adm state.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="AdmState">
+                        <defaultValue>UNLOCKED</defaultValue>
+                        <mimName>RootMom</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="range">
+                <description>Holds a range.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="RangeType">
+                        <defaultValue>7</defaultValue>
+                        <mimName>RootMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="foo2Ref">
+                <description>Reference to a Foo2 instance.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <moRef name="Foo2">
+                        <mimName>RootMom</mimName>
+                    </moRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Foo2">
+            <description>This is a read-only class. The read-only property should show in CPI output!</description>
+            <systemCreated/>
+            <attribute name="foo2Id">
+                <description>The key attribute</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="aNumber">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="RootMom_Foo2_aNumber">
+                        <mimName>RootMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Root_to_Foo">
+            <containment>
+                <parent>
+                    <hasClass name="Root">
+                        <mimName>RootMom</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Foo">
+                        <mimName>RootMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="Root_to_Foo2">
+            <containment>
+                <parent>
+                    <hasClass name="Root">
+                        <mimName>RootMom</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Foo2">
+                        <mimName>RootMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>10</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </mim>
+</models>

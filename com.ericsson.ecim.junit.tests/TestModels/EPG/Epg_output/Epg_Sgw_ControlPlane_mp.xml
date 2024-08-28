@@ -1,0 +1,1138 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Sgw_ControlPlane" namespace="urn:com:ericsson:ecim:Epg_Sgw_ControlPlane" namespacePrefix="epg_sgw_controlplane" organization="Ericsson EAB, NDO EPG" release="2" revision="" version="3">
+        <description>Control plane settings</description>
+        <enum name="Diffserv">
+            <description>DiffServ DSCP for GTP packets</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <enumMember name="af11">
+                <description>Assured forwarding class 1, low drop precedence</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="af12">
+                <description>Assured forwarding class 1, medium drop precedence</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="af13">
+                <description>Assured forwarding class 1, high drop precedence</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="af21">
+                <description>Assured forwarding class 2, low drop precedence</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="af22">
+                <description>Assured forwarding class 2, medium drop precedence</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="af23">
+                <description>Assured forwarding class 2, high drop precedence</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="af31">
+                <description>Assured forwarding class 3, low drop precedence</description>
+                <value>7</value>
+            </enumMember>
+            <enumMember name="af32">
+                <description>Assured forwarding class 3, medium drop precedence</description>
+                <value>8</value>
+            </enumMember>
+            <enumMember name="af33">
+                <description>Assured forwarding class 3, high drop precedence</description>
+                <value>9</value>
+            </enumMember>
+            <enumMember name="af41">
+                <description>Assured forwarding class 4, low drop precedence</description>
+                <value>10</value>
+            </enumMember>
+            <enumMember name="af42">
+                <description>Assured forwarding class 4, medium drop precedence</description>
+                <value>11</value>
+            </enumMember>
+            <enumMember name="af43">
+                <description>Assured forwarding class 4, high drop precedence</description>
+                <value>12</value>
+            </enumMember>
+            <enumMember name="ef">
+                <description>Expedited forwarding</description>
+                <value>13</value>
+            </enumMember>
+            <enumMember name="be">
+                <description>Best effort forwarding</description>
+                <value>14</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="Ipv6AddressRange">
+            <description>IPv6 address range</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>4</min>
+                        <max>49</max>
+                    </lengthRange>
+                    <validValues>^[\ ]*((([A-Fa-f0-9]{1,4}:){7}([A-Fa-f0-9]{1,4}|:))|(([A-Fa-f0-9]{1,4}:){6}(:[A-Fa-f0-9]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([A-Fa-f0-9]{1,4}:){5}(((:[A-Fa-f0-9]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([A-Fa-f0-9]{1,4}:){4}(((:[A-Fa-f0-9]{1,4}){1,3})|((:[A-Fa-f0-9]{1,4})?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([A-Fa-f0-9]{1,4}:){3}(((:[A-Fa-f0-9]{1,4}){1,4})|((:[A-Fa-f0-9]{1,4}){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([A-Fa-f0-9]{1,4}:){2}(((:[A-Fa-f0-9]{1,4}){1,5})|((:[A-Fa-f0-9]{1,4}){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([A-Fa-f0-9]{1,4}:){1}(((:[A-Fa-f0-9]{1,4}){1,6})|((:[A-Fa-f0-9]{1,4}){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:[A-Fa-f0-9]{1,4}){1,7})|((:[A-Fa-f0-9]{1,4}){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))/([1-9]?[0-9]|1[0-1][0-9]|12[0-8])[\ ]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="T3ResponseTime">
+            <description>Specifies the time in seconds between control message retries</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>30</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Board">
+            <description>Must be a valid control-plane board</description>
+            <baseType>
+                <string>
+                    <validValues>^gc-0/(20|1[0-9]|[1-9])/1</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EchoInterval">
+            <description>Specifies how often a echo request should be sent out on each path (in seconds)</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>60</min>
+                        <max>200</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="IpAddress">
+            <description>IP address</description>
+            <baseType>
+                <string>
+                    <validValues>^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="TransactionTimeout">
+            <description>Timeout settings
+
+
+
+
+</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="3"/>
+                <extension name="originatingMimName" value="Epg_Sgw"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>10</min>
+                        <max>60</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="ThreadCount">
+            <description>Specifies the number of message processing threads the GTPD should use&#13;
+</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>8</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="DeletesPerSecond">
+            <description>Maximum SGW PDN Connection deactivation rate</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>50</min>
+                        <max>50000</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="N3Requests">
+            <description>Specifies the number of total attempts allowed for a control message</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>8</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="IpAddressRange">
+            <description>IP address range</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>18</max>
+                    </lengthRange>
+                    <validValues>^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(/(3[0-2]|[1-2][0-9]|[1-9])){0,1}</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Ipv6Address">
+            <description>IPv6 address</description>
+            <baseType>
+                <string>
+                    <validValues>^[\ ]*((([A-Fa-f0-9]{1,4}:){7}([A-Fa-f0-9]{1,4}|:))|(([A-Fa-f0-9]{1,4}:){6}(:[A-Fa-f0-9]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([A-Fa-f0-9]{1,4}:){5}(((:[A-Fa-f0-9]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([A-Fa-f0-9]{1,4}:){4}(((:[A-Fa-f0-9]{1,4}){1,3})|((:[A-Fa-f0-9]{1,4})?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([A-Fa-f0-9]{1,4}:){3}(((:[A-Fa-f0-9]{1,4}){1,4})|((:[A-Fa-f0-9]{1,4}){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([A-Fa-f0-9]{1,4}:){2}(((:[A-Fa-f0-9]{1,4}){1,5})|((:[A-Fa-f0-9]{1,4}){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([A-Fa-f0-9]{1,4}:){1}(((:[A-Fa-f0-9]{1,4}){1,6})|((:[A-Fa-f0-9]{1,4}){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:[A-Fa-f0-9]{1,4}){1,7})|((:[A-Fa-f0-9]{1,4}){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))[\ ]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="ControlPlane">
+            <description>Control plane settings</description>
+            <root/>
+            <attribute name="controlPlaneID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="LoadControl">
+            <description>Manipulate the signaling performance settings of the SGW</description>
+            <attribute name="loadControlID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgwDeletesPerSecond">
+                <description>Maximum SGW PDN Connection deactivation rate</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="DeletesPerSecond">
+                        <defaultValue>10000</defaultValue>
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="S5s8">
+            <description>S5S8 interface settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $context in @routingInstance satisfies ($context = /ManagedElement/Context/@contextNameId)'><name path='.'/>,routingInstance: Routing instance must be configured under 'managed-element context'</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="s5s8ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="addressRange">
+                <description>Specifies the address range</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressRange">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="routingInstance">
+                <description>Routing instance name</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <string>
+                        <defaultValue>local</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="diffserv">
+                <description>DiffServ DSCP for GTP packets</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="echoInterval">
+                <description>Specifies how often an echo request should be sent out on each path (in seconds)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EchoInterval">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPathManagement">
+                <description>If enabled, turns off path management completely, no echo requests are sent</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPeerRestart">
+                <description>If enabled, when a changed restart counter is received, no path failures are propagated</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPathFailure">
+                <description>If enabled, when a echo request is not responded to, no path failures are propagated</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="t3ResponseTime">
+                <description>Specifies the time in seconds between control message retries</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="T3ResponseTime">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="n3Requests">
+                <description>Specifies the number of total attempts allowed for a control message</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="N3Requests">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transactionTimeout">
+                <description>Specifies for how long time after receiving a request that retransmissions of the request will be detectable</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TransactionTimeout">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ipv6AddressRange">
+                <description>Interface IPv6 address range</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Ipv6AddressRange">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Protocols">
+            <description>Protocols settings</description>
+            <attribute name="protocolsID">
+                <description>nameSingle instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Gtp">
+            <description>GPRS Tunneling Protocol settings</description>
+            <attribute name="gtpID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="threadCount">
+                <description>Specifies the amount of message processing threads the  GTPD should use</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ThreadCount">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Interfaces">
+            <description>GTP interfaces  settings&#13;
+</description>
+            <attribute name="interfacesID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="S4s11">
+            <description>S11 interface settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $context in @routingInstance satisfies ($context = /ManagedElement/Context/@contextNameId)'><name path='.'/>,routingInstance: Routing instance must be configured under 'managed-element context'</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="s4s11ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="addressRange">
+                <description>Specifies the address range</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressRange">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="routingInstance">
+                <description>Routing instance name</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <string>
+                        <defaultValue>local</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="diffserv">
+                <description>DiffServ DSCP for GTP packets</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="echoInterval">
+                <description>Specifies how often a echo request should be sent out on each path (in seconds)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EchoInterval">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPathManagement">
+                <description>If enabled, turns off path management completely, no echo requests are sent</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPeerRestart">
+                <description>If enabled, when a changed restart counter is received, no path failures are propagated</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPathFailure">
+                <description>If enabled, when an echo request is not responded to, no path failures are propagated</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="t3ResponseTime">
+                <description>Specifies the time in seconds between control message retries</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="T3ResponseTime">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="n3Requests">
+                <description>Specifies the number of total attempts allowed for a control message</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="N3Requests">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="vipAddress">
+                <description>S4/S11 network address for GSC</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddress">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transactionTimeout">
+                <description>Specifies for how long time after receiving a request that retransmissions of the request will be detectable</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TransactionTimeout">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ipv6VipAddress">
+                <description>S4/S11 ipv6 network address for GSC</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Ipv6Address">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ipv6AddressRange">
+                <description>Interface IPv6 address range</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Ipv6AddressRange">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Session">
+            <description> Session settings</description>
+            <action name="terminate">
+                <description>Terminate existing EPS sessions</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <action name="terminateBoard">
+                <description>Terminate existing EPS sessions</description>
+                <returnType>
+                    <string/>
+                </returnType>
+                <parameter name="board">
+                    <description>Board</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="Board">
+                            <mimName>Epg_Sgw_ControlPlane</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="sessionID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Block">
+            <description>New EPS sessions blocked</description>
+            <attribute name="blockID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="node">
+                <description>Block on node level</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Board">
+            <description>Board name </description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='@boardId = /ManagedElement/Epg/Node/BoardAllocation/@boardAllocationId'><name path='.'/>: Board must be configured under 'managed-element node board-allocation'</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="boardId">
+                <description>name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="Board">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="ControlPlane_to_LoadControl">
+            <containment>
+                <parent>
+                    <hasClass name="ControlPlane">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="LoadControl">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Protocols_to_Gtp">
+            <containment>
+                <parent>
+                    <hasClass name="Protocols">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Gtp">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Gtp_to_Interfaces">
+            <containment>
+                <parent>
+                    <hasClass name="Gtp">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Interfaces">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Interfaces_to_S4s11">
+            <containment>
+                <parent>
+                    <hasClass name="Interfaces">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="S4s11">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ControlPlane_to_Protocols">
+            <containment>
+                <parent>
+                    <hasClass name="ControlPlane">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Protocols">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Interfaces_to_S5s8">
+            <containment>
+                <parent>
+                    <hasClass name="Interfaces">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="S5s8">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Block_to_Board">
+            <containment>
+                <parent>
+                    <hasClass name="Block">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Board">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ControlPlane_to_Session">
+            <containment>
+                <parent>
+                    <hasClass name="ControlPlane">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Session">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Session_to_Block">
+            <containment>
+                <parent>
+                    <hasClass name="Session">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Block">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Sgw_to_ControlPlane">
+            <containment>
+                <parent>
+                    <hasClass name="Sgw">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ControlPlane">
+                        <mimName>Epg_Sgw_ControlPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

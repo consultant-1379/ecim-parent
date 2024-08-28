@@ -1,0 +1,657 @@
+grammar com.ericsson.ecim.yang.Yang hidden(WS, ML_COMMENT, SL_COMMENT)
+
+import "platform:/resource/com.ericsson.yang/model/Yang.ecore" as yang
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+AbstractModule returns yang::AbstractModule: 
+	Module |
+	SubModule
+;
+
+Module returns yang::Module:
+	'module' name=OptionallyQuotedName '{'
+		( ( 'yang-version' yangVersion=OptionallyQuotedPossiblySignedNumber ';' )?   
+		& 'namespace' namespace=(ConcatenatedString|QuotedConcatenatedString) ';'  
+		& prefix=Prefix  		
+		& ( imports+=Import )*   
+		& ( includeModules += Include )*  		
+		& ( 'organization' organization=(ConcatenatedString|QuotedConcatenatedString) ';' )?   
+		& ( 'contact' contact=(ConcatenatedString|QuotedConcatenatedString) ';' )?  
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?   
+		& ( revisions+=Revision )*
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?   
+		& ( statements+=ModuleStatement )*
+		& ( properties += Property )*
+		)?
+	'}'
+;
+
+SubModule returns yang::SubModule:
+	'submodule'name=OptionallyQuotedName'{'
+		( ( 'yang-version' yangVersion=Integer ';' )?
+		& ( belongsTo=BelongsTo )?  
+		& ( imports+=Import )*
+		& ( 'organization' organization=(ConcatenatedString|QuotedConcatenatedString) ';' )?   
+		& ( includeModules += Include )*  		
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )? 
+		& ( revisions+=Revision )*
+		& ( statements+=ModuleStatement )* 
+		& ( 'contact' contact=(ConcatenatedString|QuotedConcatenatedString) ';' )? 
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?   
+		& ( properties += Property )*
+		)
+	'}'
+;
+
+Import returns yang::Import:
+	'import' moduleName=(ID|Keyword|Deviate_Keyword) '{' prefix=Prefix ( 'revision-date' revisionDate=OptionallyQuotedString ';' )? '}'
+;
+
+BelongsTo returns yang::BelongsTo:
+	'belongs-to' moduleName=OptionallyQuotedName '{' prefix=Prefix '}'
+;
+
+Prefix returns yang::Prefix:
+	'prefix' name=OptionallyQuotedName ';'
+;
+
+Revision returns yang::Revision:
+	'revision' date=OptionallyQuotedString (';' | '{'
+		( 
+		( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( properties += Property )*
+	)
+	'}')
+;
+
+Feature returns yang::Feature:
+	'feature'name=OptionallyQuotedName(';' | '{'
+		( ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )? 
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( ifFeature+=IfFeature )* )
+	'}')
+;
+
+Extension returns yang::Extension:
+	'extension'name=OptionallyQuotedName(';' | '{'
+		( ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'argument' argument=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'status' status=StatusKind ';' )?
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		)  
+	'}')
+;
+
+ModuleStatement returns yang::ModuleStatement:
+		Extension 
+	|	Feature 
+	|	Identity 
+	|	TypeDefinition 
+	|	DataDefinition 
+	|	Augment 
+	|	Rpc 
+	|	Notification
+	|	Deviation 
+;
+
+Identity returns yang::Identity:
+	'identity'name=OptionallyQuotedName(';' | '{'
+		( ( base=Base )?
+		& ( 'status' status=StatusKind ';' )?   
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?  
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		)  
+	'}')
+;
+
+TypeDefinition returns yang::TypeDefinition:
+	'typedef'name=OptionallyQuotedName'{'
+		('type' type=Type  
+		& ( 'units' units=(ConcatenatedString|QuotedConcatenatedString) ';' )?    
+		& ( 'default' defaultValue=Value ';' )?
+		& ( 'status' status=StatusKind ';' )?   
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?  
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?  
+		& ( properties+=Property )* )
+	'}'
+;
+
+enum StatusKind returns yang::StatusKind:
+	^current = 'current' | 
+	obsolete='obsolete' |
+	deprecated='deprecated'
+;
+
+Type returns yang::Type:
+	DataType |
+	Enumeration |
+	IdentityRef |		
+	Bits	|
+	Binary	|
+	Empty	|
+	InstanceIdentifier	|
+	LeafRef		|	
+	UnionType
+;
+
+Empty returns yang::Empty:
+	{yang::Empty} 'empty' ';'
+;
+
+Binary returns yang::Binary:
+	{yang::Binary} 'binary' ( ';' | '{'
+		( 'length' length=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+	'}')
+; 
+
+InstanceIdentifier returns yang::InstanceIdentifier:
+	{yang::InstanceIdentifier}'instance-identifier' (';' | '{'
+		( 'require-instance' requireInstance?=BooleanValue';' )?
+	'}')
+; 
+
+UnionType returns yang::UnionType:
+	'union' '{'
+		'type' unionOf+=Type
+		'type' unionOf+=Type
+		('type' unionOf+=Type)*
+	'}'
+;
+
+Bits returns yang::Bits:
+	'bits' '{'
+		bit+=Bit
+		( bit+=Bit )*
+	'}' 
+;
+
+LeafRef returns yang::LeafRef:
+	'leafref' '{'
+		'path' path=(ConcatenatedString|QuotedConcatenatedString) ';'
+	'}' 
+;
+
+DataType returns yang::DataType:
+	 (SINGLEQUOTE|DOUBLEQUOTE)?(prefix=[yang::Prefix]':')?name=(ID|Keyword|Deviate_Keyword)(SINGLEQUOTE|DOUBLEQUOTE)? (';' |
+	 '{'
+		( ( 'length' length=(ConcatenatedString|QuotedConcatenatedString) ';' )? 
+		& ( range=Range )?
+		& ( 'fraction-digits' fractionDigits=Integer ';' )? 
+		& ( 'pattern' pattern+=(ConcatenatedString|QuotedConcatenatedString) ';' )*
+		)
+	'}')
+;
+
+Property returns yang::Property:
+	(prefix=[yang::Prefix]':')name=(ID|Keyword|Deviate_Keyword) ( value=Value )? ( ';' | 
+	(=>'{'
+		(properties += Property )*
+    )
+	'}')
+;
+
+Enumeration returns yang::Enumeration:
+	'enumeration' '{'
+		enumLiterals+=EnumLiteral 
+		(enumLiterals+=EnumLiteral)*
+	'}' 
+;
+
+Base returns yang::Base: 
+	'base' (SINGLEQUOTE|DOUBLEQUOTE)?(prefix=[yang::Prefix]':')?name=(ID|Keyword|Deviate_Keyword)(SINGLEQUOTE|DOUBLEQUOTE)?';'
+;
+
+IdentityRef returns yang::IdentityRef:
+	'identityref' '{'
+		base=Base
+	'}' 
+;
+
+EnumLiteral returns yang::EnumLiteral:
+	'enum' name=(ConcatenatedString|QuotedConcatenatedString) (';' | '{' 
+		( ('value' value=IntValue ';')? 
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		) 
+	'}')
+;
+
+Grouping returns yang::Grouping:
+	'grouping'name=OptionallyQuotedName'{'
+		( ( 'status' status=StatusKind ';' )?		
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )? 
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )? 	
+		& ( children+=DataDefinition )*
+		& ( properties += Property )*
+		)
+	'}'
+;
+
+Rpc returns yang::Rpc:
+	'rpc'name=OptionallyQuotedName'{'
+		( ( ifFeature+=IfFeature )*
+		& ( 'status' status=StatusKind ';' )?  
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?  
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )? 
+		& ( 'input' '{'
+			input=RpcParameter
+		'}' )?
+		& ( 'output' '{'
+			(output=RpcParameter)?
+		'}' )?
+		& ( properties += Property )*
+		)
+	'}'
+;
+
+RpcParameter returns yang::RpcParameter:
+	 statements+=ModuleStatement 
+	 ( statements+=ModuleStatement )*
+;
+
+Container returns yang::Container:
+	'container'name=OptionallyQuotedName'{'
+		( ( ifFeature+=IfFeature )*
+		& ( when=When )?
+		& ( 'presence' presence=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'config' config=Boolean ';' )?
+		& ( 'status' status=StatusKind ';' )?  
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( children+=DataDefinition )*
+		& ( properties += Property )*
+		& ( musts+=Must )*
+		)
+	'}'
+;
+Augment returns yang::Augment:
+	'augment' name=(ConcatenatedString|QuotedConcatenatedString) '{'
+		( ( ifFeature+=IfFeature )*
+		& ( 'status' status=StatusKind ';' )? 
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';')? 
+		& ( elements+=DataDefinition )* 
+		& ( properties+=Property )*
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( when=When )?
+		& ( case+=Case )*
+		)
+	'}'
+;
+
+Uses returns yang::Uses:
+	'uses' (SINGLEQUOTE|DOUBLEQUOTE)?(prefix=[yang::Prefix]':')?name=(ID|Keyword|Deviate_Keyword)(SINGLEQUOTE|DOUBLEQUOTE)? (';' | '{'
+		( (augment+=Augment)*
+		& ('description' description=(ConcatenatedString|QuotedConcatenatedString) ';')? 
+		& (ifFeature+=IfFeature)*
+		& (refine+=Refine)*
+		& ('reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ('status' status=StatusKind ';')?
+		& (when=When)?
+		)
+	'}')
+;
+
+Notification returns yang::Notification:
+	'notification'name=OptionallyQuotedName'{'
+		( ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( properties+=Property )*
+		& ( elements+=DataDefinition )*
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?)
+	'}'
+;
+
+DataDefinition returns yang::DataDefinition:
+		Container
+	|	Leaf 
+	|	LeafList 
+	|	ListWithStatus
+	|	Choice 
+	|	AnyXml
+	| 	Grouping
+	|	Uses
+;
+
+DataDefinitionForChoice returns yang::DataDefinition:
+		Container
+	|	Leaf 
+	|	LeafList 
+	|	ListWithStatus
+	|	AnyXml
+	| 	Grouping
+;
+
+When returns yang::When:
+	'when' value=(ConcatenatedString|QuotedConcatenatedString) ( ';' | '{'
+		( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+	'}' )
+;
+
+IfFeature returns yang::IfFeature:
+	'if-feature' feature=(ConcatenatedString|QuotedConcatenatedString) ';'
+;
+
+Refine returns yang::Refine:
+	'refine'name=(ConcatenatedString|QuotedConcatenatedString)'{'
+		( ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'config' config=Boolean ';' )? 
+		& ('mandatory' mandatory=Boolean ';')? 
+		& ( 'default' defaultValue=Value ';' )?
+		& ( 'presence' presence=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( musts+=Must )*
+		& ( 'min-elements' min=OptionallyQuotedPossiblySignedNumber ';' )?
+		& ( 'max-elements' max=OptionallyQuotedMaxElementsType ';' )?
+		)
+	'}'	
+;
+
+Must returns yang::Must:
+	'must' expression=(ConcatenatedString|QuotedConcatenatedString) (';' | '{'
+		( 'error-app-tag' errorAppTag=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		( 'error-message' errorMessage=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+	'}')	
+;
+
+Range returns yang::Range:
+	'range' expression=(ConcatenatedString|QuotedConcatenatedString) (';' | '{'
+		( 'error-app-tag' errorAppTag=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		( 'error-message' errorMessage=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+	'}')	
+;
+
+Include returns yang::Include:
+	'include'name=OptionallyQuotedName(';' | '{'
+		( 'revision-date' revisionDate=OptionallyQuotedString ';' )?
+	'}')	
+;
+
+Bit returns yang::Bit:
+	'bit'name=OptionallyQuotedName(';' | '{'
+		( ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'status' status=StatusKind ';' )? 
+		& ( 'position' position=NonNegativeInteger ';' )?
+		)
+	'}')
+;
+
+Leaf returns yang::Leaf:
+	'leaf'name=OptionallyQuotedName'{'
+		( ( when=When )? 
+		& ( ifFeature+=IfFeature )*
+		& 'type' type=Type
+		& ('mandatory' mandatory=Boolean ';')? 
+		& ( musts+=Must )*
+		& ( 'default' defaultValue=Value ';' )? 
+		& ( 'units' units=(ConcatenatedString|QuotedConcatenatedString) ';' )?  
+		& ( 'config' config=Boolean ';' )? 
+		& ( 'status' status=StatusKind ';' )? 
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )? 
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( properties+=Property )*)
+	'}'
+;
+
+ListWithStatus returns yang::ListWithStatus: 
+	'list'name=OptionallyQuotedName'{'
+		(
+		( musts+=Must )*
+		& ( when=When )?
+		& ( ifFeature+=IfFeature )*
+		& ( 'key' key=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'unique' unique=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'min-elements' min=OptionallyQuotedPossiblySignedNumber ';' )?
+		& ( 'max-elements' max=OptionallyQuotedMaxElementsType ';' )?
+		& ( 'ordered-by' orderedBy=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'config' config=Boolean ';' )? 
+		& ( 'status' status=StatusKind ';' )? 
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( properties += Property )*
+		& ( children+=DataDefinition )*
+		)
+	'}'
+;
+
+LeafList returns yang::LeafList:
+	'leaf-list'name=OptionallyQuotedName'{'
+		( 
+		( when=When )? 
+		& ( ifFeature+=IfFeature )* 
+		& 'type' type=Type
+		& ( musts+=Must )*
+		& ( 'key' key=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'unique' unique=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'config' config=Boolean ';' )? 
+		& ( 'status' status=StatusKind ';' )? 		
+		& ( 'min-elements' min=OptionallyQuotedPossiblySignedNumber ';' )?
+		& ( 'max-elements' max=OptionallyQuotedMaxElementsType ';' )?
+		& ( 'ordered-by' orderedBy=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?  
+		& ( properties+=Property )*
+		& ( children+=DataDefinition )*
+		)
+	'}'
+;
+
+Choice returns yang::Choice:
+	'choice'name=OptionallyQuotedName( ';' | '{'
+		( ( ifFeature+=IfFeature )*
+		& ('mandatory' mandatory=Boolean ';')? 
+		& ( 'config' config=Boolean ';' )? 		
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?  
+		& ( elements+=ChoiceElement )*
+		& ( 'default' defaultValue=Value ';' )?
+		& ( when=When )?
+		)
+	'}')
+;
+
+ChoiceElement returns yang::ChoiceElement:
+	(Case |
+	DataDefinitionForChoice)
+;
+
+Case returns yang::Case:
+	'case'name=OptionallyQuotedName'{'
+		( ( ifFeature+=IfFeature )*
+		& ( elements+=DataDefinition )*
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( 'reference' reference=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( when=When )?
+		)  
+	'}'
+;
+
+AnyXml returns yang::AnyXml:
+	'anyxml'name=OptionallyQuotedName( ';' | '{'
+		( ( when=When )? 
+		& ( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ('mandatory' mandatory=Boolean ';')? 
+		& ( properties+=Property )*
+		)
+	'}'
+	)
+;
+
+Deviation returns yang::Deviation:
+	'deviation' name=(ConcatenatedStringNoDeviationKeywords|QuotedConcatenatedStringNoDeviationKeywords) '{'
+	(
+		( 'description' description=(ConcatenatedString|QuotedConcatenatedString) ';' )?
+		& ( deviate+=Deviate )+
+		& ( 'reference' reference=(ConcatenatedStringNoDeviationKeywords|QuotedConcatenatedStringNoDeviationKeywords) ';' )?
+	)
+	'}'
+;
+
+Deviate returns yang::Deviate:
+	'deviate' name=Deviate_Keyword ( ';' | '{'
+	(
+		( 'config' config=Boolean ';' )?  
+		& ( 'default' defaultValue=Value ';' )?
+		& ('mandatory' mandatory=Boolean ';')? 
+		& ( 'min-elements' min=OptionallyQuotedPossiblySignedNumber ';' )?
+		& ( 'max-elements' max=OptionallyQuotedMaxElementsType ';' )?
+		& ( musts+=Must )*
+		& ( 'type' type=Type )?
+		& ( 'unique' unique+=(ConcatenatedStringNoDeviationKeywords|QuotedConcatenatedStringNoDeviationKeywords) ';' )*
+		& ( 'units' units=(ConcatenatedStringNoDeviationKeywords|QuotedConcatenatedStringNoDeviationKeywords) ';' )?
+	)
+	'}')
+;
+
+Value returns yang::Value:
+	(StringValue)
+;
+
+StringValue returns yang::StringValue:
+	value=(ConcatenatedString|QuotedConcatenatedString)
+;
+
+IntValue returns yang::IntValue:
+	value=OptionallyQuotedPossiblySignedNumber
+;
+
+BooleanValue returns yang::BooleanValue:
+	value?=Boolean
+;
+
+Boolean returns ecore::EBoolean:
+	(SINGLEQUOTE|DOUBLEQUOTE)?('true'|'false')(SINGLEQUOTE|DOUBLEQUOTE)?
+;
+
+Keyword:
+	'status' | 'type' | 'default' |
+	'description'| 'key' | 'container' |
+	'value' | 'deprecated' | 'namespace' | 
+	'config' | 'notification' | 'prefix' |
+	'rpc' | 'error-app-tag' | 'error-message' |
+	'revision' | 'module' | 'feature' | 'submodule' |
+	'include' | 'contact' | 'path' | 'input' |
+	'uses' | 'range' | 'must' | 'output' |
+	'enumeration' | 'mandatory' | 'reference' |
+	'deviation'	| 'import' | 'bits' | 'enum' |
+	'organization' | 'leaf' | 'leaf-list' | ':' |
+	'pattern' | 'bit' | 'current' | 'base' |
+	'argument' | 'list' | 'false' | 'true' |
+	'identity' | 'identityref' | 'unique' |
+	'augment' | 'min-elements'|'max-elements' |
+	'when' | 'grouping' | 'extension' |
+	'length' | 'units' | 'case' | 'position' |
+	'choice' | 'anyxml' | 'leafref' |
+	'ordered-by' | 'presence' | 'refine' | 'unbounded'
+;
+
+Deviate_Keyword:
+	'not-supported'|'add'|'replace'|'delete'
+;
+
+OptionallyQuotedPossiblySignedNumber returns ecore::EInt: 
+	(SINGLEQUOTE|DOUBLEQUOTE)?(Integer)(SINGLEQUOTE|DOUBLEQUOTE)?
+;
+
+OptionallyQuotedMaxElementsType:
+	(SINGLEQUOTE|DOUBLEQUOTE)?(Integer|'unbounded')(SINGLEQUOTE|DOUBLEQUOTE)?
+;
+
+OptionallyQuotedName:
+	(SINGLEQUOTE|DOUBLEQUOTE)?(ID|Keyword|Deviate_Keyword|Integer)+(SINGLEQUOTE|DOUBLEQUOTE)?
+;
+
+OptionallyQuotedString:
+	(SINGLEQUOTE|DOUBLEQUOTE)?(STRINGTOKEN)(SINGLEQUOTE|DOUBLEQUOTE)?
+;
+
+ConcatenatedString:
+	(=>STRINGTOKEN|ID|Keyword|Integer|Deviate_Keyword)(SINGLEQUOTE|PLUS_OPERATOR|STRINGTOKEN|ID|Keyword|Integer|Deviate_Keyword)*
+;
+
+QuotedConcatenatedString:
+	DoubleQuotedConcatenatedString|SingleQuotedConcatenatedString
+;
+
+DoubleQuotedConcatenatedString:
+	(DOUBLEQUOTE)((STRINGTOKEN|ID|=>Keyword|Integer|Deviate_Keyword|YangTokens|SINGLEQUOTE)(PLUS_OPERATOR|STRINGTOKEN|ID|Keyword|Integer|Deviate_Keyword|YangTokens|SINGLEQUOTE)*)?(DOUBLEQUOTE)((PLUS_OPERATOR)(DOUBLEQUOTE)(STRINGTOKEN|ID|=>Keyword|Integer|Deviate_Keyword|YangTokens|SINGLEQUOTE)(PLUS_OPERATOR|STRINGTOKEN|ID|Keyword|Integer|Deviate_Keyword|YangTokens|SINGLEQUOTE)*(DOUBLEQUOTE))*
+;
+
+SingleQuotedConcatenatedString:
+	(SINGLEQUOTE)((STRINGTOKEN|ID|=>Keyword|Integer|Deviate_Keyword|YangTokens|DOUBLEQUOTE)(PLUS_OPERATOR|STRINGTOKEN|ID|Keyword|Integer|Deviate_Keyword|YangTokens|DOUBLEQUOTE)*)?(SINGLEQUOTE)((PLUS_OPERATOR)(SINGLEQUOTE)(STRINGTOKEN|ID|=>Keyword|Integer|Deviate_Keyword|YangTokens|DOUBLEQUOTE)(PLUS_OPERATOR|STRINGTOKEN|ID|Keyword|Integer|Deviate_Keyword|YangTokens|DOUBLEQUOTE)*(SINGLEQUOTE))*
+;
+
+YangTokens:
+	(';'|'{'|'}'|WEBTOKEN|'empty'|'binary'|'instance-identifier'|'\\"'|'\\r'|'\\n'|"\\'"|'\\')
+;
+
+ConcatenatedStringNoDeviationKeywords:
+	(STRINGTOKEN|ID|Keyword|Integer)(PLUS_OPERATOR|STRINGTOKEN|ID|Keyword|Integer)*
+;
+
+QuotedConcatenatedStringNoDeviationKeywords:
+	DoubleQuotedConcatenatedStringNoDeviationKeywords|SingleQuotedConcatenatedStringNoDeviationKeywords
+;
+
+DoubleQuotedConcatenatedStringNoDeviationKeywords:
+	(DOUBLEQUOTE)(STRINGTOKEN|ID|Keyword|Integer|YangTokens|SINGLEQUOTE)(PLUS_OPERATOR|STRINGTOKEN|ID|Keyword|Integer|YangTokens|SINGLEQUOTE)*(DOUBLEQUOTE)((PLUS_OPERATOR)(DOUBLEQUOTE)(STRINGTOKEN|ID|Keyword|Integer|YangTokens|SINGLEQUOTE)(PLUS_OPERATOR|STRINGTOKEN|ID|Keyword|Integer|YangTokens|SINGLEQUOTE)*(DOUBLEQUOTE))*
+;
+
+SingleQuotedConcatenatedStringNoDeviationKeywords:
+	(SINGLEQUOTE)(STRINGTOKEN|ID|Keyword|Integer|YangTokens|DOUBLEQUOTE)(PLUS_OPERATOR|STRINGTOKEN|ID|Keyword|Integer|YangTokens|DOUBLEQUOTE)*(SINGLEQUOTE)((PLUS_OPERATOR)(SINGLEQUOTE)(STRINGTOKEN|ID|Keyword|Integer|YangTokens|DOUBLEQUOTE)(PLUS_OPERATOR|STRINGTOKEN|ID|Keyword|Integer|YangTokens|DOUBLEQUOTE)*(SINGLEQUOTE))*
+;
+
+NonNegativeInteger returns ecore::EBigInteger: 
+	(INT)
+;
+
+Integer returns ecore::EInt:
+	(INT)
+;
+
+terminal ID returns ecore::EString: 
+	('a'..'z'|'A'..'Z'|'_')(STRINGTOKEN)?
+;
+
+terminal INT :
+	('-'|PLUS_OPERATOR)?('0'..'9')+
+;
+
+terminal ML_COMMENT	: 
+	'/*' -> '*/'
+;
+
+terminal WEBTOKEN:
+	'://'
+;
+
+terminal SL_COMMENT:
+	'//' !('\n'|'\r')* ('\r'? '\n')?
+;
+
+terminal STRINGTOKEN:
+	('a'..'z'|'A'..'Z'|'_'|'-'|'0'..'9'|'.'|'|'|'@'|'<'|'>'|'('|')'|'/'|','|'^'|'['|']'|'*'|'?'|'$'|'='|'%'|'!'|'&'|'±'|'’'|'™')+
+;
+
+terminal PLUS_OPERATOR:
+	'+'
+;
+
+terminal SINGLEQUOTE:
+	"'"
+;
+
+terminal DOUBLEQUOTE:
+	'"'
+;
+
+terminal WS: 
+	(' '|'\t'|'\r'|'\n')+
+;
+
+terminal ANY_OTHER: .;

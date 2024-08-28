@@ -1,0 +1,147 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-maj-13 10:33:08 using 
+    * com.ericsson.ecim.yang.m2m 2.10.1.qualifier
+*/
+module EcimInt {
+	namespace "urn:com:ericsson:ecim:EcimInt";
+	prefix EcimInt;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import RootMom {
+		prefix RootMom;
+	}
+
+	organization "Ericsson";
+
+	revision "2014-05-13" {
+		ericsson:release 1;
+		ericsson:version 23;
+	}
+
+	augment "/RootMom:Root" {
+		list NumberRange {
+			key id;
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			uses "EcimInt:NumberRange";
+		}
+
+	}
+
+	typedef "MyDerivedInteger(positiveRange)" {
+		type int64 {
+			range "-1..*";
+		}
+
+	}
+
+	typedef "MyDerivedInteger(negativeRange)" {
+		type int8 {
+			range "-128..-5";
+		}
+
+	}
+
+	typedef MyEcimIntegerDerivedInteger {
+		type int64 {
+			range "-40..500";
+		}
+
+		description "qwe";
+	}
+
+	grouping NumberRange {
+		leaf id {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+		leaf validPositiveNumber {
+			type "EcimInt:MyDerivedInteger(positiveRange)";
+			default 60;
+		}
+
+		leaf validNegativeNumber {
+			type "EcimInt:MyDerivedInteger(negativeRange)";
+			default -123;
+		}
+
+		leaf-list validNegativeListOfNumbers {
+			type "EcimInt:MyDerivedInteger(negativeRange)";
+			max-elements 3;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list validPositiveListOfNumbers {
+			type "EcimInt:MyDerivedInteger(positiveRange)";
+			max-elements 3;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list validManyNegInt32InlineRange {
+			type int32 {
+				range "-128..-5";
+			}
+
+			max-elements 3;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list validManyPosInt32InlineRange {
+			type int32 {
+				range "-1..*";
+			}
+
+			max-elements 3;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf validOneNegInt32InlineRange {
+			type int32 {
+				range "-128..-5";
+			}
+
+			default -123;
+		}
+
+		leaf validOnePosInt32InlineRange {
+			type int32 {
+				range "-1..*";
+			}
+
+			default 120;
+		}
+
+		leaf ecimIntegerAttribute {
+			type int64 {
+				range "-213..45238";
+			}
+
+			default 333;
+			description "EcimInteger attribute.";
+		}
+
+		leaf ecimIntegerDerivedInteger {
+			type "EcimInt:MyEcimIntegerDerivedInteger";
+			default 33;
+			description "qwe";
+		}
+
+		leaf-list ecimIntegerAttributeMulti {
+			type int64 {
+				range "-213..45238";
+			}
+
+			max-elements 100;
+			description "EcimInteger attribute.";
+			ericsson:non-unique-leaf-list;
+		}
+
+	}
+
+}

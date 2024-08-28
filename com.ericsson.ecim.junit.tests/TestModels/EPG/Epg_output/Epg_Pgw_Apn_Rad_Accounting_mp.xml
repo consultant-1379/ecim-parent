@@ -1,0 +1,1464 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_Apn_Rad_Accounting" namespace="urn:com:ericsson:ecim:Epg_Pgw_Apn_Rad_Accounting" namespacePrefix="epg_pgw_apn_rad_accounting" organization="Ericsson EAB, NDO EPG" release="2" revision="" version="4">
+        <description>RADIUS accounting settings</description>
+        <struct name="EcimPassword">
+            <description>This struct stores the password which is set by an  operator via NETCONF or CLI.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <structMember name="cleartext">
+                <description>Indicates if the password is entered in cleartext or not. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="EcimEmpty">
+                    <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="password">
+                <description>Holds the password or passphrase text.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isKey" value="true"/>
+                </domainExtension>
+                <string/>
+            </structMember>
+        </struct>
+        <enum name="NasPortType">
+            <description>Type of physical port of the NAS</description>
+            <enumMember name="async">
+                <description>ASYNC (0)</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="virtual">
+                <description>VIRTUAL (5)</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="no-nas-port-type">
+                <description>Do not send NAS-Port-Type in RADIUS messages</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="FramedProtocol">
+            <description>Framing to be used for access</description>
+            <enumMember name="ppp">
+                <description>PPP (1)</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="gprs">
+                <description>GPRS-PDP-Context (7)</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="no-framed-protocol">
+                <description>Do not send Framed-Protocol in RADIUS messages</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="RangedString2">
+            <description>The prefix is a string up to 2 digits</description>
+            <baseType>
+                <string>
+                    <validValues>^[0-9]{1,2}$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString20">
+            <description>string with up to 20 tokens</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>20</max>
+                    </lengthRange>
+                    <validValues>^[0-9]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Timeout">
+            <description>Request timeout period</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>90</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString64">
+            <description>Must contain only letters, numbers, underscores or dashes</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_Pgw_Radius"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>64</max>
+                    </lengthRange>
+                    <validValues>^[\.0-9A-Za-z\_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="ServerdownTimeout">
+            <description>Time before retrying requests to a down server</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>0</min>
+                        <max>1800</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString40">
+            <description>string with up to 40 tokens</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>40</max>
+                    </lengthRange>
+                    <validValues>^[A-Za-z.0-9-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="PriorityKey">
+            <description>String containing only decimal digits.&#13;
+First digit cannot be zero, range is 1-999999.&#13;
+</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>6</max>
+                    </lengthRange>
+                    <validValues>^[1-9][0-9]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="IpAddress">
+            <description>IP address</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>15</max>
+                    </lengthRange>
+                    <validValues>^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="LongRetryTimer">
+            <description>Long retry timer for accounting-on</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>5</min>
+                        <max>90</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString10">
+            <description>string with up to 10 tokens</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>10</max>
+                    </lengthRange>
+                    <validValues>^[0-9]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Retry">
+            <description>Retry attempts</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>60</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="TransferInterval">
+            <description>Send RADIUS interim update periodically</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>15</min>
+                        <max>1440</max>
+                    </range>
+                    <unit>minutes</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <class name="Accounting">
+            <description>RADIUS accounting settings</description>
+            <root/>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $server in @sharedServer satisfies (not(exists(./Server/@serverID)))'><name path='.'/>,sharedServer: The following attributes can not be combined: Server, shared-server</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $server in @sharedServer satisfies ($server = /ManagedElement/Epg/Pgw/Radius/Server/@serverId)'><name path='.'/>,sharedServer: Server must be configured under 'managed-element epg pgw radius server'</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="accountingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="wppCompatibleEncoding">
+                <description>Encode RADIUS attributes in a format compatible with WPP GGSN</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="messageForEveryContext">
+                <description>Send start/interim/stop message for every PDP context</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noAccountingOn">
+                <description>Don't send accounting on and off messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noAccountingOnRespNeeded">
+                <description>Accounting on response not needed</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="unAcknowledge">
+                <description>Run in Un-Acknowledge mode</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sharedServer">
+                <description>Shared RADIUS server for authentication</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString64">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="forcedRetry">
+                <description>Continue with the next RADIUS server for the same PDP-context after max fail retries</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+                <obsolete/>
+            </attribute>
+            <attribute name="forceMulticast">
+                <description>Sends to multicast server(s) without waiting for the primary respone</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Server">
+            <description>Server for accounting requests</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='not(exists(../@sharedServer))'><name path='.'/>: The following attributes can not be combined: Server, shared-server</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="name">
+                <description>RADIUS server address</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddress">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Request timeout period</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="retry">
+                <description>Retry attempts</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Retry">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="port">
+                <description>Port number for RADIUS messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <uint16/>
+                </dataType>
+            </attribute>
+            <attribute name="secret">
+                <description>Shared secret with the RADIUS server</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <structRef name="EcimPassword">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="serverdownTimeout">
+                <description>Time before retrying requests to a down server</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ServerdownTimeout">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="multicast">
+                <description>Allow server to participate in RADIUS multicast</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="serverID">
+                <description>Server ID.&#13;
+Determines priority by lexical order.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="PriorityKey">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noInterimUpdateMulticast">
+                <description>Don't send interim multicast to this RADIUS server</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="MessageAttributes">
+            <description>Attributes in RADIUS messages</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @msisdnValue satisfies (not(exists(./Msisdn)))'><name path='.'/>,msisdnValue: The following attributes can not be combined: msisdn, msisdn-value</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @nasPort satisfies (not(exists(@nasPortValue)))'><name path='.'/>,nasPort: The following attributes can not be combined: nas-port, nas-port-value</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @nasPortValue satisfies (not(exists(@nasPort)))'><name path='.'/>,nasPortValue: The following attributes can not be combined: nas-port, nas-port-value</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="messageAttributesID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="apnIdentifier">
+                <description>Include APN name</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="apnSelectionMode">
+                <description>Include APN selection information</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="chargingCharacteristics">
+                <description>Include charging characteristics</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ggsnAddress">
+                <description>Include GGSN node address</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="gprsQos">
+                <description>Include GPRS quality of service</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="gprsQosExtended">
+                <description>Include GPRS extended quality of service</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="gprsQosRelease7">
+                <description>Include Release 7 GPRS quality of service</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="epsQos">
+                <description>Change the format of AVP qos-negotiation to new GTPv2 format.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="imsi">
+                <description>Include IMSI</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="msTimezone">
+                <description>Include MS timezone</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="chargingGateway">
+                <description>Include charging gateway address</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noNasIdentifier">
+                <description>Do not send NAS-Identifier in RADIUS messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noServiceType">
+                <description>Do not send Service-Type in RADIUS messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="userLocationInfo">
+                <description>Include user location info</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="userPlmnId">
+                <description>Include user public land mobile network identifier</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="nsapi">
+                <description>Include NSAPI</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="pdpType">
+                <description>Include PDP type</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="signalingSgsn">
+                <description>Include signaling SGSN address</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnPlmnId">
+                <description>Include the SGSN public land mobile network identifier</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="nasPort">
+                <description>Include NAS port attribute</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="nasIpAddressValue">
+                <description>NAS IP address set to this value in RADIUS messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddress">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ggsnPlmnId">
+                <description>Include the GGSN public land mobile network identifier</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ratType">
+                <description>Include the radio access technology type in the request</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="imeiSv">
+                <description>Include the IMEI-SV in the request</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="chargingIdentifier">
+                <description>Include user charging identifier</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="acctInputOctets">
+                <description>Include the number of octets sent</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="acctInputGigawords">
+                <description>Include the number of times octets overflew</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="acctOutputOctets">
+                <description>Include the number of octets received</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="acctOutputGigawords">
+                <description>Include the number of times octets overflew</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="acctMultisessionId">
+                <description>Include Multi Session Id and Link Count</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="packetFilter">
+                <description>Include packet filter</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sessionStop">
+                <description>Send session stop message</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="includeSessionTime">
+                <description>Include session-time in accounting stop</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="includeSessionTimeInAll">
+                <description>Include session-time in all RADIUS accounting messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="acctInputPackets">
+                <description>Include the number of input packets</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="acctOutputPackets">
+                <description>Include the number of output packets</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="negotiatedDscp">
+                <description>Include negotiated DSCP</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noAcctAuthentic">
+                <description>Do not send Acct-Authentic in RADIUS messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="framedProtocol">
+                <description>Framing to be used for access</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="FramedProtocol">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="nasPortType">
+                <description>Type of physical port of the NAS</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="NasPortType">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="msisdnValue">
+                <description>MSISDN set to this value in RADIUS messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString20">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="userValue">
+                <description>User name set to this value in RADIUS messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString40">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="nasPortValue">
+                <description>NAS port set to this value in RADIUS messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString10">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="eventTimestamp">
+                <description>Include the Event-Timestamp attribute in Radius accounting messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="acctSessionId">
+                <description>Include the Acct-Session-Id attribute in RADIUS authentication messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="InterimUpdate">
+            <description>Send interim accounting requests</description>
+            <attribute name="interimUpdateID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferOnUpdate">
+                <description>Send RADIUS interim update when receiving PDP context update request</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="acknowledge">
+                <description>Delete PDP context when RADIUS interim response is not received</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferInterval">
+                <description>Send RADIUS interim update periodically</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TransferInterval">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Msisdn">
+            <description>Include MSISDN</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='not(exists(../@msisdnValue))'><name path='.'/>: The following attributes can not be combined: msisdn, msisdn-value</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="msisdnID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="numericPrefix">
+                <description>A prefix that will be inserted in front of the MSISDN</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString2">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="AccountingOn">
+            <description>Relates only to Accounting-On</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            
+		<assert id='set' test='not(exists(../@noAccountingOn))'><name path='.'/>: no-accounting-on can not be set when using this configuration</assert>]]>&#13;<![CDATA[
+           ]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="accountingOnID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="longRetryTimer">
+                <description>Define the long retry-timer for Accounting-On, default: 60 seconds</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="LongRetryTimer">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noShortTimer">
+                <description>Will disable the short retry-timer for Accounting-On</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Accounting_to_MessageAttributes">
+            <containment>
+                <parent>
+                    <hasClass name="Accounting">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="MessageAttributes">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Accounting_to_InterimUpdate">
+            <containment>
+                <parent>
+                    <hasClass name="Accounting">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="InterimUpdate">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Accounting_to_Server">
+            <containment>
+                <parent>
+                    <hasClass name="Accounting">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Server">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>10</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="MessageAttributes_to_Msisdn">
+            <containment>
+                <parent>
+                    <hasClass name="MessageAttributes">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Msisdn">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Accounting_to_AccountingOn">
+            <containment>
+                <parent>
+                    <hasClass name="Accounting">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AccountingOn">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Radius_to_Accounting">
+            <containment>
+                <parent>
+                    <hasClass name="Radius">
+                        <mimName>Epg_Pgw_Apn_Radius</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Accounting">
+                        <mimName>Epg_Pgw_Apn_Rad_Accounting</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

@@ -1,0 +1,670 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:32:46 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ECIM_PMEventM" {
+	namespace "urn:com:ericsson:ecim:ECIM_PMEventM";
+	prefix "ECIM_PMEventM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	organization "LMI/LXR/SAC";
+	description "This fragment is used to manage the event jobs on the Managed Element. 
+Once an event job is activated the event data can be collected and sent via streaming or file transfer depending on the capabilities specified.";
+
+	revision "2015-05-08" {
+		ericsson:author "LMI/LXR/SAC Umer Sharaq";
+		ericsson:correction "0";
+		ericsson:contact "LMI/LXR/SAC Umer Sharaq";
+		ericsson:version "1";
+		ericsson:revision "A";
+		ericsson:release "2";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:SystemFunctions" {
+		list "PmEventM" {
+			key "pmEventMId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "EventProducer" {
+				key "eventProducerId";
+				list "FilePullCapabilities" {
+					key "filePullCapabilitiesId";
+					max-elements 1;
+					uses ECIM_PMEventM:FilePullCapabilities;
+				}
+
+				list "EventCapabilities" {
+					key "eventCapabilitiesId";
+					min-elements 1;
+					max-elements 1;
+					uses ECIM_PMEventM:EventCapabilities;
+				}
+
+				list "StreamingCapabilities" {
+					key "streamCapabilitiesId";
+					max-elements 1;
+					uses ECIM_PMEventM:StreamingCapabilities;
+				}
+
+				list "EventGroup" {
+					key "eventGroupId";
+					list "EventType" {
+						key "eventTypeId";
+						uses ECIM_PMEventM:EventType;
+					}
+
+					uses ECIM_PMEventM:EventGroup;
+				}
+
+				list "EventFilterType" {
+					key "eventFilterTypeId";
+					uses ECIM_PMEventM:EventFilterType;
+				}
+
+				list "EventJob" {
+					key "eventJobId";
+					uses ECIM_PMEventM:EventJob;
+				}
+
+				uses ECIM_PMEventM:EventProducer;
+			}
+
+			uses ECIM_PMEventM:PmEventM;
+		}
+
+	}
+
+	typedef "JobState" {
+		type enumeration {
+			enum "ACTIVE" {
+				value 1;
+				description "The job is requested to be activated.";
+			}
+
+			enum "STOPPED" {
+				value 2;
+				description "The job is requested to be stopped.";
+			}
+
+		}
+
+		description "Job state that has been requested.";
+	}
+
+	typedef "SessionState" {
+		type enumeration {
+			enum "ACTIVATING" {
+				value 0;
+				description "The job is switching from STOPPED to ACTIVE.";
+			}
+
+			enum "ACTIVE" {
+				value 1;
+				description "The job is producing events as intended.";
+			}
+
+			enum "DEACTIVATING" {
+				value 3;
+				description "The job is switching from ACTIVE to STOPPED.";
+			}
+
+			enum "STOPPED" {
+				value 2;
+				description
+				"The job is passive, either by request or due to other reasons (e.g. overload conditions).";
+			}
+
+			enum "FAILED" {
+				value 4;
+				description "The job is permanently failed and deactivated.
+In this state it will not respond to further attempts to activate it. The job may however leave the FAILED state and enter the STOPPED state if the failure reason is removed.";
+			}
+
+		}
+
+		description "Actual job state for an event job.";
+	}
+
+	typedef "FilterMethod" {
+		type enumeration {
+			enum "SINGLE_SELECT" {
+				value 0;
+				description "Select one value only from a defined set of options.";
+			}
+
+			enum "MULTI_SELECT" {
+				value 1;
+				description
+				"Select multiple values from a predefined set, separated by a space.";
+			}
+
+			enum "INTERVAL" {
+				value 2;
+				description "Select an interval value within the specified range.";
+			}
+
+			enum "DISTINGUISHED_NAMES" {
+				value 3;
+				description "Select one or more Distinguished Names (DNs).";
+			}
+
+			enum "REGEXP" {
+				value 4;
+				description "Regular expression.";
+			}
+
+		}
+
+		description "Method of filter classification.";
+	}
+
+	typedef "JobControl" {
+		type enumeration {
+			enum "FULL" {
+				value 0;
+				description "MS has Full control of the PMEvent Job.
+MS can create, delete, start and stop a job.";
+			}
+
+			enum "STARTSTOP" {
+				value 1;
+				description "MS has Restricted control of the PMEvent Job.
+MS can stop and start a job, but cannot delete or create it.
+";
+			}
+
+			enum "VIEWONLY" {
+				value 2;
+				description "MS can only view the PMEvent job.";
+			}
+
+		}
+
+		description "The level of MS control of the PMEvent job.";
+	}
+
+	typedef "TimePeriod" {
+		type enumeration {
+			enum "ONE_MIN" {
+				value 3;
+				description "This represents a one-minute time period.";
+			}
+
+			enum "FIVE_MIN" {
+				value 4;
+				description "This represents a five-minute time period.";
+			}
+
+			enum "FIFTEEN_MIN" {
+				value 5;
+				description "This represents a 15-minute time period.";
+			}
+
+			enum "THIRTY_MIN" {
+				value 6;
+				description "This represents a 30-minute time period.";
+			}
+
+			enum "ONE_HOUR" {
+				value 7;
+				description "This represents a one-hour time period.";
+			}
+
+			enum "TWELVE_HOUR" {
+				value 8;
+				description "This represents a 12-hour (720-minute)  time period.";
+			}
+
+			enum "ONE_DAY" {
+				value 9;
+				description "This represents a 24-hour (1440-minute)  time period.";
+			}
+
+			enum "TEN_SECONDS" {
+				value 1;
+				description "This represents a 10-second time period.";
+			}
+
+			enum "THIRTY_SECONDS" {
+				value 2;
+				description "This represents a 30-second time period.";
+			}
+
+		}
+
+		description "The different time periods associated with Event Job.";
+	}
+
+	typedef "DerivedString" {
+		type string {
+			pattern "[a-zA-Z0-9-]+";
+		}
+
+		description "A derived string with valid values as given below.
+regexp [a-zA-Z0-9-]+
+";
+	}
+
+	typedef "DerivedStringName" {
+		type string {
+			pattern "[a-zA-Z0-9-_  ]+";
+		}
+
+		description "A derived string with valid values as given below.
+regexp [a-zA-Z0-9-_  ]+";
+	}
+
+	grouping "PmEventM" {
+		description "The Performance Management (PM) Event Management fragment.
+It is used to manage the event jobs on the Managed Element. 
+Once an event job is activated the events can be collected and sent via streaming and/or file transfer.";
+		leaf "pmEventMId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "EventType" {
+		description
+		"Defines the event type that can be generated by the Managed Element.";
+		leaf "eventTypeId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "triggerDescription" {
+			type string;
+			mandatory true;
+			config true;
+			description
+			"Contains information about what causes the event to be raised.";
+		}
+
+	}
+
+	grouping "EventJob" {
+		description
+		"Defines the information to be used to activate and configure an event job on the Managed Element.";
+		leaf "eventJobId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "description" {
+			type string;
+			description "Describes the content and purpose of the job.";
+		}
+
+		list "eventFilter" {
+			config true;
+			description "Event filter or filters to be applied.
+
+This specifies the event criteria which must be valid for the events to be collected and what contents some events shall have.
+(Examples of what may be specified in a filter:  the CellId in a Cell Trace, UE fraction, events related to QoS values, message encoding format, etc).
+
+The filters supported are specified in the EventGroup::validFilters attribute. 
+
+The following conditions apply:
+The order the filters are set does not matter.
+Only one filter of each type shall be set. Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses ECIM_PMEventM:eventFilter;
+		}
+
+		leaf "requestedJobState" {
+			type ECIM_PMEventM:JobState;
+			description "The requested state of the job. It represents the state that the job has been ordered to reach.
+
+Possible Values:
+ACTIVE
+STOPPED
+";
+		}
+
+		leaf "currentJobState" {
+			type ECIM_PMEventM:SessionState;
+			mandatory true;
+			config true;
+			description "The current state of the job. 
+
+Possible Values:
+ACTIVATING
+ACTIVE   
+DEACTIVATING
+STOPPED
+FAILED ";
+		}
+
+		leaf "fileOutputEnabled" {
+			type boolean;
+			mandatory true;
+			description "Indicates if event data output will be written to file.";
+		}
+
+		leaf "streamDestinationIpAddress" {
+			type ECIM_CommonLibrary:IpDNSAddress;
+			description "The address of the server that event data should be streamed to.
+Only required if streamOutputEnabled = true.";
+		}
+
+		leaf "streamDestinationPort" {
+			type uint16;
+			description "The server port that event data shall be streamed to.
+Only required if streamOutputEnabled = true.";
+		}
+
+		leaf "reportingPeriod" {
+			type ECIM_PMEventM:TimePeriod;
+			description "Specifies how often event data will be made available. 
+Only applicable when fileOutputEnabled =true.
+The value must be valid according to the supportedReportingPeriods set by the Managed Element.";
+		}
+
+		leaf "streamOutputEnabled" {
+			type boolean;
+			mandatory true;
+			description "Indicates if event data output will be streamed.";
+		}
+
+		leaf "jobControl" {
+			type ECIM_PMEventM:JobControl;
+			mandatory true;
+			config true;
+			description "Describes the level of MS control of the event job.";
+		}
+
+		leaf-list "eventGroupRef" {
+			type string {
+				pattern "(.*=.*,)*EventGroup=.*";
+			}
+
+			description "The Event Group or Event Groups selected for the job.
+This attribute is set when an entire group or entire groups of events are 
+to be  selected for the job.
+";
+		}
+
+		leaf-list "eventTypeRef" {
+			type string {
+				pattern "(.*=.*,)*EventType=.*";
+			}
+
+			description "The Event Type or Event Types selected for the job.
+This attribute is set when an individual event or a subset of the events
+within a group or groups are to be selected for the job.";
+		}
+
+		leaf "fileCompressionType" {
+			type ECIM_CommonLibrary:CompressionTypes;
+			description "Compression Type to be applied to file output.
+Only valid when fileOutputEnabled = true.
+If this attribute is not set, no compression will be applied to the file output.
+Can only be assigned a value according to the capability supportedCompressionTypes in the FilePullCapabilities MOC.";
+		}
+
+		leaf "streamCompressionType" {
+			type ECIM_CommonLibrary:CompressionTypes;
+			description "Compression Type to be applied to stream output.
+Only valid when streamOutputEnabled = true.
+If this attribute is not set, no compression will be applied to the stream output.
+Can only be assigned a value according to the capability supportedCompressionTypes in the StreamingCapabilities MOC.";
+		}
+
+		leaf "jobGroup" {
+			type ECIM_PMEventM:DerivedString;
+			description "Multiple jobs which end up in common set of files, have same jobGroup.
+So, this identifies the job grouping. A jobGroup string is a non-empty sequence of characters matching the regexp [a-zA-Z0-9-]+";
+		}
+
+	}
+
+	grouping "EventGroup" {
+		description "Represents a group of related Event Types.";
+		leaf "eventGroupId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "description" {
+			type string;
+			mandatory true;
+			config true;
+			description "Describes the content and purpose of the event group.";
+		}
+
+		list "moClass" {
+			max-elements 1;
+			config true;
+			description
+			"The Managed Object Class that generates events belonging to the event group.";
+			uses ECIM_PMEventM:ManagedObjectClass;
+		}
+
+		leaf "eventGroupVersion" {
+			type string;
+			mandatory true;
+			config true;
+			description "Event Group version identifier.
+Unique version identifier associated with a change to the contents of the Event Group, where new Event Types have been added.";
+		}
+
+		leaf-list "validFilters" {
+			type string {
+				pattern "(.*=.*,)*EventFilterType=.*";
+			}
+
+			config true;
+			description "Defines valid filter type definitions for this Event Group.";
+		}
+
+	}
+
+	grouping "ManagedObjectClass" {
+		description "This struct represents a Managed Object Class (MOC).";
+		leaf "moClassName" {
+			type string;
+			mandatory true;
+			description "This struct member contains the MOC name.";
+		}
+
+		leaf "mimName" {
+			type string;
+			mandatory true;
+			description
+			"This struct member contains the name of the Management Information Model(MIM) that contains the MOC.";
+		}
+
+	}
+
+	grouping "EventFilter" {
+		description "Struct used to specify the event filter criteria.";
+		leaf "filterName" {
+			type string;
+			mandatory true;
+			description "Filter name.
+This member contains the name of the referenced EventFilterType MO instance, found in key attribute eventTypeFilterId.";
+		}
+
+		leaf "filterValue" {
+			type string;
+			mandatory true;
+			description "Filter value.";
+		}
+
+	}
+
+	grouping "StreamingCapabilities" {
+		description "Streaming capabilities.";
+		leaf "streamCapabilitiesId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf-list "supportedCompressionTypes" {
+			type ECIM_CommonLibrary:CompressionTypes;
+			config true;
+			max-elements 2;
+			description "Supported stream compression type or types.
+
+If this attribute is not present, the compression of event data streams is not supported..";
+		}
+
+	}
+
+	grouping "FilePullCapabilities" {
+		description "Event capabilities specific to file pull.";
+		leaf "filePullCapabilitiesId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf-list "supportedReportingPeriods" {
+			type ECIM_PMEventM:TimePeriod;
+			config true;
+			min-elements 1;
+			description "Specifies the list of reporting periods supported by the ME.
+";
+		}
+
+		leaf "outputDirectory" {
+			type string;
+			mandatory true;
+			config true;
+			description "Specifies the absolute file path to the Managed Element file system.
+Event files are fetched form this location.";
+		}
+
+		leaf "alignedReportingPeriod" {
+			type boolean;
+			mandatory true;
+			config true;
+			description
+			"The managed element will align its reporting periods to the hour if set to true.";
+		}
+
+		leaf-list "supportedCompressionTypes" {
+			type ECIM_CommonLibrary:CompressionTypes;
+			config true;
+			max-elements 2;
+			description "Supported file compression type or types.
+
+If this attribute is not present, compression of event data files is not supported.";
+		}
+
+		leaf "finalROP" {
+			type boolean;
+			mandatory true;
+			config true;
+			description "Indicates if an event file for the last ROP is expected.
+When an event job is stopped, this attribute specifies whether a result file for the last ROP is expected (true), or not expected (false).";
+		}
+
+	}
+
+	grouping "EventCapabilities" {
+		description "Event capabilities.";
+		leaf "eventCapabilitiesId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "maxNoOfJobs" {
+			type uint16;
+			config true;
+			description "This attribute defines the total maximum number of Event Jobs supported by the application.
+
+";
+		}
+
+	}
+
+	grouping "EventFilterType" {
+		description "Describes the available Event Filter Type definitions.";
+		leaf "eventFilterTypeId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "description" {
+			type string;
+			mandatory true;
+			config true;
+			description "Event Filter Type description.";
+		}
+
+		leaf "filterMethod" {
+			type ECIM_PMEventM:FilterMethod;
+			mandatory true;
+			config true;
+			description "Method of filter classification.";
+		}
+
+		leaf "valueSpec" {
+			type string;
+			mandatory true;
+			config true;
+			description "Specifies the possible values.";
+		}
+
+		leaf "defaultValue" {
+			type string;
+			mandatory true;
+			config true;
+			description "Defined format of filter type value.";
+		}
+
+	}
+
+	grouping "EventProducer" {
+		description "Event Producer.
+Allows for multiple types of Event Producer within an Application describing distinct Event functions and capabilities.
+
+";
+		leaf "eventProducerId" {
+			type ECIM_PMEventM:DerivedString;
+			mandatory true;
+			description "Holds the name used when identifying the MO.
+This is non-empty sequence of characters matching the regexp [a-zA-Z0-9-]+
+";
+			ericsson:restricted;
+		}
+
+		leaf "eventProducerName" {
+			type ECIM_PMEventM:DerivedStringName;
+			config true;
+			description "The name of the Event Producer.
+This will be human readable and will have value regexp [a-zA-Z0-9-_  ]+";
+		}
+
+	}
+
+}

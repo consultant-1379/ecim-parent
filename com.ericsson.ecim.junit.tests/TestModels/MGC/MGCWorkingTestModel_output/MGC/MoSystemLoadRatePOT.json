@@ -1,0 +1,90 @@
+{
+		"name" : "MoSystemLoadRate" ,
+		"ss7" : "false" ,
+		"visible" : "true" ,
+		"desc" : "\nThe CPU load and memory usage setting for the services provided by MGC.\n    " ,
+		"filename" : "MoSystemLoadRatePOT.json" ,
+		"max_entries" : "1" ,
+		"modid" : "0" ,
+		"attrs" : {
+				"systemLoadRateId" : {
+						"name" : "systemLoadRateId" ,
+						"keytype" : "ECIM_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "The MoClass key of the systemLoadRate" ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "false"
+				} ,
+				"loadService" : {
+						"name" : "loadService" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nSpecifies the service for which the system load limits are configured.\n      " ,
+						"types" : "enumSequence {IN6!<unnamed>}" ,
+						"default" : "" ,
+						"category" : "categoryZ" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"loadCpuLoad" : {
+						"name" : "loadCpuLoad" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe system CPU load usage. \nWhen the CPU load is greater than the defined value, which implies the high system load, the service can be impacted.\nThe unit is percentage.\n      " ,
+						"types" : "derived1_100" ,
+						"default" : "80" ,
+						"category" : "categoryX" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"loadFreeMem" : {
+						"name" : "loadFreeMem" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe system free memory. \nWhen the free memory is less than the defined value, which implies the high system load, the service can be impacted.\nThe unit is percentage.\n      " ,
+						"types" : "derived1_100" ,
+						"default" : "20" ,
+						"category" : "categoryY" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				}
+		} ,
+		"actions" : {
+		} ,
+		"codecs" : {
+		} ,
+		"brs" : {
+		} ,
+		"enums" : {
+				"enumSequence {IN6!<unnamed>}" : {
+						"name" : "enumSequence {IN6!<unnamed>}" ,
+						"attrs" : {
+								"eloadNetTrace" : {
+										"default" : "1" ,
+										"name" : "eloadNetTrace"
+								}
+						}
+				}
+		} ,
+		"deriveds" : {
+				"derived1_100" : {
+						"name" : "derived1_100" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "1..100" ,
+						"pattern" : ""
+				}
+		}
+}

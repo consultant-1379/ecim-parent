@@ -1,0 +1,181 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-mar-17 13:38:04 using 
+    * com.ericsson.ecim.yang.m2m 2.10.0.qualifier
+*/
+module JavaCaf {
+	namespace "urn:com:ericsson:ecim:JavaCaf";
+	prefix JavaCaf;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import ComTop {
+		prefix ComTop;
+	}
+
+	organization "Ericsson";
+	description "The JavaCaf MOM";
+
+	revision "2014-03-17" {
+		ericsson:revision "1";
+		ericsson:release 1;
+		ericsson:version 2;
+	}
+
+	augment "/ComTop:ManagedElement" {
+		list JavaCaf {
+			key javaCafId;
+			max-elements 1;
+			uses "JavaCaf:JavaCaf";
+			list JavaCafApp {
+				key javaCafAppId;
+				uses "JavaCaf:JavaCafApp";
+			}
+
+			list JavaCafInstSpecAppMngmt {
+				key javaCafInstSpecAppMngmtId;
+				max-elements 1;
+				uses "JavaCaf:JavaCafInstSpecAppMngmt";
+			}
+
+			list JavaCafDist {
+				key javaCafDistId;
+				max-elements 1;
+				uses "JavaCaf:JavaCafDist";
+			}
+
+		}
+
+	}
+
+	grouping JavaCaf {
+		description
+		"The JavaCaf MO represents the root node for the Java CAF configuration.";
+		leaf javaCafId {
+			type string;
+			mandatory true;
+			description "This attribute defines the identity of the JavaCaf instance.";
+			ericsson:restricted;
+		}
+
+		leaf userLabel {
+			type string;
+			description
+			"This attribute defines a user label, which is free to use for any purpose.";
+		}
+
+		leaf mimName {
+			type string;
+			description "This attribute defines the name of the Java CAF model.";
+		}
+
+		leaf mimVersion {
+			type string;
+			description "This attributes defines the version of the Java CAF model.";
+		}
+
+		leaf mimRelease {
+			type string;
+			description "This attributes defines the version of the Java CAF model";
+		}
+
+	}
+
+	grouping JavaCafInstSpecAppMngmt {
+		description
+		"This JavacafInstSpecAppmngmt MO is used to enable, or disable, the Instance Specific Application Management (ISAM). When\r\nenabled, this feature allows for testing of altered attribute values on a single node before setting them globally in the\r\ncluster. If no instance of this of this class is present in the model, ISAM will be DISABLED.\r\nEnsure that the instruction are read and understood, before using ISAM.\r\nWhen ISAM is enabled, create a local test object by inserting a LocalTest:INSTANCENAME:OBJECTNAME in the original DN.\r\nIf the test of the new value(s) was successful, delete the local test object and set the new values on the original object, in one operation.\r\nIf the test was unsuccessful, delete the local test object without setting the new values on the original object.\r\n\r\nNote!\r\n- Never turn this feature on or off while local test objects are present in the MOM.\r\n- Never create a local test object without a corresponding global object already present in the MOM\r\n- Never delete a global object while a local test object is still present in the model\r\n\r\nAn example scenario:\r\n1. An object, ConfigClass=a,App=X,Me=1, is present in the MOM. It holds the attributes timeout and sleep. The attribute timeout is set to 4000 and the attribute sleep is set to 100.\r\n2. The operator needs change to a new timeout value, but it is considered too risky to set it directly on the whole cluster.\r\n3. The operator chooses the instance named AppServer2 as a test server.\r\n4. The operator creates a local test object, ConfigClass=LocalTest:AppServer2:a,App=X,Me=1 with the attribute timeout set to 1000. The operator does not set the attribute sleep in the local test object.\r\n5. The application running on AppServer2 notices that the attribute timeout of object ConfigClass=a,App=X,Me=1 is changed to 1000. Applications on other server instances are unaffected.\r\n6. The operator considers that the new value of the attribute timeout works better, and that the test is successful.\r\n7. The operator changes the attribute timeout to 1000 on ConfigClass=a,App=X,Me=1 and removes the local test object in ONE SINGLE OPERATION.\r\n8. The new value is now set globally.";
+		leaf javaCafInstSpecAppMngmtId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the JavaCafInstSpecAppMngmt instance.";
+			ericsson:restricted;
+		}
+
+		leaf enabled {
+			type boolean;
+			description
+			"This attribute turns the ISAM on (true) or off (false). The default is set to false. ";
+		}
+
+	}
+
+	grouping JavaCafDist {
+		description
+		"The JavaCafDist MO contains the setup of network properties, needed for the distribution service. The distribution service\r\nregards all instances of JavaCaf, in a cluster, as members of the service and provides multicast based communication\r\nprotocol between them. The distribution service is used to distribute changes in all MOs instantiated from the MO classes\r\nlisted in JavaCafApp to MBeans. If this class is not instantiated at system startup, Java CAF will use preset values. The\r\npreset values are the same as the default values.";
+		leaf javaCafDistId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the JavaCafDist instance.";
+			ericsson:restricted;
+		}
+
+		leaf userLabel {
+			type string;
+			description
+			"This attribute defines a user label, which is free to use for any purpose.";
+		}
+
+		leaf bindInterface {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the bind interface for incoming group communication. The default is set to NULL.";
+		}
+
+		leaf multicastPort {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the multicast port for member discovery communication. The default is set to NULL.";
+		}
+
+		leaf multicastAddress {
+			type string;
+			description
+			"This attribute defines the multicast address for member discovery communication.";
+		}
+
+		leaf failureDetectionTimeout {
+			type int32;
+			description
+			"This attribute defines the time in milliseconds for discovering service failures. The value must be a positive integer and\r\nnot lower than the default value.";
+		}
+
+		leaf globalTimeout {
+			type int32;
+			description
+			"This attribute defines the identity of the JavaCafDist instance.";
+		}
+
+	}
+
+	grouping JavaCafApp {
+		description
+		"The JavaCafApp MO points to all classes under the control of Java CAF. Each instance of this class corresponds to a model,\r\ndesigned for an application using the Java CAF runtime support.";
+		leaf javaCafAppId {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the JavaCafApp instance. ";
+			ericsson:restricted;
+		}
+
+		leaf userLabel {
+			type string;
+			description
+			"This attribute defines an user label, which is free to use for any purpose.";
+		}
+
+		leaf-list classNames {
+			type string;
+			description
+			"This attribute contains all MO class names of an application model whose implementation uses the Java CAF runtime support. The application model may be located under any mount point in the MOM, that is, there are no restrictions on where to put the MO instances referred to by this attribute. ";
+		}
+
+	}
+
+}

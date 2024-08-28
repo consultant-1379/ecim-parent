@@ -1,0 +1,325 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 14, 2015 3:52:13 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RtnSctp" {
+	namespace "urn:com:ericsson:ecim:RtnSctp";
+	prefix "RtnSctp";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RtnFilterTypes {
+		prefix "RtnFilterTypes";
+	}
+
+	description "ECIM Transport SCTP MOM. ";
+
+	revision "2015-10-14" {
+		ericsson:version "2";
+		ericsson:release "7";
+		ericsson:correction "0";
+		ericsson:contact "EAB/FJP/TA UABERPE";
+		ericsson:author "EAB/FJP/TA UABERPE";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport" {
+		list "SctpEndpoint" {
+			key "sctpEndpointId";
+			list "SctpAssociation" {
+				key "sctpAssociationId";
+				uses RtnSctp:SctpAssociation;
+			}
+
+			uses RtnSctp:SctpEndpoint;
+		}
+
+	}
+
+	typedef "AssociationState" {
+		type enumeration {
+			enum "CLOSED" {
+				value 0;
+				description "SCTP association is closed.";
+			}
+
+			enum "COOKIE_WAIT" {
+				value 1;
+				description "SCTP association is in COOKIE_WAIT state.";
+			}
+
+			enum "COOKIE_ECHOED" {
+				value 2;
+				description "SCTP association is in COOKIE_ECHOED state.";
+			}
+
+			enum "ESTABLISHED" {
+				value 3;
+				description "SCTP association is established.";
+			}
+
+			enum "SHUTDOWN_PENDING" {
+				value 4;
+				description "SCTP association is in SHUTDOWN_PENDING state.";
+			}
+
+			enum "SHUTDOWN_SENT" {
+				value 5;
+				description "SCTP association is in SHUTDOWN_SENT state.";
+			}
+
+			enum "SHUTDOWN_ACK_SENT" {
+				value 7;
+				description "SCTP association is in SHUTDOWN_ACK_SENT state.";
+			}
+
+			enum "SHUTDOWN_RECEIVED" {
+				value 6;
+				description "SCTP association is in SHUTDOWN_RECEIVED state.";
+			}
+
+		}
+
+		description "The SCTP association state.";
+	}
+
+	typedef "AlphaIndex" {
+		type enumeration {
+			enum "ALPHA_1_2ND" {
+				value 1;
+				description "ALPHA_1_2ND -> RTO.Alpha=1/2.
+";
+			}
+
+			enum "ALPHA_1_4TH" {
+				value 2;
+				description "ALPHA_1_4TH -> RTO.Alpha=1/4.";
+			}
+
+			enum "ALPHA_1_8TH" {
+				value 3;
+				description "ALPHA_1_8TH -> RTO.Alpha=1/8.";
+			}
+
+			enum "ALPHA_1_16TH" {
+				value 4;
+				description "ALPHA_1_16TH -> RTO.Alpha=1/16.";
+			}
+
+		}
+
+		description "RTO alpha index.";
+	}
+
+	typedef "BetaIndex" {
+		type enumeration {
+			enum "BETA_1_2ND" {
+				value 1;
+				description "BETA_1_2ND -> RTO.Beta = 1/2.";
+			}
+
+			enum "BETA_1_4TH" {
+				value 2;
+				description "BETA_1_4TH -> RTO.Beta = 1/4.";
+			}
+
+			enum "BEAT_1_8TH" {
+				value 3;
+				description "BEAT_1_8TH -> RTO.Beta = 1/8.";
+			}
+
+			enum "BETA_1_16TH" {
+				value 4;
+				description "BETA_1_16TH -> RTO.Beta = 1/16.";
+			}
+
+		}
+
+		description "RTO beta index. ";
+	}
+
+	typedef "RedundancyStatus" {
+		type enumeration {
+			enum "UNDEFINED" {
+				value 0;
+				description
+				"The SCTP redundancy undefined status. SCTP association is closed.";
+			}
+
+			enum "DORMANT" {
+				value 1;
+				description "All remote IP addresses are inactive. ";
+			}
+
+			enum "NOT_REDUNDANT" {
+				value 2;
+				description
+				"Redundancy addresses are unreachable. All remote IP addresses except primary are inactive.";
+			}
+
+			enum "REDUNDANT" {
+				value 3;
+				description "At least one remote IP address except primary is active.";
+			}
+
+			enum "REDUNDANCY_NOT_POSSIBLE" {
+				value 4;
+				description "SCTP association has only one remote IP address.";
+			}
+
+		}
+
+		description "The SCTP redundancy status";
+	}
+
+	grouping "SctpAssociation" {
+		description "The SctpAssociation is a representation of the protocol relationship between two SCTP Endpoints. 
+
+It is composed of the two SCTP Endpoints and protocol state information. ";
+		leaf "localPortNumber" {
+			type uint16 {
+				range "1..65535";
+			}
+
+			mandatory true;
+			config true;
+			description "Local port number of the association.";
+		}
+
+		leaf "localPrimaryAddress" {
+			type RtnFilterTypes:IpAddress;
+			mandatory true;
+			config true;
+			description "Local IP address normally used for outgoing traffic.";
+		}
+
+		leaf "remotePortNumber" {
+			type uint16 {
+				range "1..65535";
+			}
+
+			mandatory true;
+			config true;
+			description "Remote port number of the association.";
+		}
+
+		leaf "remotePrimaryAddress" {
+			type RtnFilterTypes:IpAddress;
+			mandatory true;
+			config true;
+			description "Remote IP address normally used for outgoing traffic.";
+		}
+
+		leaf "associationState" {
+			type RtnSctp:AssociationState;
+			mandatory true;
+			config true;
+			description "The SCTP association state.";
+		}
+
+		leaf-list "localIpAddress" {
+			type RtnFilterTypes:IpAddress;
+			config true;
+			description "One or several local IP addresses used by the association.";
+		}
+
+		leaf-list "remoteIpAddress" {
+			type RtnFilterTypes:IpAddress;
+			config true;
+			description "One or several remote IP addresses used by the association.";
+		}
+
+		leaf "sctpAssociationId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "redundancyStatus" {
+			type RtnSctp:RedundancyStatus;
+			mandatory true;
+			config true;
+			description
+			"SCTP redundancy status indicates if there are redundant remote IP addresses available for SCTP traffic. ";
+		}
+
+	}
+
+	grouping "SctpEndpoint" {
+		description
+		"An SCTP Endpoint is the logical sender and receiver of SCTP packets.
+Dependencies: All AddressIPv4 MOs configured in SctpEndpoint MOs must refer to IP interfaces belonging to a single Router instance.";
+		leaf "portNumber" {
+			type uint16 {
+				range "1..65535";
+			}
+
+			mandatory true;
+			description "Local port number for the SCTP endpoint. ";
+			ericsson:restricted;
+		}
+
+		leaf "sctpProfile" {
+			type string {
+				pattern "(.*=.*,)*SctpProfile=.*";
+			}
+
+			mandatory true;
+			description "Reference to a SctpProfile.";
+		}
+
+		leaf "sctpEndpointId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN. ";
+			ericsson:restricted;
+		}
+
+		leaf-list "localIpAddress" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			min-elements 1;
+			description
+			"List of references to an AddressIPv4 MO or AddressIPv6 MO serving as local addresses for the endpoint.
+Only 1 address is supported in this release.";
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use.";
+		}
+
+		leaf-list "localAddressStr" {
+			type string;
+			description "List of local addresses used for the SCTP endpoint.
+
+List of IP Addresses (IPv4 or IPv6) and/or local host names serving as local addresses used for the SCTP endpoint. 
+
+Optional to support - Flag: if-feature NOT LocalIpAddressRef";
+		}
+
+		leaf-list "reservedBy" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description
+			"Contains a list of MO instances that reserve this MO instance.";
+		}
+
+	}
+
+}

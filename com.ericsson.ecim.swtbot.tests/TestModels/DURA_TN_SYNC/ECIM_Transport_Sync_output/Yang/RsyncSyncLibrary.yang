@@ -1,0 +1,1206 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:23:42 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RsyncSyncLibrary" {
+	namespace "urn:com:ericsson:ecim:RsyncSyncLibrary";
+	prefix "RsyncSyncLibrary";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	description
+	"ECIM Transport Sync Library for common data types within Sync fragment.";
+
+	revision "2015-10-13" {
+		ericsson:version "1";
+		ericsson:correction "0";
+		ericsson:author "EAB/FJP/TA UABJOCL";
+		ericsson:contact "EAB/FJP/TA UABJOCL";
+		ericsson:release "5";
+	}
+
+	typedef "PortDirection" {
+		type enumeration {
+			enum "BIDIRECTION" {
+				value 3;
+				description "The port can input and output signal.";
+			}
+
+			enum "INPUT_ONLY" {
+				value 1;
+				description
+				"The port can only input signals.
+
+It cannot output any signals. ";
+			}
+
+			enum "OUTPUT_ONLY" {
+				value 2;
+				description
+				"The port can only output signals.
+
+It cannot input any signals. 
+";
+			}
+
+		}
+
+		description "The direction of the synchronization interface.";
+	}
+
+	typedef "TelecomStandard" {
+		type enumeration {
+			enum "OPTION_I" {
+				value 1;
+				description
+				"Option I synchronization networks for ETSI (European standard).";
+			}
+
+			enum "OPTION_II" {
+				value 2;
+				description "Option II synchronization networks for ANSI (US standard).";
+			}
+
+			enum "OPTION_III" {
+				value 3;
+				description
+				"Option III synchronization networks for TTC (Japanese standard).";
+			}
+
+		}
+
+		description "Telecom standard of the synchronization networks.";
+	}
+
+	typedef "LinkStatus" {
+		type enumeration {
+			enum "LINK_UNKONWN" {
+				value 0;
+				description "Indicates that can't get the status.";
+			}
+
+			enum "LINK_UP" {
+				value 1;
+				description "Indicates that link is up.";
+			}
+
+			enum "LINK_DOWN" {
+				value 2;
+				description "Indicates that link is down.";
+			}
+
+		}
+
+		description "Link status.
+
+It is deceided by the physical status of underlying implementation.";
+	}
+
+	typedef "EnableStatus" {
+		type enumeration {
+			enum "ENABLED" {
+				value 1;
+				description "Function is enabled.";
+			}
+
+			enum "DISABLED" {
+				value 2;
+				description "Function is disabled.";
+			}
+
+		}
+
+		description "Enable Status.";
+	}
+
+	typedef "SwitchCommand" {
+		type enumeration {
+			enum "CLEAR" {
+				value 1;
+				description "CLEAR command.
+
+A clear (CLR) command clears the forced switch and manual switch commands.";
+			}
+
+			enum "FORCED" {
+				value 2;
+				description "FORCED command.
+
+The forced command overrides manual switch, and a subsequent forced switch. It can be cleared by the CLEAR command.";
+			}
+
+			enum "MANUAL" {
+				value 3;
+				description "MANUAL command.
+
+A manual switch request overrides a previous manual switch request.";
+			}
+
+		}
+
+		description "External commands per selection process.
+
+CLEAR	- A clear (CLR) command clears the forced switch and manual switch commands.
+FORCED	- The forced command overrides manual switch, and a subsequent forced switch. It can be cleared by the CLEAR command.
+MANUAL 	- A manual switch request overrides a previous manual switch request.";
+	}
+
+	typedef "ReferenceStatusOld" {
+		type enumeration {
+			enum "FAILED" {
+				value 1;
+				description "FAILED means this reference is not available.";
+			}
+
+			enum "BIDIRECTION" {
+				value 2;
+				description
+				"BIDIRECTION means this reference can receive and send sync signal.";
+			}
+
+			enum "MASTER" {
+				value 3;
+				description
+				"MASTER means this reference can only send sync signal, can't receive.";
+			}
+
+			enum "SLAVE" {
+				value 4;
+				description
+				"SLAVE means this reference can only receive sync signal, can't send.";
+			}
+
+		}
+
+		status obsolete;
+		description "Status of sync reference.
+
+The value is deceided by the current capability of underlying sync port.";
+	}
+
+	typedef "QualityLevelValueOptionIOld" {
+		type enumeration {
+			enum "QL_PRC" {
+				value 9;
+				description "QL_PRC in Option I.";
+			}
+
+			enum "QL_SSU_A" {
+				value 8;
+				description "QL_SSU_A in Option I.";
+			}
+
+			enum "QL_SSU_B" {
+				value 7;
+				description "QL_SSU_B in Option I.";
+			}
+
+			enum "QL_SEC" {
+				value 6;
+				description "QL_SEC in Option I.";
+			}
+
+			enum "QL_DNU" {
+				value 5;
+				description "QL_DNU in OptionI.
+
+Do not use.";
+			}
+
+			enum "QL_FAILED" {
+				value 1;
+				description "QL_FAILED in OptionI.
+
+Signal in Fail state.";
+			}
+
+			enum "QL_NSUPP" {
+				value 3;
+				description "QL_NSUPP in OptionI.
+
+Not support the SSM processing.";
+			}
+
+			enum "QL_UNC" {
+				value 2;
+				description "QL_UNC in OptionI.
+
+The output signal is not connected to an input, but instead to the internal unconnected signal generator.";
+			}
+
+			enum "TCU_DETECTED" {
+				value 20;
+			}
+
+		}
+
+		description
+		"Hierarchy of quality levels in Option I synchronization networks.";
+	}
+
+	typedef "QualityLevelValueOptionIIOld" {
+		type enumeration {
+			enum "QL_PRS" {
+				value 14;
+				description "QL_PRS in Option II.";
+			}
+
+			enum "QL_ST2" {
+				value 12;
+				description "QL_ST2 in Option II.";
+			}
+
+			enum "QL_TNC" {
+				value 11;
+				description "QL_TNC in Option II.";
+			}
+
+			enum "QL_STU" {
+				value 13;
+				description "QL_STU in Option II.";
+			}
+
+			enum "QL_DUS" {
+				value 5;
+				description "QL_DUS in Option II.";
+			}
+
+			enum "QL_ST3E" {
+				value 10;
+				description "QL_ST3E in Option II.";
+			}
+
+			enum "QL_ST3" {
+				value 9;
+				description "QL_ST3 in Option II.";
+			}
+
+			enum "QL_SMC" {
+				value 8;
+				description "QL_SMC in Option II.";
+			}
+
+			enum "QL_ST4" {
+				value 7;
+				description "QL_ST4 in Option II.";
+			}
+
+			enum "QL_PROV" {
+				value 6;
+				description "QL_PROV in Option II.";
+			}
+
+			enum "QL_FAILED" {
+				value 1;
+				description "QL_FAILED in OptionII.
+
+Signal in Fail state.";
+			}
+
+			enum "QL_NSUPP" {
+				value 3;
+				description "QL_NSUPP in OptionII.
+
+Not support the SSM processing.";
+			}
+
+			enum "QL_UNC" {
+				value 2;
+				description "QL_UNC in OptionII.
+
+The output signal is not connected to an input, but instead to the internal unconnected signal generator.";
+			}
+
+			enum "TCU_DETECTED" {
+				value 20;
+			}
+
+		}
+
+		description
+		"Hierarchy of quality levels in Option II synchronization networks.";
+	}
+
+	typedef "QualityLevelValueOptionIIIOld" {
+		type enumeration {
+			enum "QL_UNK" {
+				value 5;
+				description "QL_UNK in Option III.";
+			}
+
+			enum "QL_SEC" {
+				value 6;
+				description "QL_SEC in Option III.";
+			}
+
+			enum "QL_FAILED" {
+				value 1;
+				description "QL_FAILED in OptionIII.
+
+Signal in Fail state.";
+			}
+
+			enum "QL_NSUPP" {
+				value 3;
+				description "QL_NSUPP in OptionIII.
+
+Not support the SSM processing.";
+			}
+
+			enum "QL_UNC" {
+				value 2;
+				description "QL_UNC in OptionIII.
+
+The output signal is not connected to an input, but instead to the internal unconnected signal generator.";
+			}
+
+			enum "TCU_DETECTED" {
+				value 20;
+			}
+
+		}
+
+		description
+		"Hierarchy of quality levels in Option III synchronization networks.";
+	}
+
+	typedef "SelectionProcessMode" {
+		type enumeration {
+			enum "QL_ENABLED" {
+				value 1;
+				description "Quality processing is enabled for input and output.";
+			}
+
+			enum "QL_DISABLED" {
+				value 2;
+				description "Quality processing is disabled for input and output.";
+			}
+
+		}
+
+		description
+		"Specifies if the quality processing is enabled for input and output.";
+	}
+
+	typedef "FrequencyNtpOperMode" {
+		type enumeration {
+			enum "CLIENT" {
+				value 0;
+			}
+
+			enum "SERVER" {
+				value 1;
+			}
+
+		}
+
+		description "Frequency NTP Operational Mode";
+	}
+
+	typedef "QualityLevelOld" {
+		type enumeration {
+			enum "QL_PRC" {
+				value 0;
+			}
+
+			enum "QL_SSU_A" {
+				value 1;
+			}
+
+			enum "QL_SSU_B" {
+				value 2;
+			}
+
+			enum "QL_SEC_QL_EEC" {
+				value 3;
+			}
+
+			enum "QL_DNU" {
+				value 4;
+			}
+
+			enum "QL_PRS" {
+				value 5;
+			}
+
+			enum "QL_STU" {
+				value 6;
+			}
+
+			enum "QL_ST2" {
+				value 7;
+			}
+
+			enum "QL_TNC" {
+				value 8;
+			}
+
+			enum "QL_ST3E" {
+				value 9;
+			}
+
+			enum "QL_ST3_QL_EEC" {
+				value 10;
+			}
+
+			enum "QL_SMC" {
+				value 11;
+			}
+
+			enum "QL_ST4" {
+				value 12;
+			}
+
+			enum "QL_DUS" {
+				value 13;
+			}
+
+			enum "QL_UNK" {
+				value 14;
+			}
+
+			enum "QL_SEC" {
+				value 15;
+			}
+
+			enum "NOT_DEFINED" {
+				value 16;
+			}
+
+		}
+
+		description
+		"The synchronization quality levels.
+
+Dependency to the attribute telecomStandard:
+OPTION_I: restricts the enum range to 0-4.
+OPTION_II: restricts the enum range to 5-13.
+OPTION_III: restricts the enum range to 14-15.";
+	}
+
+	typedef "ReferenceStatus" {
+		type enumeration {
+			enum "NO_FAULT" {
+				value 1;
+			}
+
+			enum "QL_TOO_LOW" {
+				value 2;
+			}
+
+			enum "LOSS_OF_SIGNAL" {
+				value 3;
+			}
+
+			enum "LOSS_OF_ESMC" {
+				value 4;
+			}
+
+			enum "THOUSAND_BASE_T_NOT_SLAVE" {
+				value 5;
+			}
+
+			enum "NTP_FAULT" {
+				value 6;
+			}
+
+			enum "PTP_FAULT" {
+				value 7;
+				description
+				"The corresponding BoundaryOrdinaryClock and or PtpBcOcPort is faulty, check the status attribute on these MOs to identify the specific fault.";
+			}
+
+			enum "GNSS_FAULT" {
+				value 8;
+				description
+				"Detailed fault information is found in attribute timeSyncIOStatus in TimeSyncIO MO.";
+			}
+
+		}
+
+		description "The status of a synchronization reference.";
+	}
+
+	typedef "QLFrom" {
+		type enumeration {
+			enum "RECEIVED_QL" {
+				value 1;
+			}
+
+			enum "ADMIN_QL" {
+				value 2;
+			}
+
+		}
+
+		description
+		"Specifies whether the quality level received on the ethernet interface or from the attribute adminQuality is used.";
+	}
+
+	typedef "SyncRefType" {
+		type enumeration {
+			enum "SYNC_E" {
+				value 1;
+				description "Synchronous ethernet.";
+			}
+
+			enum "FREQUENCY_PORT" {
+				value 2;
+				description
+				"Frequency synchronization via physical synchronization port.";
+			}
+
+			enum "TIME_PORT" {
+				value 3;
+				description "TIme synchronization via physical synchronization port.";
+			}
+
+			enum "PTP_TIME" {
+				value 4;
+				description "TIme synchronization via PTP port.";
+			}
+
+			enum "PTP_FREQUENCY" {
+				value 5;
+				description "Frequency synchronization via PTP port.";
+			}
+
+			enum "NTP_FREQUENCY" {
+				value 6;
+				description "Frequency synchronization via NTP port.";
+			}
+
+			enum "GNSS_RECEIVER" {
+				value 7;
+				description "Time synchronization via GNSS receiver.";
+			}
+
+		}
+
+		description "The type of a synchronization reference.";
+	}
+
+	typedef "QualityLevel" {
+		type enumeration {
+			enum "PRC" {
+				value 1;
+				description "Operational quality is PRC in option I.
+";
+			}
+
+			enum "PRS" {
+				value 2;
+				description "Operational quality is PRS in option II.
+";
+			}
+
+			enum "STU_OR_UNK" {
+				value 3;
+				description
+				"Operational quality is STU in option II or UNK in option III.
+";
+			}
+
+			enum "SSU_A_OR_TNC" {
+				value 4;
+				description
+				"Operational quality is SSU-A in option I or TNC in option II.
+";
+			}
+
+			enum "SSU_B" {
+				value 5;
+				description "Operational quality is SSU-B in option I.
+";
+			}
+
+			enum "ST2" {
+				value 6;
+				description "Operational quality is ST2 in option II.";
+			}
+
+			enum "ST3E" {
+				value 7;
+				description "Operational quality is ST3E in option II.
+";
+			}
+
+			enum "ST3_OR_EEC2" {
+				value 8;
+				description "Operational quality is ST3/EEC2 in option II.
+";
+			}
+
+			enum "SEC_OR_EEC" {
+				value 9;
+				description "Operational quality is SEC/EEC in options I or III.
+";
+			}
+
+			enum "SMC_OR_EEC1" {
+				value 10;
+				description "Operational quality is SMC/EEC1 in option II.
+";
+			}
+
+			enum "PROV" {
+				value 11;
+				description
+				"Operational quality is PROV in Option II. QL PROV is not supported. It is interpreted as invalid.
+";
+			}
+
+			enum "DNU_OR_DUS" {
+				value 12;
+				description
+				"Operational quality is DNU/DUS (Do Not Use for Sync) in all options.
+";
+			}
+
+			enum "INV" {
+				value 13;
+				description "Operational quality is INV (Invalid) in all options.
+";
+			}
+
+			enum "TCU_02" {
+				value 14;
+				description "An Ericsson TCU02 or SIU is detected upstream.
+";
+			}
+
+			enum "QL_UNKNOWN" {
+				value 15;
+				description "Quality level cannot be retrieved or is undefined.
+";
+			}
+
+			enum "TNC" {
+				value 16;
+				description "Operational quality is TNC in option II.
+";
+			}
+
+			enum "SMC" {
+				value 17;
+				description "Operational quality is SMC in option II.";
+			}
+
+		}
+
+		description "The operational quality. ";
+	}
+
+	typedef "QualityLevelValueOptionI" {
+		type enumeration {
+			enum "PRC" {
+				value 1;
+				description "Primary Reference Clock. Highest quality level";
+			}
+
+			enum "SSU_A" {
+				value 2;
+				description "Synchronization Supply Unit class A. Second quality level";
+			}
+
+			enum "SSU_B" {
+				value 3;
+				description "Synchronization Supply Unit class B. Third quality level";
+			}
+
+			enum "SEC_EEC" {
+				value 4;
+				description
+				"Synchronous Equipment Clock/ Ethernet Equipment Clock. Fourth quality level";
+			}
+
+		}
+
+		description "Telecom option for European standard.";
+	}
+
+	typedef "QualityLevelValueOptionII" {
+		type enumeration {
+			enum "PRS" {
+				value 1;
+				description "Primary Reference Source. Highest quality level";
+			}
+
+			enum "STU" {
+				value 2;
+				description "Synchronization Traceability Unknown. Second quality level";
+			}
+
+			enum "ST2" {
+				value 3;
+				description "STratum 2 clock. Third quality level";
+			}
+
+			enum "TNC" {
+				value 4;
+				description "Transit Node Clock. Fourth quality level";
+			}
+
+			enum "ST3E" {
+				value 5;
+				description "STratum 3 Enhanced clock. Fifth quality level";
+			}
+
+			enum "ST3_EEC2" {
+				value 6;
+				description
+				"STratum 3 clock./  Ethernet Equipment Clock. Sixth quality level";
+			}
+
+			enum "SMC_EEC1" {
+				value 7;
+				description
+				"SONET Minimum Clock/ Ethernet Equipment Clock. Seventh quality level";
+			}
+
+		}
+
+		description "Telecom option for United States standard.";
+	}
+
+	typedef "QualityLevelValueOptionIII" {
+		type enumeration {
+			enum "UNK" {
+				value 1;
+				description
+				"The quality level of the synchronization source is unknown. Highest quality level";
+			}
+
+			enum "SEC_EEC" {
+				value 2;
+				description
+				"Synchronous Equipment Clock/ Ethernet Equipment Clock.  Second quality level";
+			}
+
+		}
+
+		description "Telecom option for Japanese standard.";
+	}
+
+	typedef "NodeGroupRole" {
+		type enumeration {
+			enum "NOT_ACTIVATED_AS_NODE_GROUP_MEMBER" {
+				value 0;
+				description "The node is not activated as a Node Group Member.";
+			}
+
+			enum "ROLE_NOT_DEFINED" {
+				value 1;
+				description
+				"The node is configured as a Node Group Member, and that the role is not defined.";
+			}
+
+			enum "SYNC_PROVIDER" {
+				value 2;
+				description
+				"The node has the Synchronization Provider role within the Node Group.";
+			}
+
+			enum "SYNC_RECEIVER" {
+				value 3;
+				description
+				"The node has the Synchronization Receiver role within the Node Group, and it is in contact with the Synchronization Provider in the same Node Group.";
+			}
+
+		}
+
+		description "Role of the Node Group Member.";
+	}
+
+	typedef "LocalStatus" {
+		type enumeration {
+			enum "UNKNOWN" {
+				value 0;
+				description
+				"The synchronization state of the Node Group Member is unknown.";
+			}
+
+			enum "SYNC_PROVIDER" {
+				value 1;
+				description
+				"The Node Group Member is a Synchronization Provider and is either locked to an external synchronization reference, or in holdover mode. The reference in use is indicated by currentRadioClockReference in the RadioEquipmentClock MO. The clock state is indicated by radioClockState in the RadioEquipmentClock MO.";
+			}
+
+			enum "SYNC_RECEIVER_TIME_LOCKED" {
+				value 2;
+				description
+				"The Node Group Member is a Synchronization Receiver that is radio-frame time-locked to another Node Group Member.";
+			}
+
+			enum "SYNC_RECEIVER_TIME_HOLDOVER" {
+				value 3;
+				description
+				"The Node Group Member is a Synchronization Receiver in time holdover state. Services are maintained.";
+			}
+
+			enum "ENTERING_NODE_GROUP" {
+				value 4;
+				description
+				"The Node Group Member is entering into a Node Group. The role in the Node Group is not yet defined.";
+			}
+
+		}
+
+		description "Node Group Member Local Status.";
+	}
+
+	typedef "SyncProviderState" {
+		type enumeration {
+			enum "UNKNOWN" {
+				value 0;
+				description
+				"The synchronization state of the Synchronization Provider is unknown, or no Synchronization Provider is reported within the Node Group.";
+			}
+
+			enum "TIME_MODE" {
+				value 1;
+				description
+				"The Synchronization Provider is operating in time-providing mode.";
+			}
+
+			enum "FREQUENCY_MODE" {
+				value 2;
+				description
+				"The Synchronization Provider is operating in frequency-providing mode.";
+			}
+
+			enum "FREE_RUNNING" {
+				value 3;
+				description
+				"The Synchronization Provider has lost all external references and the frequency holdover period has expired. No other node has managed to take over the role of Synchronization Provider.";
+			}
+
+		}
+
+		description "The synchronization state of the Synchronization Provider.";
+	}
+
+	typedef "RiPortStatus" {
+		type enumeration {
+			enum "UNKNOWN" {
+				value 0;
+				description
+				"The synchronization status of the Radio Interface (RI) port is unknown.";
+			}
+
+			enum "OK_ACTIVE" {
+				value 1;
+				description
+				"The Synchronization RI port is OK and is selected as active reference for the node.";
+			}
+
+			enum "OK_NOT_ACTIVE" {
+				value 2;
+				description
+				"The Synchronization RI port is OK, but is not selected as active reference for the node.";
+			}
+
+			enum "CPRI_LINK_NOT_AVAILABLE" {
+				value 3;
+				description
+				"The RI port configured as synchronization candidate is not available for synchronization.";
+			}
+
+			enum "FREQUENCY_ERROR" {
+				value 4;
+				description
+				"The node cannot frequency-synchronize to the neighbor node connected to the RI port.";
+			}
+
+			enum "PHASE_ERROR" {
+				value 5;
+				description
+				"The node cannot phase-synchronize to the neighbor node connected to the RI port.";
+			}
+
+			enum "LOSS_OF_FREQUENCY_MEASUREMENTS" {
+				value 6;
+				description
+				"No measurements of frequency difference can be retrieved from the RI port.";
+			}
+
+			enum "LOSS_OF_PHASE_MEASUREMENTS" {
+				value 7;
+				description
+				"No measurements of phase difference can be retrieved from the RI port.";
+			}
+
+			enum "FREQUENCY_LOCKING" {
+				value 8;
+				description
+				"The Node Group Member is at the intermediate stage of frequency synchronization to the neighbor node connected to this RI port. The attribute syncRiPortStatus will be either OK_ACTIVE or OK_NOT_ACTIVE when frequency synchronization is successfully completed.";
+			}
+
+		}
+
+		description "Radio Interface Port Status.";
+	}
+
+	typedef "ReferencePriority" {
+		type uint8;
+		description "Priority of sync reference.
+
+Products implement specific max priority value '*'. 
+The relation is present as: “1” > “2” >“3” > ..>“*” > disabled. 0 means the reference is disabled.";
+	}
+
+	typedef "HoldOffTime" {
+		type uint16;
+		description "Hold off time of sync reference.
+
+According to section 5.8,G.781, the value of HoldOfTime is configurable in the range of 300 to 1800 (ms).
+But some products need implement this attribute exceed the range. So there will be no constraint on it in the model, include the range and unit.";
+		reference "ITU-T 781";
+	}
+
+	typedef "WaitToRestoreTime" {
+		type int8 {
+			range "0..12";
+		}
+
+		description "wait to restore time of sync reference.
+
+According to section 5.9, G.781, the value of WTR time is configurable in the range of 0 to 12 (minute), default value is 5 minutes.";
+		reference "ITU-T G.781";
+	}
+
+	typedef "CurrentWTR" {
+		type uint16 {
+			range "0..*";
+		}
+
+		description "The current wait to restore time if the sync reference is in WTR state.
+
+The range is 0..*, unit is second. Products implements specific max value '*'.";
+		reference "G.781";
+	}
+
+	typedef "NtpDscp" {
+		type int8 {
+			range "0..63";
+		}
+
+		description "NtpDscp";
+	}
+
+	typedef "SfnEpocType" {
+		type string {
+			pattern
+			"^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})$";
+		}
+
+		description
+		"Regular expression representing time as a string with the following format: <YYYY-MM-DD>T<hh:mm:ss>";
+	}
+
+	grouping "QualityLevelValueOld" {
+		status obsolete;
+		description "The quality level in synchronization networks.
+
+QualityLevelValue is an exclusive struct, including 3 struct member stand for three hierarchies of quality levels in different synchronization networks defined in ITU-G.781. Which member is used is decided by the selected telecomStandard.
+";
+		choice "QualityLevelValueOld" {
+			leaf "qualityLevelValueOptionI" {
+				type RsyncSyncLibrary:QualityLevelValueOptionIOld;
+				description "Hierarchy of quality levels in Option I synchronization networks.
+
+Runtime to support - flag: if-configure telecomStandard of Synchronization is OPTION_I";
+			}
+
+			leaf "qualityLevelValueOptionII" {
+				type RsyncSyncLibrary:QualityLevelValueOptionIIOld;
+				description "Hierarchy of quality levels in Option II synchronization networks.
+
+Runtime to support - flag: if-configure telecomStandard of Synchronization is OPTION_II";
+			}
+
+			leaf "qualityLevelValueOptionIII" {
+				type RsyncSyncLibrary:QualityLevelValueOptionIIIOld;
+				description "Hierarchy of quality levels in Option III synchronization networks.
+
+Runtime to support - flag: if-configure telecomStandard of Synchronization is OPTION_III";
+			}
+
+		}
+
+	}
+
+	grouping "EECQualityLevelValue" {
+		description "The equipment clock quality level in synchronization networks.
+
+QualityLevelValue is an exclusive struct, including 3 struct member stand for three hierarchies of quality levels in different synchronization networks defined in ITU-G.781. Which member is used is decided by the selected telecomStandard.
+";
+		choice "EECQualityLevelValue" {
+			leaf "qualityLevelValueOptionI" {
+				type RsyncSyncLibrary:QualityLevelValueOptionIOld;
+				description "Hierarchy of quality levels in Option I synchronization networks.
+
+Runtime to support - flag: if-configure telecomStandard of Synchronization is OPTION_I";
+			}
+
+			leaf "qualityLevelValueOptionII" {
+				type RsyncSyncLibrary:QualityLevelValueOptionIIOld;
+				status obsolete;
+				description "Hierarchy of quality levels in Option II synchronization networks.
+
+Runtime to support - flag: if-configure telecomStandard of Synchronization is OPTION_II";
+			}
+
+			leaf "qualityLevelValueOptionIII" {
+				type RsyncSyncLibrary:QualityLevelValueOptionIIIOld;
+				status obsolete;
+				description "Hierarchy of quality levels in Option III synchronization networks.
+
+Runtime to support - flag: if-configure telecomStandard of Synchronization is OPTION_III";
+			}
+
+		}
+
+	}
+
+	grouping "OpQualityLevel" {
+		description "The quality level in synchronization networks.
+
+QualityLevelValue is an exclusive struct, including 3 struct member stand for three hierarchies of quality levels in different synchronization networks defined in ITU-G.781. Which member is used is decided by the selected telecomStandard.";
+		leaf "qualityLevelValueOptionI" {
+			type RsyncSyncLibrary:QualityLevelValueOptionIOld;
+			mandatory true;
+			description "Hierarchy of quality levels in Option I synchronization networks.
+
+Runtime to support - flag: if-configure telecomStandard of Synchronization is OPTION_I";
+		}
+
+	}
+
+	grouping "EECOpQualityLevel" {
+		description "The equipment clock quality level in synchronization networks.
+
+QualityLevelValue is an exclusive struct, including 3 struct member stand for three hierarchies of quality levels in different synchronization networks defined in ITU-G.781. Which member is used is decided by the selected telecomStandard.";
+		leaf "qualityLevelValueOptionI" {
+			type RsyncSyncLibrary:QualityLevelValueOptionIOld;
+			mandatory true;
+			description "Hierarchy of quality levels in Option I synchronization networks.
+
+Runtime to support - flag: if-configure telecomStandard of Synchronization is OPTION_I";
+		}
+
+	}
+
+	grouping "QualityLevelValue" {
+		description "Quality level value struct.";
+		leaf "qualityLevelValueOptionI" {
+			type RsyncSyncLibrary:QualityLevelValueOptionI;
+			mandatory true;
+			description "Specifies the Telecom option for European standard.";
+		}
+
+		leaf "qualityLevelValueOptionII" {
+			type RsyncSyncLibrary:QualityLevelValueOptionII;
+			mandatory true;
+			description "Specifies the Telecom option for United States standard.";
+		}
+
+		leaf "qualityLevelValueOptionIII" {
+			type RsyncSyncLibrary:QualityLevelValueOptionIII;
+			mandatory true;
+			description "Specifies the Telecom option for Japanese standard ";
+		}
+
+	}
+
+	grouping "SatelliteInfo" {
+		description "Indicates the information about satellites.";
+		leaf "azimuth" {
+			type uint16;
+			mandatory true;
+			description "The azimuth of the satellite. 
+";
+		}
+
+		leaf "elevation" {
+			type uint16;
+			mandatory true;
+			description "The elevation of the satellite. 
+";
+		}
+
+		leaf "satelliteIdentity" {
+			type uint16;
+			mandatory true;
+			description "Indicates the satellite id conveyed by the NMEA message.";
+		}
+
+		leaf "signalToNoiseRatio" {
+			type int16;
+			mandatory true;
+			description
+			"The signal to noise ratio (SNR) of the signal received from the satellite.";
+		}
+
+	}
+
+	grouping "LocalNodeInfo" {
+		description "Local Node Information.";
+		leaf "hopsFromSyncProvider" {
+			type uint8 {
+				range "0..7";
+			}
+
+			mandatory true;
+			description
+			"The number of hops to reach the Synchronization Provider.
+
+If the Node Group Member is a Synchronization Provider, the value is zero.";
+		}
+
+		leaf "localState" {
+			type RsyncSyncLibrary:LocalStatus;
+			mandatory true;
+			description "The role and the state of the Node Group Member.";
+		}
+
+		leaf "synchronizedTo" {
+			type uint8 {
+				range "0..15";
+			}
+
+			mandatory true;
+			description
+			"The neighbor node, to which a Synchronization Receiver is synchronized.
+
+The number is the Node Priority of the neighbor node. If the node is a Synchronization Provider, the attribute indicates the priority of this node.";
+		}
+
+	}
+
+	grouping "SyncProviderInfo" {
+		description "Synchronization Provider information.";
+		leaf "syncProviderNodePriority" {
+			type uint8;
+			mandatory true;
+			description
+			"The node priority of the Synchronization Provider as given by the attribute syncNodePriority for that node. If the node is a Synchronization Provider, the attribute indicates the priority of this node.";
+		}
+
+		leaf "syncProviderState" {
+			type RsyncSyncLibrary:SyncProviderState;
+			mandatory true;
+			description
+			"The synchronization state of the Synchronization Provider.
+
+This information applies to a Synchronization Receiver. If the node has the role of Synchronization Provider, the detailed information on the state is in the RadioEquipmentClock MO.
+
+The synchronization state of the Synchronization Provider determines which services can be enabled on the node: Time-dependent services, Frequency-dependent services, or no services.";
+		}
+
+	}
+
+}

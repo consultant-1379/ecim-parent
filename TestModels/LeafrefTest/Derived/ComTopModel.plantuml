@@ -1,0 +1,121 @@
+'Download plantuml from http://plantuml.sourceforge.net/ 
+'Generate png with java -jar plantuml.jar <file> 
+'Output in img/<module>.png 
+'If Java spits out memory error increase heap size with java     -Xmx1024m -jar plantuml.jar <file> 
+@startuml img/ComTopModel.png
+Title Leafref example with path statements
+left to right direction
+package "ComTop" as ComTop {
+enum "SchemaFormatEnumeration" as ComTop__SchemaFormatEnumeration <<EcimEnumeration>>{
+<<EcimEnumerationLiteral>> MP_DTD
+}
+enum "AdmStateEnumeration" as ComTop__AdmStateEnumeration <<EcimEnumeration>>{
+<<EcimEnumerationLiteral>> LOCKED
+<<EcimEnumerationLiteral>> UNLOCKED
+<<EcimEnumerationLiteral>> SHUTTINGDOWN
+}
+enum "OperStateEnumeration" as ComTop__OperStateEnumeration <<EcimEnumeration>>{
+<<EcimEnumerationLiteral>> DISABLED
+<<EcimEnumerationLiteral>> ENABLED
+}
+enum "BasicAdmStateEnumeration" as ComTop__BasicAdmStateEnumeration <<EcimEnumeration>>{
+<<EcimEnumerationLiteral>> LOCKED
+<<EcimEnumerationLiteral>> UNLOCKED
+}
+class "ManagedElement" as ComTop__ManagedElement <<EcimMoClass>>{
+<<EcimAttribute_RW>> managedElementId : string
+<<EcimAttribute_RW>> siteLocation : string
+<<EcimAttribute_RW>> userLabel : string
+<<EcimAttribute_RO>> timeZone : string
+<<EcimAttribute_RO>> dateTimeOffset : string
+<<EcimAttribute_RW>> dnPrefix : string
+<<EcimAttribute_RO>> managedElementType : string [*]
+<<EcimAttribute_RO>> release : string [*]
+<<EcimAttribute_RW>> networkManagedElementId : string
+<<EcimKeyAttribute>> ManagedElementId : string
+}
+class "SystemFunctions" as ComTop__SystemFunctions <<EcimMoClass>>{
+<<EcimAttribute_RW>> systemFunctionsId : string
+<<EcimKeyAttribute>> SystemFunctionsId : string
+}
+class "Transport" as ComTop__Transport <<EcimMoClass>>{
+<<EcimAttribute_RW>> transportId : string
+<<EcimKeyAttribute>> TransportId : string
+}
+class "Legacy" as ComTop__Legacy <<EcimMoClass>>{
+<<EcimAttribute_RW>> legacyId : string
+<<EcimAttribute_RO>> ipDNSAddress : string
+<<EcimAttribute_RO>> dateTime : string
+<<EcimKeyAttribute>> LegacyId : string
+}
+}
+package "LeafrefPath" as LeafrefPath {
+class "AContainer" as LeafrefPath__AContainer <<EcimMoClass>>{
+<<EcimKeyAttribute>> AContainerId : string
+}
+class "B1List" as LeafrefPath__B1List <<EcimMoClass>>{
+<<EcimAttribute_RW>> bListAttr : uint32
+<<EcimKeyAttribute>> B1ListId : string
+}
+class "C1List" as LeafrefPath__C1List <<EcimMoClass>>{
+<<EcimAttribute_RW>> c1ListRef1 : uint16
+<<EcimAttribute_RW>> c1ListRef2 : uint16
+<<EcimKeyAttribute>> C1ListId : string
+}
+class "D1List" as LeafrefPath__D1List <<EcimMoClass>>{
+<<EcimAttribute_RW>> d1ListAttr : uint8
+<<EcimKeyAttribute>> D1ListId : string
+}
+class "C2List" as LeafrefPath__C2List <<EcimMoClass>>{
+<<EcimAttribute_RW>> c2listAttr : uint64
+<<EcimKeyAttribute>> C2ListId : string
+}
+class "D2List" as LeafrefPath__D2List <<EcimMoClass>>{
+<<EcimAttribute_RW>> d2ListAttr : uint16
+<<EcimAttribute_RW>> d2ListRef : uint16
+<<EcimKeyAttribute>> D2ListId : string
+}
+class "E2List" as LeafrefPath__E2List <<EcimMoClass>>{
+<<EcimAttribute_RW>> e2ListAttr : uint32
+<<EcimAttribute_RW>> e2ListRef1 : uint16
+<<EcimAttribute_RW>> e2ListRef2 : uint16
+<<EcimAttribute_RW>> e2ListRef3 : int32
+<<EcimAttribute_RW>> e2ListRef4 : int32
+<<EcimKeyAttribute>> E2ListId : string
+}
+class "D3List" as LeafrefPath__D3List <<EcimMoClass>>{
+<<EcimAttribute_RW>> d3ListRef1 : string
+<<EcimAttribute_RW>> d3ListRef2 : uint8
+<<EcimAttribute_RW>> d3ListAttr : int32 [*]
+<<EcimKeyAttribute>> D3ListId : string
+}
+}
+package "IetfInterfaces" as IetfInterfaces {
+class "interfaces" as IetfInterfaces__interfaces <<EcimMoClass>>{
+<<EcimKeyAttribute>> interfacesId : string
+}
+class "interface" as IetfInterfaces__interface <<EcimMoClass>>{
+<<EcimAttribute_RW>> name : string
+<<EcimKeyAttribute>> interfaceId : string
+}
+}
+'Class relationship: containment, biDirectional, uniDirectional
+ComTop__ManagedElement "1" *-- "*" ComTop__SystemFunctions
+ComTop__ManagedElement "1" *-- "*" ComTop__Transport
+ComTop__ManagedElement "1" *-- "*" ComTop__Legacy
+LeafrefPath__C1List "1" *-- "*" LeafrefPath__D1List
+LeafrefPath__D2List "1" *-- "*" LeafrefPath__E2List
+LeafrefPath__C2List "1" *-- "*" LeafrefPath__D2List
+LeafrefPath__C2List "1" *-- "*" LeafrefPath__D3List
+LeafrefPath__B1List "1" *-- "*" LeafrefPath__C1List
+LeafrefPath__B1List "1" *-- "*" LeafrefPath__C2List
+LeafrefPath__AContainer "1" *-- "1..1" LeafrefPath__B1List
+IetfInterfaces__interfaces "1" *-- "1..1" IetfInterfaces__interface
+ComTop__ManagedElement "1" *-- "*" LeafrefPath__AContainer
+ComTop__SystemFunctions "1" *-- "1..1" IetfInterfaces__interfaces
+'Class dependency
+ComTop__Legacy "1" --> "0..1" ComTop__AdmStateEnumeration:+admState
+ComTop__Legacy "1" --> "0..1" ComTop__BasicAdmStateEnumeration:+basicAdmState
+ComTop__Legacy "1" --> "0..1" ComTop__OperStateEnumeration:+operState
+ComTop__Legacy "1" --> "0..1" ComTop__SchemaFormatEnumeration:+schemaFormat
+@enduml 

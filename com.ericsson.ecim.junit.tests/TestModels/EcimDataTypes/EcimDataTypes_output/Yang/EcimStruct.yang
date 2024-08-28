@@ -1,0 +1,119 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-maj-13 10:33:15 using 
+    * com.ericsson.ecim.yang.m2m 2.10.1.qualifier
+*/
+module EcimStruct {
+	namespace "urn:com:ericsson:ecim:EcimStruct";
+	prefix EcimStruct;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import EcimString {
+		prefix EcimString;
+	}
+
+	import EcimEnum {
+		prefix EcimEnum;
+	}
+
+	import RootMom {
+		prefix RootMom;
+	}
+
+	import EcimFloat {
+		prefix EcimFloat;
+	}
+
+	import EcimInt {
+		prefix EcimInt;
+	}
+
+	organization "Ericsson";
+
+	revision "2014-05-13" {
+		ericsson:release 3;
+		ericsson:version 4;
+	}
+
+	augment "/RootMom:Root" {
+		list structs {
+			key id;
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			uses "EcimStruct:structs";
+		}
+
+	}
+
+	grouping structs {
+		leaf id {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping simpleStruct {
+		leaf "3" {
+			type int32;
+			mandatory true;
+		}
+
+	}
+
+	grouping complexStruct {
+		leaf equiment {
+			type "EcimEnum:equipmentList";
+			mandatory true;
+		}
+
+		leaf action {
+			type string {
+				pattern "(.*=.*,)*Actions=.*";
+			}
+
+			mandatory true;
+		}
+
+		leaf derivedFloat {
+			type "EcimFloat:MyDerivedFloat(negativeRange)";
+			mandatory true;
+		}
+
+		leaf derivedString {
+			type "EcimString:DerivedString";
+			mandatory true;
+		}
+
+		leaf derivedInt {
+			type "EcimInt:MyDerivedInteger(negativeRange)";
+			mandatory true;
+		}
+
+		leaf ecimIntegerSm {
+			type int64 {
+				range "0..15";
+			}
+
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf-list ecimIntegerSmMulti {
+			type int64 {
+				range "0..15";
+			}
+
+			min-elements 1;
+			max-elements 100;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+	}
+
+}

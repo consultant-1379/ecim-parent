@@ -1,0 +1,355 @@
+{
+		"name" : "MoPmTasks" ,
+		"ss7" : "false" ,
+		"visible" : "true" ,
+		"desc" : "\nPM Monitor Tasks parameters and actions.\n    " ,
+		"filename" : "MoPmTasksPOT.json" ,
+		"max_entries" : "1" ,
+		"modid" : "123456" ,
+		"attrs" : {
+				"pmTasksId" : {
+						"name" : "pmTasksId" ,
+						"keytype" : "ECIM_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "The MoClass key of the pmTasks" ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "false"
+				} ,
+				"pmJobName" : {
+						"name" : "pmJobName" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe name of a PM monitor task. The Job Name must be unique.\n      " ,
+						"types" : "derived1_32_[0-9A-Za-z]{1,32}" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmFamilyId" : {
+						"name" : "pmFamilyId" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe performance measurement family to be monitored.\n      " ,
+						"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmTasksAdministrativeState" : {
+						"name" : "pmTasksAdministrativeState" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe administrative state of the PM monitor task. Once a task is created, the administrative state is on. The Stop and Suspend actions change the state to Off. The Resume action changes the state to On.\n      " ,
+						"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>}" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "false"
+				} ,
+				"pmTasksUsageState" : {
+						"name" : "pmTasksUsageState" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThe status of the performance monitor task.\n\n- Active: The job is running.\n\n- Scheduled: The job is scheduled to be activated when it reaches Start Time.\n\n- Idle: The job is stopped by the operator or due to the heavy load or low free memory, or it reaches End Time.\n\n- Suspended: The job is paused by the operator or due to heavy load or low free memory.\n      "
+						,
+						"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "false"
+				} ,
+				"pmStartTime" : {
+						"name" : "pmStartTime" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe time when the job starts.\nLocal time is used.\nThe default value means the job starts immediately.\n      " ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmEndTime" : {
+						"name" : "pmEndTime" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe time when the job ends.\nLocal time is used.\nThe default value means the job keeps running all the time.\n      " ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmGranularity" : {
+						"name" : "pmGranularity" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe granularity period defined by 3GPP PM IRP.\n\nThe period can be 5, 15, or 30 minutes, or 1, 12, or 24 hours.\n      " ,
+						"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"default" : "five" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmValueFormat" : {
+						"name" : "pmValueFormat" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThis parameter specifies delta or absolute values to be collected in the report.\n\n- true: Delta values to be collected. This format is not valid for gauges.\n\n- false: Absolute values to be collected. This is the default value.\n      "
+						,
+						"types" : "EcimBoolean" ,
+						"default" : "false" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmReportPeriod" : {
+						"name" : "pmReportPeriod" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThis parameter determines the interval of transferring the performance monitor reports to the directory on the target host. It is a number of the granularity periods.\n\nFor example, if Granularity is 5 minutes and Report Period is 3, then the reports will be transferred every 15 minutes.\n\nNote: The value of Granularity (min) multiplied by Report Period must be less than or equal to 24 hours, that is, 1440 minutes.\n      "
+						,
+						"types" : "derived1_288" ,
+						"default" : "3" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmTasksPriority" : {
+						"name" : "pmTasksPriority" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThe priority of the performance tasks.\n\n- Medium: During the high system load or low free memory, the job will be suspended by the system.\n\n- Low: During the high system load or low free memory, the job will be stopped by the system.\n\n- High: The job keeps running even if the system load becomes high or the free memory becomes low.\n      "
+						,
+						"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"default" : "eMedium" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmCollectionBeginTimeReset" : {
+						"name" : "pmCollectionBeginTimeReset" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nDefine if the 'measCollec beginTime' value will be reset or not in generating performance reports for each of measurement collection time.\n\no  Keep First Measurement Collection Time(1):  keep the 'measCollec beginTime' value as the first measurement collection time value.\n\no  Reset to Each Measurement Collection Time(2):  reset the 'measCollec beginTime' value to each measurement collection time value.\n      "
+						,
+						"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>}" ,
+						"default" : "eKeepBeginTime" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				}
+		} ,
+		"actions" : {
+				"pmTasksAction" : {
+						"name" : "pmTasksAction" ,
+						"admOpId" : "0" ,
+						"paras" : {
+								"pmTasksActionValue" : {
+										"name" : "pmTasksActionValue" ,
+										"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+										"default" : ""
+								}
+						} ,
+						"result" : {
+								"types" : "EcimString" ,
+								"default" : ""
+						}
+				}
+		} ,
+		"codecs" : {
+		} ,
+		"brs" : {
+		} ,
+		"enums" : {
+				"enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" : {
+						"name" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"attrs" : {
+								"twentyfour" : {
+										"default" : "6" ,
+										"name" : "twentyfour"
+								} ,
+								"fifteen" : {
+										"default" : "1" ,
+										"name" : "fifteen"
+								} ,
+								"thirty" : {
+										"default" : "4" ,
+										"name" : "thirty"
+								} ,
+								"five" : {
+										"default" : "2" ,
+										"name" : "five"
+								} ,
+								"one" : {
+										"default" : "3" ,
+										"name" : "one"
+								} ,
+								"twelve" : {
+										"default" : "5" ,
+										"name" : "twelve"
+								}
+						}
+				} ,
+				"enumSequence {IN6!<unnamed>, IN6!<unnamed>}" : {
+						"name" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>}" ,
+						"attrs" : {
+								"eKeepBeginTime" : {
+										"default" : "1" ,
+										"name" : "eKeepBeginTime"
+								} ,
+								"eResetBeginTime" : {
+										"default" : "2" ,
+										"name" : "eResetBeginTime"
+								}
+						}
+				} ,
+				"enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" : {
+						"name" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"attrs" : {
+								"eForcedLocking" : {
+										"default" : "1" ,
+										"name" : "eForcedLocking"
+								} ,
+								"eGracefulLocking" : {
+										"default" : "2" ,
+										"name" : "eGracefulLocking"
+								} ,
+								"eUnlocking" : {
+										"default" : "4" ,
+										"name" : "eUnlocking"
+								} ,
+								"eReady" : {
+										"default" : "3" ,
+										"name" : "eReady"
+								}
+						}
+				} ,
+				"enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" : {
+						"name" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"attrs" : {
+								"eLow" : {
+										"default" : "2" ,
+										"name" : "eLow"
+								} ,
+								"eMedium" : {
+										"default" : "3" ,
+										"name" : "eMedium"
+								} ,
+								"eHigh" : {
+										"default" : "1" ,
+										"name" : "eHigh"
+								}
+						}
+				} ,
+				"enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" : {
+						"name" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"attrs" : {
+								"eF1" : {
+										"default" : "1" ,
+										"name" : "eF1"
+								} ,
+								"eF10" : {
+										"default" : "2" ,
+										"name" : "eF10"
+								} ,
+								"eF11" : {
+										"default" : "3" ,
+										"name" : "eF11"
+								} ,
+								"eF12" : {
+										"default" : "4" ,
+										"name" : "eF12"
+								} ,
+								"eF13" : {
+										"default" : "5" ,
+										"name" : "eF13"
+								} ,
+								"eF2" : {
+										"default" : "6" ,
+										"name" : "eF2"
+								} ,
+								"eF3" : {
+										"default" : "7" ,
+										"name" : "eF3"
+								} ,
+								"eF4" : {
+										"default" : "8" ,
+										"name" : "eF4"
+								} ,
+								"eF5" : {
+										"default" : "9" ,
+										"name" : "eF5"
+								} ,
+								"eF6" : {
+										"default" : "11" ,
+										"name" : "eF6"
+								} ,
+								"eF7" : {
+										"default" : "12" ,
+										"name" : "eF7"
+								} ,
+								"eF8" : {
+										"default" : "13" ,
+										"name" : "eF8"
+								} ,
+								"eF9" : {
+										"default" : "15" ,
+										"name" : "eF9"
+								}
+						}
+				}
+		} ,
+		"deriveds" : {
+				"derived1_288" : {
+						"name" : "derived1_288" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "1..288" ,
+						"pattern" : ""
+				} ,
+				"derived1_32_[0-9A-Za-z]{1,32}" : {
+						"name" : "derived1_32_[0-9A-Za-z]{1,32}" ,
+						"stereotypes" : "EcimDerivedString" ,
+						"basetype" : "EcimString" ,
+						"length" : "1..32" ,
+						"range" : "" ,
+						"pattern" : "[0-9A-Za-z]{1,32}"
+				}
+		}
+}

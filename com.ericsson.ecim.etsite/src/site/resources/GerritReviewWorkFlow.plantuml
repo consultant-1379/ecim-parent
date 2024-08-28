@@ -1,0 +1,53 @@
+@startuml
+
+start
+:git clone ssh://ericssonID@gerritforge.lmera.ericsson.se:29418/ecimtoolchain;
+
+:git checkout <branch>;
+note
+<font size="10"><branch> means master or other official branch</font>
+end note
+:git pull origin <branch>;
+repeat
+-[#gray]->
+#Azure:git checkout -b task_branch;
+#green:coding, compile, test, commits;
+
+repeat
+repeat
+#Azure:git checkout <branch>;
+:git pull;
+#Azure:git checkout task_branch;
+
+	:git rebase -i <branch>;
+	note right
+	<font size="10">Merge latest from gerrit server </font>
+	<font size="10">and squash all commits into </font>
+	<font size="10">one commit for code review</font>
+end note
+	if (Conflicts?) then (**Yes**)
+		:git mergetool\ngit rebase --continue;
+	else (**No**)
+	endif
+	#yellow:git push origin HEAD:refs/for/<branch>\nThen go to gerrit web page and select the reviewer;
+
+repeat while (Review Passed?) is (**No**\n1. Update files according comments\n2. Git add the modify files\n    //git add <modified_file>//\n3. Commit the modified files\n    //git commit **--amend**//)
+
+#green:Author submits on Gerrit Web Page;
+
+repeat while (Merge Succeed?) is (**No**)
+-[#gray]->
+#Azure:git checkout <branch>;
+
+:git pull origin <branch>;
+note left
+<font size="10">Here recent task is finished </font>
+<font size="10">Delete local task branch</font>
+<font size="10">Next loop for the next task</font>
+end note
+
+#Azure:git branch -D task_branch;
+
+repeat while
+
+@enduml

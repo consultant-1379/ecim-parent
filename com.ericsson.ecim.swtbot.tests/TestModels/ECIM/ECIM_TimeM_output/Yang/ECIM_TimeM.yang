@@ -1,0 +1,105 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:31:32 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ECIM_TimeM" {
+	namespace "urn:com:ericsson:ecim:ECIM_TimeM";
+	prefix "ECIM_TimeM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import ECIM_SysM {
+		prefix "ECIM_SysM";
+	}
+
+	organization "FLE/EU";
+	description "The fragment contains the Time management attributes.";
+
+	revision "2015-12-07" {
+		ericsson:correction "0";
+		ericsson:release "1";
+		ericsson:version "1";
+		ericsson:author "Vahagn Avedian";
+		ericsson:contact "ETXAVED";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:SystemFunctions/ECIM_SysM:SysM" {
+		list "TimeM" {
+			key "timeMId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "DateAndTime" {
+				key "dateAndTimeId";
+				min-elements 1;
+				max-elements 1;
+				uses ECIM_TimeM:DateAndTime;
+			}
+
+			uses ECIM_TimeM:TimeM;
+		}
+
+	}
+
+	grouping "TimeM" {
+		description
+		"Time management concerns the calendar date and local time of the node.";
+		leaf "timeMId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "DateAndTime" {
+		description "Local time and time zone values.";
+		leaf "dateAndTimeId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "timeZone" {
+			type string;
+			description "The time zone of the ME.
+
+A time zone is a region that has a uniform standard time. The string must match an entry in the ME’s time zone database, for example ‘Europe/Stockholm’.";
+		}
+
+		leaf "localDateTime" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "The local date and time of the ME.
+
+Local time is standard time in a time zone at a fixed offset from Coordinated Universal Time (UTC), possibly adjusted by Daylight Saving Time (DST) during part of the year.
+";
+		}
+
+		leaf "dateTimeOffset" {
+			type ECIM_CommonLibrary:DifferenceFromUTC;
+			config true;
+			description "The offset in hours and minutes from UTC to local time.";
+		}
+
+		leaf "tzRevision" {
+			type string;
+			config true;
+			description "The revision of the time zone database stored on the ME.";
+		}
+
+	}
+
+}

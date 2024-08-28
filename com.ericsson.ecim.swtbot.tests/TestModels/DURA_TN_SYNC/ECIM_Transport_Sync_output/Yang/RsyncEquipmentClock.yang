@@ -1,0 +1,358 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:23:46 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RsyncEquipmentClock" {
+	namespace "urn:com:ericsson:ecim:RsyncEquipmentClock";
+	prefix "RsyncEquipmentClock";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RsyncSynchronization {
+		prefix "RsyncSynchronization";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RsyncSyncLibrary {
+		prefix "RsyncSyncLibrary";
+	}
+
+	description "ECIM Transport Synchronization equipment clock Model.";
+
+	revision "2015-10-13" {
+		ericsson:specification "ITU-T G.781";
+		ericsson:version "1";
+		ericsson:author "EAB/FJP/TA UABJOCL";
+		ericsson:release "0";
+		ericsson:correction "2";
+		ericsson:contact "EAB/FJP/TA UABJOCL";
+	}
+
+	augment
+	"/ECIM_Top:ManagedElement/ECIM_Top:Transport/RsyncSynchronization:Synchronization"
+	{
+		list "EquipmentClock" {
+			key "equipmentClockId";
+			max-elements 1;
+			status obsolete;
+			list "EquipmentClockReference" {
+				key "equipmentClockReferenceId";
+				max-elements 8;
+				status obsolete;
+				uses RsyncEquipmentClock:EquipmentClockReference;
+			}
+
+			uses RsyncEquipmentClock:EquipmentClock;
+		}
+
+	}
+
+	typedef "EquipmentClockState" {
+		type enumeration {
+			enum "FREE_RUN" {
+				value 1;
+				description "The equipment clock is in freerun state.";
+			}
+
+			enum "HOLDOVER" {
+				value 2;
+				description "The equipment clock is in holdover state.";
+			}
+
+			enum "LOCKED" {
+				value 3;
+				description "Equipment internal clock is in Locked state.";
+			}
+
+			enum "LOCKING" {
+				value 4;
+				description "The equipment clock is in locking state.
+
+The state indicates that the equipment clock is locking to a reference. It is a intermediate state.
+
+Optional to support - Flag : if-feature EquipmentCLockStateLOCKING";
+			}
+
+			enum "FORCED_FREE_RUN" {
+				value 5;
+				description "The equipment clock is in forced free-running state.
+
+The state indicates that a forced command to a failed clock reference, and the equipment clock is working in freerun mode.
+
+Optional to support - Flag : if-feature EquipmentCLockStateFORCEDFREERUN";
+			}
+
+			enum "FORCED_HOLDOVER" {
+				value 6;
+				description "The equipment clock is in forced holdover state.
+
+The state indicates that a forced command to a failed clock reference, and the equipment clock is working in holdover mode.
+
+Optional to support - Flag : if-feature EquipmentCLockStateFORCEDHOVER";
+			}
+
+		}
+
+		status obsolete;
+		description "State of equipment clock.";
+	}
+
+	grouping "EquipmentClock" {
+		status obsolete;
+		description "Implements the equipment internal clock functionality.
+
+Several EquipmentClockReference instances shall be associated with it to join the equipment clock selection algorithm.
+The creation of its instance could be triggered when create Synchronization (root of sync fragment).";
+		leaf "equipmentClockId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "currentEquipmentClockReference" {
+			type string {
+				pattern "(.*=.*,)*EquipmentClockReference=.*";
+			}
+
+			config true;
+			description "Shows the current selected equipment clock reference.
+
+When the clock is experiencing a forced command, the shows value shall be equal to equipmentClockSwitchReference.
+It shows  NULL if no clock reference is slelected.";
+		}
+
+		leaf "equipmentClockSwitchReference" {
+			type string {
+				pattern "(.*=.*,)*EquipmentClockReference=.*";
+			}
+
+			config true;
+			description "Shows the current equipment clock switch command reference.
+
+It shows NULL if current command is CLEARED.";
+		}
+
+		leaf "equipmentClockSwitchCommand" {
+			type RsyncSyncLibrary:SwitchCommand;
+			mandatory true;
+			config true;
+			description "Shows the current equipment clock switch command.";
+		}
+
+		leaf "clockState" {
+			type RsyncEquipmentClock:EquipmentClockState;
+			mandatory true;
+			config true;
+			description "Shows the state of equipment clock.
+
+FREE_RUN		-  Shows the clock is in free run state.
+HOLDOVER		-  Shows the clock is in hold over state.
+LOCKED		-  Shows the clock is in locked state.
+LOCKING		-  Shows the clock is in locking state. Optional to support.
+FORCED_FREE_RUN		-  Shows the clock is in forced free run state. Optional to support.
+FORCED_HOLDOVER	-  Shows the clock is in forced holdover state. Optional to support.";
+		}
+
+		leaf "holdOffTime" {
+			type RsyncSyncLibrary:HoldOffTime;
+			mandatory true;
+			description "Specifies the hold-off time for equipment clock.
+
+It is available for all equipment clock reference.
+According to section 5.8,G.781, the value of HoldOffTime is configurable in the range of 300 to 1800 (ms). But some products need implement this attribute exceed the range. So no constraint on the range and unit, products could define them.";
+		}
+
+		leaf "waitToRestoreTime" {
+			type RsyncSyncLibrary:WaitToRestoreTime;
+			mandatory true;
+			description "Specifies the wait to restore time  for equipment clock.
+
+According to section 5.9, G.781, the value of WTR time is configurable in the range of 0 to 12 (minute), default value is 5 minutes.
+It is available for all Equipment clock reference. User can clear the WTR state per reference.";
+		}
+
+		leaf-list "equipmentClockPriorityTable" {
+			type string {
+				pattern "(.*=.*,)*EquipmentClockReference=.*";
+			}
+
+			config true;
+			max-elements 8;
+			description "Shows all equipment clock references in one place.
+
+Value will be NULL if no equipment clock reference existed.";
+		}
+
+		leaf-list "forceDNUInterfaces" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			description "Specifies the transmitting interfaces which always sending out SSM with DNU.
+
+This attribute is a interface list. Products shall define which type of interface could be added into the list.
+NULL if no interface always sending out DNU.";
+		}
+
+		leaf "selectionProcessMode" {
+			type RsyncSyncLibrary:SelectionProcessMode;
+			mandatory true;
+			description "Specifies the selection process mode for equipment clock.
+
+QL_ENABLED	-  Equipment clock selection process works in QL_ENABLED mode.
+QL_DISABLED	-  Equipment clock selection process works in QL_DISABLED mode.";
+		}
+
+		ericsson:setEquipClockSwitchCommand {
+			description "Set external command for equipment clock.
+
+It is a sync action. switchCommand could be CLEAR, MANUAL or FORCED. switchReference could be any equipment clock reference.";
+			input {
+				leaf "switchCommand" {
+					type RsyncSyncLibrary:SwitchCommand;
+					mandatory true;
+					description "Specifies the switch command for equipment clock.";
+				}
+
+				leaf "switchReference" {
+					type string {
+						pattern "(.*=.*,)*EquipmentClockReference=.*";
+					}
+
+					description "Specifies the switch command reference for equipment clock.
+
+Only used when switch command is MANUAL or FORCED, the value shall be any equipment clock reference.
+NULL if switch command is CLEARED.";
+				}
+
+			}
+
+		}
+
+	}
+
+	grouping "EquipmentClockReference" {
+		status obsolete;
+		description "Sync Reference for equipment clock.
+
+Create its instance, specify an underlying encapsulation, then this reference will join the equipment clock selection algorithm.
+Upper number of EquipmentClockReference instance shall be product specific.";
+		leaf "equipmentClockReferenceId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf-list "priority" {
+			type RsyncSyncLibrary:ReferencePriority;
+			min-elements 1;
+			max-elements 8;
+			description
+			"Specifies the priority of synchronization reference.
+
+The priority value must be unique within the clock.";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "lockOut" {
+			type RsyncSyncLibrary:EnableStatus;
+			mandatory true;
+			description "Specifies the lock state of sync reference.
+
+ENABLED -  The reference is in lockout state. This cause it to be no longer considered available by the selection process.
+DISABLED - The reference can be considered available.";
+		}
+
+		leaf "useReceiveQL" {
+			type boolean;
+			mandatory true;
+			description "Specifies if sync reference use received quality level to join the selection process.
+
+useReceiveQL is only used in QL_ENABLED.
+
+true	- operQuality is used to join the selection process.
+false	- adminQuality is used to join the selection process.
+
+Runtime to support - flag: if-configure selectionProcessMode is QL_ENABLED";
+		}
+
+		leaf "operQuality" {
+			type RsyncSyncLibrary:QualityLevel;
+			mandatory true;
+			config true;
+			description "Shows the quality level extracted from underlying sync port.";
+		}
+
+		container "adminQuality" {
+			presence "This Container points to a Struct which has no key.";
+			description "Specifies administrative quality level of sync reference.
+
+SyncReference uses adminQuality to join the selection process when useReceiveQL is false.
+User sets adminQuality by selecting QL from a given QL list. The value in the list can be product specific, and must be complied with the selected telecom standard.
+
+Runtime to support - flag: if-configure useReceiveQL of SyncReference is false AND selectionProcessMode is QL_ENABLED";
+			uses RsyncSyncLibrary:QualityLevelValue;
+		}
+
+		leaf "encapsulation" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			mandatory true;
+			description "Underlying physical interface. it is used to hide different physical type of sync port. 
+Specifies the underlying encapsulation of sync reference.
+
+The encapsulation of sync reference is used to hide different physical types of sync port. Products define which type could be used as encapsulation.
+
+Constraint - flag: An transmit port can be use in only one reference for each clock type";
+		}
+
+		leaf "referenceStatus" {
+			type RsyncSyncLibrary:ReferenceStatusOld;
+			mandatory true;
+			config true;
+			description "Shows the status of sync reference.
+
+The value is deceided by the current capability of underlying sync port.
+
+FAILED			- Sync reference is not available.
+BIDIRECTION	- Sync reference can receive and send sync signal.
+MASTER		- Sync reference can only send sync signal, can't receive.
+SLAVE			- Sync reference can only receive sync signal, can't send.";
+		}
+
+		leaf "currentHoldOffTime" {
+			type RsyncSyncLibrary:HoldOffTime;
+			config true;
+			description "Shows the current hold-off time if the sync reference is in hold-off state.
+
+If the sync reference is not in hold-off state, the value is 0.
+
+Optional to support - Flag : if-feature SyncHoldOffTime";
+		}
+
+		leaf "currentWTR" {
+			type RsyncSyncLibrary:CurrentWTR;
+			mandatory true;
+			config true;
+			description "Shows the current wait to restore time if the sync reference is in WTR state.
+
+If the sync reference is not in WTR state, the value is 0.";
+		}
+
+		ericsson:clearWTR {
+			description "Clear the WTR state for a sync reference.";
+		}
+
+	}
+
+}

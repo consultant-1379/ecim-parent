@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Oct 1, 2015 1:59:35 PM using:
+	* com.ericsson.ecim.m2m 2.14.3.201506050754
+	* com.ericsson.ecim.dsl 2.14.3.201506050754
+	* com.ericsson.ecim.edm 2.14.3.201506050754
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate/>
+    </momIdentity>
+    <createdBy>
+      <signature>EAB/FJP/TA UABERPE</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>EAB/FJP/TA UABERPE</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="2" date="" docNo="" name="RtnIpsec" namespace="urn:com:ericsson:ecim:RtnIpsec" namespacePrefix="rtnipsec" organization="" release="2" revision="" variant="Model" version="1">
+    <description>ECIM Transport Ipsec MOM.</description>
+    <domainExtension domain="ECIM">
+      <extension name="ecimMomName" value="ECIM_Transport_Ipsec"/>
+      <extension name="ecimMomVersion" value="1"/>
+      <extension name="ecimMomRelease" value="0"/>
+      <extension name="ecimMomCorrection" value="0"/>
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <implements correction="0" name="ECIM_Transport_Ipsec" release="0" version="1"/>
+    <struct name="TrafficSelector">
+      <description>Traffic selector to be used for SA negotiation.</description>
+      <structMember name="addressRange">
+        <description>Specifies the IPv4 or IPv6 address range. &#13;
+</description>
+        <derivedDataTypeRef name="IpAddressRangeStr">
+          <mimName>RtnIpsec</mimName>
+        </derivedDataTypeRef>
+      </structMember>
+    </struct>
+    <enum name="ChildSaEncryptionAlgorithm">
+      <description>Child Security Association(SA) encryption algorithms.</description>
+      <enumMember name="ENCR_NULL">
+        <description>Specification:  RFC_2410. </description>
+        <value>11</value>
+      </enumMember>
+      <enumMember name="ENCR_AES_CBC_128">
+        <description>Specification:  RFC_5996. </description>
+        <value>1024</value>
+      </enumMember>
+      <enumMember name="ENCR_AES_CBC_256">
+        <description>Specification:  RFC_5996. </description>
+        <value>1026</value>
+      </enumMember>
+    </enum>
+    <enum name="DiffieHellmanGroup">
+      <description>Diffie-Hellman groups. &#13;
+</description>
+      <enumMember name="MODP_1024_GROUP_2">
+        <description>Specification:  RFC_5996. </description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="MODP_2048_GROUP_14">
+        <description>Specification:  RFC_3526.&#13;
+</description>
+        <value>14</value>
+      </enumMember>
+    </enum>
+    <enum name="PseudoRandomFunction">
+      <description>Available pseudo-random functions. &#13;
+</description>
+      <enumMember name="PRF_HMAC_MD5">
+        <description>Specification:  RFC_2104. &#13;
+</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="PRF_HMAC_SHA1">
+        <description>Specification:  RFC2104. &#13;
+</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="PRF_AES128_XCBC">
+        <description>Specification:  RFC_4434. &#13;
+</description>
+        <value>4</value>
+      </enumMember>
+    </enum>
+    <enum name="IdentityOrigin">
+      <description>Identity Origin </description>
+      <enumMember name="SUBJECT">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="SUBJECT_ALT_NAME">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="OperState">
+      <description>The operational states of a resource.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimVersion" value="1"/>
+        <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+        <extension name="originatingMimRelease" value="6"/>
+      </domainExtension>
+      <enumMember name="DISABLED">
+        <description> The resource is  totally inoperable.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="ENABLED">
+        <description> The resource is partially or fully operable.</description>
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="IkeEncryptionAlgorithm">
+      <description>Ike encryption algorithms. &#13;
+</description>
+      <enumMember name="ENCR_3DES">
+        <description>Specification:  RFC_5996. &#13;
+</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="ENCR_AES_CBC_128">
+        <description>Specification:  RFC_5996. &#13;
+</description>
+        <value>1024</value>
+      </enumMember>
+      <enumMember name="ENCR_AES_CBC_256">
+        <description>Specification:  RFC_5996. &#13;
+</description>
+        <value>1026</value>
+      </enumMember>
+    </enum>
+    <enum name="IkeIntegrityAlgorithm">
+      <description>Ike integrity algorithms. &#13;
+</description>
+      <enumMember name="AUTH_HMAC_MD5_96">
+        <description>Specification:  RFC_5996. &#13;
+</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="AUTH_HMAC_SHA1_96">
+        <description>Specification:  RFC_5996. &#13;
+</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="AUTH_AES_XCBC_96">
+        <description>Specification: RFC_5996. &#13;
+</description>
+        <value>5</value>
+      </enumMember>
+    </enum>
+    <enum name="AvailStatus">
+      <description>The availability status is used to qualify the operational state.&#13;
+ It indicates why the operational state has changed its value. </description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimVersion" value="1"/>
+        <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+        <extension name="originatingMimRelease" value="6"/>
+      </domainExtension>
+      <enumMember name="IN_TEST">
+        <description>The resource is undergoing a test procedure. &#13;
+If the administrative state is locked or  shutting down then normal users are precluded from using the resource.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="FAILED">
+        <description>The resource has an internal fault that prevents it from operating.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="POWER_OFF">
+        <description>The resource requires power to be applied and is not powered on.</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="OFF_LINE">
+        <description>The resource requires a routine operation to be performed.&#13;
+This routine operation is to place the resource online and make it available for use. The operation may be manual or automatic, or both. The operational state is disabled.</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="OFF_DUTY">
+        <description>The resource has been made inactive by an internal control process.</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY">
+        <description>The resource cannot operate because some other resource on which it depends is unavailable.</description>
+        <value>5</value>
+      </enumMember>
+      <enumMember name="DEGRADED">
+        <description>The service available from the resource is degraded in some respect.</description>
+        <value>6</value>
+      </enumMember>
+      <enumMember name="NOT_INSTALLED">
+        <description>The resource represented by the managed object is not present, or is incomplete.</description>
+        <value>7</value>
+      </enumMember>
+      <enumMember name="LOG_FULL">
+        <description>This indicates a log full condition.</description>
+        <value>8</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_LOCKED">
+        <description>The administrative state of a resource that this resource depends on is locked.&#13;
+ or the availability status of the other resource is dependency locked.  </description>
+        <value>9</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_FAILED">
+        <description>The availability status of a resource that this resource depends on is failed or dependency failed.</description>
+        <value>10</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_SHUTTINGDOWN">
+        <description>The administrative state of a resource that this resource depends on is shutting down.&#13;
+ or the availability status of the other resource is dependency shutting down. </description>
+        <value>11</value>
+      </enumMember>
+    </enum>
+    <enum name="ChildSaIntegrityAlgorithm">
+      <description>Child Security Association(SA) integrity algorithms.</description>
+      <enumMember name="AUTH_HMAC_MD5_96">
+        <description>Specification:  RFC_5996. &#13;
+</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="AUTH_HMAC_SHA1_96">
+        <description>Specification:  RFC_5996. &#13;
+</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="AUTH_AES_XCBC_96">
+        <description>Specification:  RFC_5996. &#13;
+&#13;
+&#13;
+</description>
+        <value>5</value>
+      </enumMember>
+    </enum>
+    <derivedDataType name="IpAddressRangeStr">
+      <description>Regular expression pattern for IP address with prefix, covering both IPv4 and IPv6.&#13;
+&#13;
+The type is ((IPv4 address)|(IPv6 address)) / prefix without leading 0s:&#13;
+		  Unicast IPv4 address / prefix 0-32.&#13;&#13;
+		  IPv4 address within range [0-255].[0-255].[0-255].[0-255]&#13;&#13;
+		  Regex:&#13;&#13;
+(^(([1-9]|22[0-3]|2[01][0-9]|1[013456789][0-9]|12[012345689]|[1-9][0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]))/([0-9]|[1-2][0-9]|3[0-2])$)&#13;
+		 &#13;
+		 Ipv6Address (colon separated, rfc4291) / prefix 0-128.&#13;&#13;
+		 Regex:&#13;&#13;
+\s*(((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){7}(([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){6}(:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){5}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){4}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,3})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0))?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){3}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,4})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){2}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,5})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){1}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,6})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,7})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\s*)/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8])		 &#13;
+&#13;
+		 Thus resulting pattern ^((IPv4Network/Netmask)|(IPv6Network/Netmask))$ is:&#13;&#13;
+^(((([1-9]|22[0-3]|2[01][0-9]|1[013456789][0-9]|12[012345689]|[1-9][0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]))/([0-9]|[1-2][0-9]|3[0-2]))|((\s*(((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){7}(([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){6}(:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){5}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){4}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,3})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0))?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){3}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,4})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){2}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,5})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){1}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,6})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,7})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\s*)/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8])))$&#13;
+		 </description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimVersion" value="1"/>
+        <extension name="originatingMimName" value="RtnFilterTypes"/>
+        <extension name="originatingMimRelease" value="0"/>
+      </domainExtension>
+      <baseType>
+        <string>
+          <validValues>^(((([1-9]|22[0-3]|2[01][0-9]|1[013456789][0-9]|12[012345689]|[1-9][0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]))/([0-9]|[1-2][0-9]|3[0-2]))|((\s*(((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){7}(([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){6}(:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){5}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){4}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,3})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0))?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){3}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,4})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){2}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,5})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){1}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,6})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,7})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\s*)/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8])))$</validValues>
+        </string>
+      </baseType>
+      <validationRules>
+        <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[^(((([1-9]|22[0-3]|2[01][0-9]|1[013456789][0-9]|12[012345689]|[1-9][0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]))/([0-9]|[1-2][0-9]|3[0-2]))|((\s*(((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){7}(([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){6}(:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){5}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){4}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,3})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0))?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){3}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,4})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){2}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,5})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|((([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0):){1}(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,6})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){1,7})|((:([1-9A-Fa-f][0-9A-Fa-f]{0,3}|0)){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\s*)/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8])))$]]></rule>
+      </validationRules>
+    </derivedDataType>
+    <derivedDataType name="TimeLimit">
+      <description>The maximum time in minutes.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimVersion" value="1"/>
+        <extension name="originatingMimName" value="RtnFilterTypes"/>
+        <extension name="originatingMimRelease" value="0"/>
+      </domainExtension>
+      <baseType>
+        <uint32>
+          <range>
+            <min>60</min>
+            <max>5000</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>60</min>
+              <max>5000</max>
+            </subrange>
+          </ranges>
+          <unit>minutes</unit>
+        </uint32>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="DataLimit">
+      <description>Specify the amount of data in Mbytes.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimVersion" value="1"/>
+        <extension name="originatingMimName" value="RtnFilterTypes"/>
+        <extension name="originatingMimRelease" value="0"/>
+      </domainExtension>
+      <baseType>
+        <uint32>
+          <range>
+            <min>100</min>
+            <max>500000</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>100</min>
+              <max>500000</max>
+            </subrange>
+          </ranges>
+          <unit>MByte</unit>
+        </uint32>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="PresharedKey">
+      <description>Derived string used as presharedkey.
+Install a preshared key for the IKEv2 session.
++The pre-shared key has to be either a valid hexadecimal number or an ASCII string.
++Regexp: ^(0x([0-9a-fA-F])+)$|^(([^0]|0($|[^x])).*)$
+
+The installation of the pre-shared key is completed if the action is completed without error. Any error returned by the action indicates that the installation is not performed.
+If both credential and trustCategory have valid references, then the preshared key is not used even if it is installed.
+</description>
+      <baseType>
+        <string>
+          <lengthRange>
+            <min>1</min>
+            <max>130</max>
+          </lengthRange>
+          <stringLength>
+            <subrange>
+              <min>1</min>
+              <max>130</max>
+            </subrange>
+          </stringLength>
+          <validValues>^(0x([0-9a-fA-F])+)$|^(([^0]|0($|[^x])).*)$</validValues>
+        </string>
+      </baseType>
+      <validationRules>
+        <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[^(0x([0-9a-fA-F])+)$|^(([^0]|0($|[^x])).*)$]]></rule>
+      </validationRules>
+    </derivedDataType>
+    <derivedDataType name="RtnIpsec_Ikev2Session_userLabel">
+      <baseType>
+        <string>
+          <lengthRange>
+            <min>1</min>
+            <max>128</max>
+          </lengthRange>
+          <stringLength>
+            <subrange>
+              <min>1</min>
+              <max>128</max>
+            </subrange>
+          </stringLength>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="RtnIpsec_IpsecTunnel_userLabel">
+      <baseType>
+        <string>
+          <lengthRange>
+            <min>1</min>
+            <max>128</max>
+          </lengthRange>
+          <stringLength>
+            <subrange>
+              <min>1</min>
+              <max>128</max>
+            </subrange>
+          </stringLength>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="RtnIpsec_IpsecPolicy_userLabel">
+      <baseType>
+        <string>
+          <lengthRange>
+            <min>1</min>
+            <max>128</max>
+          </lengthRange>
+          <stringLength>
+            <subrange>
+              <min>1</min>
+              <max>128</max>
+            </subrange>
+          </stringLength>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <class name="Ikev2Session">
+      <description>Ikev2Session is used to specify that IKEv2 should be used to negotiate SA’s for the tunnel. &#13;
+&#13;
+It contains parameters specific to the IKEv2 protocol.</description>
+      <action name="installPreSharedKey">
+        <description>Install a preshared key for the IKEv2 session.&#13;
+&#13;
+The installation of the pre-shared key is completed if the action is completed without error. Any error returned by the action indicates that the installation is not performed.&#13;
+If both credential and trustCategory have valid references, then the preshared key is not used even if it is installed.</description>
+        <domainExtension domain="CoreMW">
+          <extension name="admOpId" value="0"/>
+        </domainExtension>
+        <returnType>
+          <void/>
+        </returnType>
+        <parameter name="presharedKey">
+          <description>String used as presharedkey.</description>
+          <in/>
+          <dataType>
+            <derivedDataTypeRef name="PresharedKey">
+              <mimName>RtnIpsec</mimName>
+            </derivedDataTypeRef>
+          </dataType>
+        </parameter>
+      </action>
+      <action name="restartIkeSa">
+        <description>This will cause the node to delete the IKE SA and initiate the negotiation of a new IKE SA.</description>
+        <domainExtension domain="CoreMW">
+          <extension name="admOpId" value="1"/>
+        </domainExtension>
+        <returnType>
+          <void/>
+        </returnType>
+      </action>
+      <attribute name="localIdentityOrigin">
+        <description>This attribute controls whether the local identity is derived from the subject field or the subjectAltName in the used IPsec node certificate.  This attribute is only relevant for certificate based authentication.</description>
+        <restricted/>
+        <dataType>
+          <enumRef name="IdentityOrigin">
+            <defaultValue>SUBJECT_ALT_NAME</defaultValue>
+            <mimName>RtnIpsec</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+      <attribute name="ikev2SessionId">
+        <description>Value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="ikev2PolicyProfile">
+        <description>Reference to an IKE policy profile instance.</description>
+        <mandatory/>
+        <restricted/>
+        <dataType>
+          <moRef name="Ikev2PolicyProfile">
+            <mimName>RtnIkev2PolicyProfile</mimName>
+          </moRef>
+        </dataType>
+      </attribute>
+      <attribute name="operationalState">
+        <description>Operational state of the IKEv2 session.&#13;
+&#13;
+It is disabled if it is not possible to establish an IKEv2 SA due to e.g. authentication problems.</description>
+        <readOnly/>
+        <dataType>
+          <enumRef name="OperState">
+            <mimName>RtnIpsec</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="RtnIpsec_Ikev2Session_userLabel">
+            <mimName>RtnIpsec</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="IpsecTunnel">
+      <description>Configuration and runtime information of an Ipsec tunnel between two end points.</description>
+      <validationRules>
+        <rule exceptionText="" format="ECIM_Schematron_1.0" name="SchematronIpsecTunnel"><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+	<pattern> 
+		<rule>
+		<assert test='((@localAddress/../../@routerId) eq (@remoteAddress/../@routerId))'><value-of select="."/> The local and remote addresses must belong to the same routing domain.</assert> 
+		</rule>
+	</pattern>
+</schema>]]></rule>
+      </validationRules>
+      <root/>
+      <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+	<pattern> 
+		<rule>
+		<assert test='((@localAddress/../../@routerId) eq (@remoteAddress/../@routerId))'><value-of select="."/> The local and remote addresses must belong to the same routing domain.</assert> 
+		</rule>
+	</pattern>
+</schema>]]></dependenciesScript>
+      <attribute name="remoteAddress">
+        <description>Tunnel remote end point external peer.&#13;
+&#13;
+Valid reference is PeerIpv4 in Transport Route fragement.</description>
+        <mandatory/>
+        <restricted/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+        <dependencies>The local and remote address must have the same address family and belong to the same routing domain.</dependencies>
+      </attribute>
+      <attribute name="ipsecTunnelId">
+        <description>Value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="localAddress">
+        <description>Tunnel local endpoint assigned IP address.&#13;
+&#13;
+Valid reference is AddressIpv4 in L3 infra fragment.</description>
+        <mandatory/>
+        <restricted/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+        <dependencies>The local and remote address must have the same address family and belong to the same routing domain.</dependencies>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="RtnIpsec_IpsecTunnel_userLabel">
+            <mimName>RtnIpsec</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="reservedBy">
+        <description>Contains a list of MO instances that reserve this MO instance.</description>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <moRef name="ManagedObject"/>
+            <minLength>0</minLength>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="operationalState">
+        <description>The operational state.
+
+The operationalState is disabled if the associated Ikev2Session is disabled.</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="OperState">
+            <mimName>RtnIpsec</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+      <attribute name="availabilityStatus">
+        <description>The availability status.
+
+It contains details about operationalState.
+</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <enumRef name="AvailStatus">
+              <mimName>RtnIpsec</mimName>
+            </enumRef>
+            <minLength>0</minLength>
+          </sequence>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="IpsecPolicy">
+      <description>Holds configuration information for Ipsec policies.</description>
+      <attribute name="ipsecPolicyId">
+        <description>Value component of the RDN.&#13;
+</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="ipsecProposalProfile">
+        <description>Reference to an Ipsec proposal profile. </description>
+        <mandatory/>
+        <restricted/>
+        <dataType>
+          <moRef name="IpsecProposalProfile">
+            <mimName>RtnIpsecProposalProfile</mimName>
+          </moRef>
+        </dataType>
+      </attribute>
+      <attribute name="remoteTrafficSelector">
+        <description>Ordered list of traffic selectors to be used for SA negotiation. &#13;
+&#13;
+If remoteTrafficSelector is not specified, it means wildcard(i.e. any possible IP address, protocol etc).&#13;&#13;
+The first in the list has the highest priority.</description>
+        <restricted/>
+        <dataType>
+          <sequence>
+            <structRef name="TrafficSelector">
+              <mimName>RtnIpsec</mimName>
+            </structRef>
+            <minLength>0</minLength>
+            <maxLength>2</maxLength>
+            <nonUnique/>
+            <ordered/>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="antiReplayProtection">
+        <description>Enable or disable anti replay protection.&#13;
+&#13;
+</description>
+        <dataType>
+          <boolean>
+            <defaultValue>true</defaultValue>
+          </boolean>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="RtnIpsec_IpsecPolicy_userLabel">
+            <mimName>RtnIpsec</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="InterfaceIPv4_encapsulation_to_IpsecTunnel_reservedBy">
+      <biDirectionalAssociation>
+        <associationEnd name="encapsulation">
+          <hasClass name="IpsecTunnel">
+            <mimName>RtnIpsec</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="InterfaceIPv4">
+            <mimName>RtnL3InterfaceIPv4</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+    <relationship name="IpsecTunnel_to_IpsecPolicy">
+      <containment>
+        <parent>
+          <hasClass name="IpsecTunnel">
+            <mimName>RtnIpsec</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="IpsecPolicy">
+            <mimName>RtnIpsec</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+    <relationship name="IpsecTunnel_to_Ikev2Session">
+      <containment>
+        <parent>
+          <hasClass name="IpsecTunnel">
+            <mimName>RtnIpsec</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="Ikev2Session">
+            <mimName>RtnIpsec</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+    <relationship name="IpsecPolicy_ipsecProposalProfile_to_IpsecProposalProfile_reservedBy">
+      <biDirectionalAssociation>
+        <associationEnd name="ipsecProposalProfile">
+          <hasClass name="IpsecProposalProfile">
+            <mimName>RtnIpsecProposalProfile</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="IpsecPolicy">
+            <mimName>RtnIpsec</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+    <relationship name="Ike2Session_ikev2PolicyProfile_to_Ikev2PolicyProfile_reservedBy">
+      <biDirectionalAssociation>
+        <associationEnd name="ikev2PolicyProfile">
+          <hasClass name="Ikev2PolicyProfile">
+            <mimName>RtnIkev2PolicyProfile</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="Ikev2Session">
+            <mimName>RtnIpsec</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+    <relationship name="IpsecTunnel_remoteAddress_to_PeerIPv4_reservedBy">
+      <biDirectionalAssociation>
+        <associationEnd name="remoteAddress">
+          <hasClass name="PeerIPv4">
+            <mimName>RtnRoutesPeerIPv4</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="IpsecTunnel">
+            <mimName>RtnIpsec</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+    <relationship name="IpsecTunnel_localAddress_to_AddressIPv4_reservedBy">
+      <biDirectionalAssociation>
+        <associationEnd name="localAddress">
+          <hasClass name="AddressIPv4">
+            <mimName>RtnL3InterfaceIPv4</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="IpsecTunnel">
+            <mimName>RtnIpsec</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+  </mim>
+  <interMim>
+    <relationship name="Router_to_IpsecTunnel">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="false"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Router">
+            <mimName>RtnL3Router</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="IpsecTunnel">
+            <mimName>RtnIpsec</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

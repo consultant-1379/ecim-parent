@@ -1,0 +1,182 @@
+-- /**
+-- * This transform takes a YANG model as input and generates a ECIM compliant model (UML) as output.
+-- * NOTE: All restrictions should be noted here
+-- * 
+-- * superimposition-dependencies: 
+-- * library-dependencies: HelperFunctions.atl
+-- * Yang Model Dependencies: ericsson-yang-extensions.yang
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 22/08/2014
+-- */
+
+-- ECIMMM must be pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml in launcher
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI YANG=http://www.ericsson.com/2010/Yang
+
+module TypeMappingAndCreation;
+
+--Note:IN2 is for the augments model. One must be present if we do it like this. We could alternatively write a HOT to allow many augment files in. We also need to
+--think about how this will be called via the GUI/CLI
+create OUT : UML from IN : YANG, ECIM_MM : UML, YANG_MM : UML, ECIM_DT : UML, ECIM : UML, YANG_GM : UML, IN2 : YANG,-- IN3 : YANG
+	IN3: YANG, IN4: YANG, IN5: YANG, IN6: YANG, IN7: YANG, IN8: YANG, IN9: YANG, IN10: YANG, 
+	IN11: YANG, IN12: YANG, IN13: YANG, IN14: YANG, IN15: YANG, IN16: YANG, IN17: YANG, IN18: YANG, IN19: YANG, IN20: YANG, 
+	IN21: YANG, IN22: YANG, IN23: YANG, IN24: YANG, IN25: YANG, IN26: YANG, IN27: YANG, IN28: YANG, IN29: YANG, IN30: YANG, 
+	IN31: YANG, IN32: YANG, IN33: YANG, IN34: YANG, IN35: YANG, IN36: YANG, IN37: YANG, IN38: YANG, IN39: YANG, IN40: YANG, 
+	IN41: YANG, IN42: YANG, IN43: YANG, IN44: YANG, IN45: YANG, IN46: YANG, IN47: YANG, IN48: YANG, IN49: YANG, IN50: YANG, 
+	IN51: YANG, IN52: YANG, IN53: YANG, IN54: YANG, IN55: YANG, IN56: YANG, IN57: YANG, IN58: YANG, IN59: YANG, IN60: YANG, 
+	IN61: YANG, IN62: YANG, IN63: YANG, IN64: YANG, IN65: YANG, IN66: YANG, IN67: YANG, IN68: YANG, IN69: YANG, IN70: YANG, 
+	IN71: YANG, IN72: YANG, IN73: YANG, IN74: YANG, IN75: YANG, IN76: YANG, IN77: YANG, IN78: YANG, IN79: YANG, IN80: YANG, 
+	IN81: YANG, IN82: YANG, IN83: YANG, IN84: YANG, IN85: YANG, IN86: YANG, IN87: YANG, IN88: YANG, IN89: YANG, IN90: YANG, 
+	IN91: YANG, IN92: YANG, IN93: YANG, IN94: YANG, IN95: YANG, IN96: YANG, IN97: YANG, IN98: YANG, IN99: YANG, IN100: YANG; 
+
+uses HelperFunctions;
+
+
+--map the basic types
+helper def : typesMap : Map(String, String) = Map{
+	('boolean','EcimBoolean'),
+	('decimal64','EcimFloat'),
+	('int8','EcimInt8'),
+	('uint8','EcimUInt8'),
+	('int16','EcimInt16'),
+	('uint16','EcimUInt16'),
+	('int32','EcimInt32'),
+	('uint32','EcimUInt32'),
+	('int64','EcimInt64'),
+	('uint64','EcimUInt64'),
+	('string','EcimString')
+	};
+	
+--match the types which are built in-line/expanded
+rule matchNotBuildInType(type : YANG!Type, s : OclAny)
+{
+	using
+	{
+		out : OclAny = OclUndefined;
+	}	
+	do
+	{
+		if(type.oclIsTypeOf(YANG!Enumeration))
+		{
+			out <- thisModule.EnumerationToEnumeration(type,s);
+		}
+		else if(type.oclIsTypeOf(YANG!IdentityRef))
+		{
+			--map the identity ref to an existing identity if one exists or else create it
+			--NOTE:This assumes there is no enumeration already generated with a name the same as an identity which might not be correct
+			out <- if thisModule.resolveTemp(thisModule.getModule(s),'package').getPackagedElements()->select(e|e.oclIsTypeOf(UML!Enumeration) and e.name=type.base.name)->size() > 0 then thisModule.resolveTemp(thisModule.getModule(s),'package').getPackagedElements()->select(e|e.oclIsTypeOf(UML!Enumeration) and e.name=type.base.name)->first() else thisModule.IdentityRefToEnumeration(type,s) endif;
+			--out <- OclUndefined;
+		}
+		else if(type.oclIsTypeOf(YANG!Bits))
+		{
+			out <- thisModule.BitsToEnumeration(type,s);
+		}	
+		else if(type.oclIsTypeOf(YANG!UnionType))
+		{
+			out <- thisModule.UnionDataTypeToStruct(type,s);
+		}
+		else if(type.oclIsTypeOf(YANG!Empty))
+		{
+			out <- if thisModule.typeExistsAlreadyInOutputModel('EcimEmpty').oclIsUndefined() then thisModule.EmptyDataTypeToDatatype(type,s) else thisModule.typeExistsAlreadyInOutputModel('EcimEmpty') endif;
+		}
+		else if(type.oclIsTypeOf(YANG!Binary))
+		{
+			out <- if thisModule.typeExistsAlreadyInOutputModel('EcimBinary').oclIsUndefined() then thisModule.BinaryDataTypeToDatatype(type,s) else thisModule.typeExistsAlreadyInOutputModel('EcimBinary') endif;
+		}
+		else if(type.oclIsTypeOf(YANG!InstanceIdentifier))
+		{
+			out <- if thisModule.typeExistsAlreadyInOutputModel('EcimInstanceIdentifier').oclIsUndefined() then thisModule.InstanceIdentifierDataTypeToDatatype(type,s) else thisModule.typeExistsAlreadyInOutputModel('EcimInstanceIdentifier') endif;
+		}					
+		else
+		{
+			--OclUndefined;--This match should not occur!
+		}
+		out;
+	}
+}
+
+rule createDerivedType(referencedType : YANG!Type, sourceElement : OclAny)
+{
+	using
+	{
+		out : OclAny = OclUndefined;
+	}
+	do
+	{
+		if(referencedType.name = 'string')
+		{
+			out <- thisModule.StringDataTypeToDatatype(referencedType,sourceElement);
+		}
+		else if(referencedType.name = 'int8' or referencedType.name = 'uint8' or referencedType.name = 'int16' or referencedType.name = 'uint16' or referencedType.name = 'int32' or referencedType.name = 'uint32' or referencedType.name = 'int64' or referencedType.name = 'uint64')
+		{
+			out <- thisModule.IntegerDataTypeToDatatype(referencedType,sourceElement);
+		}
+		else if(referencedType.name = 'boolean')
+		{
+			out <- thisModule.BooleanDataTypeToDatatype(referencedType,sourceElement);
+		}					
+		else if(referencedType.name = 'decimal64')
+		{
+			out <- thisModule.Decimal64DataTypeToDatatype(referencedType,sourceElement);
+		}					
+		else
+		{
+			--OclUndefined;--This match should not occur!
+			--TODO:If the match wasn't found set the type to a string for the moment. 
+			--This should be removed in the production version as all types must work properly.
+			--out <- thisModule.StringDataTypeToDatatype(referencedType,sourceElement);
+			out <- thisModule.createDerivedType(thisModule.getTypeFromDataType(YANG!TypeDefinition.allInstances()->select(e|e.name=referencedType.name)->collect(e|e.type)->first()), sourceElement);
+			
+		}
+		out;
+	}
+}
+
+--Map Yang Types to ECIM Types. The sourceElement is used to help assign created types to the users package
+rule mapType(s : YANG!Type, sourceElement : OclAny)
+{
+	using
+	{
+		referencedType : YANG!Type = OclUndefined;
+		out : OclAny = OclUndefined;
+	}
+	do
+	{
+		if(s.oclIsKindOf(YANG!NamedElement))--the type is either a simple type or a typedef
+		{
+			if(not thisModule.typesMap.get(s.name).oclIsUndefined())
+			{
+				--the type is a simple one so find a match in the map
+				out <- UML!Model.allInstancesFrom('ECIM_DT')->collect(e|e.getOwnedTypes())->flatten()->select(e|e.name=thisModule.typesMap.get(s.name))->first();
+			}
+			else
+			{
+				--the type is a reference to a typedef so match it
+				referencedType <- thisModule.getReferencedType(s);
+				
+				if (referencedType.oclIsKindOf(YANG!NamedElement))
+				{
+					out <- thisModule.createDerivedType(referencedType,sourceElement);
+				}
+				else if(referencedType.oclIsTypeOf(YANG!LeafRef))--use the type of the leaf being pointed at as the local type
+				{
+					out <- UML!Model.allInstancesFrom('ECIM_DT')->collect(e|e.getOwnedTypes())->flatten()->select(e|e.name=thisModule.typesMap.get(thisModule.getTypeFromLeafRef(referencedType).name))->first();
+				}					
+				else
+				{
+					out <- thisModule.matchNotBuildInType(referencedType,sourceElement);
+				}
+			}
+		}
+		else if(s.oclIsTypeOf(YANG!LeafRef))--use the type of the leaf being pointed at as the local type
+		{
+			out <- UML!Model.allInstancesFrom('ECIM_DT')->collect(e|e.getOwnedTypes())->flatten()->select(e|e.name=thisModule.typesMap.get(thisModule.getTypeFromLeafRef(s).name))->first();
+		}			
+		else--the type is a complex one and needs to be expanded
+		{
+			out <- thisModule.matchNotBuildInType(s,sourceElement); 
+		}
+		out;
+	}
+}

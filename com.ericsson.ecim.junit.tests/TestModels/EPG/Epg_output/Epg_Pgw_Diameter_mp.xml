@@ -1,0 +1,1006 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ejiadng" contact="ejiadng" date="" docNo="" name="Epg_Pgw_Diameter" namespace="urn:com:ericsson:ecim:Epg_Pgw_Diameter" namespacePrefix="epg_pgw_diameter" organization="Ericsson EAB, NDO EPG" release="200" revision="" version="1">
+        <description>Diameter settings</description>
+        <enum name="AccessType">
+            <description>Connection type</description>
+            <enumMember name="direct">
+                <description>Direct access to the diameter application server</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="agent">
+                <description>The diameter application server is accessed via an agent</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="PgwIdentity">
+            <description>6~255 characters</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>6</min>
+                        <max>255</max>
+                    </lengthRange>
+                    <validValues>^[\.0-9A-Za-z-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RequestsPerSecond">
+            <description>Maximum requests per second</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>0</min>
+                        <max>5000</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Priority">
+            <description>Priority of the peer</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>255</max>
+                    </range>
+                    <unit>priority</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString64">
+            <description>Must contain only letters, numbers, underscores or dashes</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>64</max>
+                    </lengthRange>
+                    <validValues>^[\.0-9A-Za-z\_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Percent">
+            <description>percent</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>100</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="ResultCodes">
+            <description>Result codes treated as errors</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>64</max>
+                    </lengthRange>
+                    <validValues>^[0-9]{1,10}([-][0-9]{1,10})?$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="IpAddress">
+            <description>IP address</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>15</max>
+                    </lengthRange>
+                    <validValues>^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="ApplicationId">
+            <description>Vendor-specific application identity</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>64</max>
+                    </lengthRange>
+                    <validValues>^(ro|gy-3gpp|gx|mbms|pcc|s6b|[0-9]+(:[0-9]+)?)$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RequestWindowSize">
+            <description>Maximum number of outstanding requests</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>10</min>
+                        <max>32000</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="WdTimeout">
+            <description>Period between device watch dog requests</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>3</min>
+                        <max>300</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="FailureThreshold">
+            <description>Failure threshold value</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>1</min>
+                        <max>4294967295</max>
+                    </range>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="FailureTimer">
+            <description>Failure timer value</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>1</min>
+                        <max>86400</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Timeout">
+            <description>Communication timeout</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>60</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <class name="Diameter">
+            <description>Diameter settings</description>
+            <root/>
+            <action name="resetDiameterPaths">
+                <description>Reset all diameter path counters</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <attribute name="diameterID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="realm">
+                <description>Origin realm for Diameter messages</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="hostName">
+                <description>Host name for Diameter messages</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString64">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DiameterHost">
+            <description>Diameter hosts</description>
+            <attribute name="diameterHostId">
+                <description>Host identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString64">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="hostName">
+                <description>DIAMETER host specified as fully qualified domain name</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString64">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DiameterPeer">
+            <description>Diameter peers</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @host satisfies ($attr = /ManagedElement/Epg/Pgw/Diameter/DiameterHost/@diameterHostId)'><name path='.'/>,host: Host must be configured under [managed-element epg pgw diameter diameter-host]</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="diameterPeerId">
+                <description>Peer identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString64">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="address">
+                <description>Peer address</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddress">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="port">
+                <description>Peer port number</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <uint16/>
+                </dataType>
+            </attribute>
+            <attribute name="host">
+                <description>Diameter host identifier associated with the peer</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString64">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Watchdog">
+            <description>Watchdog settings</description>
+            <attribute name="watchdogID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Period between device watch dog requests</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="WdTimeout">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DiameterApplicationSystem">
+            <description>Diameter application systems</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='exists(./Peer/@peerId)'><name path='.'/>: Missing mandatory managed object 'peer'</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <action name="resetDiameterPaths">
+                <description>Reset diameter path counters for a specific DAS</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <action name="status">
+                <description>Show diameter path status information for a specific DAS</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <attribute name="diameterApplicationSystemId">
+                <description>Diameter application system identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString64">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="destinationRealm">
+                <description>Destination realm</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="onlineChargingSystem">
+                <description>The FQDN name of the OCS sent from PCRF in AVP 619, that this DAS uses</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="allowCcSessionFailover">
+                <description>Allow failover for credit control session</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Communication timeout</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="requestWindowSize">
+                <description>Maximum number of outstanding requests</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RequestWindowSize">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="requestsPerSecond">
+                <description>Maximum requests per second</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RequestsPerSecond">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="accessType">
+                <description>Connection type</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="AccessType">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="applicationId">
+                <description>Vendor-specific application identity</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ApplicationId">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Peer">
+            <description>Diameter peers and priorities</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='@peerId = /ManagedElement/Epg/Pgw/Diameter/DiameterPeer/@diameterPeerId'><name path='.'/>: Peer must be configured under [managed-element epg pgw diameter diameter-peer]</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="peerId">
+                <description>Diameter peer id</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString64">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="priority">
+                <description>Priority of the peer</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Priority">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DiameterPath">
+            <description>Settings for diameter path handling</description>
+            <attribute name="diameterPathID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="failureThreshold">
+                <description>Failure threshold value</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="FailureThreshold">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="recoveryThreshold">
+                <description>Recovery threshold value</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Percent">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="failureTimer">
+                <description>Failure timer value</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="FailureTimer">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="resultCodes">
+                <description>Result codes treated as errors</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="ResultCodes">
+                            <mimName>Epg_Pgw_Diameter</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>64</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="AgentRetry">
+            <description>Setting agent-retry parameters</description>
+            <attribute name="agentRetryID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noSession">
+                <description>Disables session level retry</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="peerTimeout">
+                <description>Peer failover timeout</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="S6b">
+            <description>S6b settings</description>
+            <attribute name="s6bID">
+                <description>ID for s6b</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="pgwIdentity">
+                <description>PGW hostname for DNS procedure</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="PgwIdentity">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile">
+            <description>S6b profiles</description>
+            <attribute name="profileId">
+                <description>Id for profile</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString64">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="diameterApplicationSystem">
+                <description>Diameter application system</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString64">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Diameter_to_DiameterHost">
+            <containment>
+                <parent>
+                    <hasClass name="Diameter">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DiameterHost">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>63</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Diameter_to_DiameterPeer">
+            <containment>
+                <parent>
+                    <hasClass name="Diameter">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DiameterPeer">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>64</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DiameterPeer_to_Watchdog">
+            <containment>
+                <parent>
+                    <hasClass name="DiameterPeer">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Watchdog">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Diameter_to_DiameterApplicationSystem">
+            <containment>
+                <parent>
+                    <hasClass name="Diameter">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <description>&lt;br /&gt;</description>
+                    <hasClass name="DiameterApplicationSystem">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>32</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DiameterApplicationSystem_to_Peer">
+            <containment>
+                <parent>
+                    <hasClass name="DiameterApplicationSystem">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Peer">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DiameterApplicationSystem_to_DiameterPath">
+            <containment>
+                <parent>
+                    <hasClass name="DiameterApplicationSystem">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DiameterPath">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DiameterApplicationSystem_to_AgentRetry">
+            <containment>
+                <parent>
+                    <hasClass name="DiameterApplicationSystem">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <description>&lt;br /&gt;</description>
+                    <hasClass name="AgentRetry">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Diameter_to_S6b">
+            <containment>
+                <parent>
+                    <hasClass name="Diameter">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <description>&lt;br /&gt;</description>
+                    <hasClass name="S6b">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="S6b_to_Profile">
+            <containment>
+                <parent>
+                    <hasClass name="S6b">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Pgw_to_Diameter">
+            <containment>
+                <parent>
+                    <hasClass name="Pgw">
+                        <mimName>Epg_Pgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Diameter">
+                        <mimName>Epg_Pgw_Diameter</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+</models>

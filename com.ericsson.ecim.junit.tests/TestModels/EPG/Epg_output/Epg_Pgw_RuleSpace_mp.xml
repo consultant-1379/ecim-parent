@@ -1,0 +1,2525 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_RuleSpace" namespace="urn:com:ericsson:ecim:Epg_Pgw_RuleSpace" namespacePrefix="epg_pgw_rulespace" organization="Ericsson EAB, NDO EPG" release="1" revision="" version="4">
+        <description>Rule space configuration for charging control</description>
+        <enum name="DefaultType">
+            <description>Specify whether tcp-setup deferred-charging is disabled or enabled, by default</description>
+            <enumMember name="enabled">
+                <description>Default enabled</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="disabled">
+                <description>Default disabled</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="OngoingReportedPeriod">
+            <description>Handling of ongoing reported resolution period applied for time based charging</description>
+            <enumMember name="allow">
+                <description>Wait for ongoing reported period to be completed</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="not-allow">
+                <description>Interrupt ongoing reported period</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="AuthorizationCode">
+            <description>Authorization code</description>
+            <enumMember name="authorized">
+                <description>Authorized</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="denied-roaming">
+                <description>Deny access because of roaming class</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="denied-user-defined-reason-1">
+                <description>Deny access due to proprietery operator definition (1)</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="denied-user-defined-reason-2">
+                <description>Deny access due to proprietery operator definition (2)</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="denied-user-defined-reason-3">
+                <description>Deny access due to proprietery operator definition (3)</description>
+                <value>7</value>
+            </enumMember>
+            <enumMember name="denied-user-defined-reason-4">
+                <description>Deny access due to proprietery operator definition (4)</description>
+                <value>8</value>
+            </enumMember>
+            <enumMember name="denied-user-defined-reason-5">
+                <description>Deny access due to proprietery operator definition (5)</description>
+                <value>9</value>
+            </enumMember>
+            <enumMember name="denied-blacklisted">
+                <description>Deny access because rating group is blacklisted</description>
+                <value>10</value>
+            </enumMember>
+            <enumMember name="denied-unknown">
+                <description>Deny access for unknown reason</description>
+                <value>11</value>
+            </enumMember>
+            <enumMember name="denied-terminal">
+                <description>Deny access due to terminal limitations</description>
+                <value>12</value>
+            </enumMember>
+            <enumMember name="denied-calendar-time">
+                <description>Deny access because of time of day</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="denied-quality-of-service">
+                <description>Deny access because of quality of service</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="Reporting">
+            <description>Reporting method for time-based-charging</description>
+            <enumMember name="no-reporting">
+                <description>Do not report active usage</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="timestamp">
+                <description>Report start and stop timestamps for each period of active usage</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="timestamp-and-volume">
+                <description>Report timestamps and used volume for each period of active usage</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="Method">
+            <description>Method to use for measurement of active usage</description>
+            <enumMember name="inactivity">
+                <description>Use inactivity period but do not included it in usage</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="inactivity-included">
+                <description>Use inactivity period and include it in usage</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="duration">
+                <description>Measure the duration of the session</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="active-periods">
+                <description>Each resolution period with traffic is counted as active usage</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="FinalReport">
+            <description>Final reporting for the rating group</description>
+            <enumMember name="send">
+                <description>Send a final report for the rating group</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="not-send">
+                <description>Don't send a final report for the rating group</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="TerminationAction">
+            <description>Action taken after quota termination of a rating group</description>
+            <enumMember name="activate-denied-timer">
+                <description>Apply user-denied-timer after quota termination of the rating-group</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="no-activate-denied-timer">
+                <description>Don't apply user-denied-timer after quota termination of the rating-group</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="services-not-allowed">
+                <description>Blacklist the rating-group after quota termination</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="Measurement">
+            <description>measurement</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>1</min>
+                        <max>86400</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString63">
+            <description>string up to 63 tokens</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>63</max>
+                    </lengthRange>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="TrafficClassString">
+            <description>Authorized traffic class</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>14</max>
+                    </lengthRange>
+                    <validValues>^(conversational|streaming|interactive-1|interactive-2|interactive-3|background)$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString20">
+            <description>Must contain only letters, numbers, underscores or dashes</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>20</max>
+                    </lengthRange>
+                    <validValues>^[\.0-9A-Za-z\_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="BufferLimit">
+            <description>Maximum number of packets to buffer</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>100</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="ServiceSetName">
+            <description>Must be a string beginning with a number or letter and consisting of letters, numbers, dashes and underscores.</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>0</min>
+                        <max>62</max>
+                    </lengthRange>
+                    <validValues>^[A-Za-z0-9][_0-9A-Za-z-]{0,62}$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RoamingClassIdString">
+            <description>Roaming class identifier</description>
+            <baseType>
+                <string>
+                    <validValues>^([1-9]|1[0-9]|2[0-4])$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Time">
+            <description>Activation time (hh:mm)</description>
+            <baseType>
+                <string>
+                    <validValues>^(([01][0-9])|(2[0-3])):([0-5][0-9])$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString64">
+            <description>string up to 64 tokens</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>64</max>
+                    </lengthRange>
+                    <validValues>^[\.0-9A-Za-z\_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="HoldingTimePeriod">
+            <description>Period of inactivity after which to report the quota</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>5</min>
+                        <max>86400</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RuleSpaceName">
+            <description>Must be a string beginning with a number or letter and consisting of letters, numbers, dashes and underscores.</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>63</max>
+                    </lengthRange>
+                    <validValues>^[[:alnum:]][[:alnum:]_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="PassThroughLimit">
+            <description>Maximum number of packets to pass through</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>254</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Limitation">
+            <description>downlink-limitation/uplink-limitation</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>1</min>
+                        <max>256000</max>
+                    </range>
+                    <unit>kbps</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString21">
+            <description>Must be a service data flow identifier or a range of service data flow identifiers</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>21</max>
+                    </lengthRange>
+                    <validValues>^[0-9]{1,10}(([-][0-9]{1,10}){0,1})$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString21AccessControlRule">
+            <description>Rangedstring</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>21</max>
+                    </lengthRange>
+                    <validValues>^[0-9]{1,10}([-][0-9]{1,10})?$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="UserDeniedTime">
+            <description>Time to wait before requesting new quota after a request has been denied</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>5</min>
+                        <max>86400</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <class name="RuleSpace">
+            <description>Rule space configuration for charging control</description>
+            <root/>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @serviceSet satisfies (exists(/ManagedElement/Epg/Pgw/ServiceSet[@serviceSetId eq $attr]/ServiceIdentification))'><name path='.'/>,serviceSet: Referenced service set must be configured with service-identification</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="ruleSpaceId">
+                <description>Rule space name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSpaceName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="serviceSet">
+                <description>The service-set correlating to the rule-space</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ServiceSetName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="enableAccessControlRules">
+                <description>Access control rules enabled using access-control-rule id</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="dropPendingAuthorization">
+                <description>List of service identifiers for which payload will dropped while waiting for authorization</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>1000</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="alwaysAllowedAccessControlRule">
+                <description>Always allowed access control rule</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>64</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="BufferPendingAuthorization">
+            <description>Settings for buffering packets pending authorization</description>
+            <attribute name="bufferPendingAuthorizationID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="bufferLimit">
+                <description>Maximum number of packets to buffer</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="BufferLimit">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="accessControlRule">
+                <description>List of service identifiers for which payload will be buffered while waiting for authorization</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>1000</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="AccessControlRule">
+            <description>List of service identifiers for which payload will be buffered while waiting for authorization</description>
+            <attribute name="accessControlRuleId">
+                <description>Access control rule identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="authorizationCode">
+                <description>Authorization code</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="AuthorizationCode">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="AllowPendingAuthorization">
+            <description>Settings for passing through packets pending authorization</description>
+            <attribute name="allowPendingAuthorizationID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="passThroughLimit">
+                <description>Maximum number of packets to pass through</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="PassThroughLimit">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="accessControlRule">
+                <description>List of service identifiers for which limited payload will pass while waiting for credit</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>1000</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="RedirectMap">
+            <description>Map of access control rules to a redirect set</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='@redirectMapId = /ManagedElement/Epg/Pgw/ServiceIdentification/HeaderRedirectSet/@headerRedirectSetId or @redirectMapId = /ManagedElement/Epg/Pgw/ServiceIdentification/UriRedirectSet/@uriRedirectSetId'><name path='.'/>: Referenced uri-redirect-set or header-redirect-set must be defined</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="redirectMapId">
+                <description>Redirect set name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString63">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="accessControlRule">
+                <description>Access control rule identifier or set of access control rule identifiers mapped to redirect set</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21AccessControlRule">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>65535</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TimeBasedCharging">
+            <description>Rating group related configuration</description>
+            <attribute name="timeBasedChargingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Measurement">
+            <description>Default active time settings</description>
+            <attribute name="measurementID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="resolution">
+                <description>Time measurement resolution for active usage</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Measurement">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="inactivity">
+                <description>Time measurement inactivity for active usage</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Measurement">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="reporting">
+                <description>Reporting method for time-based-charging</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Reporting">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="method">
+                <description>Method to use for measurement of active usage</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Method">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="RatingGroupCluster">
+            <description>Common time base definitions for clusters of rating groups</description>
+            <attribute name="ratingGroupClusterId">
+                <description>Unique ID for the rating-group cluster</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="ratingGroup">
+                <description>Rating group belonging to this cluster</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>1</minLength>
+                        <maxLength>256</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="QuotaHandling">
+            <description>Quota handling preferences</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @holdingTimePeriod satisfies (not(exists(@holdingTimeInfinity)))'><name path='.'/>,holdingTimePeriod: The following attributes can not be combined: holding-time-period, holding-time-infinity</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @holdingTimeInfinity satisfies (not(exists(@holdingTimePeriod)))'><name path='.'/>,holdingTimeInfinity: The following attributes can not be combined: holding-time-period, holding-time-infinity</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="quotaHandlingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="holdingTimePeriod">
+                <description>Period of inactivity after which to report the quota</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="HoldingTimePeriod">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="holdingTimeInfinity">
+                <description>Infinite holding time</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="userDeniedTime">
+                <description>Time to wait before requesting new quota after a request has been denied</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="UserDeniedTime">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noQuotaHandling">
+                <description>Rating group for which quota shall not be requested</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>4095</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="QuotaReporting">
+            <description>Quota reporting</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @noFinalReportLimit satisfies (exists(@reportLimitGranted))'><name path='.'/>,noFinalReportLimit: report-limit-granted must be enabled to use no-final-report-limit</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="quotaReportingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="reportLimitGranted">
+                <description>Reported usage will not exceed granted quota in reports</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noFinalReportLimit">
+                <description>Do not limit reported usage in the final report</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ServiceUnit">
+            <description>Requested service unit</description>
+            <attribute name="serviceUnitID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volume">
+                <description>Default volume when used as service unit</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <uint64/>
+                </dataType>
+            </attribute>
+            <attribute name="time">
+                <description>Default time when used as service unit</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <uint64/>
+                </dataType>
+            </attribute>
+            <attribute name="unit">
+                <description>Default units when used as service unit</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <uint64/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ReAuthorizationTriggers">
+            <description>Default triggers for quota re-authorization</description>
+            <attribute name="reAuthorizationTriggersID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnAddress">
+                <description>Trigger re-authorization if sgsn address has changed for the PDP context</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnPlmnId">
+                <description>Trigger re-authorization if PLMN id has changed for the PDP context</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ratType">
+                <description>Trigger re-authorization if RAT has changed for the PDP context</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="qos">
+                <description>Trigger re-authorization if QoS has changed for the PDP context</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lac">
+                <description>Trigger re-authorization if LAC has changed for the MS</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="cellId">
+                <description>Trigger re-authorization if CELL-ID has changed for the MS</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ZeroQuotaTermination">
+            <description>Behaviour when receiving GSU with any quota type=0 and no FUI</description>
+            <attribute name="zeroQuotaTerminationID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noActivateDeniedTimer">
+                <description>Don't apply user denied timer after quota termination of the rating group</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="QuotaTermination">
+            <description>Termination behaviour based on result code received at MSCC level</description>
+            <attribute name="quotaTerminationId">
+                <description>Quota termination name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString20">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ongoingReportedPeriod">
+                <description>Handling of ongoing reported resolution period applied for time based charging</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="OngoingReportedPeriod">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="finalReport">
+                <description>Final reporting for the rating group</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="FinalReport">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="terminationAction">
+                <description>Action taken after quota termination of a rating group</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TerminationAction">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="errorResultCodes">
+                <description>List of ranges of result codes</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString64">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>1</minLength>
+                        <maxLength>64</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="RatingGroup">
+            <description>Rating group settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='exists(./Default/@defaultID)'><name path='.'/>: Missing mandatory managed object 'default'</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <attribute name="ratingGroupID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="notAllowed">
+                <description>Access to rating group not allowed</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>4095</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Default">
+            <description>Default rating group settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @defaultRatingGroup satisfies (not(exists(@useAccessControlRule)))'><name path='.'/>,defaultRatingGroup: The following attributes can not be combined: default-rating-group, use-access-control-rule</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @useAccessControlRule satisfies (not(exists(@defaultRatingGroup)))'><name path='.'/>,useAccessControlRule: The following attributes can not be combined: default-rating-group, use-access-control-rule</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="defaultID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="defaultRatingGroup">
+                <description>Use this rating group if not found in map table</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="useAccessControlRule">
+                <description>Use access control rule identifier as rating group</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Map">
+            <description>Map of access control rules to a rating group</description>
+            <attribute name="mapId">
+                <description>Rating group identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="accessControlRule">
+                <description>Access control rule identifier or set of access control rule identifiers mapped to rating group</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>512</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DeferredCharging">
+            <description>Deferred charging settings</description>
+            <attribute name="deferredChargingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TcpSetup">
+            <description>TCP Setup settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(/ManagedElement/Epg/Pgw/License/@tcpSetupDeferredCharging)'><name path='.'/>: TCP Setup Deferred Charging must be licensed</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @enableServiceDataFlowId satisfies (exists(@default) and @default eq 2)'><name path='.'/>,enableServiceDataFlowId: TCP Setup Deferred Charging must be default disabled for setting enable-service-data-flow-id</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @disableServiceDataFlowId satisfies (exists(@default) and @default eq 1)'><name path='.'/>,disableServiceDataFlowId: TCP Setup Deferred Charging must be default eabled for setting disable-service-data-flow-id</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="tcpSetupID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="default">
+                <description>Specify whether TCP setup deferred charging is disabled or enabled, by default</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="DefaultType">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="enableServiceDataFlowId">
+                <description>Enabled service data flow ID or range of service data flow IDs for WSP deferred charging</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>4095</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="disableServiceDataFlowId">
+                <description>Disabled service data flow ID or range of service data flow IDs for WSP deferred charging</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>4095</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="AccessControlGroup">
+            <description>Access control group settings</description>
+            <attribute name="accessControlGroupId">
+                <description>Access control group identifier for access control group</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="authorizationCode">
+                <description>Authorization code</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="AuthorizationCode">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="LocalPolicyControl">
+            <description>Local policy control settings</description>
+            <attribute name="localPolicyControlID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ActivationTime">
+            <description>Activation time for authorization settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='not(exists(../AllTime))'><name path='.'/>: The following attributes can not be combined: all-time, activation-time</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(./DefaultRoamingClass/@defaultRoamingClassID)'><name path='.'/>: Missing mandatory managed object 'default-roaming-class'</assert>
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="activationTimeId">
+                <description>Activation time (hh:mm)</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="Time">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="RoamingClass">
+            <description>Authorization settings for roaming class</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='exists(./DefaultQualityOfService/@defaultQualityOfServiceID)'><name path='.'/>: Missing mandatory managed object 'default-quality-of-service'</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <attribute name="roamingClassId">
+                <description>Roaming class identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RoamingClassIdString">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="QualityOfService">
+            <description>Authorization settings for quality of service</description>
+            <attribute name="qualityOfServiceId">
+                <description>Authorized traffic class: conversational|streaming|interactive-1|interactive-2|interactive-3|background</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="TrafficClassString">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DefaultQualityOfService">
+            <description>Default authorization settings for quality of service</description>
+            <attribute name="defaultQualityOfServiceID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DefaultRoamingClass">
+            <description>Default authorization settings to use on no match</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='exists(./DefaultQualityOfService/@defaultQualityOfServiceID)'><name path='.'/>: Missing mandatory managed object 'default-quality-of-service'</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <attribute name="defaultRoamingClassID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="AllTime">
+            <description>Time-independent authorization settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='not(exists(../ActivationTime))'><name path='.'/>: The following attributes can not be combined: all-time, activation-time</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(./DefaultRoamingClass/@defaultRoamingClassID)'><name path='.'/>: Missing mandatory managed object 'default-roaming-class'</assert>
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="allTimeID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="BandwidthControl">
+            <description>Bandwidth control settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(/ManagedElement/Epg/Pgw/License/@serviceAwareBandwidthMgmt)'><name path='.'/>: Service-aware bandwidth management must be licensed</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="bandwidthControlID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ThroughputLimitation">
+            <description>Throughput limitation per context and access control rule</description>
+            <attribute name="throughputLimitationId">
+                <description>Identifier of the throughput-limitation profile</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="uplinkLimitation">
+                <description>Uplink throughput limitation per context and access control rule</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Limitation">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="downlinkLimitation">
+                <description>Downlink throughput limitation per context and access control rule</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Limitation">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="accessControlRule">
+                <description>Access control rule for which to apply the throughput limitation</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21AccessControlRule">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>65535</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="RedirectConstraints">
+            <description>Settings for constraint traffic redirection</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(/ManagedElement/Epg/Pgw/ServiceIdentification/RedirectConstraints)'><name path='.'/>: Constraints must be configured under [managed-element epg pgw service-identification redirect-constraints]</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="redirectConstraintsID">
+                <description>nameSingle instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="oneTime">
+                <description>Enable constraints for one time redirection</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="initial">
+                <description>Enable constraints for initial redirection</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="final">
+                <description>Enable constraints for final redirection</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="WspSetup">
+            <description>WSP connection oriented setup settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @enableServiceDataFlowId satisfies (exists(@default) and @default eq 2)'><name path='.'/>,enableServiceDataFlowId: WSP Deferred Charging must be default disabled for setting enable-service-data-flow-id</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @disableServiceDataFlowId satisfies (exists(@default) and @default eq 1)'><name path='.'/>,disableServiceDataFlowId: WSP Deferred Charging must be default eabled for setting disable-service-data-flow-id</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(/ManagedElement/Epg/Pgw/License/@wspSetupDeferredCharging)'><name path='.'/>: WSP Deferred Charging must be licensed</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="wspSetupID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="default">
+                <description>Specify whether WSP connection oriented deferred charging is disabled or enabled, by default</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="DefaultType">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="enableServiceDataFlowId">
+                <description>TCP Setup Deferred Charging must be default disabled to enable for specific SDF ID</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>4095</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="disableServiceDataFlowId">
+                <description>Disabled Service Data Flow ID or range of Service Data Flow IDs for TCP Setup Deferred Charging</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>4095</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="QosControl">
+            <description>Quality of service settings</description>
+            <attribute name="qosControlID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="BearerLevel">
+            <description>Rulespace QualityOfService BearerLevel setting</description>
+            <attribute name="bearerLevelID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Priority">
+            <description>Priority</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @defaultBearerQosProfile satisfies ($attr = /ManagedElement/Epg/Pgw/QosControl/BearerLevel/DefaultBearerProfile/@defaultBearerProfileId)'><name path='.'/>,defaultBearerQosProfile: Profile must be configured under [managed-element epg pgw qos-control bearer-level default-bearer-profile]</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="priorityId">
+                <description>Priority level</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="accessControlRule">
+                <description>Access control rule identifier or set of access control rule identifiers</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21AccessControlRule">
+                            <mimName>Epg_Pgw_RuleSpace</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>1</minLength>
+                        <maxLength>512</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="defaultBearerQosProfile">
+                <description>Default bearer QualityOfService profile name</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="RuleSpace_to_BufferPendingAuthorization">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="BufferPendingAuthorization">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RuleSpace_to_AllowPendingAuthorization">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AllowPendingAuthorization">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RuleSpace_to_RedirectMap">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RedirectMap">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RuleSpace_to_TimeBasedCharging">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TimeBasedCharging">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="TimeBasedCharging_to_Measurement">
+            <containment>
+                <parent>
+                    <hasClass name="TimeBasedCharging">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Measurement">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="TimeBasedCharging_to_RatingGroupCluster">
+            <containment>
+                <parent>
+                    <hasClass name="TimeBasedCharging">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RatingGroupCluster">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RatingGroupCluster_to_Measurement">
+            <containment>
+                <parent>
+                    <hasClass name="RatingGroupCluster">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Measurement">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RuleSpace_to_QuotaHandling">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="QuotaHandling">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="QuotaHandling_to_QuotaReporting">
+            <containment>
+                <parent>
+                    <hasClass name="QuotaHandling">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="QuotaReporting">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="QuotaHandling_to_ServiceUnit">
+            <containment>
+                <parent>
+                    <hasClass name="QuotaHandling">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceUnit">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="QuotaHandling_to_ReAuthorizationTriggers">
+            <containment>
+                <parent>
+                    <hasClass name="QuotaHandling">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ReAuthorizationTriggers">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="QuotaHandling_to_ZeroQuotaTermination">
+            <containment>
+                <parent>
+                    <hasClass name="QuotaHandling">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ZeroQuotaTermination">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="QuotaHandling_to_QuotaTermination">
+            <containment>
+                <parent>
+                    <hasClass name="QuotaHandling">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="QuotaTermination">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>64</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RuleSpace_to_RatingGroup">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RatingGroup">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RatingGroup_to_Default">
+            <containment>
+                <parent>
+                    <hasClass name="RatingGroup">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Default">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RatingGroup_to_Map">
+            <containment>
+                <parent>
+                    <hasClass name="RatingGroup">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Map">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>4095</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RuleSpace_to_DeferredCharging">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DeferredCharging">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DeferredCharging_to_TcpSetup">
+            <containment>
+                <parent>
+                    <hasClass name="DeferredCharging">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TcpSetup">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RuleSpace_to_LocalPolicyControl">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="LocalPolicyControl">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="LocalPolicyControl_to_ActivationTime">
+            <containment>
+                <parent>
+                    <hasClass name="LocalPolicyControl">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ActivationTime">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>24</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="LocalPolicyControl_to_AllTime">
+            <containment>
+                <parent>
+                    <hasClass name="LocalPolicyControl">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AllTime">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ActivationTime_to_RoamingClass">
+            <containment>
+                <parent>
+                    <hasClass name="ActivationTime">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RoamingClass">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ActivationTime_to_DefaultRoamingClass">
+            <containment>
+                <parent>
+                    <hasClass name="ActivationTime">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DefaultRoamingClass">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RoamingClass_to_QualityOfService">
+            <containment>
+                <parent>
+                    <hasClass name="RoamingClass">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="QualityOfService">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RoamingClass_to_DefaultQualityOfService">
+            <containment>
+                <parent>
+                    <hasClass name="RoamingClass">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DefaultQualityOfService">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="QualityOfService_to_AccessControlRule">
+            <containment>
+                <parent>
+                    <hasClass name="QualityOfService">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AccessControlRule">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="QualityOfService_to_AccessControlGroup">
+            <containment>
+                <parent>
+                    <hasClass name="QualityOfService">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AccessControlGroup">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DefaultQualityOfService_to_AccessControlRule">
+            <containment>
+                <parent>
+                    <hasClass name="DefaultQualityOfService">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AccessControlRule">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DefaultQualityOfService_to_AccessControlGroup">
+            <containment>
+                <parent>
+                    <hasClass name="DefaultQualityOfService">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AccessControlGroup">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DefaultRoamingClass_to_QualityOfService">
+            <containment>
+                <parent>
+                    <hasClass name="DefaultRoamingClass">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="QualityOfService">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DefaultRoamingClass_to_DefaultQualityOfService">
+            <containment>
+                <parent>
+                    <hasClass name="DefaultRoamingClass">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DefaultQualityOfService">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="AllTime_to_RoamingClass">
+            <containment>
+                <parent>
+                    <hasClass name="AllTime">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RoamingClass">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="AllTime_to_DefaultRoamingClass">
+            <containment>
+                <parent>
+                    <hasClass name="AllTime">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DefaultRoamingClass">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RuleSpace_to_BandwidthControl">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="BandwidthControl">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="BandwidthControl_to_ThroughputLimitation">
+            <containment>
+                <parent>
+                    <hasClass name="BandwidthControl">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ThroughputLimitation">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>64</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RuleSpace_to_RedirectConstraints">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RedirectConstraints">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DeferredCharging_to_WspSetup">
+            <containment>
+                <parent>
+                    <hasClass name="DeferredCharging">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="WspSetup">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="QosControl_to_BearerLevel">
+            <containment>
+                <parent>
+                    <hasClass name="QosControl">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="BearerLevel">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="BearerLevel_to_Priority">
+            <containment>
+                <parent>
+                    <hasClass name="BearerLevel">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Priority">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>64</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RuleSpace_to_QosControl">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="QosControl">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Pgw_to_RuleSpace">
+            <containment>
+                <parent>
+                    <hasClass name="Pgw">
+                        <mimName>Epg_Pgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>64</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

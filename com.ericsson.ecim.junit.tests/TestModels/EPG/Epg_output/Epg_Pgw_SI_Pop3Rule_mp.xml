@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_SI_Pop3Rule" namespace="urn:com:ericsson:ecim:Epg_Pgw_SI_Pop3Rule" namespacePrefix="epg_pgw_si_pop3rule" organization="Ericsson EAB, NDO EPG" release="1" revision="" version="3">
+        <description>POP3 rule</description>
+        <enum name="Operation">
+            <description>Limit match to operation being performed</description>
+            <enumMember name="retr">
+                <description>Apply rule for retr single email operation</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="top">
+                <description>Apply rule for get email header operation</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="list">
+                <description>Apply rule for list server content operation</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="AggregatedVolume">
+            <description>Volume type reported for aggregated charging</description>
+            <enumMember name="bearer">
+                <description>Count volume for bearer level</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="application">
+                <description>Count volume for application level</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString256">
+            <description>string up to 256 tokens</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>256</max>
+                    </lengthRange>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RuleName">
+            <description>Must be a string beginning with a number or letter and consisting of letters, numbers, dashes and underscores.</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>63</max>
+                    </lengthRange>
+                    <validValues>^[[:alnum:]][[:alnum:]_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedU32">
+            <description>Ranged Unit 0 .. 4294967295</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>0</min>
+                        <max>4294967295</max>
+                    </range>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="PriorityKey">
+            <description>String containing only decimal digits.&#13;
+First digit cannot be zero, range is 1-999999.&#13;
+</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>6</max>
+                    </lengthRange>
+                    <validValues>^[1-9][0-9]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="Pop3Rule">
+            <description>POP3 rule</description>
+            <root/>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='exists(./Term/@termID)'><name path='.'/>: Missing mandatory managed object 'term'</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <attribute name="pop3RuleId">
+                <description>Rule name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleName">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Term">
+            <description>Define a service identification term</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='exists(./From/@fromID)'><name path='.'/>: Missing mandatory managed object 'from'</assert>
+            <assert id='set' test='exists(./Then/@thenID)'><name path='.'/>: Missing mandatory managed object 'then'</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <attribute name="name">
+                <description>Term name</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleName">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="termID">
+                <description>Identifier of the term.&#13;
+Determines the term priority based on lexical order.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="PriorityKey">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="From">
+            <description>Define match criteria</description>
+            <attribute name="fromID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Then">
+            <description>Action to take if the 'from' condition is matched</description>
+            <attribute name="thenID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="payload">
+                <description>Service data flow identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedU32">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="aggregatedVolume">
+                <description>Volume type reported for aggregated charging</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="AggregatedVolume">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ActivateEventTracking">
+            <description>Settings for event tracking</description>
+            <attribute name="activateEventTrackingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Pop3">
+            <description>Match POP3 sessions</description>
+            <attribute name="pop3ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="operation">
+                <description>Limit match to operation being performed</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <enumRef name="Operation">
+                            <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                        </enumRef>
+                        <minLength>0</minLength>
+                        <maxLength>3</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="User">
+            <description>Match user</description>
+            <attribute name="userID">
+                <description>nameSingle instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="case">
+                <description>Consider case while processing</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="is">
+                <description>True if the value is an exact match</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="startsWith">
+                <description>True if the value matches the start</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="endsWith">
+                <description>True if the value matches the end</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="notIs">
+                <description>True if none of the values are matched</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notStartsWith">
+                <description>True if none of the values match the start</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notEndsWith">
+                <description>True if none of the values match the end</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="contains">
+                <description>True if all the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notContains">
+                <description>True if none of the values are included</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString256">
+                            <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Pop3Rule_to_Term">
+            <containment>
+                <parent>
+                    <hasClass name="Pop3Rule">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Term">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>128</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Term_to_From">
+            <containment>
+                <parent>
+                    <hasClass name="Term">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="From">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Term_to_Then">
+            <containment>
+                <parent>
+                    <hasClass name="Term">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Then">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="From_to_Pop3">
+            <containment>
+                <parent>
+                    <hasClass name="From">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Pop3">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Pop3_to_User">
+            <containment>
+                <parent>
+                    <hasClass name="Pop3">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="User">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Then_to_ActivateEventTracking">
+            <containment>
+                <parent>
+                    <hasClass name="Then">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ActivateEventTracking">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="ServiceIdentification_to_Pop3Rule">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Pop3Rule">
+                        <mimName>Epg_Pgw_SI_Pop3Rule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>512</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

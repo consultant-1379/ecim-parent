@@ -1,0 +1,1271 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_ServiceIdentification" namespace="urn:com:ericsson:ecim:Epg_Pgw_ServiceIdentification" namespacePrefix="epg_pgw_serviceidentification" organization="Ericsson EAB, NDO EPG" release="2" revision="" version="3">
+        <description>Service identification configuration for packet inspection</description>
+        <enum name="Default">
+            <description>Default policy</description>
+            <enumMember name="allowed">
+                <description>User-agents allowed by default</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="not-allowed">
+                <description>User-agents not allowed by default</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="MaxAnalyzerRouting">
+            <description>Maximum accepted dynamic routing rule per analyzer</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>0</min>
+                        <max>5000</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MaxUserChild">
+            <description>Maximum allowed flows per protocol and user</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>0</min>
+                        <max>2000</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="HeuristicsPackage">
+            <description>Must contain only letters, numbers, underscores or dashes</description>
+            <baseType>
+                <string>
+                    <validValues>^[\.0-9A-Za-z\_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MaxNodeFlow">
+            <description>Maximum accepted flows in the node</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>0</min>
+                        <max>30000000</max>
+                    </range>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="IdleTime">
+            <description>Service data flow idle time</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>5</min>
+                        <max>900</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RuleSetName">
+            <description>Must be a string beginning with a number or letter and consisting of letters, numbers, dashes and underscores.</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>63</max>
+                    </lengthRange>
+                    <validValues>^[[:alnum:]][[:alnum:]_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString63">
+            <description>Must contain only letters, numbers, underscores or dashes</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>63</max>
+                    </lengthRange>
+                    <validValues>^[\.0-9A-Za-z\_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="ServiceIdentification">
+            <description>Service identification configuration for packet inspection</description>
+            <root/>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(/ManagedElement/Epg/Pgw/License/@packetInspection)'><name path='.'/>: Packet inspection must be licensed</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <action name="configuration">
+                <description>Show low level configuration for packet inspection</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <attribute name="serviceIdentificationID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="unescapeConversion">
+                <description>Unescape characters in URI before processing</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="enableIpv6AddressNormalization">
+                <description>Enable uri normalization for uri's containing ipv6 adresses</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="heuristicsPackage">
+                <description>Heuristics package</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="HeuristicsPackage">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FlowLimits">
+            <description>Inspection flows limitation settings</description>
+            <attribute name="flowLimitsID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="maxUserChild">
+                <description>Maximum allowed flows per protocol and user</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MaxUserChild">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="maxNodeFlow">
+                <description>Maximum accepted flows in the node</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MaxNodeFlow">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="maxAnalyzerRouting">
+                <description>Maximum accepted dynamic routing rule per analyzer</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MaxAnalyzerRouting">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ExtendedHeaderDefinition">
+            <description>Definition of additional protocol headers for inspection</description>
+            <attribute name="extendedHeaderDefinitionID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Http">
+            <description>HTTP header</description>
+            <attribute name="httpID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="textContent">
+                <description>Token for header with textual content</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString63">
+                            <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>10</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="decimalContent">
+                <description>Token for header with decimal content</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString63">
+                            <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>10</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Wsp">
+            <description>WSP header</description>
+            <attribute name="wspID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="textContent">
+                <description>Token for header with textual content</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString63">
+                            <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>10</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="UserAgent">
+            <description>User-agent constraints settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $rule in @allowed satisfies ($rule = /ManagedElement/Epg/Pgw/ServiceIdentification/TextRuleSet/@textRuleSetId)'><name path='.'/>,allowed: Rule set must be configured under [managed-element epg pgw service-identification text-rule-set]</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $rule in @allowed satisfies (not(@default eq 1))'><name path='.'/>,allowed: Incompatible with default allowed</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="userAgentID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="allowed">
+                <description>Text-rule-set matching user-agents allowed for redirection</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString63">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="default">
+                <description>Default policy</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Default">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="RedirectConstraints">
+            <description>User-agent constraints settings</description>
+            <attribute name="redirectConstraintsID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TextRuleSet">
+            <description>Define a set of textual rules</description>
+            <attribute name="textRuleSetId">
+                <description>Name of the rule set</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="HttpWspRuleSet">
+            <description>Define a set of URI rules</description>
+            <attribute name="httpWspRuleSetId">
+                <description>Name of the rule set</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SmtpRuleSet">
+            <description>Define a set of SMTP rules</description>
+            <attribute name="smtpRuleSetId">
+                <description>Name of the rule set</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Pop3RuleSet">
+            <description>Define a set of POP3 rules</description>
+            <attribute name="pop3RuleSetId">
+                <description>Name of the rule set</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ImapRuleSet">
+            <description>Define a set of IMAP rules</description>
+            <attribute name="imapRuleSetId">
+                <description>Name of the rule set</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FtpRuleSet">
+            <description>Define a set of FTP rules</description>
+            <attribute name="ftpRuleSetId">
+                <description>Name of the rule set</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TftpRuleSet">
+            <description>Define a set of FTP rules</description>
+            <attribute name="tftpRuleSetId">
+                <description>Name of the rule set</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="RtspRuleSet">
+            <description>Define a set of RTSP rules</description>
+            <attribute name="rtspRuleSetId">
+                <description>Name of the rule set</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SipRuleSet">
+            <description>Define a set of SIP rules</description>
+            <attribute name="sipRuleSetId">
+                <description>Name of the rule set</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DnsRuleSet">
+            <description>Define a set of DNS rules</description>
+            <attribute name="dnsRuleSetId">
+                <description>Name of the rule set</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="HeaderRuleSet">
+            <description>Define a set of header rules</description>
+            <attribute name="headerRuleSetId">
+                <description>Name of the rule set</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="HeuristicRuleSet">
+            <description>Define a set of heuristic rules</description>
+            <attribute name="heuristicRuleSetId">
+                <description>Name of the rule set</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TrailingSmtpPackets">
+            <description>Trailing smtp packets where event tracking is activated</description>
+            <attribute name="trailingSmtpPacketsID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="classifiedToHeaderRule">
+                <description>Classify packets to header rule</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TrailingHttpPackets">
+            <description>Http tailing packets</description>
+            <attribute name="trailingHttpPacketsID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="classifiedToHeaderRule">
+                <description>Trailing smtp packets when event tracking is activated</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TrailingMmsPackets">
+            <description>Trailing smtp packets when event tracking is activated</description>
+            <attribute name="trailingMmsPacketsID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="classifiedToHeaderRule">
+                <description>Classify packets to header rule</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ServiceDataFlow">
+            <description>Settings for service data flows</description>
+            <attribute name="serviceDataFlowID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="idleTime">
+                <description>Service data flow idle time</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IdleTime">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="ServiceIdentification_to_FlowLimits">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FlowLimits">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_ExtendedHeaderDefinition">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ExtendedHeaderDefinition">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ExtendedHeaderDefinition_to_Http">
+            <containment>
+                <parent>
+                    <hasClass name="ExtendedHeaderDefinition">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Http">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ExtendedHeaderDefinition_to_Wsp">
+            <containment>
+                <parent>
+                    <hasClass name="ExtendedHeaderDefinition">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Wsp">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_TextRuleSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TextRuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_HttpWspRuleSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HttpWspRuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_SmtpRuleSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SmtpRuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_Pop3RuleSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Pop3RuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_ImapRuleSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ImapRuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_FtpRuleSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FtpRuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_TftpRuleSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TftpRuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_RtspRuleSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RtspRuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_SipRuleSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SipRuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_DnsRuleSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DnsRuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_HeaderRuleSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HeaderRuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_HeuristicRuleSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HeuristicRuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_RedirectConstraints">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RedirectConstraints">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RedirectConstraints_to_UserAgent">
+            <containment>
+                <parent>
+                    <hasClass name="RedirectConstraints">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="UserAgent">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_TrailingSmtpPackets">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TrailingSmtpPackets">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_TrailingHttpPackets">
+            <filter>ServiceIdentification</filter>
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TrailingHttpPackets">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_TrailingMmsPackets">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TrailingMmsPackets">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceIdentification_to_ServiceDataFlow">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceDataFlow">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Pgw_to_ServiceIdentification">
+            <containment>
+                <parent>
+                    <hasClass name="Pgw">
+                        <mimName>Epg_Pgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

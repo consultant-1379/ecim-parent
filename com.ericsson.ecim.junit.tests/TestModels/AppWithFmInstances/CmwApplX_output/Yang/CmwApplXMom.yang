@@ -1,0 +1,75 @@
+/*
+  Copyright (c) 2013 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2013-dec-16 12:40:56 using 
+    * com.ericsson.ecim.yang.m2m 2.9.0.qualifier
+*/
+module CmwApplXMom {
+	namespace "urn:com:ericsson:ecim:CmwApplXMom";
+	prefix CmwApplXMom;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import ECIM_Top {
+		prefix ECIM_Top;
+	}
+
+	organization "Ericsson";
+	description "qwe";
+
+	revision "2013-12-16" {
+		ericsson:release 1;
+		ericsson:version 1;
+	}
+
+	augment "/ECIM_Top:ManagedElement" {
+		list CmwApplXRoot {
+			key cmwApplXRootId;
+			max-elements 1;
+			uses "CmwApplXMom:CmwApplXRoot";
+			list FunctionX {
+				key functionXId;
+				max-elements 5;
+				uses "CmwApplXMom:FunctionX";
+			}
+
+		}
+
+	}
+
+	grouping CmwApplXRoot {
+		description "123";
+		leaf cmwApplXRootId {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping FunctionX {
+		description "qwe";
+		leaf functionXId {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf a1 {
+			type "ECIM_Top:IpDNSAddress";
+			mandatory true;
+			description "qwe";
+		}
+
+		container prodId {
+			presence "This Container points to a Struct which has no key.";
+			description "qwe";
+			uses "ECIM_Top:ProductIdentity";
+		}
+
+	}
+
+}

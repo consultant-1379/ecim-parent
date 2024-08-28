@@ -1,0 +1,135 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:24:24 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RsyncNodeGroupSyncMember" {
+	namespace "urn:com:ericsson:ecim:RsyncNodeGroupSyncMember";
+	prefix "RsyncNodeGroupSyncMember";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RsyncSynchronization {
+		prefix "RsyncSynchronization";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RsyncRadioEquipmentClock {
+		prefix "RsyncRadioEquipmentClock";
+	}
+
+	import RsyncSyncLibrary {
+		prefix "RsyncSyncLibrary";
+	}
+
+	description "Node group synchronization member.";
+
+	revision "2015-10-13" {
+		ericsson:correction "0";
+		ericsson:release "1";
+		ericsson:version "1";
+	}
+
+	augment
+	"/ECIM_Top:ManagedElement/ECIM_Top:Transport/RsyncSynchronization:Synchronization/RsyncRadioEquipmentClock:RadioEquipmentClock"
+	{
+		list "NodeGroupSyncMember" {
+			key "nodeGroupSyncMemberId";
+			max-elements 1;
+			uses RsyncNodeGroupSyncMember:NodeGroupSyncMember;
+		}
+
+	}
+
+	grouping "NodeGroupSyncMember" {
+		description
+		"A Node Group is a group of Ericsson RBS nodes that must be radio-frame synchronized to each other.
+
+The MO is created for each member of the Node Group. Each Node Group uses only one external synchronization reference. The node that uses the external synchronization reference is called the Synchronization Provider. The other nodes in the Node Group are called Synchronization Receivers. All Synchronization Receivers synchronize their radio-frame to the Synchronization Provider, either directly or to another Synchronization Receiver.";
+		leaf "nodeGroupSyncMemberId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "administrativeState" {
+			type ECIM_CommonLibrary:AdmState;
+			mandatory true;
+			description "The administrative state.";
+		}
+
+		list "localNodeInformation" {
+			min-elements 1;
+			max-elements 1;
+			config true;
+			description "Synchronization information on the Node Group Member itself.";
+			uses RsyncSyncLibrary:LocalNodeInfo;
+		}
+
+		leaf "syncNodePriority" {
+			type uint8 {
+				range "1..15";
+			}
+
+			mandatory true;
+			description
+			"This number is used both as a way to identify a Node Group Member, and to give the node a priority value which is used when selecting the Synchronization Provider. Every Node Group Member must have a unique number. The value 1 has the highest priority.";
+		}
+
+		list "syncProviderInformation" {
+			min-elements 1;
+			max-elements 1;
+			config true;
+			description
+			"Provides information on the Synchronization Provider, that is the Node Group Member that is synchronizing to a reference external to the Node Group.";
+			uses RsyncSyncLibrary:SyncProviderInfo;
+		}
+
+		leaf-list "syncRiPortCandidate" {
+			type string {
+				pattern "(.*=.*,)*RiPort=.*";
+			}
+
+			min-elements 1;
+			max-elements 9;
+			description
+			"Reference to a list of RiPort MOs that are candidates to be used as synchronization reference when the node has taken the role of Synchronization Receiver.";
+		}
+
+		leaf-list "syncRiPortStatus" {
+			type RsyncSyncLibrary:RiPortStatus;
+			config true;
+			min-elements 1;
+			max-elements 9;
+			description
+			"The status of the Radio Interface (RI) ports configured as candidates for Node Group synchronization.
+
+The order of the Synchronization RI Ports is the same as for syncRiPortCandidate.";
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use.";
+		}
+
+		ericsson:retryEntranceToNodeGroup {
+			description
+			"Retries entrance to the Node Group. Can be used if the automatic entrance to the Node Group has failed.";
+		}
+
+	}
+
+}

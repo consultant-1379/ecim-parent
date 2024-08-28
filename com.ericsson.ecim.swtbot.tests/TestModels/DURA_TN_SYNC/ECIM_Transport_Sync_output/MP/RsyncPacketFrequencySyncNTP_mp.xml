@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Oct 13, 2015 2:23:27 PM using:
+	* com.ericsson.ecim.m2m 3.0.2.qualifier
+	* com.ericsson.ecim.dsl 3.0.2.qualifier
+	* com.ericsson.ecim.edm 3.0.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate/>
+    </momIdentity>
+    <createdBy>
+      <signature>EAB/FJP/TA UABJOCL</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>EAB/FJP/TA UABJOCL</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim author="EAB/FJP/TA UABJOCL" contact="EAB/FJP/TA UABJOCL" correction="2" date="" docNo="" name="RsyncPacketFrequencySyncNTP" namespace="urn:com:ericsson:ecim:RsyncPacketFrequencySyncNTP" namespacePrefix="rsyncpacketfrequencysyncntp" organization="" release="0" revision="" version="1">
+    <description>Packet Frequency Synchronization NTP</description>
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <obsolete/>
+    <enum name="FrequencyNtpOperMode">
+      <description>Frequency NTP Operational Mode</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="5"/>
+        <extension name="originatingMimName" value="RsyncSyncLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="CLIENT">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="SERVER">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <derivedDataType name="NtpDscp">
+      <description>NtpDscp</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="5"/>
+        <extension name="originatingMimName" value="RsyncSyncLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <baseType>
+        <int8>
+          <range>
+            <min>0</min>
+            <max>63</max>
+          </range>
+        </int8>
+      </baseType>
+    </derivedDataType>
+    <class name="PacketFrequencySyncNTP">
+      <description>Packet Frequency Synchronization NTP</description>
+      <root/>
+      <obsolete/>
+      <attribute name="packetFrequencySyncNTPId">
+        <description>The value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="frequencySyncNtpServer">
+        <description>Reference to a peerIPv4  MO which provides the server address and possibility to manage BFD.</description>
+        <mandatory/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+      </attribute>
+      <attribute name="dscp">
+        <description>The dscp value used for SNTP/UDP/IP transmitted packets.</description>
+        <dataType>
+          <derivedDataTypeRef name="NtpDscp">
+            <defaultValue>54</defaultValue>
+            <mimName>RsyncPacketFrequencySyncNTP</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="frequencyNtpOperationalMode">
+        <description>This attribute defines if the Frequency Synchronization function using NTP shall act as a Client or as a Server.</description>
+        <dataType>
+          <enumRef name="FrequencyNtpOperMode">
+            <defaultValue>CLIENT</defaultValue>
+            <mimName>RsyncPacketFrequencySyncNTP</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+      <attribute name="encapsulation">
+        <description>Specifies the underlying IPv4  address of the own node.</description>
+        <mandatory/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+      </attribute>
+    </class>
+  </mim>
+  <interMim>
+    <relationship name="Synchronization_to_PacketFrequencySyncNTP">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="false"/>
+      </domainExtension>
+      <obsolete/>
+      <containment>
+        <parent>
+          <hasClass name="Synchronization">
+            <mimName>RsyncSynchronization</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="PacketFrequencySyncNTP">
+            <mimName>RsyncPacketFrequencySyncNTP</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+        <noNotification/>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

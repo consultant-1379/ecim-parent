@@ -1,0 +1,89 @@
+-- /**
+-- * This transform takes a YANG model as input and generates a ECIM compliant model (UML) as output.
+-- * NOTE: All restrictions should be noted here
+-- * 
+-- * superimposition-dependencies: 
+-- * library-dependencies: HelperFunctions.atl
+-- * Yang Model Dependencies: ericsson-yang-extensions.yang
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 22/08/2014
+-- */
+
+-- ECIMMM must be pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml in launcher
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI YANG=http://www.ericsson.com/2010/Yang
+
+module CreateAssociation;
+
+--Note:IN2 is for the augments model. One must be present if we do it like this. We could alternatively write a HOT to allow many augment files in. We also need to
+--think about how this will be called via the GUI/CLI
+create OUT : UML from IN : YANG, ECIM_MM : UML, YANG_MM : UML, ECIM_DT : UML, ECIM : UML, YANG_GM : UML, IN2 : YANG,-- IN3 : YANG
+	IN3: YANG, IN4: YANG, IN5: YANG, IN6: YANG, IN7: YANG, IN8: YANG, IN9: YANG, IN10: YANG, 
+	IN11: YANG, IN12: YANG, IN13: YANG, IN14: YANG, IN15: YANG, IN16: YANG, IN17: YANG, IN18: YANG, IN19: YANG, IN20: YANG, 
+	IN21: YANG, IN22: YANG, IN23: YANG, IN24: YANG, IN25: YANG, IN26: YANG, IN27: YANG, IN28: YANG, IN29: YANG, IN30: YANG, 
+	IN31: YANG, IN32: YANG, IN33: YANG, IN34: YANG, IN35: YANG, IN36: YANG, IN37: YANG, IN38: YANG, IN39: YANG, IN40: YANG, 
+	IN41: YANG, IN42: YANG, IN43: YANG, IN44: YANG, IN45: YANG, IN46: YANG, IN47: YANG, IN48: YANG, IN49: YANG, IN50: YANG, 
+	IN51: YANG, IN52: YANG, IN53: YANG, IN54: YANG, IN55: YANG, IN56: YANG, IN57: YANG, IN58: YANG, IN59: YANG, IN60: YANG, 
+	IN61: YANG, IN62: YANG, IN63: YANG, IN64: YANG, IN65: YANG, IN66: YANG, IN67: YANG, IN68: YANG, IN69: YANG, IN70: YANG, 
+	IN71: YANG, IN72: YANG, IN73: YANG, IN74: YANG, IN75: YANG, IN76: YANG, IN77: YANG, IN78: YANG, IN79: YANG, IN80: YANG, 
+	IN81: YANG, IN82: YANG, IN83: YANG, IN84: YANG, IN85: YANG, IN86: YANG, IN87: YANG, IN88: YANG, IN89: YANG, IN90: YANG, 
+	IN91: YANG, IN92: YANG, IN93: YANG, IN94: YANG, IN95: YANG, IN96: YANG, IN97: YANG, IN98: YANG, IN99: YANG, IN100: YANG; 
+
+uses HelperFunctions;
+
+--based on 2 classes in the output model create an association
+rule CreateAssociation(parent : YANG!Node, parentClass : UML!Class, childClass : UML!Class, isAugment : Boolean)
+{
+	using
+	{
+		st0 : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimContribution')->first();		
+		st1 : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimContainment')->first();
+	}	
+	to ass : UML!Association
+	(
+		
+		name <- parentClass.name+'_to_'+childClass.name,
+		memberEnd <- Set{source,target},
+		ownedEnd <- Set{source}
+		--ownedEnd <- Set{source,target}
+	),
+	source : UML!Property
+	(
+		name <- parentClass.name,
+		--The lower/upper of the source side is always 1 which is the UML default so don't set anything
+		--lower
+		--upper
+		association <- ass,
+		aggregation <- #none,
+		type <- parentClass
+		
+	),
+	target : UML!Property
+	(
+		name <- childClass.name,
+		--upper and lower values are only available on lists
+		lower <- if(parent.oclIsKindOf(YANG!List)) then if parent.min.oclIsUndefined() then 0 else parent.min endif else OclUndefined endif,
+		upper <- if(parent.oclIsKindOf(YANG!List)) then if parent.max.oclIsUndefined() then -1 else parent.max endif else OclUndefined endif,
+		association <- ass,
+		aggregation <- #composite,
+		type <- childClass
+	)
+	do
+	{
+		--depending on the association type containment/contribution we must assign ownership of the association/parts differently
+		if(isAugment)
+		{
+			ass.applyStereotype(st0);
+			ass.package <- thisModule.resolveTemp(childClass,'class').package;
+			ass.ownedEnd <- ass.ownedEnd->append(target);
+		}
+		else
+		{
+			ass.applyStereotype(st1);
+			ass.package <- parentClass.package;
+			parentClass.ownedAttribute <- target;
+		}
+		ass;
+	}
+}

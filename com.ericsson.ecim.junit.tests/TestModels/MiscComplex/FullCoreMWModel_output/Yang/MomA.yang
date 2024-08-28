@@ -1,0 +1,834 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 10:51:12 AM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "MomA" {
+	namespace "urn:com:ericsson:ecim:MomA";
+	prefix "MomA";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import LibC {
+		prefix "LibC";
+	}
+
+	organization "Inc Inc";
+	description "qwe";
+
+	revision "2014-09-11" {
+		ericsson:statusInformation "Testing testing";
+		ericsson:author "Cormac McCarthy";
+		ericsson:docNo "123";
+		ericsson:release "4";
+		ericsson:revision "PA1";
+		ericsson:version "3";
+		ericsson:correction "2";
+		ericsson:specification "IEEE 736";
+		ericsson:contact "Jesus Christ";
+	}
+
+	list "Root" {
+		key "rootId";
+		list "MocX" {
+			key "mocXId";
+			uses MomA:MocX;
+		}
+
+		list "MocY" {
+			key "mocYId";
+			min-elements 1;
+			max-elements 1;
+			uses MomA:MocY;
+		}
+
+		list "MocZ" {
+			key "mocZId";
+			uses MomA:MocZ;
+		}
+
+		list "A" {
+			key "aId";
+			list "B" {
+				key "bId";
+				list "C" {
+					key "cId";
+					list "D" {
+						key "dId";
+						uses MomA:D;
+					}
+
+					uses MomA:C;
+				}
+
+				uses MomA:B;
+			}
+
+			list "B2" {
+				key "b2Id";
+				list "C" {
+					key "cId";
+					list "D" {
+						key "dId";
+						uses MomA:D;
+					}
+
+					uses MomA:C;
+				}
+
+				uses MomA:B2;
+			}
+
+			uses MomA:A;
+		}
+
+		list "RoMocWithNonPersistentRdn" {
+			key "roMocNonPersistentRdnId";
+			uses MomA:RoMocWithNonPersistentRdn;
+		}
+
+		uses MomA:Root;
+	}
+
+	typedef "AdmState" {
+		type enumeration {
+			enum "LOCKED" {
+				value 0;
+				description "q";
+			}
+
+			enum "UNLOCKED" {
+				value 1;
+				description "2";
+			}
+
+		}
+
+		description "qwe";
+	}
+
+	typedef "DerivedString" {
+		type string {
+			pattern ".*";
+		}
+
+		description "qw";
+	}
+
+	typedef "RangeType" {
+		type int32 {
+			range "0..10";
+		}
+
+		description "qwe";
+	}
+
+	typedef "MultipleRangeType" {
+		type int32 {
+			range "-5..3|10..100|400..*";
+		}
+
+		description "qwe";
+	}
+
+	typedef "MultipleFloatRangeType" {
+		type decimal64 {
+			range "-30.4..12.37|0.0001..0.2|1001..3000.4|59999..*";
+			fraction-digits 1;
+		}
+
+	}
+
+	typedef "InfiniteMaxRange" {
+		type int64 {
+			range "0..*";
+		}
+
+	}
+
+	grouping "Root" {
+		description "qwe";
+		leaf "rootId" {
+			type string;
+			mandatory true;
+			description "asd";
+			ericsson:restricted;
+		}
+
+		leaf "qq" {
+			type string;
+			mandatory true;
+			description "qqw";
+		}
+
+		leaf "aq1" {
+			type string;
+			default "troll";
+			config true;
+			description "s";
+		}
+
+		ericsson:simpleAction {
+			description "qwe";
+		}
+
+		ericsson:complexAction {
+			description "qwe";
+			input {
+				leaf "a" {
+					type int16;
+					mandatory true;
+					description "qwe";
+				}
+
+				leaf "b" {
+					type string;
+					mandatory true;
+					description "q";
+				}
+
+				leaf "c" {
+					type MomA:AdmState;
+					mandatory true;
+					description "qwe";
+				}
+
+			}
+
+			output {
+				leaf "returnValue" {
+					type boolean;
+					mandatory true;
+					description "qwe";
+				}
+
+			}
+
+		}
+
+		ericsson:actionWithMultiValuedParams {
+			description "This action has multi-valued parameters.";
+			input {
+				leaf-list "x" {
+					type int32;
+					min-elements 1;
+					max-elements 23;
+					description "a";
+				}
+
+				leaf-list "y" {
+					type string;
+					description "This param is for something.";
+				}
+
+				leaf-list "z" {
+					type int64;
+					min-elements 7;
+					max-elements 7;
+					description "A parameter.";
+				}
+
+			}
+
+			output {
+				list "returnType" {
+					min-elements 1;
+					max-elements 33;
+					config true;
+					description "Return type doc.";
+					ericsson:keyless-config-list;
+					uses MomA:returnType;
+				}
+
+			}
+
+		}
+
+		ericsson:actionWithDerivedReturn {
+			description "none";
+			output {
+				leaf "returnValue" {
+					type LibC:IpAddress;
+					mandatory true;
+					description "none";
+				}
+
+			}
+
+		}
+
+	}
+
+	grouping "MocX" {
+		description "qwe";
+		leaf "mocXId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf "a1" {
+			type int16;
+			default "7";
+			config true;
+			description "qwe";
+		}
+
+		leaf-list "a2" {
+			type uint64;
+			config true;
+			description "qw";
+		}
+
+		leaf "a3" {
+			type boolean;
+			config true;
+			description "qwe";
+		}
+
+		leaf "a4" {
+			type string;
+			config true;
+			description "f";
+		}
+
+		leaf "a5" {
+			type int32;
+			default "55";
+			description "r";
+		}
+
+		leaf "a6" {
+			type uint8;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "a7" {
+			type MomA:DerivedString;
+			description "q";
+		}
+
+		leaf "a8" {
+			type MomA:RangeType;
+			description "qw";
+		}
+
+		leaf "a10" {
+			type string {
+				pattern "(.*=.*,)*MocY=.*";
+			}
+
+			description "qwe";
+		}
+
+		container "a11" {
+			presence "This Container points to a Struct which has no key.";
+			description "qwe";
+			uses MomA:a11;
+		}
+
+		leaf "a99" {
+			type MomA:AdmState;
+			description "qwe";
+		}
+
+		leaf "a20" {
+			type boolean;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "a21" {
+			type string;
+			mandatory true;
+			description "qwe";
+		}
+
+		container "b1" {
+			presence "This Container points to a Struct which has no key.";
+			description "qwe";
+			uses MomA:b1;
+		}
+
+		leaf "a17" {
+			type string {
+				pattern "(.*=.*,)*MocZ=.*";
+			}
+
+			description "qwe";
+		}
+
+		container "a18" {
+			presence "This Container points to a Struct which has no key.";
+			description "qwe";
+			uses MomA:a18;
+		}
+
+		leaf "c1PROisConfigurable" {
+			type int32;
+			config true;
+			description "Some docs.
+On several lines.";
+		}
+
+		leaf "c2NPROisConfigurable" {
+			type int16;
+			config true;
+			description "qe";
+		}
+
+		leaf "c3PROisConfigurableDefault" {
+			type string;
+			default "Xxxx";
+			config true;
+			description "qwe";
+		}
+
+		list "myROStructAttr" {
+			min-elements 1;
+			max-elements 1;
+			config true;
+			description "qwe";
+			uses MomA:myROStructAttr;
+		}
+
+		leaf "a500_ro_config_notRestricted" {
+			type int16;
+			config true;
+			description "qwe";
+		}
+
+		leaf "a500_ro_config_restricted" {
+			type int16;
+			config true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf "moRefWithDefault" {
+			type string {
+				pattern "(.*=.*,)*A=.*";
+			}
+
+		}
+
+		leaf "enumRefWithDefault" {
+			type MomA:AdmState;
+		}
+
+		leaf "ecimUInt32AttrRangeMax" {
+			type uint32;
+			default "4294967295";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimInt32AttrRangeMin" {
+			type int32;
+			default "-2147483648";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimUInt32AttrRangeMin" {
+			type uint32;
+			default "0";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimInt32AttrRangeMax" {
+			type int32;
+			default "2147483647";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimUInt16AttrRangeMax" {
+			type uint16;
+			default "65535";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimInt16AttrRangeMin" {
+			type int16;
+			default "-32768";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimUInt16AttrRangeMin" {
+			type uint16;
+			default "0";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimInt16AttrRangeMax" {
+			type int16;
+			default "32767";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimUInt8AttrRangeMax" {
+			type uint8;
+			default "255";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimInt8AttrRangeMin" {
+			type int8;
+			default "-128";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimUInt8AttrRangeMin" {
+			type uint8;
+			default "0";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimInt8AttrRangeMax" {
+			type int8;
+			default "127";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimUInt64AttrRangeMax" {
+			type uint64;
+			default "18446744073709551615";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimInt64AttrRangeMin" {
+			type int64;
+			default "-9223372036854775808";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimUInt64AttrRangeMin" {
+			type uint64;
+			default "0";
+			description "Checking default value range against data type.";
+		}
+
+		leaf "ecimInt64AttrRangeMax" {
+			type int64;
+			default "9223372036854775807";
+			description "Checking default value range against data type.";
+		}
+
+		container "myStructAttribute" {
+			presence "This Container points to a Struct which has no key.";
+			description "From a library";
+			uses MomA:myStructAttribute;
+		}
+
+		leaf "attributeWithAbstractMocType" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			description "qwe";
+		}
+
+		leaf "multipleRangeAttribute" {
+			type MomA:MultipleRangeType;
+			default "11";
+		}
+
+		leaf "multipleFloatRangeAttribute" {
+			type MomA:MultipleFloatRangeType;
+			default "8888888.99";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "asd";
+		}
+
+		leaf "aq1" {
+			type string;
+			default "troll";
+			config true;
+			description "s";
+		}
+
+	}
+
+	grouping "MocY" {
+		description "qwe";
+		leaf "mocYId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf "a1" {
+			type int16;
+			default "7";
+			config true;
+			description "qwe";
+		}
+
+		leaf-list "a2" {
+			type uint64;
+			config true;
+			description "qw";
+		}
+
+		leaf "a3" {
+			type boolean;
+			config true;
+			description "qwe";
+		}
+
+		leaf "a4" {
+			type string;
+			default "trollet";
+			config true;
+			description "f";
+		}
+
+		leaf "aq1" {
+			type string;
+			default "troll";
+			config true;
+			description "s";
+		}
+
+	}
+
+	grouping "Name" {
+		description "qw";
+		leaf "firstName" {
+			type string;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "lastName" {
+			type string;
+			mandatory true;
+			description "q";
+		}
+
+		leaf "state" {
+			type MomA:AdmState;
+			mandatory true;
+			description "123";
+		}
+
+		leaf "mocYRef" {
+			type string {
+				pattern "(.*=.*,)*MocY=.*";
+			}
+
+			description "444";
+		}
+
+		leaf-list "mvString" {
+			type string;
+			description "qwe";
+		}
+
+	}
+
+	grouping "MocZ" {
+		description "MOC for multi-valued attributes.";
+		leaf "mocZId" {
+			type string;
+			mandatory true;
+			description "Id attribute documentation.";
+			ericsson:restricted;
+		}
+
+		leaf-list "mva1" {
+			type uint8;
+			max-elements 10;
+			description "qwe";
+		}
+
+		leaf-list "mva2" {
+			type string;
+			max-elements 6;
+			description "qwe";
+		}
+
+		leaf-list "mva3" {
+			type MomA:AdmState;
+			max-elements 2;
+			description "Blinka lilla stjarna.";
+		}
+
+		list "mva4" {
+			config true;
+			description "qwe Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses MomA:mva4;
+		}
+
+		leaf-list "mva5" {
+			type string {
+				pattern "(.*=.*,)*MocX=.*";
+			}
+
+			description "qwe";
+		}
+
+	}
+
+	grouping "A" {
+		description "qwe";
+		leaf "attrQ" {
+			type int16;
+			description "qwe";
+		}
+
+		leaf "aId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf "useIMR" {
+			type MomA:InfiniteMaxRange;
+		}
+
+	}
+
+	grouping "B" {
+		description "qwe";
+		leaf "bId" {
+			type string;
+			mandatory true;
+			description "a";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "C" {
+		description "qwe";
+		leaf "cId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf "sharedAtt" {
+			type int16;
+		}
+
+	}
+
+	grouping "D" {
+		description "qwe";
+		leaf "dId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "AnotherStruct" {
+		description "qwe";
+		leaf-list "mvRef" {
+			type string {
+				pattern "(.*=.*,)*D=.*";
+			}
+
+			min-elements 1;
+			max-elements 20;
+			description "qwe";
+		}
+
+		leaf-list "mvIntegerWithDefault" {
+			type uint8;
+			min-elements 1;
+			max-elements 10;
+			description "qwe";
+		}
+
+		leaf "boolWithDefault" {
+			type boolean;
+			mandatory true;
+			description "qwe";
+		}
+
+	}
+
+	grouping "RoMocWithNonPersistentRdn" {
+		description "qwe";
+		leaf "roMocNonPersistentRdnId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "RuntimeStruct" {
+		description "qwe";
+		leaf "runtimeStructMember1" {
+			type int16;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "runtimeStructMember2" {
+			type string;
+		}
+
+		leaf-list "runtimeStructMember3" {
+			type int32;
+			max-elements 17;
+		}
+
+		leaf-list "cachedRuntimeSm" {
+			type int16;
+			min-elements 1;
+			max-elements 12;
+			description "qwe";
+		}
+
+	}
+
+	grouping "ConfigStructWithRuntimeSM" {
+		description "123";
+		leaf "runtimeSm1" {
+			type int64;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "configSm1" {
+			type int16;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "runtimeSm2" {
+			type int64;
+			mandatory true;
+			description "qwe";
+		}
+
+	}
+
+	grouping "B2" {
+		description "qwe";
+		leaf "b2Id" {
+			type string;
+			mandatory true;
+			description "a";
+			ericsson:restricted;
+		}
+
+	}
+
+}

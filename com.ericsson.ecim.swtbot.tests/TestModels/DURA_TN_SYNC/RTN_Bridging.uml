@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/" xmlns:Documentation="http://www.eclipse.org/papyrus/documentation" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CoreMWProfile/ pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw http:///schemas/ECIMBaseProfile/ pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ">
+  <uml:Model xmi:id="_AHe5oEJ1EeOKFKZSVYWrPw" name="RtnBridging">
+    <ownedComment xmi:id="_rvCu8EJ2EeOKFKZSVYWrPw">
+      <body>Transport Bridging Model fragment.</body>
+    </ownedComment>
+    <packageImport xmi:id="_GZ9H0EJ2EeOKFKZSVYWrPw">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_iT7qACCSEd-Egr3-YAWs7Q"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_d96W0EJ1EeOKFKZSVYWrPw" name="" client="_AHe5oEJ1EeOKFKZSVYWrPw">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.uml#_5vlRYnhQEd-OM9oMWC6jJQ"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_lIREsEJ1EeOKFKZSVYWrPw" name="RtnBridging">
+      <ownedComment xmi:id="_k18wMEJ2EeOKFKZSVYWrPw">
+        <body>ECIM Transport Bridging Model.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_3OuTwEJ1EeOKFKZSVYWrPw" name="Bridge">
+        <ownedComment xmi:id="__STvsEJ1EeOKFKZSVYWrPw">
+          <body>Ethernet L2 forwarding technique.
+
+A network bridge connects multiple network segments at the data link layer (Layer 2) of the OSI model.
+
+In Ethernet networks, the term bridge formally means a device that behaves according to the IEEE 802.1D standards.
+
+Bridging takes place at OSI Model Layer 2 (data-link layer), that it (including MAC Bridge, Provider Bridge) directs frames according to hardware assigned MAC addresses.</body>
+        </ownedComment>
+        <ownedRule xmi:id="_NkwpMKRAEeOXH4cKDHkMLw" name="TN_extension_administrativeStateBridge" constrainedElement="_yfAasELVEeOKFKZSVYWrPw">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_NkwpMaRAEeOXH4cKDHkMLw">
+            <language>Optionality</language>
+            <body>if-feature administrativeStateBridge</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_g9jq8IZ-EeSqaJghTi263A" name="Bridge" constrainedElement="_yfAasELVEeOKFKZSVYWrPw">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_g9nVUIZ-EeSqaJghTi263A">
+            <language>Schematron</language>
+            <body>&lt;schema xmlns=&quot;http://purl.oclc.org/dsdl/schematron&quot;>
+	&lt;pattern>
+		&lt;rule>
+		&lt;assert test='(count(@reservedBy[matches(., &quot;.*,InterfaceIPv4=.*&quot;)]) &amp;lt; 2)'>&lt;value-of select =&quot;.&quot;/> Max one MO of type InterfaceIPv4 Can reserve this port.&lt;/assert>
+		&lt;/rule>
+	&lt;/pattern>
+&lt;/schema></body>
+          </specification>
+        </ownedRule>
+        <ownedAttribute xmi:id="_NhoVIEJ2EeOKFKZSVYWrPw" name="bridgeId" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_NhxfEEJ2EeOKFKZSVYWrPw">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Nh73IEJ2EeOKFKZSVYWrPw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Nh8eMEJ2EeOKFKZSVYWrPw" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Env-MELVEeOKFKZSVYWrPw" name="macAddress" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_En02skLVEeOKFKZSVYWrPw">
+            <body>The MAC address of the Bridged Virtual Interface (BVI), when a BVI is associated with this Bridge.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_CommonLibrary.uml#_uE9P22hgEeGjDbsSDCyj-w"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_tqjfUEL4EeOKFKZSVYWrPw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RpKUIELXEeOKFKZSVYWrPw" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_a-18AELVEeOKFKZSVYWrPw" name="operationalState" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_a-8psULVEeOKFKZSVYWrPw">
+            <body>The operational state.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#__lAE8JdbEeC11vgiYYrb4A"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_s9gMEEL4EeOKFKZSVYWrPw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_a_ElgELVEeOKFKZSVYWrPw" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_jNweMELVEeOKFKZSVYWrPw" name="availabilityStatus" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_jN0IkkLVEeOKFKZSVYWrPw">
+            <body>The availability status.
+
+It contains details about operationalState.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#_k2VdcDrxEeOzd4qf6-nnMQ"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KYK9EErKEeOnsrXxvFd0jA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KYYYcErKEeOnsrXxvFd0jA" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_yfAasELVEeOKFKZSVYWrPw" name="administrativeState" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_yfF6QULVEeOKFKZSVYWrPw">
+            <body>The administrative state.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#__jC9IJdbEeC11vgiYYrb4A"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_dx1zsFziEeOnsrXxvFd0jA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_dyCoAFziEeOnsrXxvFd0jA" value="1"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_xut3MFz1EeOnsrXxvFd0jA" name="UNLOCKED">
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_CommonLibrary.uml#__jC9JZdbEeC11vgiYYrb4A"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5l3IoELVEeOKFKZSVYWrPw" name="port" visibility="public">
+          <ownedComment xmi:id="_5l8oMULVEeOKFKZSVYWrPw">
+            <body>Reference to VlanPort.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zTRS8J_MEeOY9epNz5Ktcw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zTc5IJ_MEeOY9epNz5Ktcw" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_jJl74DjmEeSidc7L1oNWTw" name="reservedBy" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_jJrbcTjmEeSidc7L1oNWTw">
+            <body>Contains a list of MO instances that reserve this MO instance.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jJt3sTjmEeSidc7L1oNWTw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_jJuewDjmEeSidc7L1oNWTw" value="*"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_YSx3AELYEeOKFKZSVYWrPw" name="Transport_to_Bridge" memberEnd="_YSyeEELYEeOKFKZSVYWrPw _YSzFIULYEeOKFKZSVYWrPw">
+        <ownedEnd xmi:id="_YSyeEELYEeOKFKZSVYWrPw" name="Transport" visibility="public" association="_YSx3AELYEeOKFKZSVYWrPw">
+          <type xmi:type="uml:Class" href="ECIM_Top.uml#_kvudoJ7vEd-VobSz_ngLSA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YS0TQELYEeOKFKZSVYWrPw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YSzsMkLYEeOKFKZSVYWrPw" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_YSzFIULYEeOKFKZSVYWrPw" name="bridge" visibility="public" type="_3OuTwEJ1EeOKFKZSVYWrPw" aggregation="composite" association="_YSx3AELYEeOKFKZSVYWrPw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YS5y0ELYEeOKFKZSVYWrPw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YS5LwkLYEeOKFKZSVYWrPw" value="256"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_APPlsJ_DEeOY9epNz5Ktcw" name="Bridge_port_to_VlanPort_reservedBy" memberEnd="_APT3IJ_DEeOY9epNz5Ktcw _APVsUJ_DEeOY9epNz5Ktcw">
+        <ownedEnd xmi:id="_APT3IJ_DEeOY9epNz5Ktcw" name="port" visibility="public" association="_APPlsJ_DEeOY9epNz5Ktcw">
+          <type xmi:type="uml:Class" href="ECIM_Transport_L2.uml#_uFGZM2hgEeGjDbsSDCyj-w"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_APdoIJ_DEeOY9epNz5Ktcw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_APdBEZ_DEeOY9epNz5Ktcw" value="*"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_APVsUJ_DEeOY9epNz5Ktcw" name="reservedBy" visibility="public" type="_3OuTwEJ1EeOKFKZSVYWrPw" association="_APPlsJ_DEeOY9epNz5Ktcw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_APp1Yp_DEeOY9epNz5Ktcw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_APp1YZ_DEeOY9epNz5Ktcw" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_sT-vkKRAEeOXH4cKDHkMLw" name="RtnBridging_">
+      <ownedComment xmi:id="_7gEfQKRAEeOXH4cKDHkMLw">
+        <body>Decision MOM for RtnBridging.
+
+Shall not be visible.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_sUJHoKRAEeOXH4cKDHkMLw" name="Root" isAbstract="true">
+        <ownedComment xmi:id="_45SDMKRAEeOXH4cKDHkMLw">
+          <body>Decision MO for RtnBridging.
+
+Shall not be visible.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_ANyLkKRBEeOXH4cKDHkMLw" name="DURA">
+        <packagedElement xmi:type="uml:Class" xmi:id="_AN6ucaRBEeOXH4cKDHkMLw" name="Model"/>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_AHe5pEJ1EeOKFKZSVYWrPw">
+      <eAnnotations xmi:id="_AHe5pUJ1EeOKFKZSVYWrPw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_AHe5pkJ1EeOKFKZSVYWrPw">
+      <eAnnotations xmi:id="_AHe5p0J1EeOKFKZSVYWrPw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/documentation#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://PAPYRUS_DOCUMENTATION/Papyrus.profile.uml#_H9068AEYEeCIz8iAxBJnfA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_E4xeYEJ1EeOKFKZSVYWrPw">
+      <eAnnotations xmi:id="_vii4cZ0SEeW4ma0yeKsZYQ" source="PapyrusVersion">
+        <details xmi:id="_vii4cp0SEeW4ma0yeKsZYQ" key="Version" value="1.0.6"/>
+        <details xmi:id="_vii4c50SEeW4ma0yeKsZYQ" key="Comment" value=""/>
+        <details xmi:id="_vii4dJ0SEeW4ma0yeKsZYQ" key="Copyright" value=""/>
+        <details xmi:id="_vii4dZ0SEeW4ma0yeKsZYQ" key="Date" value="2015-12-07"/>
+        <details xmi:id="_vii4dp0SEeW4ma0yeKsZYQ" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_A9eK0HGoEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_A9eK0XGoEeWKa6xc8cMmlg" key="Version" value="1.0.5"/>
+        <details xmi:id="_A9eK0nGoEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_A9eK03GoEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_A9eK1HGoEeWKa6xc8cMmlg" key="Date" value="2015-08-24"/>
+        <details xmi:id="_A9eK1XGoEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_E44zIEJ1EeOKFKZSVYWrPw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_cUcakNQkEd63X4o72aQidQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_HgkAAEJ1EeOKFKZSVYWrPw">
+      <eAnnotations xmi:id="_A9h1MHGoEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_A9h1MXGoEeWKa6xc8cMmlg" key="Version" value="1.0.2"/>
+        <details xmi:id="_A9h1MnGoEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_A9h1M3GoEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_A9h1NHGoEeWKa6xc8cMmlg" key="Date" value="2015-09-04"/>
+        <details xmi:id="_A9h1NXGoEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_Hgl1MEJ1EeOKFKZSVYWrPw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_Br2_QBSXEd-ZjqYFUyJzOw"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_GOuXg2W_EeWG3arGTiu4Mw" base_Model="_AHe5oEJ1EeOKFKZSVYWrPw" createdBy="EAB/FJP/TA UABJOCL" approvedBy="EAB/FJP/TA UABJOCL" docDate=""/>
+  <CoreMWProfile:CmwModel xmi:id="_GMDeAGW_EeWG3arGTiu4Mw" base_Model="_AHe5oEJ1EeOKFKZSVYWrPw"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_GOuXhGW_EeWG3arGTiu4Mw" base_Package="_lIREsEJ1EeOKFKZSVYWrPw" author="EAB/FJP/TA UABJOCL" contact="EAB/FJP/TA UABJOCL" revision="1" version="2" release="1" correction="7"/>
+  <CoreMWProfile:CmwMom xmi:id="_GMMn8GW_EeWG3arGTiu4Mw" base_Package="_lIREsEJ1EeOKFKZSVYWrPw"/>
+  <CoreMWProfile:CmwClass xmi:id="_GMMn8WW_EeWG3arGTiu4Mw" base_Class="_3OuTwEJ1EeOKFKZSVYWrPw"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_GOuXhWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_NhoVIEJ2EeOKFKZSVYWrPw"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_GOuXhmW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" length="" pattern="" isNotifiable="true" base_Property="_Env-MELVEeOKFKZSVYWrPw"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_GMMn8mW_EeWG3arGTiu4Mw" base_Property="_Env-MELVEeOKFKZSVYWrPw"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_GO4IgGW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" length="" pattern="" isNotifiable="true" base_Property="_a-18AELVEeOKFKZSVYWrPw"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_GMMn82W_EeWG3arGTiu4Mw" base_Property="_a-18AELVEeOKFKZSVYWrPw"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_GO4IgWW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" length="" pattern="" isNotifiable="true" base_Property="_jNweMELVEeOKFKZSVYWrPw"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_GMMn9GW_EeWG3arGTiu4Mw" base_Property="_jNweMELVEeOKFKZSVYWrPw"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_GO4IgmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" status="OBSOLETE" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_yfAasELVEeOKFKZSVYWrPw"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_GMMn9WW_EeWG3arGTiu4Mw" base_Property="_yfAasELVEeOKFKZSVYWrPw" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_GO4Ig2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="If this attribute refers to VlanPort MO, the same VlanPort instance cannot be referenced by a InterfaceIPv4 MO. Cannot add the same VlanPort to more than one bridge." disturbances="Changing this attribute causes traffic disturbances." precondition="" sideEffects="" takesEffect="" isNotifiable="true" isAssociationEnd="true" base_Property="_5l3IoELVEeOKFKZSVYWrPw"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_GMMn9mW_EeWG3arGTiu4Mw" base_Property="_5l3IoELVEeOKFKZSVYWrPw" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimContribution xmi:id="_GO4IhGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_YSx3AELYEeOKFKZSVYWrPw" isNotifiable="true"/>
+  <CoreMWProfile:CmwContribution xmi:id="_GMMn92W_EeWG3arGTiu4Mw" splitImmDn="false" base_Association="_YSx3AELYEeOKFKZSVYWrPw"/>
+  <ECIMBaseProfile:EcimClientAssociationEnd xmi:id="_GO4IhWW_EeWG3arGTiu4Mw" base_Property="_APT3IJ_DEeOY9epNz5Ktcw" isReserving="true"/>
+  <ECIMBaseProfile:EcimBiDirAssociation_CS xmi:id="_GO4IhmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_APPlsJ_DEeOY9epNz5Ktcw"/>
+  <ECIMBaseProfile:EcimServerAssociationEnd xmi:id="_GO4Ih2W_EeWG3arGTiu4Mw" base_Property="_APVsUJ_DEeOY9epNz5Ktcw"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_GO4IiGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Package="_sT-vkKRAEeOXH4cKDHkMLw" author="EAB/FJP/TA UABJOCL" contact="EAB/FJP/TA UABJOCL" date="" docNo="" revision="" version="0" release="0" organization="" correction="0"/>
+  <CoreMWProfile:CmwMom xmi:id="_GMMn-GW_EeWG3arGTiu4Mw" base_Package="_sT-vkKRAEeOXH4cKDHkMLw" immNamespace="MOM_NAME"/>
+  <ECIMBaseProfile:EcimDecisions xmi:id="_GO4IiWW_EeWG3arGTiu4Mw" base_Package="_ANyLkKRBEeOXH4cKDHkMLw"/>
+  <ECIMBaseProfile:EcimDecision xmi:id="_GO4IimW_EeWG3arGTiu4Mw" base_Class="_AN6ucaRBEeOXH4cKDHkMLw"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_GO4Ii2W_EeWG3arGTiu4Mw" specification="802.1Q-2011" base_Class="_3OuTwEJ1EeOKFKZSVYWrPw" isLegacyRoot="true"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_GO4IjGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="Max one MO of type InterfaceIPv4 can reserve this port." disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_jJl74DjmEeSidc7L1oNWTw"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_GMMn-WW_EeWG3arGTiu4Mw" base_Property="_jJl74DjmEeSidc7L1oNWTw" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAbstractMoClass xmi:id="_GO4IjWW_EeWG3arGTiu4Mw" base_Class="_sUJHoKRAEeOXH4cKDHkMLw" hideGroupName="" specification="" status="OBSOLETE" statusInformation=""/>
+  <CoreMWProfile:CmwAttribute xmi:id="_GMMn-mW_EeWG3arGTiu4Mw" base_Property="_NhoVIEJ2EeOKFKZSVYWrPw"/>
+  <ECIMBaseProfile:EcimSchematronConstraint xmi:id="_GO4IjmW_EeWG3arGTiu4Mw" interfaceVersion="1.0" interfaceName="ECIM_Schematron" base_Constraint="_g9jq8IZ-EeSqaJghTi263A"/>
+  <Documentation:Documentation xmi:id="_B27Q0GW_EeWG3arGTiu4Mw" base_Comment="__STvsEJ1EeOKFKZSVYWrPw"/>
+  <Documentation:Documentation xmi:id="_B27Q0WW_EeWG3arGTiu4Mw" base_Comment="_NhxfEEJ2EeOKFKZSVYWrPw"/>
+  <Documentation:Documentation xmi:id="_B27Q0mW_EeWG3arGTiu4Mw" base_Comment="_k18wMEJ2EeOKFKZSVYWrPw"/>
+  <Documentation:Documentation xmi:id="_B27Q02W_EeWG3arGTiu4Mw" base_Comment="_rvCu8EJ2EeOKFKZSVYWrPw"/>
+  <Documentation:Documentation xmi:id="_B27Q1GW_EeWG3arGTiu4Mw" base_Comment="_En02skLVEeOKFKZSVYWrPw"/>
+  <Documentation:Documentation xmi:id="_B27Q1WW_EeWG3arGTiu4Mw" base_Comment="_a-8psULVEeOKFKZSVYWrPw"/>
+  <Documentation:Documentation xmi:id="_B27Q1mW_EeWG3arGTiu4Mw" base_Comment="_jN0IkkLVEeOKFKZSVYWrPw"/>
+  <Documentation:Documentation xmi:id="_B27Q12W_EeWG3arGTiu4Mw" base_Comment="_yfF6QULVEeOKFKZSVYWrPw"/>
+  <Documentation:Documentation xmi:id="_B27Q2GW_EeWG3arGTiu4Mw" base_Comment="_5l8oMULVEeOKFKZSVYWrPw"/>
+  <Documentation:Documentation xmi:id="_B27Q2WW_EeWG3arGTiu4Mw" base_Comment="_45SDMKRAEeOXH4cKDHkMLw"/>
+  <Documentation:Documentation xmi:id="_B27Q2mW_EeWG3arGTiu4Mw" base_Comment="_7gEfQKRAEeOXH4cKDHkMLw"/>
+  <Documentation:Documentation xmi:id="_B27Q22W_EeWG3arGTiu4Mw" base_Comment="_jJrbcTjmEeSidc7L1oNWTw"/>
+</xmi:XMI>

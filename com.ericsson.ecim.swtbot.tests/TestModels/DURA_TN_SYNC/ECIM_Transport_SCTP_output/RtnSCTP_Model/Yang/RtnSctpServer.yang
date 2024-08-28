@@ -1,0 +1,50 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 14, 2015 3:52:41 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RtnSctpServer" {
+	namespace "urn:com:ericsson:ecim:RtnSctpServer";
+	prefix "RtnSctpServer";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	description "SCCTP class";
+
+	revision "2015-10-14" {
+		ericsson:version "1";
+		ericsson:author "EAB/FJP/TA UABERPE";
+		ericsson:contact "EAB/FJP/TA UABERPE";
+		ericsson:release "5";
+		ericsson:correction "0";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport" {
+		list "Sctp" {
+			key "sctpId";
+			max-elements 1;
+			uses RtnSctpServer:Sctp;
+		}
+
+	}
+
+	grouping "Sctp" {
+		description
+		"The Sctp is an abstraction of the SCTP system. 
+The only purpose of this class is PM counters. Created automatically when the first SctpEndpoint is created.";
+		leaf "sctpId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN. ";
+			ericsson:restricted;
+		}
+
+	}
+
+}

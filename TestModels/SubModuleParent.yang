@@ -1,0 +1,72 @@
+module SubModuleParent {
+	
+  namespace "urn:com:ericsson:yang:SubModuleParent";
+
+  prefix "SubModuleParent";	
+
+  include SubModule;
+  
+  organization
+    "Ericsson AB.";
+
+  contact
+    "Web:   <http://www.ericsson.com>";
+
+  description
+    "This YANG module defines the configuration data
+    and operational state data for Context in IPOS.
+
+    Copyright (c) 2014 Ericsson AB.
+    All rights reserved.";
+
+  revision 2014-09-15 {
+    description
+      "Initial revision.";
+    reference
+      "A YANG Data Model for Routing Management
+      draft-ietf-netmod-routing-cfg-15.";
+  }
+
+ container ModuleSimpleContainer {
+       leaf leafA {
+             type uint32;
+       }
+       leaf-list leafListB{
+       		type uint32;
+       }       
+  }
+ 
+  list ModuleSimpleList {
+  	key leafA;
+       leaf leafA {
+             type uint32;
+       }
+       leaf-list leafListB{
+       		type uint32;
+       }
+  } 
+  
+  list ModuleListParent {
+  	key leafA;
+       leaf leafA {
+             type uint32;
+       }  	
+	list ModuleListChild {
+		key leafA;
+		leaf leafA {
+			type uint32;
+		} 
+	}
+  }
+  
+  container ModuleContainerParent {
+	container ModuleContainerChild {
+		leaf leafA {
+			type uint32;
+		} 
+	}
+	container ModuleContainerChildWithUses {
+		uses SubModuleGrouping;
+	}	
+  }
+}

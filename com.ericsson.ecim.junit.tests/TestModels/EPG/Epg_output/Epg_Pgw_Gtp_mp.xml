@@ -1,0 +1,1271 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_Gtp" namespace="urn:com:ericsson:ecim:Epg_Pgw_Gtp" namespacePrefix="epg_pgw_gtp" organization="Ericsson EAB, NDO EPG" release="2" revision="" version="3">
+        <description>GTP settings</description>
+        <enum name="VersionList">
+            <description>GTP version</description>
+            <enumMember name="97">
+                <description>Use GTP version 97</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="98">
+                <description>Use GTP version 98</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="99">
+                <description>Use GTP version 99</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="Diffserv">
+            <description>DiffServ DSCP for GTP packets</description>
+            <enumMember name="af11">
+                <description>Assured forwarding class 1, low drop precedence</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="af12">
+                <description>Assured forwarding class 1, medium drop precedence</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="af32">
+                <description>Assured forwarding class 3, medium drop precedence</description>
+                <value>8</value>
+            </enumMember>
+            <enumMember name="af33">
+                <description>Assured forwarding class 3, high drop precedence</description>
+                <value>9</value>
+            </enumMember>
+            <enumMember name="af41">
+                <description>Assured forwarding class 4, low drop precedence</description>
+                <value>10</value>
+            </enumMember>
+            <enumMember name="af42">
+                <description>Assured forwarding class 4, medium drop precedence</description>
+                <value>11</value>
+            </enumMember>
+            <enumMember name="af43">
+                <description>Assured forwarding class 4, high drop precedence</description>
+                <value>12</value>
+            </enumMember>
+            <enumMember name="ef">
+                <description>Expedited forwarding</description>
+                <value>13</value>
+            </enumMember>
+            <enumMember name="be">
+                <description>Best effort forwarding</description>
+                <value>14</value>
+            </enumMember>
+            <enumMember name="af31">
+                <description>Assured forwarding class 3, low drop precedence</description>
+                <value>7</value>
+            </enumMember>
+            <enumMember name="af13">
+                <description>Assured forwarding class 1, high drop precedence</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="af21">
+                <description>Assured forwarding class 2, low drop precedence</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="af22">
+                <description>Assured forwarding class 2, medium drop precedence</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="af23">
+                <description>Assured forwarding class 2, high drop precedence</description>
+                <value>6</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="KeepaliveInterval">
+            <description>Seconds between sending keepalive messages on an idle path</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>60</min>
+                        <max>200</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="TcpMss">
+            <description>Maximum TCP segment size</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>536</min>
+                        <max>1460</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="TransactionTime">
+            <description>Transaction time type</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>5</min>
+                        <max>60</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="N3Requests">
+            <description>Retransmissions allowed for a control message</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>8</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MediumPriority">
+            <description>Medium priority value for allocation retention priority mapping</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>2</min>
+                        <max>14</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="HighPriority">
+            <description>High priority value for allocation retention priority mapping</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>13</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="T3ResponseTime">
+            <description>Seconds between control message retries</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>30</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <class name="Gtp">
+            <description>GTP settings</description>
+            <root/>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $context in @gnS5RoutingInstance satisfies ($context = /ManagedElement/Context/@contextNameId)'><name path='.'/>,gnS5RoutingInstance: Routing instance must be configured under 'managed-element context'</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="gtpID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="keepaliveInterval">
+                <description>Seconds between sending keepalive messages on an idle path</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="KeepaliveInterval">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="t3ResponseTime">
+                <description>Seconds between control message retries</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="T3ResponseTime">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="n3Requests">
+                <description>Retransmissions allowed for a control message</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="N3Requests">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPathManagement">
+                <description>Do not use path management</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noNsapiInCreateResponse">
+                <description>Does not send nsapi in pdp create response</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="gnS5RoutingInstance">
+                <description>Routing instance for GTP traffic</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <string>
+                        <defaultValue>local</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="noN3t3PathFailure">
+                <description>Disable path failure on N3-T3 timeout</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noRecoveryPathFailure">
+                <description>Disable path failure on recovery change</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="diffserv">
+                <description>DiffServ DSCP for GTP packets</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="versionList">
+                <description>GTP version</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <enumRef name="VersionList">
+                            <mimName>Epg_Pgw_Gtp</mimName>
+                        </enumRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="noGtpv0Support">
+                <description>Disable GTPv0 support</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transactionTimeout">
+                <description>Seconds a GTP response entry is stored</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TransactionTime">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noEvolvedArp">
+                <description>Do not handle evolved ARP in GTP messages</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DownlinkDscpRemapping">
+            <description>Gn interface quality-of-service to dscp remapping</description>
+            <attribute name="downlinkDscpRemappingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Conversational-1">
+            <description>DSCP name for conversational class 1 traffic</description>
+            <attribute name="conversational-1ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lowDropPrecedence">
+                <description>SDU error ratio = (10^-4 | 10^-5 | 10^-6)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="mediumDropPrecedence">
+                <description>SDU error ratio = (7*10^-3 | 10^-3)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="highDropPrecedence">
+                <description>SDU error ratio = (10^-1 | 10^-2)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Conversational-2">
+            <description>DSCP name for conversational class 2 traffic</description>
+            <attribute name="conversational-2ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lowDropPrecedence">
+                <description>SDU error ratio = (10^-4 | 10^-5 | 10^-6)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="mediumDropPrecedence">
+                <description>SDU error ratio = (7*10^-3 | 10^-3)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="highDropPrecedence">
+                <description>SDU error ratio = (10^-1 | 10^-2)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Streaming-1">
+            <description>DSCP name for streaming class 1 traffic</description>
+            <attribute name="streaming-1ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lowDropPrecedence">
+                <description>SDU error ratio = (10^-4 | 10^-5 | 10^-6)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="mediumDropPrecedence">
+                <description>SDU error ratio = (7*10^-3 | 10^-3)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="highDropPrecedence">
+                <description>SDU error ratio = (10^-1 | 10^-2)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Streaming-2">
+            <description>DSCP name for streaming class 2 traffic</description>
+            <attribute name="streaming-2ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lowDropPrecedence">
+                <description>SDU error ratio = (10^-4 | 10^-5 | 10^-6)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="mediumDropPrecedence">
+                <description>SDU error ratio = (7*10^-3 | 10^-3)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="highDropPrecedence">
+                <description>SDU error ratio = (10^-1 | 10^-2)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Interactive-1">
+            <description>DSCP name for interactive class 1 traffic</description>
+            <attribute name="interactive-1ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lowDropPrecedence">
+                <description>SDU error ratio = (10^-4 | 10^-5 | 10^-6)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="mediumDropPrecedence">
+                <description>SDU error ratio = (7*10^-3 | 10^-3)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="highDropPrecedence">
+                <description>SDU error ratio = (10^-1 | 10^-2)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Interactive-2">
+            <description>DSCP name for interactive class 2 traffic</description>
+            <attribute name="interactive-2ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lowDropPrecedence">
+                <description>SDU error ratio = (10^-4 | 10^-5 | 10^-6)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="mediumDropPrecedence">
+                <description>SDU error ratio = (7*10^-3 | 10^-3)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="highDropPrecedence">
+                <description>SDU error ratio = (10^-1 | 10^-2)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Interactive-3">
+            <description>DSCP name for interactive class 3 traffic</description>
+            <attribute name="interactive-3ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lowDropPrecedence">
+                <description>SDU error ratio = (10^-4 | 10^-5 | 10^-6)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="mediumDropPrecedence">
+                <description>SDU error ratio = (7*10^-3 | 10^-3)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="highDropPrecedence">
+                <description>SDU error ratio = (10^-1 | 10^-2)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Background">
+            <description>DSCP name for background traffic</description>
+            <attribute name="backgroundID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lowDropPrecedence">
+                <description>SDU error ratio = (10^-4 | 10^-5 | 10^-6)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="mediumDropPrecedence">
+                <description>SDU error ratio = (7*10^-3 | 10^-3)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="highDropPrecedence">
+                <description>SDU error ratio = (10^-1 | 10^-2)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TcpMssAdjustment">
+            <description>Settings for adjustment of maximum TCP segment size for mobile station PDUs</description>
+            <attribute name="tcpMssAdjustmentID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="tcpMss">
+                <description>Maximum TCP segment size</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TcpMss">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="disable">
+                <description>Disable maximum TCP segment size adjustment</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="AllocationRetentionPriority">
+            <description>Settings for mapping parameters of allocation retention priority</description>
+            <attribute name="allocationRetentionPriorityID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="highPriority">
+                <description>High priority value for allocation retention priority mapping</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="HighPriority">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="mediumPriority">
+                <description>Medium priority value for allocation retention priority mapping</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MediumPriority">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Gtp_to_DownlinkDscpRemapping">
+            <containment>
+                <parent>
+                    <hasClass name="Gtp">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DownlinkDscpRemapping">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Gtp_to_TcpMssAdjustment">
+            <containment>
+                <parent>
+                    <hasClass name="Gtp">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TcpMssAdjustment">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DownlinkDscpRemapping_to_Conversational-1">
+            <containment>
+                <parent>
+                    <hasClass name="DownlinkDscpRemapping">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Conversational-1">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DownlinkDscpRemapping_to_Conversational-2">
+            <containment>
+                <parent>
+                    <hasClass name="DownlinkDscpRemapping">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Conversational-2">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DownlinkDscpRemapping_to_Streaming-1">
+            <containment>
+                <parent>
+                    <hasClass name="DownlinkDscpRemapping">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Streaming-1">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DownlinkDscpRemapping_to_Streaming-2">
+            <containment>
+                <parent>
+                    <hasClass name="DownlinkDscpRemapping">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Streaming-2">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DownlinkDscpRemapping_to_Interactive-1">
+            <containment>
+                <parent>
+                    <hasClass name="DownlinkDscpRemapping">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Interactive-1">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DownlinkDscpRemapping_to_Interactive-2">
+            <containment>
+                <parent>
+                    <hasClass name="DownlinkDscpRemapping">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Interactive-2">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DownlinkDscpRemapping_to_Interactive-3">
+            <containment>
+                <parent>
+                    <hasClass name="DownlinkDscpRemapping">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Interactive-3">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DownlinkDscpRemapping_to_Background">
+            <containment>
+                <parent>
+                    <hasClass name="DownlinkDscpRemapping">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Background">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Gtp_to_AllocationRetentionPriority">
+            <containment>
+                <parent>
+                    <hasClass name="Gtp">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AllocationRetentionPriority">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Pgw_to_Gtp">
+            <containment>
+                <parent>
+                    <hasClass name="Pgw">
+                        <mimName>Epg_Pgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Gtp">
+                        <mimName>Epg_Pgw_Gtp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

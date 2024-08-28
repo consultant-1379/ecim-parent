@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Sgw_UserPlane" namespace="urn:com:ericsson:ecim:Epg_Sgw_UserPlane" namespacePrefix="epg_sgw_userplane" organization="Ericsson EAB, NDO EPG" release="1" revision="" version="2">
+        <description>SGW settings</description>
+        <derivedDataType name="IpAddressRange">
+            <description>IP address range</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>18</max>
+                    </lengthRange>
+                    <validValues>^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(/(3[0-2]|[1-2][0-9]|[1-9])){0,1}</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="UserPlane">
+            <description>User plane settings</description>
+            <root/>
+            <attribute name="userPlaneID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Protocols">
+            <description>Protocol settings</description>
+            <attribute name="protocolsID">
+                <description>nameSingle instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Gtp">
+            <description>GTP protocol settings</description>
+            <attribute name="gtpID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="S1s4s12">
+            <description>S1/S4/S12 interface settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $context in @routingInstance satisfies ($context = /ManagedElement/Context/@contextNameId)'><name path='.'/>,routingInstance: Routing instance must be configured under 'managed-element context'</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="s1s4s12ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="addressRange">
+                <description>Specifies the address range</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressRange">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="routingInstance">
+                <description>Routing instance name</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <string>
+                        <defaultValue>local</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Interfaces">
+            <description>GTP interfaces settings</description>
+            <attribute name="interfacesID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="S5s8">
+            <description>S5/S8 interface settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $context in @routingInstance satisfies ($context = /ManagedElement/Context/@contextNameId)'><name path='.'/>,routingInstance: Routing instance must be configured under 'managed-element context'</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="s5s8ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="addressRange">
+                <description>Specifies the address range</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressRange">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="routingInstance">
+                <description>Routing instance name</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <string>
+                        <defaultValue>local</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Protocols_to_Gtp">
+            <containment>
+                <parent>
+                    <hasClass name="Protocols">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Gtp">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="UserPlane_to_Protocols">
+            <containment>
+                <parent>
+                    <hasClass name="UserPlane">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Protocols">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Gtp_to_Interfaces">
+            <containment>
+                <parent>
+                    <hasClass name="Gtp">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Interfaces">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Interfaces_to_S5s8">
+            <containment>
+                <parent>
+                    <description>&lt;br /&gt;</description>
+                    <hasClass name="Interfaces">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="S5s8">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Interfaces_to_S1s4s12">
+            <containment>
+                <parent>
+                    <hasClass name="Interfaces">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="S1s4s12">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Sgw_to_UserPlane">
+            <containment>
+                <parent>
+                    <hasClass name="Sgw">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="UserPlane">
+                        <mimName>Epg_Sgw_UserPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

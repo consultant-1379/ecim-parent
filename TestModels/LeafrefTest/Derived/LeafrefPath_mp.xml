@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Mar 2, 2015 3:43:35 PM using:
+	* com.ericsson.ecim.m2m 3.0.0.qualifier
+	* com.ericsson.ecim.dsl 3.0.0.qualifier
+	* com.ericsson.ecim.edm 3.0.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+  </momMetaData>
+  <mim author="" contact="" correction="1" date="" docNo="" name="LeafrefPath" namespace="urn:com:ericsson:ecim:LeafrefPath" namespacePrefix="leafrefpath" organization="" release="1" revision="" version="1">
+    <description>"This module defines a model for testing leafrefs."</description>
+    <class name="AContainer">
+      <description>"This container acts as the top-level data element of this model."</description>
+      <root/>
+      <attribute name="AContainerId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="B1List">
+      <attribute name="bListAttr">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint32/>
+        </dataType>
+      </attribute>
+      <attribute name="B1ListId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="C1List">
+      <dependenciesScript><![CDATA[
+      <schema xmlns="http://purl.oclc.org/dsdl/schematron">
+		<pattern>
+		<rule>
+			<assert test='every $ref in @c1listRef1 satisfies $ref = /ManagedElement/AContainer/B1List/C2List/D2List/@d2ListAttr'>data-missing instance-required</assert>
+			<assert test='every $ref in @c1listRef2 satisfies $ref = /ManagedElement/AContainer/B1List/C2List/D2List/@d2ListAttr'>data-missing instance-required</assert>
+		</rule>
+		</pattern>
+		</schema>
+      ]]></dependenciesScript>
+      <attribute name="c1ListRef1">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint16/>
+        </dataType>
+      </attribute>
+      <attribute name="c1ListRef2">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint16/>
+        </dataType>
+      </attribute>
+      <attribute name="C1ListId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="D1List">
+      <attribute name="d1ListAttr">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint8/>
+        </dataType>
+      </attribute>
+      <attribute name="D1ListId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="C2List">
+      <attribute name="c2listAttr">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint64/>
+        </dataType>
+      </attribute>
+      <attribute name="C2ListId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="D2List">
+      <dependenciesScript><![CDATA[
+      <schema xmlns="http://purl.oclc.org/dsdl/schematron">
+		<pattern>
+		<rule>
+			<assert test='every $ref in @d2ListRef satisfies $ref = @d2ListAttr'>data-missing instance-required</assert>
+		</rule>
+		</pattern>
+		</schema>
+      ]]></dependenciesScript>
+      <attribute name="d2ListAttr">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint16/>
+        </dataType>
+      </attribute>
+      <attribute name="d2ListRef">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint16/>
+        </dataType>
+      </attribute>
+      <attribute name="D2ListId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="E2List">
+      <dependenciesScript><![CDATA[
+      <schema xmlns="http://purl.oclc.org/dsdl/schematron">
+		<pattern>
+		<rule>
+			<assert test='every $ref in @e2ListRef2 satisfies $ref = /ManagedElement/AContainer/B1List/C2List/D2List/@d2ListAttr'>data-missing instance-required</assert>
+			<assert test='every $ref in @e2ListRef3 satisfies $ref = ../../D3List/@d3ListAttr'>data-missing instance-required</assert>
+			<assert test='every $ref in @e2ListRef4 satisfies $ref = /ManagedElement/AContainer/B1List/C2List/D3List/@d3ListAttr'> data-missing instance-required</assert>
+ 		</rule>
+		</pattern>
+		</schema>
+      ]]></dependenciesScript>
+      <attribute name="e2ListAttr">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint32/>
+        </dataType>
+      </attribute>
+      <attribute name="e2ListRef1">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint16/>
+        </dataType>
+      </attribute>
+      <attribute name="e2ListRef2">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint16/>
+        </dataType>
+      </attribute>
+      <attribute name="e2ListRef3">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32/>
+        </dataType>
+      </attribute>
+      <attribute name="e2ListRef4">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32/>
+        </dataType>
+      </attribute>
+      <attribute name="E2ListId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="D3List">
+     <dependenciesScript><![CDATA[
+      <schema xmlns="http://purl.oclc.org/dsdl/schematron">
+		<pattern>
+		<rule>
+			<assert test='every $ref in @d3ListRef1 satisfies $ref = /ManagedElement/SystemFunctions/interfaces/interface/@name'>data-missing instance-required</assert>
+			<assert test='every $ref in @d3ListRef2 satisfies $ref = ../../C1List/D1List/@d1ListAttr'>data-missing instance-required</assert>
+ 		</rule>
+		</pattern>
+		</schema>
+      ]]></dependenciesScript>      
+      <attribute name="d3ListRef1">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="d3ListRef2">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint8/>
+        </dataType>
+      </attribute>
+      <attribute name="d3ListAttr">
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <int32/>
+            <minLength>0</minLength>
+            <nonUnique/>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="D3ListId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="C1List_to_D1List">
+      <containment>
+        <parent>
+          <hasClass name="C1List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="D1List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <noNotification/>
+      </containment>
+    </relationship>
+    <relationship name="D2List_to_E2List">
+      <containment>
+        <parent>
+          <hasClass name="D2List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="E2List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <noNotification/>
+      </containment>
+    </relationship>
+    <relationship name="C2List_to_D2List">
+      <containment>
+        <parent>
+          <hasClass name="C2List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="D2List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <noNotification/>
+      </containment>
+    </relationship>
+    <relationship name="C2List_to_D3List">
+      <containment>
+        <parent>
+          <hasClass name="C2List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="D3List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <noNotification/>
+      </containment>
+    </relationship>
+    <relationship name="B1List_to_C1List">
+      <containment>
+        <parent>
+          <hasClass name="B1List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="C1List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <noNotification/>
+      </containment>
+    </relationship>
+    <relationship name="B1List_to_C2List">
+      <containment>
+        <parent>
+          <hasClass name="B1List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="C2List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <noNotification/>
+      </containment>
+    </relationship>
+    <relationship name="AContainer_to_B1List">
+      <containment>
+        <parent>
+          <hasClass name="AContainer">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="B1List">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+        <noNotification/>
+      </containment>
+    </relationship>
+  </mim>
+  <interMim>
+    <relationship name="ManagedElement_to_AContainer">
+      <containment>
+        <parent>
+          <hasClass name="ManagedElement">
+            <mimName>ComTop</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="AContainer">
+            <mimName>LeafrefPath</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <noNotification/>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Nov 20, 2015 2:32:34 PM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>huiping</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>huiping</signature>
+        </approvedBy>
+    </momMetaData>
+    <mim author="" contact="" correction="" date="" docNo="" name="NewMomX" namespace="urn:com:ericsson:ecim:NewMomX" namespacePrefix="newmomx" organization="" release="1" revision="" version="1">
+        <description>qwe</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <struct name="MyCommonStruct1">
+            <description>qwe</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="1"/>
+                <extension name="originatingMimName" value="CommonLib"/>
+                <extension name="originatingMimVersion" value="1"/>
+            </domainExtension>
+            <structMember name="sm1">
+                <description>qwe</description>
+                <derivedDataTypeRef name="CommonLib_MyCommonStruct1_sm1">
+                    <mimName>NewMomX</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <derivedDataType name="CommonLib_MyCommonStruct1_sm1">
+            <baseType>
+                <int16>
+                    <range>
+                        <min>0</min>
+                        <max>123</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>123</max>
+                        </subrange>
+                    </ranges>
+                </int16>
+            </baseType>
+        </derivedDataType>
+        <class name="X1">
+            <description>qwe</description>
+            <root/>
+            <attribute name="x1Id">
+                <description>qwe</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <int64/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="X2">
+            <description>qwe</description>
+            <attribute name="x12d">
+                <description>qwe</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <int64/>
+                </dataType>
+            </attribute>
+            <attribute name="structAttr1">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <structRef name="MyCommonStruct1">
+                        <mimName>NewMomX</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="X1_to_X2">
+            <containment>
+                <parent>
+                    <hasClass name="X1">
+                        <mimName>NewMomX</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="X2">
+                        <mimName>NewMomX</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>334</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </mim>
+    <interMim>
+        <relationship name="Mmas_to_X1">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="Mmas">
+                        <mimName>MMAS</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="X1">
+                        <mimName>NewMomX</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Oct 14, 2015 9:50:47 PM using:
+	* com.ericsson.ecim.m2m 3.0.2.qualifier
+	* com.ericsson.ecim.dsl 3.0.2.qualifier
+	* com.ericsson.ecim.edm 3.0.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+    <createdBy>
+      <signature>EAB/FJP/TA UABERPE</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>EAB/FJP/TA UABERPE</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="0" date="" docNo="" name="RtnL3Host" namespace="urn:com:ericsson:ecim:RtnL3Host" namespacePrefix="rtnl3host" organization="" release="3" revision="" version="1">
+    <description>IP termination.</description>
+    <domainExtension domain="ECIM">
+      <extension name="ecimMomName" value="ECIM_T_L3_Host"/>
+      <extension name="ecimMomVersion" value="1"/>
+      <extension name="ecimMomRelease" value="1"/>
+      <extension name="ecimMomCorrection" value="0"/>
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <implements correction="0" name="ECIM_T_L3_Host" release="1" version="1"/>
+    <derivedDataType name="RtnL3Host_Host_ttl">
+      <baseType>
+        <int32>
+          <range>
+            <min>1</min>
+            <max>255</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>1</min>
+              <max>255</max>
+            </subrange>
+          </ranges>
+        </int32>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="RtnL3Host_Host_userLabel">
+      <baseType>
+        <string>
+          <lengthRange>
+            <min>1</min>
+            <max>128</max>
+          </lengthRange>
+          <stringLength>
+            <subrange>
+              <min>1</min>
+              <max>128</max>
+            </subrange>
+          </stringLength>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="RtnL3Host_Host_hopLimit">
+      <baseType>
+        <int32>
+          <range>
+            <min>0</min>
+            <max>255</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>0</min>
+              <max>255</max>
+            </subrange>
+          </ranges>
+        </int32>
+      </baseType>
+    </derivedDataType>
+    <class name="Host">
+      <description>Representation of an IP domain for traffic termination. &#13;
+&#13;
+Optional to support - Flag: if-feature L3HostHost</description>
+      <root/>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature L3HostFeature</decisionStatement>
+        <decisionStatement decisionType="basic">if-feature L3Host</decisionStatement>
+      </decisionPoint>
+      <attribute name="hostId">
+        <description>Value component of the RDN. &#13;
+</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="ttl">
+        <description>Default TTL value. &#13;
+&#13;
+The default value is inserted into the Time-To-Live (TTL) field of the IPv4 header of datagrams originated at this entity, whenever a TTL value is not supplied by the transport layer protocol.&#13;
+&#13;
+Optional to support - Flag: if-feature L3HostTtl&#13;
+</description>
+        <dataType>
+          <derivedDataTypeRef name="RtnL3Host_Host_ttl">
+            <defaultValue>64</defaultValue>
+            <mimName>RtnL3Host</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature L3HostTtl</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use. &#13;
+&#13;
+Optional to support - Flag: if-feature L3HostUserLabel</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="RtnL3Host_Host_userLabel">
+            <mimName>RtnL3Host</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature L3HostUserLable</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="hopLimit">
+        <description>IPv6 default hop limit. &#13;
+&#13;
+The default value is inserted into the Hop Limit field of the IPv6 header of datagrams originated at this entity whenever&#13;
+a Hop Limit value is not supplied by the transport layer protocol.&#13;
+&#13;
+Optional to support - Flag: if-feature L3HostHopLimit</description>
+        <mandatory/>
+        <dataType>
+          <derivedDataTypeRef name="RtnL3Host_Host_hopLimit">
+            <mimName>RtnL3Host</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature L3HostHopLimit</decisionStatement>
+        </decisionPoint>
+      </attribute>
+    </class>
+  </mim>
+  <interMim>
+    <relationship name="Transport_to_Host">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="false"/>
+      </domainExtension>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature L3HostFeature</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Transport">
+            <mimName>ECIM_Top</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="Host">
+            <mimName>RtnL3Host</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

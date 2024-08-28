@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/" xmlns:Documentation="http://www.eclipse.org/papyrus/documentation" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CoreMWProfile/ pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw http:///schemas/ECIMBaseProfile/ pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ">
+  <uml:Model xmi:id="_NRAMoAwOEdmFcaeZXPdWAQ" name="RtnOSPFv2">
+    <ownedComment xmi:id="_geIfsM-OEd-0MPnaPG_ypQ" annotatedElement="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <body>ECIM Transport OSPFv2.&#xD;
+Copyright (c) 2011-2014 Ericsson AB. &#xD;
+All rights reserved.</body>
+    </ownedComment>
+    <packageImport xmi:id="_uWHKUIXbEd-Id79DLfNphQ">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_iT7qACCSEd-Egr3-YAWs7Q"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_sYV50M-MEd-0MPnaPG_ypQ" name="RtnOSPFv2">
+      <ownedComment xmi:id="_sYV50c-MEd-0MPnaPG_ypQ">
+        <body>OSPFv2  MOM is responsible for describing all the parameters of  a OSPFv2 router instance. &#xD;
+There are several OSPFv2 router instances.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_sYWhCM-MEd-0MPnaPG_ypQ" name="Interface">
+        <ownedComment xmi:id="_sYWhCc-MEd-0MPnaPG_ypQ">
+          <body>OSPF Area Interface.</body>
+        </ownedComment>
+        <ownedRule xmi:id="_Iw1zgGWpEeS2z5q0_IhvRA" name="Interface">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_Iw1zgWWpEeS2z5q0_IhvRA">
+            <language>Schematron</language>
+            <body>&lt;schema xmlns=&quot;http://purl.oclc.org/dsdl/schematron&quot;>
+	&lt;pattern>
+		&lt;rule>
+		&lt;assert test='@routerDeadInterval gt @helloInterval'>&lt;value-of select=&quot;.&quot;/> DeadInterval should always be greater than helloInterval. &lt;/assert>
+		&lt;assert test='every $interfaceAddress in @interfaceAddress satisfies (count(../../../Ospfv2/Area/Interface[($interfaceAddress eq @interfaceAddress)]) eq 1)'>&lt;value-of select=&quot;.&quot;/> An AddressIPv4 MO can be referenced by only one OSPF Interface MO at a time. &lt;/assert>
+		&lt;assert test='not((@interfaceAddress and (../../../@routerId ne @interfaceAddress/../../@routerId)))'>&lt;value-of select=&quot;.&quot;/> Only AddressIPv4 MO reference within the same router is allowed in Ospfv2. &lt;/assert>
+		&lt;/rule>
+	&lt;/pattern>
+&lt;/schema></body>
+          </specification>
+        </ownedRule>
+        <ownedAttribute xmi:id="_sYWhCs-MEd-0MPnaPG_ypQ" name="interfaceId" isReadOnly="true">
+          <ownedComment xmi:id="_sYWhC8-MEd-0MPnaPG_ypQ">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_OSPF_Library.uml#_ZLRcYOJ8EeKEsd9SoRrQxA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_QAgP0KK0EeOv5Pd6LTNgUw" name="passive">
+          <ownedComment xmi:id="_QAgP0aK0EeOv5Pd6LTNgUw">
+            <body>Enables the passive mode on this interface.
+
+If this attribute is set to true, this interface does not participate in OSPF, and does not send routing updates or establish adjacencies while the interface is still advertised to other routers. &#xD;
+</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_v2b1ML7EEeO6Cv3Ez11PwQ" value="1"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_QAg24aK0EeOv5Pd6LTNgUw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_QAhd8KK0EeOv5Pd6LTNgUw" name="routerPriority">
+          <ownedComment xmi:id="_QAhd8aK0EeOv5Pd6LTNgUw">
+            <body>The router priority used on this interface.
+
+This priority used to determine the OSPF Designated Router (DR) for the network this interface is on. If two routers attempt to become the DR, the router with the higher router priority becomes the DR. If the router priority is the same for two routers, the router with the higher router ID takes precedence. Only routers with nonzero router priority values are eligible to become the designated or backup designated router.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_OSPF_Library.uml#_X8DE4x4DEeKX2-T-77zmPA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_pcTI0KnHEeOtv630pe65sA" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_lkxlEGT9EeSFUrMLyV46sg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_QAiFAKK0EeOv5Pd6LTNgUw" name="networkType" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_QAiFAaK0EeOv5Pd6LTNgUw">
+            <body>Specifies the network type of this interface.
+
+For some settings, this attribute changes the OSPF behavior of electing the designated router, sending of database descriptions, and the content of LSAs. &#xD;
+</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_Transport_OSPF_Library.uml#_X8DFXh4DEeKX2-T-77zmPA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_HwjYIMCKEeOD25Bj2nrfyA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QAiFAqK0EeOv5Pd6LTNgUw" value="1"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_7fiOwLMdEeOWGK9azGoA0w" name="BROADCAST">
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_Transport_OSPF_Library.uml#_X8DFYB4DEeKX2-T-77zmPA"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_QAisEKK0EeOv5Pd6LTNgUw" name="helloInterval">
+          <ownedComment xmi:id="_QAisEaK0EeOv5Pd6LTNgUw">
+            <body>Specifies the hello interval.
+
+Configure the same hello interval for all routers in the network. A shorter hello interval ensures faster detection of topological changes but results in more routing traffic.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_OSPF_Library.uml#_X8DE1B4DEeKX2-T-77zmPA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QAisE6K0EeOv5Pd6LTNgUw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QAisEqK0EeOv5Pd6LTNgUw" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_LXCOgLPEEeOCUJK7TC1eww" value="10"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_QAjTIKK0EeOv5Pd6LTNgUw" name="routerDeadInterval">
+          <ownedComment xmi:id="_QAjTIaK0EeOv5Pd6LTNgUw">
+            <body>The router dead interval specifies the time after which the neighbor is declared as unavailable, if no hello packet is received during this interval.
+
+This value is advertised in the hello packets from the router and must be a multiple of helloInterval. The same value must be set on all interfaces in the network. &#xD;
+</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_OSPF_Library.uml#_X8DE1x4DEeKX2-T-77zmPA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QAjTI6K0EeOv5Pd6LTNgUw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QAjTIqK0EeOv5Pd6LTNgUw" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_QL8vALPEEeOCUJK7TC1eww" value="40"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_s6jPEKQ6EeOIuffTXT4HzA" name="adminCost" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_5WMI0GT3EeSFUrMLyV46sg">
+            <body>Specifies the cost of traversing this interface.
+
+This attribute overrides the result of the automatic cost calculation, performed by default (uses referenceBandwidth in class Ospfv2). Set this attribute to empty, to revert to automatic cost calculation. </body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxVN4CCTEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_-dzcEK5OEeOR4dmBjXUOwA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_-eBegK5OEeOR4dmBjXUOwA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_zoiwkKpaEeOfNu6vF64HzA" name="interfaceAddress" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_zoiwkapaEeOfNu6vF64HzA">
+            <body>Reference to the AddressIPv4 MO that identifies a layer 3 interface participating in OSPF. &#xD;
+</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zoiwk6paEeOfNu6vF64HzA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zoiwkqpaEeOfNu6vF64HzA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_t_eoQLCaEeOuWb3R7TCajw" name="userLabel" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_t_eoQbCaEeOuWb3R7TCajw">
+            <body>Label for free use.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_t_eoQ7CaEeOuWb3R7TCajw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_t_eoQrCaEeOuWb3R7TCajw" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_L4assBqVEeGy2_9pBABvmw" name="Ospfv2">
+        <ownedComment xmi:id="_L_1jUBqVEeGy2_9pBABvmw">
+          <body>An OSPFv2 routing instance.</body>
+        </ownedComment>
+        <ownedRule xmi:id="_L4ruMGWpEeS2z5q0_IhvRA" name="Ospfv2">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_L4ruMWWpEeS2z5q0_IhvRA">
+            <language>Schematron</language>
+            <body>&lt;schema xmlns=&quot;http://purl.oclc.org/dsdl/schematron&quot;>
+	&lt;pattern>
+		&lt;rule>
+		&lt;assert test='every $instanceId in @instanceId satisfies (count(../Ospfv2[($instanceId eq @instanceId)]) eq 1)'>&lt;value-of select=&quot;.&quot;/> Ospfv2 instanceId must be unique between different Ospfv2 processes&lt;/assert>
+		&lt;/rule>
+	&lt;/pattern>
+&lt;/schema></body>
+          </specification>
+        </ownedRule>
+        <ownedAttribute xmi:id="_L_9fIBqVEeGy2_9pBABvmw" name="ospfv2Id" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_MAFa8BqVEeGy2_9pBABvmw">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_OSPF_Library.uml#_ZLRcYOJ8EeKEsd9SoRrQxA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MAK6gBqVEeGy2_9pBABvmw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MALhkBqVEeGy2_9pBABvmw" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_4F7QkKK0EeOv5Pd6LTNgUw" name="routerId">
+          <ownedComment xmi:id="_4F7QkaK0EeOv5Pd6LTNgUw">
+            <body>Specified the value for the router ID to be used as a fixed ID for the OSPFv2 instance.
+
+If the OSPFv2 router ID is not configured, OSPF chooses the lowest loopback interface address. If there are no loopback interfaces then the lowest interface address is used. When reset to empty OSPFv2 reverts to automatic router ID assignment. The OSPFv2 router process is automatically restarted when the router ID is changed.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_CommonLibrary.uml#_qXDiIBXvEeGFUMpUG07l-g"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4F7QkqK0EeOv5Pd6LTNgUw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_96WY4KQKEeOIuffTXT4HzA" name="adminDistanceIntra" visibility="public">
+          <ownedComment xmi:id="_96WY4aQKEeOIuffTXT4HzA" annotatedElement="_96WY4KQKEeOIuffTXT4HzA">
+            <body>The administrative distance applied to routes learned in the same OSPFv2 area as this router is located in.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_OSPF_Library.uml#_X8DEwh4DEeKX2-T-77zmPA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_F1MesMCKEeOD25Bj2nrfyA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_96WY4qQKEeOIuffTXT4HzA" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_Ao0KQKQLEeOIuffTXT4HzA" value="110"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_96aqUKQKEeOIuffTXT4HzA" name="adminDistanceInter" visibility="public">
+          <ownedComment xmi:id="_96aqUaQKEeOIuffTXT4HzA" annotatedElement="_96aqUKQKEeOIuffTXT4HzA">
+            <body>The administrative distance applied to routes learned in an OSPFv2 area different from the area that this router is located in.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_OSPF_Library.uml#_X8DEwh4DEeKX2-T-77zmPA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FG4nMMCKEeOD25Bj2nrfyA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_96aqUqQKEeOIuffTXT4HzA" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="__yj3sKQKEeOIuffTXT4HzA" value="110"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_96b4cKQKEeOIuffTXT4HzA" name="adminDistanceExternal" visibility="public">
+          <ownedComment xmi:id="_96b4caQKEeOIuffTXT4HzA" annotatedElement="_96b4cKQKEeOIuffTXT4HzA">
+            <body>The administrative distance applied to routes redistributed from other routing domains.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_OSPF_Library.uml#_X8DEwh4DEeKX2-T-77zmPA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EeaR8MCKEeOD25Bj2nrfyA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_96b4cqQKEeOIuffTXT4HzA" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="__JqEoKQKEeOIuffTXT4HzA" value="110"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5ivk0Kj_EeOS6qbopEDbMg" name="area" visibility="public" type="_JgOFcBY8EeKIFKFaJ8i60Q" aggregation="composite" association="_5inpAKj_EeOS6qbopEDbMg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5iz2QKj_EeOS6qbopEDbMg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5izPMKj_EeOS6qbopEDbMg" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_U6-3EKpaEeOfNu6vF64HzA" name="userLabel" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_U6-3EapaEeOfNu6vF64HzA">
+            <body>Label for free use.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_U6-3E6paEeOfNu6vF64HzA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_U6-3EqpaEeOfNu6vF64HzA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_yhrhAKscEeOL5LHxQ_WHfQ" name="referenceBandwidth" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_yhrhAascEeOL5LHxQ_WHfQ">
+            <body>Specifies the reference bandwidth used by for automatic interface cost calculation indicated by the attribute operCost in class Interface.
+
+This calculation divides the reference bandwidth by the interface bandwidth. If adminCost is set in class Interface then no automatic cost calculation is done and the administratively set cost is used for that interface.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_OSPF_Library.uml#_KBIhoIT_EeK6HJH_psPmGg"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sjFXoKtIEeOL5LHxQ_WHfQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_yhrhAqscEeOL5LHxQ_WHfQ" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_sl-W8GT9EeSFUrMLyV46sg" value="100"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_xxQTkGT-EeSFUrMLyV46sg" name="instanceId" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_xxQTkWT-EeSFUrMLyV46sg">
+            <body>The ID of the OSPFv2 routing instance.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxWcACCTEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xxQTk2T-EeSFUrMLyV46sg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_xxQTkmT-EeSFUrMLyV46sg" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_pXR9sJ3XEeGX3Nx2JKZd-w" name="Router_to_Ospfv2" memberEnd="_pXUZ8J3XEeGX3Nx2JKZd-w _pXVBAZ3XEeGX3Nx2JKZd-w">
+        <ownedEnd xmi:id="_pXVBAZ3XEeGX3Nx2JKZd-w" name="ospfv2" type="_L4assBqVEeGy2_9pBABvmw" aggregation="composite" association="_pXR9sJ3XEeGX3Nx2JKZd-w">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_pXVoEJ3XEeGX3Nx2JKZd-w"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_pXVoEZ3XEeGX3Nx2JKZd-w" value="32"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_pXUZ8J3XEeGX3Nx2JKZd-w" name="router" visibility="public" association="_pXR9sJ3XEeGX3Nx2JKZd-w">
+          <type xmi:type="uml:Class" href="ECIM_Transport_IP.uml#_PjdYQADEEeGYdIzUhx57qA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_pXW2MJ3XEeGX3Nx2JKZd-w" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_pXWPIJ3XEeGX3Nx2JKZd-w" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_JgOFcBY8EeKIFKFaJ8i60Q" name="Area">
+        <ownedComment xmi:id="_JgOFcRY8EeKIFKFaJ8i60Q" annotatedElement="_JgOFcBY8EeKIFKFaJ8i60Q">
+          <body>Information related to the OSPF area of this router. </body>
+        </ownedComment>
+        <ownedRule xmi:id="_O4FekGWpEeS2z5q0_IhvRA" name="Area">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_O4FekWWpEeS2z5q0_IhvRA">
+            <language>Schematron</language>
+            <body>&lt;schema xmlns=&quot;http://purl.oclc.org/dsdl/schematron&quot;>
+  &lt;pattern>
+    &lt;rule>
+      &lt;assert test='(@ospfAreaId ne &quot;0.0.0.0&quot; and @ospfAreaId ne &quot;0&quot;) or ((count(./Stub) + count(./Nssa)) eq 0)'>
+      &lt;value-of select=&quot;.&quot;/> If ospfAreaId is set to 0 the area MO is not allowed to have Stub or Nssa MOs below it
+      &lt;/assert>
+      &lt;assert test='(count(./Stub) + count(./Nssa)) le 1'>
+      &lt;value-of select=&quot;.&quot;/> Area MO can only have one area type (Stub or Nssa) child
+      &lt;/assert>
+    &lt;/rule>
+  &lt;/pattern>
+&lt;/schema></body>
+          </specification>
+        </ownedRule>
+        <ownedAttribute xmi:id="_JgOFcxY8EeKIFKFaJ8i60Q" name="areaId" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_JgOFdBY8EeKIFKFaJ8i60Q">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_OSPF_Library.uml#_ZLRcYOJ8EeKEsd9SoRrQxA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_PLr90OMsEeKUPetGURA9hQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_PLsk4OMsEeKUPetGURA9hQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_AK1XoKK0EeOv5Pd6LTNgUw" name="ospfAreaId" visibility="public">
+          <ownedComment xmi:id="_AK1XoaK0EeOv5Pd6LTNgUw">
+            <body>The area identifier as an integer (0..4294967295) or as an IPv4 address in decimal-dot notation.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_OSPF_Library.uml#_PXTZ0KeVEeKeLoVnPVixfA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_AK1Xo6K0EeOv5Pd6LTNgUw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_AK1XoqK0EeOv5Pd6LTNgUw" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_WGAJ8KkAEeOS6qbopEDbMg" name="interface" visibility="public" type="_sYWhCM-MEd-0MPnaPG_ypQ" aggregation="composite" association="_WF9GoKkAEeOS6qbopEDbMg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_WGCmMKkAEeOS6qbopEDbMg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WGB_IakAEeOS6qbopEDbMg" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_yr7UIKpWEeOfNu6vF64HzA" name="stub" visibility="public" type="_nCp10KpUEeOfNu6vF64HzA" aggregation="composite" association="_yr434KpWEeOfNu6vF64HzA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YE7gAKpZEeOfNu6vF64HzA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YE6R4KpZEeOfNu6vF64HzA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_7KVD0KpWEeOfNu6vF64HzA" name="nssa" visibility="public" type="_y8r-4KpUEeOfNu6vF64HzA" aggregation="composite" association="_7KSAgKpWEeOfNu6vF64HzA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7KYHIKpWEeOfNu6vF64HzA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7KXgEapWEeOfNu6vF64HzA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_N4LisKpaEeOfNu6vF64HzA" name="userLabel" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_N4VTsKpaEeOfNu6vF64HzA">
+            <body>Label for free use.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_N4d2kapaEeOfNu6vF64HzA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_N4edoKpaEeOfNu6vF64HzA" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_5inpAKj_EeOS6qbopEDbMg" name="Ospfv2_to_Area" memberEnd="_5ivk0Kj_EeOS6qbopEDbMg _5iyBEKj_EeOS6qbopEDbMg">
+        <ownedEnd xmi:id="_5iyBEKj_EeOS6qbopEDbMg" name="ospfv2" visibility="public" type="_L4assBqVEeGy2_9pBABvmw" association="_5inpAKj_EeOS6qbopEDbMg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5jB4saj_EeOS6qbopEDbMg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5jB4sKj_EeOS6qbopEDbMg" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_WF9GoKkAEeOS6qbopEDbMg" name="Area_to_Interface" memberEnd="_WGAJ8KkAEeOS6qbopEDbMg _WGBYEKkAEeOS6qbopEDbMg">
+        <ownedEnd xmi:id="_WGBYEKkAEeOS6qbopEDbMg" name="area" visibility="public" type="_JgOFcBY8EeKIFKFaJ8i60Q" association="_WF9GoKkAEeOS6qbopEDbMg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_WGM-QKkAEeOS6qbopEDbMg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WGMXMKkAEeOS6qbopEDbMg" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_nCp10KpUEeOfNu6vF64HzA" name="Stub">
+        <ownedComment xmi:id="_nDZcsKpUEeOfNu6vF64HzA">
+          <body>Specifies the OSPF area to be a stub area.
+
+Disturbances: Changing this attribute causes traffic disturbances.
+Takes effect: All Interface MOs are reconfigured. The OSPFv2 routes from these interfaces are removed from the routing table and traffic is impacted until OSPFv2 has converged.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_nDimoKpUEeOfNu6vF64HzA" name="stubId" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_nDimoqpUEeOfNu6vF64HzA">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nDsXoapUEeOfNu6vF64HzA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_nDsXoqpUEeOfNu6vF64HzA" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_y8r-4KpUEeOfNu6vF64HzA" name="Nssa">
+        <ownedComment xmi:id="_y81I0apUEeOfNu6vF64HzA">
+          <body>Specifies the OSPF area to be an NSSA (Not-So-Stubby Area).
+
+Disturbances: Changing this attribute causes traffic disturbances.
+Takes effect: All Interface MOs are reconfigured. The OSPFv2 routes from these interfaces are removed from the routing table and traffic is impacted until OSPFv2 has converged.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_y8-50apUEeOfNu6vF64HzA" name="nssaId" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_y9IDwapUEeOfNu6vF64HzA">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_y9R0wKpUEeOfNu6vF64HzA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_y9R0wapUEeOfNu6vF64HzA" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_yr434KpWEeOfNu6vF64HzA" name="Area_to_Stub" memberEnd="_yr7UIKpWEeOfNu6vF64HzA _yr8iQapWEeOfNu6vF64HzA">
+        <ownedEnd xmi:id="_yr8iQapWEeOfNu6vF64HzA" name="area" visibility="public" type="_JgOFcBY8EeKIFKFaJ8i60Q" association="_yr434KpWEeOfNu6vF64HzA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ysJWkKpWEeOfNu6vF64HzA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ysIvgKpWEeOfNu6vF64HzA" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_7KSAgKpWEeOfNu6vF64HzA" name="Area_to_Nssa" memberEnd="_7KVD0KpWEeOfNu6vF64HzA _7KWR8apWEeOfNu6vF64HzA">
+        <ownedEnd xmi:id="_7KWR8apWEeOfNu6vF64HzA" name="area" visibility="public" type="_JgOFcBY8EeKIFKFaJ8i60Q" association="_7KSAgKpWEeOfNu6vF64HzA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7KjGQapWEeOfNu6vF64HzA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7KjGQKpWEeOfNu6vF64HzA" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_QCGrcHrCEeSqaJghTi263A" name="Interface_interfaceAddress_to_AddressIPv4_reservedBy" memberEnd="_QCa0gHrCEeSqaJghTi263A _QCdQwXrCEeSqaJghTi263A">
+        <ownedEnd xmi:id="_QCa0gHrCEeSqaJghTi263A" name="interfaceAddress" visibility="public" association="_QCGrcHrCEeSqaJghTi263A">
+          <type xmi:type="uml:Class" href="ECIM_Transport_IP.uml#_7MG50HRnEeSSBcEazp-x2w"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QC4ukXrCEeSqaJghTi263A"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QC4ukHrCEeSqaJghTi263A" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_QCdQwXrCEeSqaJghTi263A" name="reservedBy" visibility="public" type="_sYWhCM-MEd-0MPnaPG_ypQ" association="_QCGrcHrCEeSqaJghTi263A">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QDGJ8HrCEeSqaJghTi263A"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QDFi4XrCEeSqaJghTi263A" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_TF8-gGTrEeSFUrMLyV46sg" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.uml#_5vlRYnhQEd-OM9oMWC6jJQ"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_GIyAoGTvEeSFUrMLyV46sg" name="RtnOSPFv2_">
+      <ownedComment xmi:id="_GIyAoWTvEeSFUrMLyV46sg">
+        <body>Decision MOM for RtnOSPFv2.
+
+Shall not be visible.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_GIyAomTvEeSFUrMLyV46sg" name="Root" isAbstract="true">
+        <ownedComment xmi:id="_GIyAo2TvEeSFUrMLyV46sg">
+          <body>Decision MO for RtnOSPFv2.
+
+Shall not be visible.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_GIyAqGTvEeSFUrMLyV46sg" name="DURA">
+        <packagedElement xmi:type="uml:Class" xmi:id="_GIyAqWTvEeSFUrMLyV46sg" name="Model"/>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_UeIAINCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAIdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAItCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAI9CzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/documentation#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://PAPYRUS_DOCUMENTATION/Papyrus.profile.uml#_H9068AEYEeCIz8iAxBJnfA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_a2RxQM-MEd-0MPnaPG_ypQ">
+      <eAnnotations xmi:id="_uKe5SZ0SEeW4ma0yeKsZYQ" source="PapyrusVersion">
+        <details xmi:id="_uKe5Sp0SEeW4ma0yeKsZYQ" key="Version" value="1.0.6"/>
+        <details xmi:id="_uKe5S50SEeW4ma0yeKsZYQ" key="Comment" value=""/>
+        <details xmi:id="_uKe5TJ0SEeW4ma0yeKsZYQ" key="Copyright" value=""/>
+        <details xmi:id="_uKe5TZ0SEeW4ma0yeKsZYQ" key="Date" value="2015-12-07"/>
+        <details xmi:id="_uKe5Tp0SEeW4ma0yeKsZYQ" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_4mX9AHGnEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_4mX9AXGnEeWKa6xc8cMmlg" key="Version" value="1.0.5"/>
+        <details xmi:id="_4mX9AnGnEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_4mX9A3GnEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_4mX9BHGnEeWKa6xc8cMmlg" key="Date" value="2015-08-24"/>
+        <details xmi:id="_4mX9BXGnEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_a2WCsM-MEd-0MPnaPG_ypQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_cUcakNQkEd63X4o72aQidQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_S0nW4GTrEeSFUrMLyV46sg">
+      <eAnnotations xmi:id="_4mhG8HGnEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_4mhG8XGnEeWKa6xc8cMmlg" key="Version" value="1.0.2"/>
+        <details xmi:id="_4mhG8nGnEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_4mhG83GnEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_4mhG9HGnEeWKa6xc8cMmlg" key="Date" value="2015-09-04"/>
+        <details xmi:id="_4mhG9XGnEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_S0n98GTrEeSFUrMLyV46sg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_Br2_QBSXEd-ZjqYFUyJzOw"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_HKmw8GW_EeWG3arGTiu4Mw" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ" createdBy="EAB/FJP/TA UABJOCL" approvedBy="EAB/FJP/TA UABJOCL" docDate=""/>
+  <ECIMBaseProfile:EcimMom xmi:id="_HKmw8WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Package="_sYV50M-MEd-0MPnaPG_ypQ" author="EAB/FJP/TA UABJOCL" contact="EAB/FJP/TA UABJOCL" date="" docNo="" revision="" version="2" release="2" organization="" ecimMomName="ECIM_T_OSPFv2" ecimMomVersion="1" ecimMomRelease="0" ecimMomCorrection="0" correction="0"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_HKmw8mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Class="_sYWhCM-MEd-0MPnaPG_ypQ"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_HKmw82W_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_sYWhCs-MEd-0MPnaPG_ypQ"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_HKmw9GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_L_9fIBqVEeGy2_9pBABvmw"/>
+  <ECIMBaseProfile:EcimContribution xmi:id="_HKmw9WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_pXR9sJ3XEeGX3Nx2JKZd-w"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_HKmw9mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Class="_JgOFcBY8EeKIFKFaJ8i60Q"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_HKmw92W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_JgOFcxY8EeKIFKFaJ8i60Q"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKmw-GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="If ospfAreaId is set to 0, this instance of the Area MO class must not have Stub or Nssa MOs as children.&#xA;An instance of Area MO class can have only one area type, that is Stub MO or Nssa MO, as child." disturbances="Changing this attribute causes traffic disturbances." precondition="" sideEffects="" takesEffect="All Interface MOs are reconfigured. The OSPFv2 routes from these interfaces are removed from the routing table and traffic is impacted until OSPFv2 has converged." isNotifiable="true" base_Property="_AK1XoKK0EeOv5Pd6LTNgUw"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKmw-WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_QAgP0KK0EeOv5Pd6LTNgUw"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKmw-mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_QAhd8KK0EeOv5Pd6LTNgUw"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKmw-2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_QAiFAKK0EeOv5Pd6LTNgUw"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKmw_GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" isNotifiable="true" base_Property="_QAisEKK0EeOv5Pd6LTNgUw"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKmw_WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="routerDeadInterval must be greater than helloInterval." isNotifiable="true" base_Property="_QAjTIKK0EeOv5Pd6LTNgUw"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKmw_mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" disturbances="Changing this attribute causes traffic disturbances." takesEffect="The OSPFv2 process is restarted. All OSPFv2 routes are removed from the routing table and traffic is impacted until OSPFv2 has converged." isNotifiable="true" base_Property="_4F7QkKK0EeOv5Pd6LTNgUw"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKwh8GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_96WY4KQKEeOIuffTXT4HzA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKwh8WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_96aqUKQKEeOIuffTXT4HzA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKwh8mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_96b4cKQKEeOIuffTXT4HzA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKwh82W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" range="1..65535" unit="" resolution="" multiplicationFactor="" isNotifiable="true" base_Property="_s6jPEKQ6EeOIuffTXT4HzA"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_HKwh9GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_5inpAKj_EeOS6qbopEDbMg"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_HKwh9WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_WF9GoKkAEeOS6qbopEDbMg"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_HKwh9mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Class="_nCp10KpUEeOfNu6vF64HzA"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_HKwh92W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_nDimoKpUEeOfNu6vF64HzA"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_HKwh-GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Class="_y8r-4KpUEeOfNu6vF64HzA"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_HKwh-WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_y8-50apUEeOfNu6vF64HzA"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_HKwh-mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_yr434KpWEeOfNu6vF64HzA"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_HKwh-2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_7KSAgKpWEeOfNu6vF64HzA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKwh_GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" length="1..128" range="" unit="" resolution="" multiplicationFactor="" pattern="" isNotifiable="true" base_Property="_N4LisKpaEeOfNu6vF64HzA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKwh_WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" length="1..128" range="" unit="" resolution="" multiplicationFactor="" pattern="" isNotifiable="true" base_Property="_U6-3EKpaEeOfNu6vF64HzA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKwh_mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="An AddressIPv4 MO can be referenced by only one OSPF Interface MO at a time.&#xA;Only AddressIPv4 MO reference within the same router is allowed in Ospfv2." disturbances="Changing this attribute causes traffic disturbances." precondition="" sideEffects="" takesEffect="The Interface MO is reconfigured. The OSPFv2 routes from this interface are removed from the routing table and traffic is impacted until OSPFv2 has converged." isNotifiable="true" isAssociationEnd="true" base_Property="_zoiwkKpaEeOfNu6vF64HzA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKwh_2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_yhrhAKscEeOL5LHxQ_WHfQ"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKwiAGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" length="1..128" range="" unit="" resolution="" multiplicationFactor="" pattern="" isNotifiable="true" base_Property="_t_eoQLCaEeOuWb3R7TCajw"/>
+  <CoreMWProfile:CmwModel xmi:id="_HHyGcGW_EeWG3arGTiu4Mw" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <CoreMWProfile:CmwMom xmi:id="_HHyGcWW_EeWG3arGTiu4Mw" base_Package="_sYV50M-MEd-0MPnaPG_ypQ"/>
+  <CoreMWProfile:CmwClass xmi:id="_HHyGcmW_EeWG3arGTiu4Mw" base_Class="_sYWhCM-MEd-0MPnaPG_ypQ"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGc2W_EeWG3arGTiu4Mw" base_Property="_QAgP0KK0EeOv5Pd6LTNgUw" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGdGW_EeWG3arGTiu4Mw" base_Property="_QAhd8KK0EeOv5Pd6LTNgUw" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGdWW_EeWG3arGTiu4Mw" base_Property="_QAiFAKK0EeOv5Pd6LTNgUw" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGdmW_EeWG3arGTiu4Mw" base_Property="_QAisEKK0EeOv5Pd6LTNgUw" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGd2W_EeWG3arGTiu4Mw" base_Property="_QAjTIKK0EeOv5Pd6LTNgUw" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGeGW_EeWG3arGTiu4Mw" base_Property="_s6jPEKQ6EeOIuffTXT4HzA" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGeWW_EeWG3arGTiu4Mw" base_Property="_zoiwkKpaEeOfNu6vF64HzA" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGemW_EeWG3arGTiu4Mw" base_Property="_t_eoQLCaEeOuWb3R7TCajw" isConfigurable="true"/>
+  <CoreMWProfile:CmwClass xmi:id="_HHyGe2W_EeWG3arGTiu4Mw" base_Class="_L4assBqVEeGy2_9pBABvmw"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGfGW_EeWG3arGTiu4Mw" base_Property="_4F7QkKK0EeOv5Pd6LTNgUw" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGfWW_EeWG3arGTiu4Mw" base_Property="_96WY4KQKEeOIuffTXT4HzA" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGfmW_EeWG3arGTiu4Mw" base_Property="_96aqUKQKEeOIuffTXT4HzA" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGf2W_EeWG3arGTiu4Mw" base_Property="_96b4cKQKEeOIuffTXT4HzA" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGgGW_EeWG3arGTiu4Mw" base_Property="_U6-3EKpaEeOfNu6vF64HzA" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGgWW_EeWG3arGTiu4Mw" base_Property="_yhrhAKscEeOL5LHxQ_WHfQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwContribution xmi:id="_HHyGgmW_EeWG3arGTiu4Mw" splitImmDn="false" base_Association="_pXR9sJ3XEeGX3Nx2JKZd-w"/>
+  <CoreMWProfile:CmwClass xmi:id="_HHyGg2W_EeWG3arGTiu4Mw" base_Class="_JgOFcBY8EeKIFKFaJ8i60Q"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGhGW_EeWG3arGTiu4Mw" base_Property="_AK1XoKK0EeOv5Pd6LTNgUw" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGhWW_EeWG3arGTiu4Mw" base_Property="_N4LisKpaEeOfNu6vF64HzA" isConfigurable="true"/>
+  <CoreMWProfile:CmwClass xmi:id="_HHyGhmW_EeWG3arGTiu4Mw" base_Class="_nCp10KpUEeOfNu6vF64HzA"/>
+  <CoreMWProfile:CmwClass xmi:id="_HHyGh2W_EeWG3arGTiu4Mw" base_Class="_y8r-4KpUEeOfNu6vF64HzA"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_HKwiAWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Class="_L4assBqVEeGy2_9pBABvmw"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_HKwiAmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Package="_GIyAoGTvEeSFUrMLyV46sg" author="EAB/FJP/TA UABJOCL" contact="EAB/FJP/TA UABJOCL" date="" docNo="" revision="" version="0" release="0" organization="" correction="0"/>
+  <CoreMWProfile:CmwMom xmi:id="_HHyGiGW_EeWG3arGTiu4Mw" base_Package="_GIyAoGTvEeSFUrMLyV46sg" immNamespace="MOM_NAME"/>
+  <ECIMBaseProfile:EcimDecisions xmi:id="_HKwiA2W_EeWG3arGTiu4Mw" base_Package="_GIyAqGTvEeSFUrMLyV46sg"/>
+  <ECIMBaseProfile:EcimDecision xmi:id="_HKwiBGW_EeWG3arGTiu4Mw" base_Class="_GIyAqWTvEeSFUrMLyV46sg"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_HKwiBWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="Ospfv2 instanceId must be unique between different Ospfv2 processes." disturbances="" precondition="" sideEffects="" takesEffect="" range="1..65535" unit="" resolution="" multiplicationFactor="" isNotifiable="true" isRestricted="true" base_Property="_xxQTkGT-EeSFUrMLyV46sg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGiWW_EeWG3arGTiu4Mw" base_Property="_xxQTkGT-EeSFUrMLyV46sg" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAbstractMoClass xmi:id="_HKwiBmW_EeWG3arGTiu4Mw" base_Class="_GIyAomTvEeSFUrMLyV46sg" hideGroupName="" specification="" status="OBSOLETE" statusInformation=""/>
+  <ECIMBaseProfile:EcimClientAssociationEnd xmi:id="_HKwiB2W_EeWG3arGTiu4Mw" base_Property="_QCa0gHrCEeSqaJghTi263A" isReserving="true"/>
+  <ECIMBaseProfile:EcimBiDirAssociation_CS xmi:id="_HKwiCGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_QCGrcHrCEeSqaJghTi263A"/>
+  <ECIMBaseProfile:EcimServerAssociationEnd xmi:id="_HKwiCWW_EeWG3arGTiu4Mw" base_Property="_QCdQwXrCEeSqaJghTi263A"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGimW_EeWG3arGTiu4Mw" base_Property="_sYWhCs-MEd-0MPnaPG_ypQ" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGi2W_EeWG3arGTiu4Mw" base_Property="_L_9fIBqVEeGy2_9pBABvmw" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGjGW_EeWG3arGTiu4Mw" base_Property="_JgOFcxY8EeKIFKFaJ8i60Q" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGjWW_EeWG3arGTiu4Mw" base_Property="_nDimoKpUEeOfNu6vF64HzA" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HHyGjmW_EeWG3arGTiu4Mw" base_Property="_y8-50apUEeOfNu6vF64HzA" isPersistent="true"/>
+  <ECIMBaseProfile:EcimSchematronConstraint xmi:id="_HKwiCmW_EeWG3arGTiu4Mw" interfaceVersion="1.0" interfaceName="ECIM_Schematron" base_Constraint="_O4FekGWpEeS2z5q0_IhvRA"/>
+  <ECIMBaseProfile:EcimSchematronConstraint xmi:id="_HKwiC2W_EeWG3arGTiu4Mw" interfaceVersion="1.0" interfaceName="ECIM_Schematron" base_Constraint="_Iw1zgGWpEeS2z5q0_IhvRA"/>
+  <ECIMBaseProfile:EcimSchematronConstraint xmi:id="_HKwiDGW_EeWG3arGTiu4Mw" interfaceVersion="1.0" interfaceName="ECIM_Schematron" base_Constraint="_L4ruMGWpEeS2z5q0_IhvRA"/>
+  <Documentation:Documentation xmi:id="_CiGUwGW_EeWG3arGTiu4Mw" base_Comment="_sYV50c-MEd-0MPnaPG_ypQ"/>
+  <Documentation:Documentation xmi:id="_CiGUwWW_EeWG3arGTiu4Mw" base_Comment="_sYWhCc-MEd-0MPnaPG_ypQ"/>
+  <Documentation:Documentation xmi:id="_CiGUwmW_EeWG3arGTiu4Mw" base_Comment="_sYWhC8-MEd-0MPnaPG_ypQ"/>
+  <Documentation:Documentation xmi:id="_CiGUw2W_EeWG3arGTiu4Mw" base_Comment="_geIfsM-OEd-0MPnaPG_ypQ"/>
+  <Documentation:Documentation xmi:id="_CiGUxGW_EeWG3arGTiu4Mw" base_Comment="_L_1jUBqVEeGy2_9pBABvmw"/>
+  <Documentation:Documentation xmi:id="_CiGUxWW_EeWG3arGTiu4Mw" base_Comment="_MAFa8BqVEeGy2_9pBABvmw"/>
+  <Documentation:Documentation xmi:id="_CiGUyGW_EeWG3arGTiu4Mw" base_Comment="_JgOFcRY8EeKIFKFaJ8i60Q"/>
+  <Documentation:Documentation xmi:id="_CiGUyWW_EeWG3arGTiu4Mw" base_Comment="_JgOFdBY8EeKIFKFaJ8i60Q"/>
+  <Documentation:Documentation xmi:id="_CiGUzWW_EeWG3arGTiu4Mw" base_Comment="_AK1XoaK0EeOv5Pd6LTNgUw"/>
+  <Documentation:Documentation xmi:id="_CiGUzmW_EeWG3arGTiu4Mw" base_Comment="_QAgP0aK0EeOv5Pd6LTNgUw"/>
+  <Documentation:Documentation xmi:id="_CiGUz2W_EeWG3arGTiu4Mw" base_Comment="_QAhd8aK0EeOv5Pd6LTNgUw"/>
+  <Documentation:Documentation xmi:id="_CiGU0GW_EeWG3arGTiu4Mw" base_Comment="_QAiFAaK0EeOv5Pd6LTNgUw"/>
+  <Documentation:Documentation xmi:id="_CiGU0WW_EeWG3arGTiu4Mw" base_Comment="_QAisEaK0EeOv5Pd6LTNgUw"/>
+  <Documentation:Documentation xmi:id="_CiGU0mW_EeWG3arGTiu4Mw" base_Comment="_QAjTIaK0EeOv5Pd6LTNgUw"/>
+  <Documentation:Documentation xmi:id="_CiGU02W_EeWG3arGTiu4Mw" base_Comment="_4F7QkaK0EeOv5Pd6LTNgUw"/>
+  <Documentation:Documentation xmi:id="_CiGU1GW_EeWG3arGTiu4Mw" base_Comment="_96WY4aQKEeOIuffTXT4HzA"/>
+  <Documentation:Documentation xmi:id="_CiGU1WW_EeWG3arGTiu4Mw" base_Comment="_96aqUaQKEeOIuffTXT4HzA"/>
+  <Documentation:Documentation xmi:id="_CiGU1mW_EeWG3arGTiu4Mw" base_Comment="_96b4caQKEeOIuffTXT4HzA"/>
+  <Documentation:Documentation xmi:id="_CiGU12W_EeWG3arGTiu4Mw" base_Comment="_nDZcsKpUEeOfNu6vF64HzA"/>
+  <Documentation:Documentation xmi:id="_CiGU2GW_EeWG3arGTiu4Mw" base_Comment="_nDimoqpUEeOfNu6vF64HzA"/>
+  <Documentation:Documentation xmi:id="_CiGU2WW_EeWG3arGTiu4Mw" base_Comment="_y81I0apUEeOfNu6vF64HzA"/>
+  <Documentation:Documentation xmi:id="_CiGU2mW_EeWG3arGTiu4Mw" base_Comment="_y9IDwapUEeOfNu6vF64HzA"/>
+  <Documentation:Documentation xmi:id="_CiGU22W_EeWG3arGTiu4Mw" base_Comment="_N4VTsKpaEeOfNu6vF64HzA"/>
+  <Documentation:Documentation xmi:id="_CiGU3GW_EeWG3arGTiu4Mw" base_Comment="_U6-3EapaEeOfNu6vF64HzA"/>
+  <Documentation:Documentation xmi:id="_CiGU3WW_EeWG3arGTiu4Mw" base_Comment="_zoiwkapaEeOfNu6vF64HzA"/>
+  <Documentation:Documentation xmi:id="_CiGU3mW_EeWG3arGTiu4Mw" base_Comment="_yhrhAascEeOL5LHxQ_WHfQ"/>
+  <Documentation:Documentation xmi:id="_CiGU32W_EeWG3arGTiu4Mw" base_Comment="_t_eoQbCaEeOuWb3R7TCajw"/>
+  <Documentation:Documentation xmi:id="_CiGU4GW_EeWG3arGTiu4Mw" base_Comment="_GIyAoWTvEeSFUrMLyV46sg"/>
+  <Documentation:Documentation xmi:id="_CiGU4WW_EeWG3arGTiu4Mw" base_Comment="_GIyAo2TvEeSFUrMLyV46sg"/>
+  <Documentation:Documentation xmi:id="_CiGU4mW_EeWG3arGTiu4Mw" base_Comment="_5WMI0GT3EeSFUrMLyV46sg"/>
+  <Documentation:Documentation xmi:id="_CiGU42W_EeWG3arGTiu4Mw" base_Comment="_xxQTkWT-EeSFUrMLyV46sg"/>
+</xmi:XMI>

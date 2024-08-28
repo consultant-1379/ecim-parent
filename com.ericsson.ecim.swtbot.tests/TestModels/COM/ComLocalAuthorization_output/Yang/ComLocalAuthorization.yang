@@ -1,0 +1,385 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:13:52 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ComLocalAuthorization" {
+	namespace "urn:com:ericsson:ecim:ComLocalAuthorization";
+	prefix "ComLocalAuthorization";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ComTop {
+		prefix "ComTop";
+	}
+
+	import ComSecM {
+		prefix "ComSecM";
+	}
+
+	organization "EAB/FLE/CD";
+	description "Local Role Based Access Control (RBAC) model.";
+
+	revision "2014-09-23" {
+		ericsson:author "EAB/FLE/CD XSANBOJ";
+		ericsson:release "1";
+		ericsson:revision "0";
+		ericsson:correction "0";
+		ericsson:version "11";
+	}
+
+	augment
+	"/ComTop:ManagedElement/ComTop:SystemFunctions/ComSecM:SecM/ComSecM:UserManagement"
+	{
+		list "LocalAuthorizationMethod" {
+			key "localAuthorizationMethodId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "Role" {
+				key "roleId";
+				list "Rule" {
+					key "ruleId";
+					min-elements 1;
+					uses ComLocalAuthorization:Rule;
+				}
+
+				uses ComLocalAuthorization:Role;
+			}
+
+			list "CustomRole" {
+				key "customRoleId";
+				uses ComLocalAuthorization:CustomRole;
+			}
+
+			list "CustomRule" {
+				key "customRuleId";
+				uses ComLocalAuthorization:CustomRule;
+			}
+
+			uses ComLocalAuthorization:LocalAuthorizationMethod;
+		}
+
+	}
+
+	typedef "PermissionType" {
+		type enumeration {
+			enum "R" {
+				value 4;
+				description "Read only access right.
+
+The user can read MOs and can get attribute values.";
+			}
+
+			enum "RW" {
+				value 6;
+				description "Read and write access right.
+
+The user can create and delete MOs and set and get attribute values.";
+			}
+
+			enum "X" {
+				value 1;
+				description "Execute access right.
+
+This is valid only for actions and specific commands.";
+			}
+
+			enum "RX" {
+				value 5;
+				description "Read and execute access rights.
+
+The user can read MOs, get attribute values, and execute any actions.";
+			}
+
+			enum "RWX" {
+				value 7;
+				description "Read, write, and execute access rights.
+
+The user can create and delete MOs, and set and get attribute values, and execute any actions.";
+			}
+
+			enum "NO_ACCESS" {
+				value 0;
+				description "No access.
+
+The user has no read, write or execute rights to the MO, attribute, or action.";
+			}
+
+		}
+
+		description "Permission is the access right a role has on a target object specified by the ruleData attribute.
+
+Current permission types follow UNIX/Linux permission enumeration values as follows:
+0 = NO_ACCESS
+1 = X (EXECUTE)
+4 = R (READ)
+5 = RX (READ and EXECUTE)
+6 = RW (READ and WRITE)
+7 = RWX (READ, WRITE and EXECUTE)
+
+Reserved values that are not included here are as follows and if required, may be introduced at a later date: 
+
+2 = W (WRITE)
+3 = WX (WRITE and EXECUTE).";
+	}
+
+	typedef "RuleDataType" {
+		type string {
+			pattern
+			"(^[^,=[:space:]+<>#;\\"*$|.]+(\.[^,=[:space:]+<>#;\\"*$|.]+)?(=[^,=[:cntrl:]+<>#;\\"*$|]+)?(,[^,=[:space:]+<>#;\\"*$|.]+(\.[^,=[:space:]+<>#;\\"*$|.]+)?(=[^,=[:cntrl:]+<>#;\\"*$|]+)?)*((\.[^,=[:space:]+<>#;\\"*$|.]+(\|[^,=[:space:]+<>#;\\"*$|.]+)*)|(,\*)|(\.\*)|(\$))?$)|(^regexp:.*(\[A-Za-z0-9_\]\+)*.*$)";
+		}
+
+		description "This type specifies the target Managed Object (MO) or MO Class (MOC) that a rule applies to.
+
+Entire sub-trees can be addressed as well as attributes and actions defined for a specific MO or MOC. Patterns are used for this purpose according to simplified regular expression syntax. Any regular expression can also be defined but must be identified as such using a specific prefix.
+
+MOCs are specified in their containment hierarchy separated by commas “,”. For example:  “ManagedElement,ApplFuncX”. 
+ 
+MOs are specified using the 3GPP DN notation, with the exception that the same rule may mix MO and MOC, such as “ManagedElement, ApplFuncX=1”. Omitting the instance Id is the preferred notation for singleton MOCs, which makes the rule applicable for all ManagedElement instances. Thus rule design becomes independent of system implementation for singleton MOC types.
+
+If the naming attribute is not the same as the MO Class name + “Id”, the naming attribute is in accordance with the 3GPP part of the DN as well. This means that if ApplFuncX naming attribute is xyz, then the DN is “ManagedElement,ApplFuncX.xyz=2”. However, it is not required nor forbidden to use this more elaborate form of DN. The naming attribute xyz can be omitted.
+ 
+Attributes and actions are specified after the MO or MOC separated by a dot “.”. Several attributes or actions can be specified for the same MO or MOC separated by the the bar “|” character.
+
+The rule applies to a single MO or MOC and all its attributes and actions unless the following notation is used:  ...,MOC$
+
+The rule applies only to the MOC itself and not to its attributes and actions ...,MOC.*
+
+The rule applies to all attributes and actions that belong to the MO Class, but not to the MOC itself: ...,MOC,*
+
+The rule applies to the MOC and all its attributes and actions as well as all the ones that contain child MOCs and their attributes and actions.
+
+The above notations are also valid for MOs and must close an expression.
+
+In addition, the ruleData attribute can specify any Perl Compatible Regular Expressions. These regular expressions must only be used by CLI Command Modules for tailored commands. The permitted content is specified by the CLI Command Module documentation. The only general restriction to these kinds of rule data is that they must start with “regexp:” plus a different expression from the wild card “.*”. 
+Examples:
+1)	Entire MO tree, that is the rule will match all Managed Objects:
+ManagedElement,*
+
+2)	Only MOs and their attributes and actions of ManagedElement MOC:
+ManagedElement 
+
+3)	Only MOs of ManagedElement MOC but not their attributes and actions:
+ManagedElement$
+
+4)	A specific MO including singleton parents:
+ManagedElement,Equipment,FRU=19
+
+5)	An entire sub-tree below that includes a specific MO:
+ManagedElement,Equipment,FRU=17,*
+
+6)	An entire sub-tree below that includes a specific MO that belongs to an MO class where the naming attribute is not equal to the MOC Name + “Id”.  Two examples are given, both are valid and accurately describe the same MO tree:
+ManagedElement,Equipment,Abc.xyz=1,*
+ManagedElement,Equipment,Abc=1,*
+
+7)	All port attributes that belong to MOs of the Boo MOC:
+ManagedElement,ApplFuncX,Boo.port
+
+8)	All ipAddress and port attributes that belong to MOs of the Boo MO class:
+ManagedElement,ApplFuncX,Boo.ipAddress|port
+
+9)	Only the port attribute that belongs to a specific instance of the Boo MOC:
+ManagedElement,ApplFuncX=1,Boo=17.port
+
+10)	The restart action on the ManagedElement MOC:
+ManagedElement.restart
+
+11)	All commands in the command module group System:
+regexp:System-[a-zA-Z0-9]+";
+	}
+
+	grouping "Role" {
+		description "Authorization roles that may be assigned to users.
+
+Roles have a containment relationship to the rules which define the access controls to objects.";
+		leaf "roleId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "roleName" {
+			type string;
+			config true;
+			description "The role name a user may have.
+
+The name is matched against role names retrieved from the user information store.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+	}
+
+	grouping "Rule" {
+		description "The rules that define the access control to objects.
+
+A Rule MO is contained by a Role MO which may be then applied to users.";
+		leaf "ruleId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "ruleName" {
+			type string;
+			config true;
+			description "The rule name.
+
+The rule name is a string of '<FunctionName>_<RuleNumber>'
+
+<FunctionName> is a unique name for a system, transport, equipment, or application function.  
+
+<RuleNumber> is a numerical ID of the Rule MO within a <FunctionName>. 
+
+Examples:
+
+	BackupAndRestoreManagement_1
+	FileManagement_2
+	SecurityManagement_2
+	SystemManagement_1
+";
+		}
+
+		leaf "permission" {
+			type ComLocalAuthorization:PermissionType;
+			config true;
+			description
+			"Permission is the access right the rule provides on a target specified by the ruleData attribute. ";
+		}
+
+		leaf "ruleData" {
+			type ComLocalAuthorization:RuleDataType;
+			config true;
+			description
+			"Defines the model elements for which the permission is applicable.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+	}
+
+	grouping "LocalAuthorizationMethod" {
+		description "The Root MOC of the Local Authorization method.
+
+Roles and authorization rules are defined to build a Role Based Access Control (RBAC) model for controlling access to Managed Element resources such as Managed Objects, attributes, actions and CLI commands. ";
+		leaf "localAuthorizationMethodId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "administrativeState" {
+			type ECIM_CommonLibrary:BasicAdmState;
+			mandatory true;
+			description "The administrative state of this authorization method.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+	}
+
+	grouping "CustomRole" {
+		description "Authorization roles defined by the MS that may be assigned to users.
+
+CustomRole MO instances are associated to CustomRule MO instances, which define the access controls to objects. ";
+		leaf "customRoleId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "roleName" {
+			type string;
+			mandatory true;
+			description "The role name a user may have.
+
+The name must match a role name retrieved from the user information store.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+		leaf-list "rules" {
+			type string {
+				pattern "(.*=.*,)*CustomRule=.*";
+			}
+
+			min-elements 1;
+			description "The rules of the role created by the MS.
+
+Contains the Distinguished Names of CustomRule MO instances.";
+		}
+
+	}
+
+	grouping "CustomRule" {
+		description "The rules created by the MS that define the access control to objects.
+
+The CustomRule MO instances are associated with CustomRole MO instances, which may be then applied to users. ";
+		leaf "customRuleId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "ruleName" {
+			type string;
+			description "The rule name.";
+		}
+
+		leaf "permission" {
+			type ComLocalAuthorization:PermissionType;
+			mandatory true;
+			description
+			"Permission is the access right the rule provides on a target specified by the ruleData attribute. ";
+		}
+
+		leaf "ruleData" {
+			type ComLocalAuthorization:RuleDataType;
+			mandatory true;
+			description
+			"Defines the model elements for which the permission is applicable.";
+		}
+
+		leaf-list "reservedByRoles" {
+			type string {
+				pattern "(.*=.*,)*CustomRole=.*";
+			}
+
+			config true;
+			description "The roles to which this rule is associated.
+
+Indicates the Distinguished Names of CustomRole MO instances that refer to this CustomRule MO.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+	}
+
+}

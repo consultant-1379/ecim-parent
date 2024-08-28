@@ -1,0 +1,354 @@
+-- /**
+-- * This transform takes an ECIM complaint model (UML) as input and generates an MP.ecore compliant output.
+-- * The transform is modularised so you need to ensure a number of dependencies are added in the launch.
+-- * These dependencies are added in the launcher via superimposition. The dependencies are listed below.
+-- * 
+-- * superimposition-dependencies: All the files in superimposed_modules
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Note: A Parameter Model compliant to PARAM may be passed in. This model defines where COM or CPP style
+-- * XML should be generated
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 03/02/2010
+-- */
+
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI PARAM=http://ericsson.com/ECIM/ParameterModel
+
+module ECIMtoMP;
+create OUT : MP from IN : UML, IN2 : PARAM;
+
+uses HelperFunctions;
+
+--The following are constants that are not changable in the input model. The transformation is specific to these values.
+helper def: dtdVersion : String = 'G';
+helper def: company : String = 'Ericsson AB';
+helper def: disclaimer : String = '';
+helper def: year : String = '';
+
+--Map EcimModel to MP DocumentRoot
+rule EcimModelToModelsType
+{
+	from s: UML!Model(s.oclIsTypeOf(UML!Model))--need this guard as both models and packages are packages
+	to dr : MP!DocumentRoot
+	(
+		models <- t
+	),
+	t: MP!ModelsType
+	(
+		mim <- UML!Package.allInstances()->select(e|e.oclIsTypeOf(UML!Package) and e.hasStereotype('ECIM Base Profile::EcimMom')),
+		mim <- UML!Package.allInstances()->select(e|e.oclIsTypeOf(UML!Package) and e.hasStereotype('ECIM Base Profile::EcimLibrary') and thisModule.isDWAXE()),
+		mim <- if thisModule.isDWAXE() then ecimCommonMim else OclUndefined endif,
+		interMim <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->select(e|e.hasStereotype('ECIM Base Profile::EcimContribution'))->collect(e|thisModule.ContributionAssociationToInterMim(e)),
+		mib <- UML!Package.allInstances()->select(e|e.oclIsTypeOf(UML!Package) and e.hasStereotype('ECIM Base Profile::EcimInstances')),
+				
+		dtdVersion <- thisModule.CreateDtdVersionType(thisModule.dtdVersion),
+		momMetaData <- momMetaDataType
+		
+		--**The following properties are not available in mp.dtd, for this type, so they are commented out**
+		--hideGroupName, specification, status
+	),
+	momMetaDataType : MP!MomMetaDataType
+	(
+		momTitle <- thisModule.hasTitle(s),
+		momSubTitle <- thisModule.hasSubTitle(s),
+		momIdentity <- momIdentityType,
+		createdBy <- thisModule.hasCreatedByName(s),
+		approvedBy <- thisModule.hasApprovedByName(s)
+	),
+	momIdentityType : MP!MomIdentityType
+	(
+		docNum <- thisModule.hasDocNum(s),
+		docLang  <- thisModule.hasDocLang(s),
+		docRev <- thisModule.hasDocRev(s),
+		docDate <-  thisModule.hasDocDate(s)
+	),
+	ecimCommonMim : MP!MimType
+	(
+		name <- 'EcimCommon',
+		version <- '1',
+		release <- '0',
+		class <- managedObjectClass
+	),
+	managedObjectClass : MP!ClassType
+	(
+		name <- 'ManagedObject',
+		interfaceOnly <- thisModule.CreateInterfaceOnlyType(),
+		description <- thisModule.CreateDescriptionType('The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.')	
+	)	
+}
+
+--store the package in a global variable and then return the package name
+rule setCurrentPackage(p:UML!Package)
+{
+	do
+	{
+		thisModule.currentPackage <- p;	
+		p.name;
+	}
+}
+
+--Map EcimMom to MP MimType
+rule EcimMomToMIMType
+{
+	from s: UML!Package(s.oclIsTypeOf(UML!Package) and s.hasStereotype('ECIM Base Profile::EcimMom') and not thisModule.isDWAXE())
+	using
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(s);
+	}
+	to t: MP!MimType
+	(
+		domainExtension <- thisModule.defineEcimMomDomainExtensionType(s),
+		description <- thisModule.hasDescription(s),
+		author <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimMom'),'author'),
+		contact <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimMom'),'contact'),
+		date <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimMom'),'date'),
+		docNo <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimMom'),'docNo'),
+		name <- thisModule.setCurrentPackage(s),-- we wrap/store the current mim package to be reused for structs members and exception parameters
+		namespace <- thisModule.defineNamespace(s),
+		namespacePrefix <- thisModule.defineNamespacePrefix(s.name),
+		organization <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimMom'),'organization'),
+		release <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimMom'),'release'),
+		revision <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimMom'),'revision'),
+		version <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimMom'),'version'),
+		correction <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimMom'),'correction'),
+		implements <- thisModule.defineEcimMomImplementsType(s),
+				
+		modelFeatures <- if thisModule.hasDecisionModelNoDecisions(s) then OclUndefined else s.getOwnedElements()->select(e|e.oclIsTypeOf(UML!Package))->select(e|e.hasStereotype('ECIM Base Profile::EcimFeatures') and thisModule.haveDecisionsGotFeatures(s)) endif,
+		
+		variant <- thisModule.getDecisionModelName(s),
+		
+		deprecated <- thisModule.isDeprecated(s),
+		obsolete <- thisModule.isObsolete(s),
+		preliminary <- thisModule.isPreliminary(s),
+		statusInformation <- thisModule.hasStatusInformation(s),
+		filter <- thisModule.hasFilter(s),
+		specification <- thisModule.hasSpecification(s),
+		
+		struct <- thisModule.lookupAllUsedStructs(s)->collect(e|thisModule.EcimStructToStructType(e)),
+
+		exception <- thisModule.lookupAllUsedExceptions(s)->collect(e|thisModule.EcimExceptionToExceptionType(e)),
+
+		enum <- thisModule.lookupAllUsedEnumerations(s)->collect(e|thisModule.EnumerationToEnumType(e)),
+
+		derivedDataType <- if thisModule.isCOM() or thisModule.isDWAXE() then thisModule.lookupAllUsedDerivedDatatypes(s)->collect(e|thisModule.EcimDerivedDataTypeToDerivedDataTypeType(e)) else OclUndefined endif,
+		
+		--Create a new DerivedType for all inline types when running COM MP transform
+		derivedDataType <- if thisModule.isCOM() then UML!TypedElement.allInstances()->select(e|e.getNearestPackageName()=s.name)->select(e|not e.getOwner().oclIsTypeOf(UML!Association))->select(e|e.hasInlinePropertiesSet())->collect(e|thisModule.EcimInlineDerivedDataTypeToDerivedDataTypeType(e)) else OclUndefined endif,
+		
+		--Create a new derived data type for inline types in the struct members belonging to external structs
+		derivedDataType <- if thisModule.isCOM() then thisModule.lookupAllStructMembersFromOtherModels(s)->select(e|e.hasInlinePropertiesSet())->collect(e|thisModule.EcimInlineDerivedDataTypeToDerivedDataTypeType(e)) else OclUndefined endif,
+		
+		class <- s.getOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.hasNotGotStereotype('ECIM Base Profile::EcimStruct') and not e.isAbstract() and e.hasNotGotStereotype('ECIM Base Profile::EcimException')),--Exclude all structs/exceptions from the class list
+
+		relationship <- s.getOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->select(e|e.hasStereotype('ECIM Base Profile::EcimContainment') or e.hasStereotype('ECIM Base Profile::EcimBiDirAssociation') or e.hasStereotype('ECIM Base Profile::EcimBiDirAssociation_CS') or e.hasStereotype('ECIM Base Profile::EcimUniDirAssociation')),
+		
+		--before creating the extensions we group them by domain so that they can be outputted together
+		domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,s))
+		
+		--**These mp.dtd properties are not supported by the ECIM Profile**
+		--applicationTag
+		--systemCreated --TODO:Non existent, it is now in EcimContainment!! This was a changed as a consequence of the last review.
+		--notificationTypes
+		--nonPersistent -- Not used, use MP property readOnly instead
+		--lockBeforeDelete --Not present in ECIM Profile.
+		--feature --Not present in ECIM Profile
+		--dependencies --Not present in ECIM Profile
+		--visibility --Not present in ECIM Profile.
+		
+		--**The following properties are not available in mp.dtd yet, for this type, so they are commented out**
+		--hideGroupName, specification, status
+		
+		--**These mp.dtd properties are not supported by the ECIM Profile**
+		--applicationTag
+		--exception
+	)	
+}
+
+abstract rule EcimMomOrEcimLibraryToMIMType
+{
+	from s: UML!Package(s.oclIsTypeOf(UML!Package) and (s.hasStereotype('ECIM Base Profile::EcimMom') or s.hasStereotype('ECIM Base Profile::EcimLibrary')) and thisModule.isDWAXE())
+	using
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(s);
+		stereotypeName : String = if (s.hasStereotype('ECIM Base Profile::EcimMom')) then 'ECIM Base Profile::EcimMom' else 'ECIM Base Profile::EcimLibrary' endif;
+	}
+	to t: MP!MimType
+	(
+		domainExtension <- if (s.hasStereotype('ECIM Base Profile::EcimMom')) then thisModule.defineEcimMomDomainExtensionType(s) else thisModule.defineEcimLibraryDomainExtensionType(s) endif,
+		description <- thisModule.hasDescription(s),
+		author <- s.getValue(s.getAppliedStereotype(stereotypeName),'author'),
+		contact <- s.getValue(s.getAppliedStereotype(stereotypeName),'contact'),
+		date <- s.getValue(s.getAppliedStereotype(stereotypeName),'date'),
+		docNo <- s.getValue(s.getAppliedStereotype(stereotypeName),'docNo'),
+		name <- thisModule.setCurrentPackage(s),-- we wrap/store the current mim package to be reused for structs members and exception parameters
+		organization <- s.getValue(s.getAppliedStereotype(stereotypeName),'organization'),
+		release <- s.getValue(s.getAppliedStereotype(stereotypeName),'release'),
+		version <- s.getValue(s.getAppliedStereotype(stereotypeName),'version'),
+		correction <- s.getValue(s.getAppliedStereotype(stereotypeName),'correction'),
+		
+		deprecated <- thisModule.isDeprecated(s),
+		obsolete <- thisModule.isObsolete(s),
+		preliminary <- thisModule.isPreliminary(s),
+		statusInformation <- thisModule.hasStatusInformation(s),
+		filter <- thisModule.hasFilter(s),
+		specification <- thisModule.hasSpecification(s),
+		
+		struct <- s.getOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.hasStereotype('ECIM Base Profile::EcimStruct'))->collect(e|thisModule.EcimStructToStructType(e)),
+ 
+		exception <- s.getOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.hasStereotype('ECIM Base Profile::EcimException'))->collect(e|thisModule.EcimExceptionToExceptionType(e)),
+ 
+		enum <- s.getOwnedElements()->select(e|e.oclIsTypeOf(UML!Enumeration))->select(e|e.hasStereotype('ECIM Base Profile::EcimEnumeration'))->collect(e|thisModule.EnumerationToEnumType(e)),
+
+		derivedDataType <- s.getOwnedElements()->select(e|e.oclIsTypeOf(UML!DataType))->collect(e|thisModule.EcimDerivedDataTypeToDerivedDataTypeType(e)),
+		
+		class <- s.getOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.hasNotGotStereotype('ECIM Base Profile::EcimStruct') and not e.isAbstract() and e.hasNotGotStereotype('ECIM Base Profile::EcimException')),--Exclude all structs/exceptions from the class list
+
+		relationship <- s.getOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->select(e|e.hasStereotype('ECIM Base Profile::EcimContainment') or e.hasStereotype('ECIM Base Profile::EcimBiDirAssociation') or e.hasStereotype('ECIM Base Profile::EcimBiDirAssociation_CS') or e.hasStereotype('ECIM Base Profile::EcimUniDirAssociation')),
+		
+		--before creating the extensions we group them by domain so that they can be outputted together
+		domainExtension <- if domainExtensions.oclIsUndefined() then OclUndefined else domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,s)) endif
+		
+		--**These mp.dtd properties are not supported by the ECIM Profile**
+		--applicationTag
+		--systemCreated --TODO:Non existent, it is now in EcimContainment!! This was a changed as a consequence of the last review.
+		--notificationTypes
+		--nonPersistent -- Not used, use MP property readOnly instead
+		--lockBeforeDelete --Not present in ECIM Profile.
+		--feature --Not present in ECIM Profile
+		--dependencies --Not present in ECIM Profile
+		--visibility --Not present in ECIM Profile.
+		
+		--**The following properties are not available in mp.dtd yet, for this type, so they are commented out**
+		--hideGroupName, specification, status
+		
+		--**These mp.dtd properties are not supported by the ECIM Profile**
+		--applicationTag
+		--exception
+	)	
+}
+
+
+--Map EcimMom to MP MimType for DWAXE MP
+rule EcimMomToMIMTypeForDwaxe extends EcimMomOrEcimLibraryToMIMType
+{
+	from s: UML!Package(s.oclIsTypeOf(UML!Package) and s.hasStereotype('ECIM Base Profile::EcimMom') and thisModule.isDWAXE())
+	to t: MP!MimType
+	(	
+		namespace <- thisModule.defineNamespace(s),
+		namespacePrefix <- thisModule.defineNamespacePrefix(s.name),
+		implements <- thisModule.defineEcimMomImplementsType(s),
+		revision <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimMom'),'revision'),
+		modelFeatures <- if thisModule.hasDecisionModelNoDecisions(s) then OclUndefined else s.getOwnedElements()->select(e|e.oclIsTypeOf(UML!Package))->select(e|e.hasStereotype('ECIM Base Profile::EcimFeatures') and thisModule.haveDecisionsGotFeatures(s)) endif,
+		variant <- thisModule.getDecisionModelName(s)
+	)	
+}
+
+--Map EcimLibrary to MP MimType for DWAXE MP
+rule EcimLibraryToMIMType  extends EcimMomOrEcimLibraryToMIMType
+{
+	from s: UML!Package(s.oclIsTypeOf(UML!Package) and s.hasStereotype('ECIM Base Profile::EcimLibrary') and thisModule.isDWAXE())
+	to t: MP!MimType
+	(				
+	)
+}
+
+--Map when called EcimInstances to MP MibType
+rule EcimInstancePackageToMIBType
+{
+	from s: UML!Package(s.oclIsTypeOf(UML!Package) and s.hasStereotype('ECIM Base Profile::EcimInstances') and s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!InstanceSpecification))->select(e|not thisModule.isEcimStruct(e))->size() > 0)--need this guard as both models and packages are packages
+
+	to t: MP!MibType
+	(
+		description <- thisModule.hasDescription(s),
+		name <- thisModule.getInstancePackageName(s),
+		release <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimInstances'),'release'),
+		version <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimInstances'),'version'),
+		correction <-  s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimInstances'),'correction'),
+		object <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!InstanceSpecification))->select(e|not thisModule.isEcimStruct(e))
+	)
+}
+
+rule EcimFeaturesPackageToModelFeaturesType
+{
+	from s: UML!Package(s.oclIsTypeOf(UML!Package) and s.hasStereotype('ECIM Base Profile::EcimFeatures') and thisModule.haveDecisionsGotFeatures(s))
+
+	to t: MP!ModelFeaturesType
+	(
+		modelType <- if(thisModule.isDecisionModel()) then 'Derived' else 'Template' endif,
+		--Template models show all features, derived models only show used features
+		modelFeature <- if(thisModule.isDecisionModel()) then s.getOwner().allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.hasStereotype('ECIM Base Profile::EcimDecision'))->collect(e|thisModule.getFeaturesByDecision(e))->flatten()->collect(e|thisModule.EcimFeatureToModelFeatureType(e)) else UML!Class.allInstances()->select(e|e.hasStereotype('ECIM Base Profile::EcimFeature'))->select(e|e.getNearestPackage()=s)->collect(e|thisModule.EcimFeatureToModelFeatureType(e)) endif
+	)
+}
+
+lazy rule EcimFeatureToModelFeatureType
+{
+	from s: UML!Class(s.oclIsTypeOf(UML!Class) and s.hasStereotype('ECIM Base Profile::EcimFeature'))
+
+	to t: MP!ModelFeatureType
+	(
+		name <- s.name,
+		featureType <- 'basic' 
+	)
+}
+
+--get all the features used by a decision
+helper def: getFeaturesByDecision(class: UML!Class) : Set(UML!Class) = 
+	class.getClientDependencies()->collect(e|e.getSuppliers())->flatten();
+		
+--some decision model may not use any features so provide a check for this. 
+helper def: haveDecisionsGotFeatures(p : UML!Package) : Boolean = 
+	if thisModule.isDWAXE()
+	then
+		false--don't output features for DWAXE
+	else
+		if (thisModule.isDecisionModel() and p.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.hasStereotype('ECIM Base Profile::EcimDecision'))->select(e|e.getClientDependencies()->size() = 0)->size() > 0)
+		then
+			false
+		else
+			if (not thisModule.isDecisionModel() and UML!Class.allInstances()->select(e|e.hasStereotype('ECIM Base Profile::EcimFeature'))->size() = 0)
+			then
+				false
+			else
+				true
+			endif
+		endif
+	endif;
+
+helper def: hasDecisionModelNoDecisions(p : UML!Package) : Boolean =
+	if (thisModule.isDecisionModel())
+	then
+		if (p.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.hasStereotype('ECIM Base Profile::EcimDecision'))->size() = 0)
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+helper def: getChildrenOfAbstractClassInAPackage(p : UML!Package, c : UML!Class) : Sequence( UML!Class ) =
+	p.getOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.general->contains(c));
+	
+	
+helper def: getChildrenOfAbstractClassesInAPackage(p : UML!Package) : Sequence( UML!Class ) =
+	p.getOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))
+	->select(e|thisModule.isParentClassAbstract(e));
+
+--note we do not support multiple inheritance as this helper assumes only one generalisation
+helper def: isParentClassAbstract(p : UML!Class) : Boolean =
+	if p.superClass.size() = 0
+	then
+		false
+	else
+		if p.superClass->select(e|e.isAbstract).size() > 0
+		then
+			true
+		else
+			false
+		endif
+	endif;

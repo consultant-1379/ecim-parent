@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         id=""
+         name=""
+         point="org.eclipse.jet.transform">
+      <transform
+            enableEmbeddedExpressions="true"
+            modelLoader="org.eclipse.jet.xml"
+            startTemplate="templates/main.jet"
+            templateLoaderClass="jetTest.compiled._jet_transformation">
+         <description></description>
+         <tagLibraries>
+            <importLibrary id="org.eclipse.jet.controlTags" usePrefix="c" autoImport="true"/>
+            <importLibrary id="org.eclipse.jet.javaTags" usePrefix="java" autoImport="true"/>
+            <importLibrary id="org.eclipse.jet.formatTags" usePrefix="f" autoImport="true"/>
+            <importLibrary id="org.eclipse.jet.workspaceTags" usePrefix="ws" autoImport="false"/>
+            <importLibrary
+                  autoImport="true"
+                  id="com.ericsson.ecim.m2t.ecimTags"
+                  usePrefix="ecim">
+            </importLibrary>
+         </tagLibraries>
+      </transform>
+   </extension>
+   <extension
+         point="org.eclipse.jet.tagLibraries">
+      <tagLibrary
+            deprecated="false"
+            id="ecimTags"
+            name="ECIM Tag Library"
+            standardPrefix="ecim">
+         <emptyTag
+               class="com.ericsson.ecim.m2t.tags.EcimOutputTag"
+               deprecated="false"
+               name="file"
+               whenContainingLineIsEmpty="preserve">
+            <attribute name="path" type="string" use="required">
+−
+	<description>
+
+                  A relative path (no initial '/') or an absolute path.
+               
+</description>
+</attribute>
+−
+	<attribute name="template" type="string" use="required">
+−
+	<description>
+
+                  A project-relative path of a JET template to execute. The template provides the file's contents.
+               
+</description>
+</attribute>
+−
+	<attribute name="encoding" type="string" use="optional">
+−
+	<description>
+
+                  The character encoding of the file. If omitted, then the Eclipse workspace determines the encoding. If provided, then the encoding is changed to the specified value. A value of '#default' restores the encoding of the file to the workspace determined default.
+               
+</description>
+</attribute>
+−
+	<attribute name="replace" type="boolean" use="optional">
+−
+	<description>
+
+                  A boolean ('true' or 'false') value. If 'true', the tag will overwrite an existing file, otherwise it will not. If omitted, a value of 'true' is assumed.
+               
+</description>
+</attribute>
+−
+	<attribute name="derived" type="boolean" use="optional">
+−
+	<description>
+
+                  A boolean value ('true' or 'false') determining the value of the workspace 'derived' attribute for the file. If omitted, a value of 'false' is assumed.
+               
+</description>
+</attribute>
+         </emptyTag>
+      </tagLibrary>
+   </extension>
+</plugin>

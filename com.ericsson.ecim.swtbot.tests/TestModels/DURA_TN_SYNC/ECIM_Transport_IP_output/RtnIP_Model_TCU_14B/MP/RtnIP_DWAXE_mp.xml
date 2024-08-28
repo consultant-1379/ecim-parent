@@ -1,0 +1,2984 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Oct 14, 2015 9:51:32 PM using:
+	* com.ericsson.ecim.m2m 3.0.2.qualifier
+	* com.ericsson.ecim.dsl 3.0.2.qualifier
+	* com.ericsson.ecim.edm 3.0.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>EAB/FJP/TA UABERPE</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>EAB/FJP/TA UABERPE</signature>
+        </approvedBy>
+    </momMetaData>
+    <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="2" date="" docNo="" name="RtnL3Router" namespace="urn:com:ericsson:ecim:RtnL3Router" namespacePrefix="rtnl3router" organization="" release="14" revision="" variant="Model_TCU_14B" version="1">
+        <description>Base routing fragment.</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_T_L3_Router"/>
+            <extension name="ecimMomVersion" value="1"/>
+            <extension name="ecimMomRelease" value="1"/>
+            <extension name="ecimMomCorrection" value="0"/>
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <implements correction="0" name="ECIM_T_L3_Router" release="1" version="1"/>
+        <class name="Router">
+            <description>Represents an IP routing domain instance.&#13;
+&#13;
+It provides data plane isolation of routed traffic and control plane isolation of routing entities from other routing instances.&#13;
+&#13;
+It allows for further fragmentation of the routing domain.
+
+Dependencies: The maximum number of InterfaceIPv4 MO configured as loopback is 64.</description>
+            <validationRules>
+                <rule exceptionText="" format="ECIM_Schematron_1.0" name="Router">&lt;schema xmlns="http://purl.oclc.org/dsdl/schematron"&gt;
+	 &lt;pattern&gt;
+		&lt;rule&gt;
+		&lt;assert test='count(InterfaceIPv4[@loopback]) le 64'&gt;&lt;value-of select="."/&gt; Maximum number of InterfaceIPv4 configured as loopback is 64&lt;/assert&gt;
+		&lt;assert test='count(../Router/InterfaceIPv4) le 256'&gt;&lt;value-of select="."/&gt; Maximum number of InterfaceIPv4 configured is 256&lt;/assert&gt;
+		&lt;assert test='count(../Router/InterfaceIPv6) le 256'&gt;&lt;value-of select="."/&gt; Maximum number of InterfaceIPv6 configured is 256&lt;/assert&gt;
+		&lt;assert test='count(../Router/RouteTableIPv4Static/Dst/NextHop) le 10000'&gt;&lt;value-of select="."/&gt;: Max number of NextHop MOs (10000 NextHops) under RouteTableIPv4Static exceeded.&lt;/assert&gt;
+		&lt;assert test='count(../Router/RouteTableIPv6Static/Dst/NextHop) le 10000'&gt;&lt;value-of select="."/&gt;: Max number of NextHop MOs (10000 NextHops) under RouteTableIPv6Static exceeded.&lt;/assert&gt;
+		&lt;assert test='count(../Router/DnsClient) le 1'&gt;&lt;value-of select="."/&gt; Maximum number of DnsClient configured is 1&lt;/assert&gt;
+		&lt;/rule&gt;
+	 &lt;/pattern&gt;
+&lt;/schema&gt;</rule>
+            </validationRules>
+            <root/>
+            <attribute name="routerId">
+                <description>The value component of the RDN. &#13;
+</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="ttl">
+                <description>Default value of Time-To-Live (TTL).
+
+The default value inserted into the TTL field of the IPv4 header of datagrams, originated from this instance, whenever a TTL value is not supplied by the transport layer protocol.</description>
+                <dataType>
+                    <int32>
+                        <range>
+                            <min>1</min>
+                            <max>255</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>255</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>64</defaultValue>
+                    </int32>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>Label for free use. &#13;
+</description>
+                <isNillable/>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>1</min>
+                            <max>128</max>
+                        </lengthRange>
+                        <stringLength>
+                            <subrange>
+                                <min>1</min>
+                                <max>128</max>
+                            </subrange>
+                        </stringLength>
+                    </string>
+                </dataType>
+            </attribute>
+        </class>
+    </mim>
+    <mim author="EAB/FJP/TA UABJOCL" contact="EAB/FJP/TA UABJOCL" correction="0" date="" docNo="" name="RtnL3InterfaceIPv4" namespace="urn:com:ericsson:ecim:RtnL3InterfaceIPv4" namespacePrefix="rtnl3interfaceipv4" organization="" release="5" revision="" variant="Model_TCU_14B" version="7">
+        <description>Assigned IPv4 addresses.</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_T_L3_InterfaceIPv4"/>
+            <extension name="ecimMomVersion" value="1"/>
+            <extension name="ecimMomRelease" value="1"/>
+            <extension name="ecimMomCorrection" value="0"/>
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <implements correction="0" name="ECIM_T_L3_InterfaceIPv4" release="1" version="1"/>
+        <class name="InterfaceIPv4">
+            <description>IPv4-addressed termination point; interface on an IPv4 routing domain.</description>
+            <validationRules>
+                <rule exceptionText="" format="ECIM_Schematron_1.0" name="InterfaceIPv4">&lt;schema xmlns="http://purl.oclc.org/dsdl/schematron"&gt;
+	&lt;pattern&gt;
+		&lt;rule&gt;
+		&lt;assert test='not((@bfdStaticRoutes eq 1) and (count(@bfdProfile) eq 0))'&gt;&lt;value-of select="."/&gt; When bfdStaticRoutes is ENABLED, bfdProfile attribute shall refer to a valid BfdProfile MO&lt;/assert&gt;
+		&lt;assert test='(@encapsulation and not(@loopback)) or (@loopback and not(@encapsulation))'&gt;&lt;value-of select="."/&gt; One of the attributes encapsulation and loopback must be set, but not both at the same time&lt;/assert&gt;
+		&lt;assert test='not(@loopback and (@bfdStaticRoutes eq 1))'&gt;&lt;value-of select="."/&gt; When loopback is set, value of bfdStaticRoutes attribute must be DISABLED&lt;/assert&gt;
+		&lt;assert test='not(@loopback and ((count(AddressIPv4) ge 1) and (count(AddressIPv4[matches(@address,".+/32")]) lt 1)))'&gt;&lt;value-of select="."/&gt; Prefix length of loopback address must be /32&lt;/assert&gt;
+		&lt;assert test='not((@loopback and @aclIngress) or (@loopback and @aclEgress))'&gt;&lt;value-of select="."/&gt; LOOPBACK interface is not allowed in ACL association&lt;/assert&gt;
+		&lt;assert test='not((@aclIngress and (count(@aclIngress/AclEntryIpv4) eq 0)) or (@aclEgress and (count(@aclEgress/AclEntryIpv4) eq 0)))'&gt;&lt;value-of select="."/&gt; EMPTY AclIpv4 is not allowed in ACL association&lt;/assert&gt;
+		&lt;assert test='not((@aclIngress and (../@routerId ne @aclIngress/../@routerId)) or (@aclEgress and (../@routerId ne @aclEgress/../@routerId)))'&gt;&lt;value-of select="."/&gt; Only AclIpv4 MO within SAME Router is allowed in ACL association&lt;/assert&gt;
+		&lt;assert test='not((@aclIngress and contains(@encapsulation,"IpsecTunnel=")) or (@aclEgress and contains(@encapsulation,"IpsecTunnel=")))'&gt;&lt;value-of select="."/&gt; Ipsec Inner Interface is not allowed in ACL association&lt;/assert&gt;
+		&lt;assert test='not((@bfdProfile and matches(@bfdProfile,".*,Router=.*,BfdProfile=.*") and (../@routerId ne @bfdProfile/../@routerId)))'&gt;&lt;value-of select="."/&gt;: BfdProfile may not refer to a different Router&lt;/assert&gt;
+		&lt;assert test='not(@loopback and @egressQosMarking)'&gt;&lt;value-of select="."/&gt; The attribute egressQosMarking cannot be configured on an IP Loopback interface&lt;/assert&gt;
+		&lt;assert test='not(@egressQosMarking and contains(@encapsulation,"IpsecTunnel="))'&gt;&lt;value-of select="."/&gt; The attribute egressQosMarking cannot be configured on an IPsec Inner interface&lt;/assert&gt;
+		&lt;assert test='not(contains(@encapsulation,"IpsecTunnel=") and ((count(AddressIPv4) ge 1) and (count(AddressIPv4[matches(@address,".+/32")]) lt 1))'&gt;&lt;value-of select="."/&gt; Prefix length of Ipsec Inner interface address must be /32&lt;/assert&gt;
+		&lt;/rule&gt;
+	&lt;/pattern&gt;
+&lt;/schema&gt;</rule>
+            </validationRules>
+            <root/>
+            <attribute name="mtu">
+                <description>The maximum transmission unit (MTU) for IPv4.</description>
+                <dataType>
+                    <int32>
+                        <range>
+                            <min>576</min>
+                            <max>9000</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>576</min>
+                                <max>9000</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>1500</defaultValue>
+                    </int32>
+                </dataType>
+                <disturbances>Changing this attribute causes traffic disturbances.</disturbances>
+            </attribute>
+            <attribute name="interfaceIPv4Id">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="bfdProfile">
+                <description>BFD parameters used for BFD sessions from this IP interface. </description>
+                <isNillable/>
+                <dataType>
+                    <moRef name="ManagedObject">
+                        <mimName>EcimCommon</mimName>
+                    </moRef>
+                </dataType>
+                <dependencies>When bfdStaticRoutes is ENABLED, bfdProfile must refer to a valid BfdProfile MO.</dependencies>
+            </attribute>
+            <attribute name="loopback">
+                <description>Specifies if the interface is an IP Loopback Interface. </description>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+                <dependencies>One of the attributes encapsulation and loopback must be set, but not both at the same time. Loopback cannot be set, if an ACL association exists, that is if aclEgress or aclIngress are set.The attribute egressQosMarking cannot be configured on an IP Loopback interface.</dependencies>
+                <disturbances>Changing this attribute causes traffic disturbances.</disturbances>
+            </attribute>
+            <attribute name="bfdStaticRoutes">
+                <description>Enables/disables BFD monitoring of static routing nexthops on this interface.
+
+bfdStaticRoutes works in conjunction with bfdProfile, so to enable BFD monitoring, bfdStaticRoutes must be ENABLED, and bfdProfile must be defined.
+When BFD monitoring is enabled, all static routing nexthops on subnets of this IP interface will be monitored, unless explicitly disabled on peer/nexthop.
+</description>
+                <dataType>
+                    <enumRef name="BfdStaticRoutesInterfaceType">
+                        <defaultValue>DISABLED</defaultValue>
+                        <mimName>RtnL3Library</mimName>
+                    </enumRef>
+                </dataType>
+                <disturbances>Changing this attribute causes traffic disturbances.</disturbances>
+                <takesEffect>When changed, BFD sessions will be created or deleted accordingly.</takesEffect>
+            </attribute>
+            <attribute name="aclEgress">
+                <description>A reference to an ACL MO applied in the egress direction. 
+If this attribute is empty, no ACL MO filtering will take place in the egress direction.</description>
+                <isNillable/>
+                <dataType>
+                    <moRef name="AclIpv4">
+                        <mimName>RtnIPv4ACLPolicy</mimName>
+                    </moRef>
+                </dataType>
+                <dependencies>If this attribute is set, loopback cannot be set. The referenced AclIpv4 MO must have at least one AclEntryIpv4 as a child.
+Only AclIpv4 MOs within the same router are allowed in an ACL association. An IPsec Inner Interface is not allowed in an ACL association.</dependencies>
+            </attribute>
+            <attribute name="aclIngress">
+                <description>A reference to an ACL MO applied in the ingress direction. 
+If this attribute is empty, no ACL MO filtering will take place in the ingress direction.</description>
+                <isNillable/>
+                <dataType>
+                    <moRef name="AclIpv4">
+                        <mimName>RtnIPv4ACLPolicy</mimName>
+                    </moRef>
+                </dataType>
+                <dependencies>If this attribute is set, loopback cannot be set.The referenced AclIpv4 MO must have at least one AclEntryIpv4 as a child.
+Only AclIpv4 MOs within the same router are allowed in an ACL association. An IPsec Inner Interface is not allowed in an ACL association.</dependencies>
+            </attribute>
+            <attribute name="pcpArp">
+                <description>Specifies the PCP value for ARP packets using this interface (affects only VLAN interfaces).</description>
+                <dataType>
+                    <derivedDataTypeRef name="EthPCP">
+                        <defaultValue>6</defaultValue>
+                        <mimName>RtnL3Library</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="routesHoldDownTimer">
+                <description>Specifies the holddown timer used for static and dynamic routes that use this interface.
+ 
+If this attribute is set, a holddown timer is started when the conditions for a static route to become available have been fulfilled. When the holddown timer expires, the route becomes available.
+ 
+Similarly, OSPFv2 uses this attribute to delay neighbor discovery on this interface (that is, until the interface is deemed reliably up) until routesHoldDownTimer has expired, counting from the time that the underlying L2 interface transitioned to an operational state of ENABLED.
+ 
+If this attribute is empty, there is no hold-down timer for routes.
+ 
+This attribute does NOT affect the operational state of the interface.</description>
+                <isNillable/>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>1</min>
+                            <max>300</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>300</max>
+                            </subrange>
+                        </ranges>
+                        <unit>s</unit>
+                    </uint16>
+                </dataType>
+            </attribute>
+            <attribute name="trustDSCP">
+                <description>Replaces queue systems in ingress directions for policing/remarking.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>true</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="reservedBy">
+                <description>Contains a list of MO instances that reserve this MO instance.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="ManagedObject">
+                            <mimName>EcimCommon</mimName>
+                        </moRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="egressQosMarking">
+                <description>The DSCP to PCP map used for marking DSCP tagged packets with a PCP value. The packets marked are either host originated or routed into the QoS domain.
+
+If empty, the DSCP values are mapped to PCP values according to the following:
+
+pcp0 = 0
+pcp1   (empty)
+pcp2 = 10,12,14
+pcp3 = 18,20,22
+pcp4 = 8,16,26,28
+pcp5 = 34,36,38,46
+pcp6 = 32,40,48
+pcp7 = 51,54</description>
+                <isNillable/>
+                <dataType>
+                    <moRef name="DscpPcpMap">
+                        <mimName>RtnQosProfiles</mimName>
+                    </moRef>
+                </dataType>
+                <dependencies>The attribute egressQosMarking cannot be configured on an IP Loopback interface. The attribute egressQosMarking cannot be configured on an IPsec Inner interface.</dependencies>
+            </attribute>
+            <attribute name="routingPolicy">
+                <description>A Routing Policy used for Policy Based Routing.
+
+The value is a reference to a Routing Policy. 
+
+If a reference is assigned, Policy Based Routing of incoming packets will be enabled.
+</description>
+                <isNillable/>
+                <dataType>
+                    <moRef name="RoutingPolicyIpv4">
+                        <mimName>RtnPBRIPv4</mimName>
+                    </moRef>
+                </dataType>
+                <preliminary/>
+                <dependencies>routingPolicy can only be set when encapsulation is set to EthernetPort, VlanPort or Bridge.  
+The referred RoutingPolicyIPv4 MO instance must belong to the same Router MO instance.</dependencies>
+            </attribute>
+            <attribute name="encapsulation">
+                <description>Reference to the underlying encapsulation, which can be an EthernetPort MO or a VlanPort MO. 
+For InterfaceIPv4, this attribute can also refer to a Bridge MO or an IpsecTunnel MO.</description>
+                <isNillable/>
+                <dataType>
+                    <moRef name="ManagedObject">
+                        <mimName>EcimCommon</mimName>
+                    </moRef>
+                </dataType>
+                <dependencies>A VlanPort MO and an InterfaceIPv4 MO or InterfaceIPv6 MO cannot refer to the same EthernetPort MO.
+Applicable for InterfaceIPv4: One of the attributes encapsulation and loopback must be set, but not both at the same time.
+Applicable for InterfaceIPv6: This attribute must be set. 
+If InterfaceIPv4 and InterfaceIPv6 encapsulates the same VlanPort they must reside in the same router.
+If InterfaceIPv4 and InterfaceIPv6 encapsulates the same EthernetPort they must reside in the same router.</dependencies>
+                <disturbances>Changing this attribute causes traffic disturbances.</disturbances>
+            </attribute>
+            <attribute name="userLabel">
+                <description>Label for free use. &#13;
+</description>
+                <isNillable/>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>1</min>
+                            <max>128</max>
+                        </lengthRange>
+                        <stringLength>
+                            <subrange>
+                                <min>1</min>
+                                <max>128</max>
+                            </subrange>
+                        </stringLength>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="operationalState">
+                <description>The operational state. </description>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="OperState">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="availabilityStatus">
+                <description>The availability status.
+It contains details about operationalState. </description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <enumRef name="AvailStatus">
+                            <mimName>ECIM_CommonLibrary</mimName>
+                        </enumRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="AddressIPv4">
+            <description>Assigned IPv4 address including information about the subnet it resides on. 
+</description>
+            <attribute name="addressIPv4Id">
+                <description>The value component of the RDN. &#13;
+</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="address">
+                <description>IPv4 decimal address + "/" + prefix length &lt;0-32&gt;. &#13;
+&#13;
+</description>
+                <mandatory/>
+                <dataType>
+                    <derivedDataTypeRef name="Ipv4AddressAndPrefixLengthStr">
+                        <mimName>RtnCommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+                <disturbances>Changing this attribute causes traffic disturbances.</disturbances>
+            </attribute>
+            <attribute name="userLabel">
+                <description>Label for free use. &#13;
+</description>
+                <isNillable/>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>1</min>
+                            <max>128</max>
+                        </lengthRange>
+                        <stringLength>
+                            <subrange>
+                                <min>1</min>
+                                <max>128</max>
+                            </subrange>
+                        </stringLength>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="reservedBy">
+                <description>Contains a list of MO instances that reserve this MO instance.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="ManagedObject">
+                            <mimName>EcimCommon</mimName>
+                        </moRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="OamAccessPoint_accessPoint_to_AddressIPv4_reservedBy">
+            <biDirectionalAssociation>
+                <associationEnd name="accessPoint">
+                    <hasClass name="AddressIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="OamAccessPoint">
+                        <mimName>ComSysM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+        <relationship name="OamAccessPoint_ipv4address_to_AddressIPv4_reservedBy">
+            <deprecated/>
+            <biDirectionalAssociation>
+                <associationEnd name="ipv4address">
+                    <hasClass name="AddressIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="OamAccessPoint">
+                        <mimName>ComSysM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+        <relationship name="InterfaceIPv4_to_AddressIPv4">
+            <containment>
+                <parent>
+                    <hasClass name="InterfaceIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AddressIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="InterfaceIPv4_aclEgress_to_AclIpv4_reservedBy">
+            <biDirectionalAssociation>
+                <associationEnd name="aclEgress">
+                    <hasClass name="AclIpv4">
+                        <mimName>RtnIPv4ACLPolicy</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="InterfaceIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+        <relationship name="InterfaceIPv4_aclIngress_to_AclIpv4_reservedBy">
+            <biDirectionalAssociation>
+                <associationEnd name="aclIngress">
+                    <hasClass name="AclIpv4">
+                        <mimName>RtnIPv4ACLPolicy</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="InterfaceIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+        <relationship name="InterfaceIPv4_bfdProfile_to_BfdProfile_reservedBy">
+            <biDirectionalAssociation>
+                <associationEnd name="bfdProfile">
+                    <hasClass name="BfdProfile">
+                        <mimName>RtnBfdProfile</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="InterfaceIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+        <relationship name="InterfaceIPv4_encapsulation_to_Bridge_reservedBy">
+            <biDirectionalAssociation>
+                <associationEnd name="encapsulation">
+                    <hasClass name="Bridge">
+                        <mimName>RtnBridging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="InterfaceIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+        <relationship name="InterfaceIPv4_encapsulation_to_EthernetPort_reservedBy">
+            <biDirectionalAssociation>
+                <associationEnd name="encapsulation">
+                    <hasClass name="EthernetPort">
+                        <mimName>RtnL2EthernetPort</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="InterfaceIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+        <relationship name="InterfaceIPv4_encapsulation_to_VlanPort_reservedBy">
+            <biDirectionalAssociation>
+                <associationEnd name="encapsulation">
+                    <hasClass name="VlanPort">
+                        <mimName>RtnL2VlanPort</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="InterfaceIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+        <relationship name="InterfaceIPv4_egressQosMarking_to_DscpPcpMap_reservedBy">
+            <biDirectionalAssociation>
+                <associationEnd name="egressQosMarking">
+                    <hasClass name="DscpPcpMap">
+                        <mimName>RtnQosProfiles</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="InterfaceIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+        <relationship name="InterfaceIPv4_routingPolicy_to_RoutingPolicyIPv4_reservedBy">
+            <preliminary/>
+            <biDirectionalAssociation>
+                <associationEnd name="routingPolicy">
+                    <hasClass name="RoutingPolicyIpv4">
+                        <mimName>RtnPBRIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="InterfaceIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+    </mim>
+    <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="0" date="" docNo="" name="RtnIP_" namespace="urn:com:ericsson:ecim:RtnIP_" namespacePrefix="rtnip_" organization="" release="0" revision="" variant="Model_TCU_14B" version="0">
+        <description>Decision MOM for RtnIP.
+
+Shall not be visible.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+    </mim>
+    <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="0" date="" docNo="" name="RtnDnsClient" namespace="urn:com:ericsson:ecim:RtnDnsClient" namespacePrefix="rtndnsclient" organization="" release="1" revision="" variant="Model_TCU_14B" version="2">
+        <description>Domain Name Service Client.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <class name="DnsClient">
+            <description>Domain Name Service Client.</description>
+            <root/>
+            <attribute name="dnsClientId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="serverAddress">
+                <description>Specifies a list of addresses of DNS servers.</description>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="IpDNSAddress">
+                            <mimName>ECIM_CommonLibrary</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>3</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="dscp">
+                <description>The Differentiated Services Code Point (DSCP) value for DNS related IP packets. 
+Only IP packets originated from the node are tagged with the DSCP value.
+</description>
+                <dataType>
+                    <uint8>
+                        <range>
+                            <min>0</min>
+                            <max>63</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>0</min>
+                                <max>63</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>40</defaultValue>
+                    </uint8>
+                </dataType>
+                <specification>RFC 2597</specification>
+            </attribute>
+        </class>
+    </mim>
+    <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="0" name="RtnL3Library" organization="" release="5" version="1">
+        <description>Library for common L3 types, including abstract classes.</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_T_L3_Library"/>
+            <extension name="ecimMomVersion" value="1"/>
+            <extension name="ecimMomRelease" value="1"/>
+            <extension name="ecimMomCorrection" value="0"/>
+        </domainExtension>
+        <enum name="BfdStaticRoutesInterfaceType">
+            <description>State of bfdStaticRoutes.</description>
+            <enumMember name="DISABLED">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ENABLED">
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="EthPCP">
+            <description>Specifies the PCP value for ARP packets using this interface (does only effect VLAN-interfaces).</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>7</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>7</max>
+                        </subrange>
+                    </ranges>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="Transport_to_Router">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="false"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="Transport">
+                        <mimName>ECIM_Top</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Router">
+                        <mimName>RtnL3Router</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>8</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+    <interMim>
+        <relationship name="Router_to_InterfaceIPv4">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="false"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="Router">
+                        <mimName>RtnL3Router</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="InterfaceIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>256</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+    <interMim>
+        <relationship name="Router_to_DnsClient">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="false"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="Router">
+                        <mimName>RtnL3Router</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DnsClient">
+                        <mimName>RtnDnsClient</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+    <mib correction="2" name="Rtnipv4InterfaceStatistics" release="5" version="1">
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutForwDatagrams</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutForwDatagrams</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of datagrams for which this entity was not their final IP destination and for which it was successful in finding a path to their final destination. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInHdrErrors</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInHdrErrors</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input IP datagrams discarded due to errors in  their IP headers, including version number mismatch, other  format errors, hop count exceeded, errors discovered in  processing their IP options, etc. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsOutDiscards</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsOutDiscards</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of output IP datagrams for which no problem was encountered to prevent their transmission to their destination, but were discarded (e.g., for lack of buffer space). Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="">
+            <hasClass name="Pm">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="pmId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInTruncatedPkts</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInTruncatedPkts</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input IP datagrams discarded because the datagram frame didn't carry enough data. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutMcastOctets</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutMcastOctets</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of octets transmitted in IP multicast datagrams. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInMcastPkts</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInMcastPkts</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP multicast datagrams received. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5. </value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1">
+            <hasClass name="PmGroup">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="pmGroupId">
+                <value>InterfaceIPv4</value>
+            </slot>
+            <slot name="moClass">
+                <complexValue>
+                    <slot name="mimName">
+                        <value>Rtnipv4InterfaceStatistics</value>
+                    </slot>
+                    <slot name="mimVersion">
+                        <value>1</value>
+                    </slot>
+                    <slot name="mimRelease">
+                        <value>0</value>
+                    </slot>
+                    <slot name="moClassName">
+                        <value>InterfaceIPv4</value>
+                    </slot>
+                </complexValue>
+            </slot>
+            <slot name="description">
+                <value>Ipv4 If statistics</value>
+            </slot>
+            <slot name="validity">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInBlackHoles</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInBlackHoles</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of packets that were forwarded to a null route. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutTransmits</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutTransmits</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of IP datagrams that this entity supplied to the lower layers for transmission. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsOutFragReqds</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsOutFragReqds</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP datagrams that would require fragmentation in order to be transmitted. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5. </value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInUnknownProtos</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInUnknownProtos</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of locally-addressed IP datagrams received successfully but discarded because of an unknown or unsupported protocol. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInBcastPkts</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInBcastPkts</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP broadcast datagrams received. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInAddrErrors</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInAddrErrors</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input IP datagrams discarded because the IP address in their IP header's destination field was not a valid address to be received at this entity. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInDiscards</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInDiscards</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input IP datagrams for which no problems were  encountered to prevent their continued processing, but were discarded (e.g., for lack of buffer space). Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsReasmReqds</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsReasmReqds</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP fragments received that needed to be reassembled at this interface. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInOctets</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInOctets</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of octets received in input IP datagrams, including those received in error. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInReceives</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInReceives</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of input IP datagrams received, including those received in error. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsReasmFails</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsReasmFails</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of failures detected by the IP re-assembly algorithm. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInForwDatagrams</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInForwDatagrams</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input datagrams for which this entity was not  their final IP destination and for which this entity attempted to find a route to forward them to that final destination. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutBcastPkts</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutBcastPkts</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP broadcast datagrams transmitted. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsReasmOKs</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsReasmOKs</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP datagrams successfully reassembled. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInSrcAddrErrors</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInSrcAddrErrors</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input IP datagrams discarded because the IP address in their IP header's source field was not a valid address to be received at this entity. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInMcastOctets</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInMcastOctets</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of octets received in IP multicast datagrams. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutOctets</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutOctets</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of octets in IP datagrams delivered to the lower layers for transmission. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5. </value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutRequests</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutRequests</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of IP datagrams that local IP user-protocols (including ICMP) supplied to IP in requests for transmission. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInNoRoutes</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInNoRoutes</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input IP datagrams that are discarded, because no route could be found to transmit them to their destination. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5. </value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutMcastPkts</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutMcastPkts</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP multicast datagrams transmitted. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsOutFragOKs</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsOutFragOKs</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP datagrams that have been successfully fragmented. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInDelivers</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInDelivers</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of datagrams successfully delivered to IP user-protocols (including ICMP). Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsOutFragCreates</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsOutFragCreates</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of output datagram fragments that have been generated as a result of IP fragmentation. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv4">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsOutFragFails</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsOutFragFails</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP datagrams that have been discarded because they needed to be fragmented but could not be. This includes IPv4 packets that have the DF bit set. Not applicable for an IP Loopback Interface, that is, if the attribute loopback is set. Specification: RFC 4293, section 5.</value>
+            </slot>
+        </object>
+    </mib>
+    <mib correction="2" name="Rtnipv6InterfaceStatistics" release="1" version="1">
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsReasmOKs</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsReasmOKs</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP datagrams successfully reassembled. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInNoRoutes</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInNoRoutes</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input IP datagrams that are discarded, because no route could be found to transmit them to their destination. Specification: RFC 4293, section 5. </value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutMcastPkts</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutMcastPkts</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP multicast datagrams transmitted. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInOctets</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInOctets</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of octets received in input IP datagrams, including those received in error. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsOutFragOKs</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsOutFragOKs</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP datagrams that have been successfully fragmented. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsOutFragFails</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsOutFragFails</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP datagrams that have been discarded because they needed to be fragmented but could not be. This includes IPv6 packets that are being forwarded and exceed the outgoing link MTU. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsOutFragCreates</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsOutFragCreates</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of output datagram fragments that have been generated as a result of IP fragmentation. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInTruncatedPkts</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInTruncatedPkts</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input IP datagrams discarded because the datagram frame did not carry enough data. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsOutFragReqds</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsOutFragReqds</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP datagrams that would require fragmentation in order to be transmitted. Specification: RFC 4293, section 5. </value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInDiscards</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInDiscards</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input IP datagrams for which no problems were  encountered to prevent their continued processing, but were discarded (e.g., for lack of buffer space). Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInAddrErrors</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInAddrErrors</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input IP datagrams discarded because the IP address in their IP header's destination field was not a valid address to be received at this entity. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInForwDatagrams</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInForwDatagrams</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input datagrams for which this entity was not their final IP destination and for which this entity attempted to find a route to forward them to that final destination. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsOutDiscards</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsOutDiscards</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of output IP datagrams for which no problem was encountered to prevent their transmission to their destination, but were discarded (e.g., for lack of buffer space). Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInHdrErrors</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInHdrErrors</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input IP datagrams discarded due to errors in  their IP headers, including version number mismatch, other  format errors, hop count exceeded, errors discovered in  processing their IP options, etc. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutRequests</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutRequests</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of IP datagrams that local IP user-protocols (including ICMP) supplied to IP in requests for transmission. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInMcastPkts</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInMcastPkts</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP multicast datagrams received. Specification: RFC 4293, section 5. </value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1">
+            <hasClass name="PmGroup">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="pmGroupId">
+                <value>InterfaceIPv6</value>
+            </slot>
+            <slot name="moClass">
+                <complexValue>
+                    <slot name="mimName">
+                        <value>Rtnipv6InterfaceStatistics</value>
+                    </slot>
+                    <slot name="mimVersion">
+                        <value>1</value>
+                    </slot>
+                    <slot name="mimRelease">
+                        <value>0</value>
+                    </slot>
+                    <slot name="moClassName">
+                        <value>InterfaceIPv6</value>
+                    </slot>
+                </complexValue>
+            </slot>
+            <slot name="description">
+                <value>Ipv6 If statistics</value>
+            </slot>
+            <slot name="validity">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInReceives</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInReceives</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of input IP datagrams received, including those received in error. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutForwDatagrams</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutForwDatagrams</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of datagrams for which this entity was not their final IP destination and for which it was successful in finding a path to their final destination. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsReasmFails</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsReasmFails</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of failures detected by the IP re-assembly algorithm. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInMcastOctets</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInMcastOctets</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of octets received in IP multicast datagrams. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInBlackHoles</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInBlackHoles</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>The number of packets that were forwarded to a null route.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutOctets</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutOctets</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of octets in IP datagrams delivered to the lower layers for transmission. Specification: RFC 4293, section 5. </value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsReasmReqds</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsReasmReqds</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>The number of IP fragments received that needed to be reassembled at this interface. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInUnknownProtos</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInUnknownProtos</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The number of locally-addressed IP datagrams received successfully but discarded because of an unknown or unsupported protocol. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCInDelivers</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCInDelivers</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of datagrams successfully delivered to IP user-protocols (including ICMP). Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="">
+            <hasClass name="Pm">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="pmId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutMcastOctets</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutMcastOctets</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of octets transmitted in IP multicast datagrams. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsInSrcAddrErrors</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsInSrcAddrErrors</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>The number of input IP datagrams discarded because the IP address in their IP header's source field was not a valid address to be received at this entity.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=InterfaceIPv6">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>ipIfStatsHCOutTransmits</value>
+            </slot>
+            <slot name="measurementName">
+                <value>ipIfStatsHCOutTransmits</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>The total number of IP datagrams that this entity supplied to the lower layers for transmission. Specification: RFC 4293, section 5.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+        </object>
+    </mib>
+</models>

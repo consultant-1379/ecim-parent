@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE mim SYSTEM "tsp_mim.dtd" [
+<!ELEMENT status (#PCDATA)>
+<!ELEMENT category (#PCDATA)>
+<!ELEMENT dependencies (#PCDATA)>
+<!ELEMENT takesEffect (#PCDATA)>
+<!ELEMENT ordered (#PCDATA)>
+<!ELEMENT unique (#PCDATA)>
+<!ELEMENT ecimName (#PCDATA)>
+<!ELEMENT notifiable (#PCDATA)>
+<!ELEMENT isVirtualContainer (#PCDATA)>
+<!ELEMENT singletonKeyValue (#PCDATA)>
+<!ELEMENT ldapServerName (#PCDATA)>
+<!ELEMENT isPassphrase (#PCDATA)>
+]>
+
+<mim name="tsp_mim" release="0" version="1">
+  <description>The abstract MOCs of TSP.</description>
+  <jim/>
+  <class name="JIM-ManagedObject">
+    <description>The JIM-ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instantiated. It is used for inheritance of common attributes.</description>
+    <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+      <category/>
+      <status>CURRENT</status>
+    </extension>
+    <extension extender="TSP" name="TSP extensions" release="0" version="1">
+      <ecimName>JIM-ManagedObject</ecimName>
+      <isVirtualContainer>false</isVirtualContainer>
+    </extension>
+    <abstract/>
+    <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.1.1</ldapObjectId>
+    <attribute name="thedate">
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>thedate</ecimName>
+        <notifiable>true</notifiable>
+      </extension>
+      <dataType>
+        <dateTime/>
+      </dataType>
+      <nonPersistent/>
+    </attribute>
+    <action name="restart">
+      <returnType>
+        <void/>
+      </returnType>
+    </action>
+  </class>
+  <class name="JIM-Application">
+    <description>The JIM-Application MO is the base class for JIM applications.</description>
+    <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+      <category/>
+      <status>CURRENT</status>
+    </extension>
+    <extension extender="TSP" name="TSP extensions" release="0" version="1">
+      <ecimName>JIM-Application</ecimName>
+      <isVirtualContainer>false</isVirtualContainer>
+    </extension>
+    <baseClass name="JIM-ManagedObject"/>
+    <abstract/>
+    <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.1.2</ldapObjectId>
+    <attribute name="applicationName">
+      <description>The name of the application. The attribute name and value of is used in the applications RDN.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>applicationName</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.10</ldapObjectId>
+      <dataType>
+        <string/>
+        <ldapTypeInfo>
+          <equality>caseIgnoreMatch</equality>
+          <substr>caseIgnoreSubstringsMatch</substr>
+          <ordering>caseIgnoreOrderingMatch</ordering>
+          <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+        </ldapTypeInfo>
+      </dataType>
+      <key/>
+      <mandatory/>
+      <readOnly/>
+      <restricted/>
+    </attribute>
+  </class>
+  <class name="CM-ManagedObject">
+    <description>The CM-ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instantiated. It is used for inheritance of common attributes.</description>
+    <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+      <category/>
+      <status>CURRENT</status>
+    </extension>
+    <extension extender="TSP" name="TSP extensions" release="0" version="1">
+      <ecimName>CM-ManagedObject</ecimName>
+      <isVirtualContainer>false</isVirtualContainer>
+    </extension>
+    <baseClass name="JIM-ManagedObject"/>
+    <abstract/>
+    <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.11.1</ldapObjectId>
+  </class>
+  <class name="CM-Application">
+    <description>The CM-Application MO is the base class for CMF applications.</description>
+    <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+      <category/>
+      <status>CURRENT</status>
+    </extension>
+    <extension extender="TSP" name="TSP extensions" release="0" version="1">
+      <ecimName>CM-Application</ecimName>
+      <isVirtualContainer>false</isVirtualContainer>
+    </extension>
+    <baseClass name="JIM-Application"/>
+    <abstract/>
+    <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.11.2</ldapObjectId>
+  </class>
+  <class name="TspCommonAttributeContainer">
+    <description>This is a dummy class, not to be used anywhere.
+This class provides a place were common attributes are defined.
+Classes can import this attributes by using the following  construct:
+     attribute name="name" from="TspCommonAttributeContainer"
+
+Using this attributes yields the following advantages:
+     -   no need to add application specific prefix
+     -   attributes with the same meaning will have the  same name and the same OID.
+An attribute specified here can only be reused, if both the values and the description given here are fully correct in the user class.</description>
+    <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+      <category/>
+      <status>CURRENT</status>
+    </extension>
+    <extension extender="TSP" name="TSP extensions" release="0" version="1">
+      <ecimName>TspCommonAttributeContainer</ecimName>
+      <isVirtualContainer>false</isVirtualContainer>
+    </extension>
+    <abstract/>
+    <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.1.40</ldapObjectId>
+    <attribute name="tspUserLabel">
+      <description>Place for nickname or comment.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>tspUserLabel</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.901</ldapObjectId>
+      <dataType>
+        <string/>
+      </dataType>
+      <nonPersistent/>
+    </attribute>
+  </class>
+  <class name="JIM-AccessGroup">
+    <description>The JIM-AccessGroup MO represents an Access Group. An Access Group identifies a group of users who perform similar tasks and access the same set of services.</description>
+    <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+      <category/>
+      <status>CURRENT</status>
+    </extension>
+    <extension extender="TSP" name="TSP extensions" release="0" version="1">
+      <ecimName>JIM-AccessGroup</ecimName>
+      <isVirtualContainer>false</isVirtualContainer>
+    </extension>
+    <baseClass name="JIM-ManagedObject"/>
+    <abstract/>
+    <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.1.6</ldapObjectId>
+    <attribute name="accessGroupId">
+      <description>This attribute specifies the Assigned ID of the Access Group.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>accessGroupId</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.50</ldapObjectId>
+      <dataType>
+        <integer/>
+        <ldapTypeInfo>
+          <equality>integerMatch</equality>
+          <substr>numericStringSubstringsMatch</substr>
+          <ordering>integerOrderingMatch</ordering>
+          <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+        </ldapTypeInfo>
+      </dataType>
+      <key/>
+      <mandatory/>
+      <readOnly/>
+      <restricted/>
+    </attribute>
+    <attribute name="accessGroupName">
+      <description>This attribute specifies the name of the Access Group.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>accessGroupName</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.51</ldapObjectId>
+      <dataType>
+        <string/>
+        <ldapTypeInfo>
+          <equality>caseIgnoreMatch</equality>
+          <substr>caseIgnoreSubstringsMatch</substr>
+          <ordering>caseIgnoreOrderingMatch</ordering>
+          <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+        </ldapTypeInfo>
+      </dataType>
+      <mandatory/>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="linuxGidNumber">
+      <description>The linux group id number.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>linuxGidNumber</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.62</ldapObjectId>
+      <dataType>
+        <integer/>
+      </dataType>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="linuxMemberUid">
+      <description>The linux uids which are members of the group.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <unique>false</unique>
+        <ordered>false</ordered>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>linuxMemberUid</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.68</ldapObjectId>
+      <dataType>
+        <sequence>
+          <dataType>
+            <string/>
+          </dataType>
+        </sequence>
+      </dataType>
+      <nonPersistent/>
+      <readOnly/>
+    </attribute>
+    <attribute name="linuxDescription">
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>linuxDescription</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.66</ldapObjectId>
+      <dataType>
+        <string/>
+      </dataType>
+      <nonPersistent/>
+    </attribute>
+  </class>
+  <class name="JIM-Administrator">
+    <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+      <category/>
+      <status>CURRENT</status>
+    </extension>
+    <extension extender="TSP" name="TSP extensions" release="0" version="1">
+      <ecimName>JIM-Administrator</ecimName>
+      <isVirtualContainer>false</isVirtualContainer>
+    </extension>
+    <baseClass name="JIM-ManagedObject"/>
+    <abstract/>
+    <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.1.5</ldapObjectId>
+    <attribute name="administratorId">
+      <description>Assigned numeric ID of the user.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>administratorId</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.40</ldapObjectId>
+      <dataType>
+        <integer/>
+        <ldapTypeInfo>
+          <equality>integerMatch</equality>
+          <substr>numericStringSubstringsMatch</substr>
+          <ordering>integerOrderingMatch</ordering>
+          <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+        </ldapTypeInfo>
+      </dataType>
+      <key/>
+      <mandatory/>
+      <readOnly/>
+      <restricted/>
+    </attribute>
+    <attribute name="administratorName">
+      <description>The name of the administrator, like john.smith.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>administratorName</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.41</ldapObjectId>
+      <dataType>
+        <string/>
+      </dataType>
+      <mandatory/>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="password">
+      <description>User assigned password.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>password</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.42</ldapObjectId>
+      <dataType>
+        <string/>
+        <ldapTypeInfo>
+          <equality>caseIgnoreMatch</equality>
+          <substr>caseIgnoreSubstringsMatch</substr>
+          <ordering>caseIgnoreOrderingMatch</ordering>
+          <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+        </ldapTypeInfo>
+      </dataType>
+      <hideInConfd/>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="groups">
+      <description>Identifies the Access Groups that this user belongs to. It can have multiple values, as a user can be part of several Access Groups.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <unique>false</unique>
+        <ordered>false</ordered>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>groups</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.43</ldapObjectId>
+      <dataType>
+        <sequence>
+          <dataType>
+            <string/>
+            <ldapTypeInfo>
+              <equality>caseIgnoreMatch</equality>
+              <substr>caseIgnoreSubstringsMatch</substr>
+              <ordering>caseIgnoreOrderingMatch</ordering>
+              <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+            </ldapTypeInfo>
+          </dataType>
+          <lengthRange>
+            <min>1</min>
+          </lengthRange>
+        </sequence>
+      </dataType>
+      <mandatory/>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="isAnonymous">
+      <description>Specifies whether the Administrator acts as anonymous through an LDAP client.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>isAnonymous</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.59</ldapObjectId>
+      <dataType>
+        <boolean>
+          <defaultValue>FALSE</defaultValue>
+        </boolean>
+      </dataType>
+      <initialValue>FALSE</initialValue>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="appNames">
+      <description>A multivalue attribute that specifies to which applications has the anonymous Administrator access, for example, Platform, PmApplication, HLR.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <unique>false</unique>
+        <ordered>false</ordered>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>appNames</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.60</ldapObjectId>
+      <dataType>
+        <sequence>
+          <dataType>
+            <string/>
+            <ldapTypeInfo>
+              <equality>caseIgnoreMatch</equality>
+              <substr>caseIgnoreSubstringsMatch</substr>
+              <ordering>caseIgnoreOrderingMatch</ordering>
+              <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+            </ldapTypeInfo>
+          </dataType>
+        </sequence>
+      </dataType>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="attributes">
+      <description>It specifies which applications are enabled for this user in the Node Management Toolbox. The string entry has the following format: toolbox.applicationName = Boolean ("TRUE" or "FALSE"). Multiple application names are separated by a semicolon.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <unique>false</unique>
+        <ordered>false</ordered>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>attributes</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.46</ldapObjectId>
+      <dataType>
+        <sequence>
+          <dataType>
+            <string/>
+            <ldapTypeInfo>
+              <equality>caseIgnoreMatch</equality>
+              <substr>caseIgnoreSubstringsMatch</substr>
+              <ordering>caseIgnoreOrderingMatch</ordering>
+              <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+            </ldapTypeInfo>
+          </dataType>
+        </sequence>
+      </dataType>
+      <nonPersistent/>
+    </attribute>
+    <attribute from="JIM-AccessGroup" name="linuxGidNumber">
+      <description>The Linux group ID derived from the Linux ID of the primary group.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>linuxGidNumber</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <nonPersistent/>
+      <readOnly/>
+    </attribute>
+    <attribute name="linuxHomeDirectory">
+      <description>The Linux home directory.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>linuxHomeDirectory</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.63</ldapObjectId>
+      <dataType>
+        <string/>
+      </dataType>
+      <nonPersistent/>
+      <readOnly/>
+    </attribute>
+    <attribute name="linuxLoginShell">
+      <description>The Linux login shell.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>linuxLoginShell</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.64</ldapObjectId>
+      <dataType>
+        <string>
+          <defaultValue>/bin/tspshell</defaultValue>
+        </string>
+      </dataType>
+      <initialValue>/bin/tspshell</initialValue>
+      <nonPersistent/>
+      <readOnly/>
+    </attribute>
+    <attribute name="linuxGecos">
+      <description>General information about the account used by Linux applications.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>linuxGecos</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.65</ldapObjectId>
+      <dataType>
+        <string/>
+      </dataType>
+      <nonPersistent/>
+    </attribute>
+    <attribute from="JIM-AccessGroup" name="linuxDescription">
+      <description>Additional description field</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>linuxDescription</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="pwdReset">
+      <description>Indicates (if "TRUE") that the password has been reset and therefore must be changed by the user on first authentication.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>pwdReset</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <dataType>
+        <boolean>
+          <defaultValue>TRUE</defaultValue>
+        </boolean>
+      </dataType>
+      <hideInLdap/>
+      <initialValue>TRUE</initialValue>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="pwdPolicySubentry">
+      <description>Points to the pwdPolicy subentry in effect for this object.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>pwdPolicySubentry</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>.37</ldapObjectId>
+      <dataType>
+        <string/>
+      </dataType>
+      <hideInLdap/>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="pwdStartTime">
+      <description>The time when the password entry becomes valid for the authentication. Authentication attempts made before this time fail. If this attribute does not exist, then no restriction is applied.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>pwdStartTime</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <dataType>
+        <description>This type represents a GeneralizedTime timestamp containing date and time also in the following format: yyyymmddhh[mm[ss[.x[x]]]]{Z|+hhmm|-hhmm} . The length of the data can be sorter, if needed. (leading zeros are not mandatory).</description>
+        <string>
+          <pattern>^([0-9]{4}(1[0-2]|0[1-9])(0[1-9]|[12][0-9]|3[01])(2[0-3]|[0-1][0-9])([0-5][0-9]([0-5][0-9](\.[0-9]([0-9])?)?)?)?(Z|[+-][0-5][0-9][0-5][0-9]))?$</pattern>
+        </string>
+      </dataType>
+      <hideInLdap/>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="pwdEndTime">
+      <description>The time when the password entry becomes invalid for authentication. Authentication attempts made after this time fail, regardless of expiration or grace settings. If this attribute does not exist, then this restriction is not applied.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>pwdEndTime</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <dataType>
+        <description>This type represents a GeneralizedTime timestamp containing date and time also in the following format: yyyymmddhh[mm[ss[.x[x]]]]{Z|+hhmm|-hhmm} . The length of the data can be sorter, if needed. (leading zeros are not mandatory).</description>
+        <string>
+          <pattern>^([0-9]{4}(1[0-2]|0[1-9])(0[1-9]|[12][0-9]|3[01])(2[0-3]|[0-1][0-9])([0-5][0-9]([0-5][0-9](\.[0-9]([0-9])?)?)?)?(Z|[+-][0-5][0-9][0-5][0-9]))?$</pattern>
+        </string>
+      </dataType>
+      <hideInLdap/>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="pwdAccountLockedTime">
+      <description>The time when the user account was locked. A locked account means that the password is disabled to authenticate. A 000001010000Z value means that the account has been locked permanently, and can only be unlocked by an account that has write permissions on the user account.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>pwdAccountLockedTime</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <dataType>
+        <description>This type represents a GeneralizedTime timestamp containing date and time also in the following format: yyyymmddhh[mm[ss[.x[x]]]]{Z|+hhmm|-hhmm} . The length of the data can be sorter, if needed. (leading zeros are not mandatory).</description>
+        <string>
+          <pattern>^([0-9]{4}(1[0-2]|0[1-9])(0[1-9]|[12][0-9]|3[01])(2[0-3]|[0-1][0-9])([0-5][0-9]([0-5][0-9](\.[0-9]([0-9])?)?)?)?(Z|[+-][0-5][0-9][0-5][0-9]))?$</pattern>
+        </string>
+      </dataType>
+      <hideInLdap/>
+      <nonPersistent/>
+    </attribute>
+    <attribute name="pwdFailureTime">
+      <description>The timestamps of the consecutive authentication failures.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <unique>false</unique>
+        <ordered>false</ordered>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>pwdFailureTime</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <dataType>
+        <description>This type represents a GeneralizedTime timestamp containing date and time also in the following format: yyyymmddhh[mm[ss[.x[x]]]]{Z|+hhmm|-hhmm} . The length of the data can be sorter, if needed. (leading zeros are not mandatory).</description>
+        <sequence>
+          <dataType>
+            <string>
+              <pattern>^([0-9]{4}(1[0-2]|0[1-9])(0[1-9]|[12][0-9]|3[01])(2[0-3]|[0-1][0-9])([0-5][0-9]([0-5][0-9](\.[0-9]([0-9])?)?)?)?(Z|[+-][0-5][0-9][0-5][0-9]))?$</pattern>
+            </string>
+          </dataType>
+        </sequence>
+      </dataType>
+      <hideInLdap/>
+      <nonPersistent/>
+      <systemMaintained/>
+    </attribute>
+    <attribute name="pwdGraceUseTime">
+      <description>The timestamps of grace authentications after a password has expired.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <unique>false</unique>
+        <ordered>false</ordered>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>pwdGraceUseTime</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <dataType>
+        <description>This type represents a GeneralizedTime timestamp containing date and time also in the following format: yyyymmddhh[mm[ss[.x[x]]]]{Z|+hhmm|-hhmm} . The length of the data can be sorter, if needed. (leading zeros are not mandatory).</description>
+        <sequence>
+          <dataType>
+            <string>
+              <pattern>^([0-9]{4}(1[0-2]|0[1-9])(0[1-9]|[12][0-9]|3[01])(2[0-3]|[0-1][0-9])([0-5][0-9]([0-5][0-9](\.[0-9]([0-9])?)?)?)?(Z|[+-][0-5][0-9][0-5][0-9]))?$</pattern>
+            </string>
+          </dataType>
+        </sequence>
+      </dataType>
+      <hideInLdap/>
+      <nonPersistent/>
+      <systemMaintained/>
+    </attribute>
+    <attribute name="pwdLastSuccess">
+      <description>The timestamp of the last successful authentication.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>pwdLastSuccess</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <dataType>
+        <description>This type represents a GeneralizedTime timestamp containing date and time also in the following format: yyyymmddhh[mm[ss[.x[x]]]]{Z|+hhmm|-hhmm} . The length of the data can be sorter, if needed. (leading zeros are not mandatory).</description>
+        <string>
+          <pattern>^([0-9]{4}(1[0-2]|0[1-9])(0[1-9]|[12][0-9]|3[01])(2[0-3]|[0-1][0-9])([0-5][0-9]([0-5][0-9](\.[0-9]([0-9])?)?)?)?(Z|[+-][0-5][0-9][0-5][0-9]))?$</pattern>
+        </string>
+      </dataType>
+      <hideInLdap/>
+      <nonPersistent/>
+      <systemMaintained/>
+    </attribute>
+    <attribute name="previousLoginTime">
+      <description>The timestamp of the last but one successful authentication.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>previousLoginTime</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <ldapObjectId>1.3.6.1.4.1.193.62.12.2.1.1.2.67</ldapObjectId>
+      <dataType>
+        <string/>
+      </dataType>
+      <nonPersistent/>
+      <systemMaintained/>
+    </attribute>
+    <attribute name="pwdChangedTime">
+      <description>The time the password entry was changed. This is used by  the password expiration policy. If this attribute does not exist, the password never expires.</description>
+      <extension extender="IMS" name="IMS extensions for PDB and OSS" release="0" version="1">
+        <category/>
+        <status>CURRENT</status>
+        <dependencies/>
+        <takesEffect/>
+      </extension>
+      <extension extender="TSP" name="TSP extensions" release="0" version="1">
+        <ecimName>pwdChangedTime</ecimName>
+        <notifiable>false</notifiable>
+      </extension>
+      <dataType>
+        <description>This type represents a GeneralizedTime timestamp containing date and time also in the following format: yyyymmddhh[mm[ss[.x[x]]]]{Z|+hhmm|-hhmm} . The length of the data can be sorter, if needed. (leading zeros are not mandatory).</description>
+        <string>
+          <pattern>^([0-9]{4}(1[0-2]|0[1-9])(0[1-9]|[12][0-9]|3[01])(2[0-3]|[0-1][0-9])([0-5][0-9]([0-5][0-9](\.[0-9]([0-9])?)?)?)?(Z|[+-][0-5][0-9][0-5][0-9]))?$</pattern>
+        </string>
+      </dataType>
+      <hideInLdap/>
+      <nonPersistent/>
+      <systemMaintained/>
+    </attribute>
+  </class>
+</mim>

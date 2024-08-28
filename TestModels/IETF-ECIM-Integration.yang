@@ -1,0 +1,82 @@
+module IETF-ECIM-Integration {
+
+  namespace "urn:com:ericsson:yang:ietfecim";
+
+  prefix "ietfecim";
+  
+	import ericsson-yang-extensions {
+		prefix ericssonx;
+	}
+	import ComTop {
+		prefix "EcimComTopx";
+	}
+  organization
+    "Ericsson AB.";
+
+  contact
+    "Web:   <http://www.ericsson.com>";
+
+  description
+    "This YANG module defines the configuration data
+    and operational state data for Context in IPOS.
+
+    Copyright (c) 2014 Ericsson AB.
+    All rights reserved.";
+
+  revision 2014-09-15 {
+    description
+      "Initial revision.";
+    reference
+      "A YANG Data Model for Routing Management
+      draft-ietf-netmod-routing-cfg-15.";
+  }
+	//augment "/EcimComTopx:ManagedElement/EcimComTopx:SystemFunctions"{
+		ericssonx:ecimContribution "/EcimComTopx:ManagedElement/EcimComTopx:SystemFunctions"
+		{
+			import ComTop {
+				prefix "EcimComTopx";
+			}
+		}
+		
+		container simpleContainer {
+			leaf leafA {
+             type uint32;
+			}
+			leaf-list leafListB{
+       			type uint32;
+       		}       
+  		}
+ 
+		list simpleList {
+ 			key leafA;
+			leaf leafA {
+				type uint32;
+			}
+			leaf-list leafListB{
+				type uint32;
+			}
+  		} 
+  
+		list listParent {
+			key leafA;
+			leaf leafA {
+				type uint32;
+			}
+			list listChild {
+				key leafA;
+				leaf leafA {
+					type uint32;
+				} 
+			}
+		}
+  
+		container containerParent {
+			container containerChild {
+				leaf leafA {
+					type uint32;
+				} 
+			}
+		}
+	
+	//}
+}

@@ -1,0 +1,2282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Nov 20, 2015 2:23:34 PM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="EHSWOLM" contact="Thomas Wolmer" date="2011-03-11" docNo="" name="ComTop" namespace="urn:com:ericsson:ecim:ComTop" namespacePrefix="comtop" organization="EAB/FLJ/GRB" release="1" revision="" version="3">
+        <description>ECIM Top Level Model. This is the root level for the Ericsson Common Information Model. It contains the singleton, root Managed Object Class, ManagedElement under which the complete model is contained. Directly under ManagedElement are managed-function level classes SystemFunctions, Equipment, Transport and the root MOC of any managed functions. </description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_Top"/>
+            <extension name="ecimMomVersion" value="1"/>
+            <extension name="ecimMomRelease" value="0"/>
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <implements name="ECIM_Top" release="0" version="1"/>
+        <struct name="ProductIdentity">
+            <description>A struct that contains product designation, number and revision information.  </description>
+            <structMember name="productNumber">
+                <description>The product number in Ericsson ABC format.  See Ericsson Corporate Basic Standards for information.</description>
+                <string/>
+            </structMember>
+            <structMember name="productRevision">
+                <description>The product revision in the form R[1-9][A-Z].  See Ericsson Corporate Basic Standards for information.</description>
+                <string/>
+            </structMember>
+            <structMember name="productDesignation">
+                <description>The product designation is the common name for the product.  </description>
+                <string/>
+            </structMember>
+        </struct>
+        <derivedDataType name="DifferenceFromUTC">
+            <description>Difference between the value of the localDateTime attribute and UTC (Coordinated Universal Time).&#13;
+&#13;
+The following format shall be used&#13;
+&#13;
+[+/-]hh:mm&#13;
+&#13;
+It shall be expressed as positive (i.e. with the leading plus sign [+]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day.&#13;
+&#13;
+Example:  +01:00</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>6</min>
+                        <max>6</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>6</min>
+                            <max>6</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>^([+|-])(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9])$</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[^([+|-])(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9])$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence. </description>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="DateTimeWithoutOffset">
+            <description>DateTimeWithoutOffset represents date and time data using strings with the example format "YYYY-MM-DDThh:mm:ss.SSS"
+        (excluding quotes).&lt;br /&gt;
+         &lt;br /&gt;
+         A DateTimeWithoutOffset string consists of a date part followed by a time part. The time part represents local time.&lt;br /&gt;
+         &lt;br /&gt;
+         The following pattern describes the DateTimeWithoutOffset format in detail:&lt;br /&gt;
+         &lt;br /&gt;
+         YYYY-MM-DDThh:mm:ss[.S+]&lt;br /&gt;
+         &lt;br /&gt;
+         Where:&lt;br /&gt;
+         [A]&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = A is optional&lt;br /&gt;
+         [A|B]&amp;nbsp;&amp;nbsp; = A or B or left out (optional)&lt;br /&gt;
+         YYYY&amp;nbsp;&amp;nbsp;&amp;nbsp; = four digit year&lt;br /&gt;
+         MM&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = two digit month (01=January, etc.)&lt;br /&gt;
+         DD&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = two digit day of month (01 through 31)&lt;br /&gt;
+         T&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = time designator (shows start of time component)&lt;br /&gt;
+         hh&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = two digits of hour (00 through 59, AM/PM not allowed)&lt;br /&gt;
+         mm&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = two digits of minute (00 through 59)&lt;br /&gt;
+         ss&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = two digits of second (00 through 59, leap second not allowed)&lt;br /&gt;
+         S+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; = one or more digits of decimal fraction of a second&lt;br /&gt;
+         &lt;br /&gt;
+         DateTimeWithoutOffset values are compliant with ISO 8601 "Representation of dates and times" but are restricted according
+        to RFC 3339 "Date and Time on the Internet: Timestamps". The DateTimeWithoutOffset format has been further
+        restricted:&lt;br /&gt;
+         &lt;br /&gt;
+         - T designators must be upper case.&lt;br /&gt;
+         - T may not be exchanged with other characters such as space.&lt;br /&gt;
+         - '.' (dot) must be used to indicate start of fractions of seconds (ISO 8601 also allows comma).&lt;br /&gt;
+         - Using 60 as value for second to indicate leap second is not allowed.&lt;br /&gt;</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>19</min>
+                        <max>19</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>19</min>
+                            <max>19</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+)*$</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+)*$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <class name="ManagedElement">
+            <description>The top-level class in the Common Information Model is the ManagedElement root MOC.  From this class, all model entities are contained.  &#13;
+The MOC has attributes that provide information on the managed elements identity, primary location and the products it contains.  </description>
+            <systemCreated/>
+            <root/>
+            <attribute name="managedElementId">
+                <description>The value component of the RDN.</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="siteLocation">
+                <description>This is a freetext attribute used for storing geographic or postal address data to assist staff in locating physical equipment.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>A freetext string for additional information to assist Managed Element identification.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="productIdentity">
+                <description>The product identities are used to clearly identify the product numbers and revisions that form this Managed Element.  This may refer to a single product or to several products that constitute managed functions within this Managed Element instance.&#13;
+</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <structRef name="ProductIdentity">
+                            <mimName>ComTop</mimName>
+                        </structRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="localDateTime">
+                <description>This is the local date and time for the ManagedElement.&#13;
+&#13;
+The following format shall be used.&#13;
+&#13;
+YYYY-MM-DDThh:mm:ss&#13;
+&#13;
+The meaning of each field is as follows:&#13;
+YYYY is a 4-digit year.&#13;
+MM is the month within the year (starting with 01).&#13;
+DD is the day within the month (starting with 01).&#13;
+T shall be used as time designator to indicate the start of the time of day component in the expression.&#13;
+hh is the hour within the day (24-hour clock, starting with 00).&#13;
+mm is the minute within the hour (starting with 00).&#13;
+ss is the second within the minute (starting with 00).&#13;
+&#13;
+The hyphen [-] and the colon [:] shall be used as separators within the date and time of day expressions, respectively.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTimeWithoutOffset">
+                        <mimName>ComTop</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+                <specification>ISO 8601:2004(E)</specification>
+            </attribute>
+            <attribute name="timeZone">
+                <description>This is the timeZone that the Managed Element resides in.&#13;
+&#13;
+The possible values for this attribute are defined in the public-domain zoneinfo (or Olson) database.&#13;
+&#13;
+Locations are identified by a string indicating the continent or ocean and then the name of the location, which is typically the largest city within the region. &#13;
+See http://www.twinsun.com/tz/tz-link.htm for more information.&#13;
+&#13;
+Example: Europe/Stockholm&#13;
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="dateTimeOffset">
+                <description>Difference between the value of the localDateTime attribute and UTC (Coordinated Universal Time).</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DifferenceFromUTC">
+                        <mimName>ComTop</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="networkManagedElementId">
+                <description>Replaces the value component of the RDN in the COM Northbound Interface. This attribute shall, if used, be set to a simple alphanumeric value. &#13;
+The value should be unique within the network namespace.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SystemFunctions">
+            <description>The SystemFunctions MOC is the container class for all common functions provided by the managed element.  Examples of these functions include Fault and Performance Management, System and Heartbest Management amongst others.  The common functions are categorised as either Common Base or Common Optional.  Common Base functions are always present regardless of node type while Common Optional functions may be present depending on the necessary capabilities of the node.  </description>
+            <systemCreated/>
+            <attribute name="systemFunctionsId">
+                <description>The value component of the RDN. It shall always be equal to "1".</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Transport">
+            <description>The Transport MOC is the container for all transport related functions used within the managed element.  Its usage is dependent on the node type; where the node's primary function is to handle transport functions, the necessary fragments may be included directly within an applications xyzFunctions branch.  If the node's primary function is something other than transport handling, then the required transport fragments shall be contain by this MOC.  </description>
+            <systemCreated/>
+            <attribute name="transportId">
+                <description>The value component of the RDN. It shall always be equal to "1".</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="ManagedElement_to_SystemFunctions">
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>ComTop</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SystemFunctions">
+                        <mimName>ComTop</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="ManagedElement_to_Transport">
+            <description>Containment association of the Transport MOC</description>
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>ComTop</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Transport">
+                        <mimName>ComTop</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </mim>
+    <mim author="" contact="" date="" docNo="" name="DicosMom" namespace="urn:com:ericsson:ecim:DicosMom" namespacePrefix="dicosmom" organization="" release="0" revision="" version="1">
+        <description>qwe</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <struct name="StructWithDefaults">
+            <description>qwe</description>
+            <structMember name="floatSm">
+                <description>qwe</description>
+                <derivedDataTypeRef name="float">
+                    <defaultValue>0.0</defaultValue>
+                    <mimName>DicosMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="stringSm">
+                <description>qwe</description>
+                <string>
+                    <defaultValue>trollet</defaultValue>
+                </string>
+            </structMember>
+            <structMember name="integerStringSm">
+                <description>qwe</description>
+                <derivedDataTypeRef name="integerKeyString">
+                    <defaultValue>91823</defaultValue>
+                    <mimName>DicosMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="integerSm">
+                <description>qwe</description>
+                <derivedDataTypeRef name="integer">
+                    <defaultValue>77777</defaultValue>
+                    <mimName>DicosMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="dateTimeSm">
+                <description>qwe</description>
+                <derivedDataTypeRef name="dateTime">
+                    <defaultValue>2011-12-11 09:00</defaultValue>
+                    <mimName>DicosMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="noDefaultfloatSm">
+                <description>qwe</description>
+                <derivedDataTypeRef name="float">
+                    <mimName>DicosMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="noDefaultstringSm">
+                <description>qwe</description>
+                <string/>
+            </structMember>
+            <structMember name="noDefaultintegerStringSm">
+                <description>qwe</description>
+                <derivedDataTypeRef name="integerKeyString">
+                    <mimName>DicosMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="noDefaultintegerSm">
+                <description>qwe</description>
+                <derivedDataTypeRef name="integer">
+                    <mimName>DicosMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="noDefaultdateTimeSm">
+                <description>qwe</description>
+                <derivedDataTypeRef name="dateTime">
+                    <mimName>DicosMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="multiplefloatSm">
+                <description>qwe</description>
+                <sequence>
+                    <derivedDataTypeRef name="float">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                    <minLength>1</minLength>
+                    <maxLength>10</maxLength>
+                    <seqDefaultValue>
+                        <defaultValue>0.0</defaultValue>
+                    </seqDefaultValue>
+                </sequence>
+            </structMember>
+            <structMember name="multiplestringSm">
+                <description>qwe</description>
+                <sequence>
+                    <string/>
+                    <minLength>1</minLength>
+                    <maxLength>10</maxLength>
+                    <seqDefaultValue>
+                        <defaultValue>trollet</defaultValue>
+                    </seqDefaultValue>
+                </sequence>
+            </structMember>
+            <structMember name="multipleintegerStringSm">
+                <description>qwe</description>
+                <sequence>
+                    <derivedDataTypeRef name="integerKeyString">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                    <minLength>1</minLength>
+                    <maxLength>10</maxLength>
+                    <seqDefaultValue>
+                        <defaultValue>91823</defaultValue>
+                    </seqDefaultValue>
+                </sequence>
+            </structMember>
+            <structMember name="multipleintegerSm">
+                <description>qwe</description>
+                <sequence>
+                    <derivedDataTypeRef name="integer">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                    <minLength>1</minLength>
+                    <maxLength>10</maxLength>
+                    <seqDefaultValue>
+                        <defaultValue>77777</defaultValue>
+                    </seqDefaultValue>
+                </sequence>
+            </structMember>
+            <structMember name="multipledateTimeSm">
+                <description>qwe</description>
+                <sequence>
+                    <derivedDataTypeRef name="dateTime">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                    <minLength>1</minLength>
+                    <maxLength>10</maxLength>
+                    <seqDefaultValue>
+                        <defaultValue>2011-12-11 09:00</defaultValue>
+                    </seqDefaultValue>
+                </sequence>
+            </structMember>
+        </struct>
+        <struct name="StructArtf72875">
+            <description>qwe</description>
+            <structMember name="sm1">
+                <description>qwe</description>
+                <int16>
+                    <defaultValue>3</defaultValue>
+                </int16>
+            </structMember>
+            <structMember name="sm2">
+                <description>qwe</description>
+                <derivedDataTypeRef name="MyString">
+                    <defaultValue>666,666,666</defaultValue>
+                    <mimName>DicosMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="sm3">
+                <description>qwe</description>
+                <derivedDataTypeRef name="SharedInt">
+                    <mimName>DicosMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="sm4">
+                <description>qwe</description>
+                <derivedDataTypeRef name="NonSharedInt">
+                    <defaultValue>12</defaultValue>
+                    <mimName>DicosMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="sm5">
+                <description>qwe</description>
+                <derivedDataTypeRef name="MyString2">
+                    <mimName>DicosMom</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <struct name="StructA">
+            <description>qwe</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="9"/>
+                <extension name="originatingMimName" value="LibraryOfStuff"/>
+                <extension name="originatingMimVersion" value="8"/>
+            </domainExtension>
+            <structMember name="sm1">
+                <description>qwe</description>
+                <int8/>
+            </structMember>
+            <structMember name="keySm">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isKey" value="true"/>
+                </domainExtension>
+                <string/>
+            </structMember>
+        </struct>
+        <derivedDataType name="SecretDerivedStringType">
+            <description>This type has isPassphrase=true</description>
+            <baseType>
+                <string>
+                    <isPassphrase/>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MyString2">
+            <description>qwe</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>0</min>
+                        <max>75</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>0</min>
+                            <max>75</max>
+                        </subrange>
+                    </stringLength>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="DerivedStringTypeWithCommas">
+            <description>qwe</description>
+            <baseType>
+                <string>
+                    <validValues>[a-zA-z0-9]+,[a-zA-z0-9]</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[[a-zA-z0-9]+,[a-zA-z0-9]]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="integerKeyString">
+            <description>qwe</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="1"/>
+                <extension name="originatingMimName" value="commonTypes_mim"/>
+                <extension name="originatingMimVersion" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="IpDNSAddress">
+            <description>The IpDNSAddress type represents an IP address, version 4 or version 6, or a DNS domain name.&#13;
+&#13;
+If the address is specified as a V4 IP address then the address should be specified in dotted-quad decimal notation in accordance with RFC791.&#13;
+&#13;
+IPv4 address within range [1-126,128-223].[0-255].[0-255].[0-255], 7-15 characters. &#13;
+&#13;
+Valid characters: 0123456789.&#13;
+&#13;
+If the address is specified as a V6 IP address then the address should be specified in colon separated hexadecimal notation as described in RFC 4291 section 2.2 items 1 and 2.&#13;
+&#13;
+IPv6 addresses shall have a length range of 3-39 characters.&#13;
+&#13;
+Valid characters: 0123456789abcdefABCDEF:&#13;
+&#13;
+If the address is specified as a DNS domain name the name should be fully qualified whenever possible.&#13;
+Internet domain names are only loosely specified. Section 3.5 of RFC 1034 recommends a syntax (modified in section 2.1 of RFC 1123).</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="1"/>
+                <extension name="originatingMimName" value="ComTop"/>
+                <extension name="originatingMimVersion" value="3"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>253</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>1</min>
+                            <max>253</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>(^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\s*$)|(^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]))*$)</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[(^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\s*$)|(^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]))*$)]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="dateTime">
+            <description>qwe</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="1"/>
+                <extension name="originatingMimName" value="commonTypes_mim"/>
+                <extension name="originatingMimVersion" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="DaysOfWeek">
+            <description>artf179582 </description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="1"/>
+                <extension name="originatingMimName" value="commonTypes_mim"/>
+                <extension name="originatingMimVersion" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="DerivedStringParamType">
+            <description>qwe</description>
+            <baseType>
+                <string>
+                    <validValues>\b(bey|pasha|all)\b</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[\b(bey|pasha|all)\b]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="MyString">
+            <description>qwe</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>0</min>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>0</min>
+                            <max>*</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>[0-9][0-9][0-9],[0-9][0-9][0-9],[0-9][0-9][0-9]</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[[0-9][0-9][0-9],[0-9][0-9][0-9],[0-9][0-9][0-9]]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="SharedInt">
+            <description>qwe</description>
+            <baseType>
+                <int32>
+                    <range>
+                        <min>0</min>
+                        <max>1000</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>1000</max>
+                        </subrange>
+                    </ranges>
+                    <multiplicationFactor>0.001</multiplicationFactor>
+                    <resolution>2</resolution>
+                </int32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="NonSharedInt">
+            <description>qwe</description>
+            <baseType>
+                <int64/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MyDerivedFloat">
+            <description>qwe</description>
+            <baseType>
+                <double>
+                    <range>
+                        <min>0</min>
+                        <max>234</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>234</max>
+                        </subrange>
+                    </ranges>
+                </double>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MySharedDerivedFloat">
+            <description>eqw</description>
+            <baseType>
+                <double>
+                    <range>
+                        <min>123</min>
+                        <max>23552</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>123</min>
+                            <max>23552</max>
+                        </subrange>
+                    </ranges>
+                </double>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="float">
+            <description>qwe</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="1"/>
+                <extension name="originatingMimName" value="commonTypes_mim"/>
+                <extension name="originatingMimVersion" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="integer">
+            <description>qwe</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="1"/>
+                <extension name="originatingMimName" value="commonTypes_mim"/>
+                <extension name="originatingMimVersion" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SharedPatternX">
+            <description>qwe</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="9"/>
+                <extension name="originatingMimName" value="LibraryOfStuff"/>
+                <extension name="originatingMimVersion" value="8"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>1</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>1</min>
+                            <max>1</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>[012345679]</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[[012345679]]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="MyMom2Boolean">
+            <description>qwe</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="1"/>
+                <extension name="originatingMimName" value="SecondMom"/>
+                <extension name="originatingMimVersion" value="2"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="DicosMom_FirstMoc_secretAttribute1">
+            <baseType>
+                <string>
+                    <isPassphrase/>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="FirstMoc">
+            <description>qwe</description>
+            <action name="TestAction">
+                <description>qwe</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="7"/>
+                </domainExtension>
+                <returnType>
+                    <sequence>
+                        <int16/>
+                        <minLength>1</minLength>
+                        <maxLength>4</maxLength>
+                    </sequence>
+                </returnType>
+                <parameter name="TestParam1">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <sequence>
+                            <int16/>
+                            <minLength>1</minLength>
+                            <maxLength>9</maxLength>
+                            <seqDefaultValue>
+                                <defaultValue>99</defaultValue>
+                            </seqDefaultValue>
+                        </sequence>
+                    </dataType>
+                </parameter>
+                <parameter name="derivedParam">
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="MyString">
+                            <defaultValue>111,222,333</defaultValue>
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="voidReturn">
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="1"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <action name="GetNumOfSubordinates">
+                <description>qwe</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="11"/>
+                </domainExtension>
+                <returnType>
+                    <derivedDataTypeRef name="integer">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </returnType>
+                <parameter name="rank">
+                    <description>x</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="DerivedStringParamType">
+                            <defaultValue>all</defaultValue>
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="actionFromMF">
+                <description>qwe</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="234"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="par1">
+                    <description>qqq</description>
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="restart">
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="3"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <attribute name="secondProp">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="MyString">
+                        <defaultValue>123,456,789</defaultValue>
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sharedProperty">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="SharedInt">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>1</minLength>
+                        <maxLength>5</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="usesCrossMomType">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MyMom2Boolean">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="booleanWithDefault">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <boolean>
+                        <defaultValue>true</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="aa1">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DerivedStringTypeWithCommas">
+                        <defaultValue>A,B</defaultValue>
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="aa2">
+                
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="DerivedStringTypeWithCommas">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>2</maxLength>
+                        <nonUnique/>
+                        <seqDefaultValue>
+                            <defaultValue>A,B</defaultValue>
+                            <defaultValue>C,D</defaultValue>
+                        </seqDefaultValue>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="aa3">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DerivedStringTypeWithCommas">
+                        <defaultValue>A,B</defaultValue>
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="aa4">
+                
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="DerivedStringTypeWithCommas">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                        <seqDefaultValue>
+                            <defaultValue>Q,W</defaultValue>
+                        </seqDefaultValue>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="secretAttribute1">
+                <description>This attribute has inline property isPassphrase=true</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DicosMom_FirstMoc_secretAttribute1">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="secretAttribute2">
+                <description>This attribute has derived string type with isPassphrase=true</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="SecretDerivedStringType">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="attr1FromMF">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="attr2FromMF">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="attr3FromMF">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="attr4FromMF">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="applicationName">
+                <description>The name of the application. The attribute name and value of is used in the applications RDN.</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="thedate">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="dateTime">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SecondMoc">
+            <description>qwe</description>
+            <filter>SITE_SPECIFIC</filter>
+            <action name="artf72874 ">
+                <description>qwe</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="732736"/>
+                </domainExtension>
+                <returnType>
+                    <derivedDataTypeRef name="SharedInt">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </returnType>
+            </action>
+            <action name="artf75700">
+                <description>qwe</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="732736"/>
+                </domainExtension>
+                <returnType>
+                    <derivedDataTypeRef name="SharedInt">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </returnType>
+                <parameter name="p1">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="SharedInt">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+                <parameter name="p2">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="integer">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+                <parameter name="p3">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="integerKeyString">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+                <parameter name="p4">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="float">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+                <parameter name="p5">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <int32/>
+                    </dataType>
+                </parameter>
+                <parameter name="p1Seq">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <sequence>
+                            <derivedDataTypeRef name="SharedInt">
+                                <mimName>DicosMom</mimName>
+                            </derivedDataTypeRef>
+                            <minLength>1</minLength>
+                            <maxLength>7</maxLength>
+                        </sequence>
+                    </dataType>
+                </parameter>
+                <parameter name="p2Seq">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <sequence>
+                            <derivedDataTypeRef name="integer">
+                                <mimName>DicosMom</mimName>
+                            </derivedDataTypeRef>
+                            <minLength>1</minLength>
+                            <maxLength>7</maxLength>
+                        </sequence>
+                    </dataType>
+                </parameter>
+                <parameter name="p3Seq">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <sequence>
+                            <derivedDataTypeRef name="integerKeyString">
+                                <mimName>DicosMom</mimName>
+                            </derivedDataTypeRef>
+                            <minLength>1</minLength>
+                            <maxLength>7</maxLength>
+                        </sequence>
+                    </dataType>
+                </parameter>
+                <parameter name="p4Seq">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <sequence>
+                            <derivedDataTypeRef name="float">
+                                <mimName>DicosMom</mimName>
+                            </derivedDataTypeRef>
+                            <minLength>1</minLength>
+                            <maxLength>7</maxLength>
+                        </sequence>
+                    </dataType>
+                </parameter>
+                <parameter name="p5Seq">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <sequence>
+                            <int32/>
+                            <minLength>1</minLength>
+                            <maxLength>7</maxLength>
+                        </sequence>
+                    </dataType>
+                </parameter>
+                <parameter name="p6">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="NonSharedInt">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+                <parameter name="p6Seq">
+                    <description>qwe</description>
+                    <in/>
+                    <dataType>
+                        <sequence>
+                            <derivedDataTypeRef name="NonSharedInt">
+                                <mimName>DicosMom</mimName>
+                            </derivedDataTypeRef>
+                            <minLength>1</minLength>
+                            <maxLength>7</maxLength>
+                        </sequence>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="restart">
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="3"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <attribute name="artf72873">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                        <maxLength>10</maxLength>
+                        <ordered/>
+                        <seqDefaultValue>
+                            <defaultValue>Hmmm</defaultValue>
+                        </seqDefaultValue>
+                    </sequence>
+                </dataType>
+                <preliminary/>
+                <filter>BBBBBBBBBBBBBB</filter>
+                <dependencies>AAAAAAAAAAAAAA</dependencies>
+                <takesEffect>CCCCCCCCCCCCCCC</takesEffect>
+            </attribute>
+            <attribute name="artf72875">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="StructArtf72875">
+                        <mimName>DicosMom</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="aStructFromLibrary">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="StructA">
+                        <mimName>DicosMom</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="derStringFromLibrary">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="SharedPatternX">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="deletableAndRuntimeAttrInCDMFramework">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <int16/>
+                </dataType>
+            </attribute>
+            <attribute name="integerAttr">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="integer">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="integerSeqAttr">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="integer">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>5</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="integerKeyStringAttr">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="integerKeyString">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="integerKeyStringSeqAttr">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="integerKeyString">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>5</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="floatAttr">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="float">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="floatSeqAttr">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="float">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>5</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="attrWithFromArtf75643">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="dateTimeAttr">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="dateTime">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="dateTimeSeqAttr">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="dateTime">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>5</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="structWithDefaultAttribute">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <structRef name="StructWithDefaults">
+                        <mimName>DicosMom</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="artf80146">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="MyString">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="floatyfloaty">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="MyDerivedFloat">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="floatfloatyShared">
+                <description>ert</description>
+                
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="MySharedDerivedFloat">
+                        <defaultValue>123.34</defaultValue>
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="moRefAttr">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <moRef name="FirstMoc">
+                        <mimName>DicosMom</mimName>
+                    </moRef>
+                </dataType>
+            </attribute>
+            <attribute name="moRefAttrSeq">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <moRef name="FirstMoc">
+                            <mimName>DicosMom</mimName>
+                        </moRef>
+                        <minLength>1</minLength>
+                        <maxLength>100</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="ipAddresses">
+                <description>Several derived strings.</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="IpDNSAddress">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>17</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="ipAddress">
+                <description>One derived string.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="IpDNSAddress">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="daysToDoStuff">
+                <description>artf179582 : DX ET 2.5.1 - Transformation error of multi-valued attributes' default values</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="DaysOfWeek">
+                            <mimName>DicosMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>7</maxLength>
+                        <nonUnique/>
+                        <seqDefaultValue>
+                            <defaultValue>Saturday</defaultValue>
+                            <defaultValue>Sunday</defaultValue>
+                        </seqDefaultValue>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="qq1IsNotifiable">
+                <description>qwe</description>
+                
+                <dataType>
+                    <sequence>
+                        <int32/>
+                        <minLength>0</minLength>
+                        <maxLength>3</maxLength>
+                        <ordered/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="qq2IsNotifiable">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <int32/>
+                        <minLength>0</minLength>
+                        <maxLength>3</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="accessGroupId">
+                <description>This attribute specifies the Assigned ID of the Access Group.</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="integerKeyString">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="accessGroupName">
+                <description>This attribute specifies the name of the Access Group.</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="linuxGidNumber">
+                <description>The linux group id number.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="integer">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="linuxMemberUid">
+                <description>The linux uids which are members of the group.</description>
+                
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="linuxDescription">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="thedate">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="dateTime">
+                        <mimName>DicosMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TheVirtualContainer">
+            <description>A virtual container class.</description>
+            <systemCreated/>
+            <attribute name="theVirtualContainerId">
+                
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FreeLikeABird">
+            <description>This class is not connected, the class hierarchy checker should not be run since this model is profiled with VDicos.</description>
+            <attribute name="freeLikeABirdId">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="FirstMoc_to_SecondMoc">
+            <containment>
+                <parent>
+                    <hasClass name="FirstMoc">
+                        <mimName>DicosMom</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SecondMoc">
+                        <mimName>DicosMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>17</min>
+                        <max>4711</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </mim>
+    <mim author="" contact="" date="" docNo="" name="SecondMom" namespace="urn:com:ericsson:ecim:SecondMom" namespacePrefix="secondmom" organization="" release="1" revision="" version="2">
+        <description>qwe</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <struct name="MyStructX">
+            <description>qwe</description>
+            <structMember name="structMember1">
+                <description>qwe</description>
+                <int16/>
+            </structMember>
+        </struct>
+        <enum name="Enumeration1">
+            <description>qwe</description>
+            <enumMember name="ONE">
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <exception name="MyException">
+            <exceptionParameter name="ep">
+                <description>none</description>
+                <dataType>
+                    <int16/>
+                </dataType>
+            </exceptionParameter>
+        </exception>
+        <derivedDataType name="SharedPatternX">
+            <description>qwe</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="9"/>
+                <extension name="originatingMimName" value="LibraryOfStuff"/>
+                <extension name="originatingMimVersion" value="8"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>1</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>1</min>
+                            <max>1</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>[012345679]</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[[012345679]]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="MyDerivedFloatShared">
+            <description>qwe</description>
+            <baseType>
+                <double>
+                    <range>
+                        <min>1</min>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>1</min>
+                            <max>*</max>
+                        </subrange>
+                    </ranges>
+                </double>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MyDerivedFloatNotShared">
+            <description>qwe</description>
+            <baseType>
+                <double/>
+            </baseType>
+        </derivedDataType>
+        <class name="MyMoc">
+            <description>qwe</description>
+            <root/>
+            <obsolete/>
+            <action name="aa1">
+                <description>qw</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="12"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <raisesException name="MyException"/>
+            </action>
+            <attribute name="id">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="enumAttr">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Enumeration1">
+                        <defaultValue>ONE</defaultValue>
+                        <mimName>SecondMom</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="deletableAndRuntimeAttrInPDMFramework">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <int16/>
+                </dataType>
+            </attribute>
+            <attribute name="emptyDefaultAttr">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SharedPatternX">
+                        <mimName>SecondMom</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="emptyDefaultString2">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <string>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="multiplicityUnlimited">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <int32/>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="multiplicityLimitedMax">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <int32/>
+                        <minLength>0</minLength>
+                        <maxLength>8884</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="multiplicityLowerGtZero">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <int32/>
+                        <minLength>7</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="floatMultiplicityUnlimited">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="MyDerivedFloatNotShared">
+                            <mimName>SecondMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="floatMultiplicityLimitedMax">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="MyDerivedFloatNotShared">
+                            <mimName>SecondMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>8884</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="floatMultiplicityLowerGtZero">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="MyDerivedFloatNotShared">
+                            <mimName>SecondMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>7</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="floatSharedMultiplicityUnlimited">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="MyDerivedFloatShared">
+                            <mimName>SecondMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="floatSharedMultiplicityLimitedMax">
+                <description>qwe</description>
+                
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="MyDerivedFloatShared">
+                            <mimName>SecondMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>8884</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="floatSharedMultiplicityLowerGtZero">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="MyDerivedFloatShared">
+                            <mimName>SecondMom</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>7</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Qclass">
+            <description>qwe</description>
+            <systemCreated/>
+            <attribute name="qId">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="structAttribute">
+                <description>asd</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <structRef name="MyStructX">
+                        <mimName>SecondMom</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="moAttribute">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <moRef name="Wclass">
+                        <mimName>SecondMom</mimName>
+                    </moRef>
+                </dataType>
+            </attribute>
+            <attribute name="moAttributes">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <moRef name="Wclass">
+                            <mimName>SecondMom</mimName>
+                        </moRef>
+                        <minLength>1</minLength>
+                        <maxLength>22</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="structAttributes">
+                <description>asd</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <structRef name="MyStructX">
+                            <mimName>SecondMom</mimName>
+                        </structRef>
+                        <minLength>1</minLength>
+                        <maxLength>22</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Wclass">
+            <description>qwe</description>
+            <attribute name="wClassId">
+                <description>qwe</description>
+                
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="attrWithDefault1">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <boolean>
+                        <defaultValue>true</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="attrWithDefault2">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <string>
+                        <defaultValue>hej</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="attrWithDefault3">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <int16>
+                        <defaultValue>33</defaultValue>
+                    </int16>
+                </dataType>
+            </attribute>
+            <attribute name="attrWithDefault4">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <uint32>
+                        <defaultValue>66</defaultValue>
+                    </uint32>
+                </dataType>
+            </attribute>
+            <attribute name="attrWithDefault5">
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                
+                <isNillable/>
+                <dataType>
+                    <double>
+                        <defaultValue>3.14</defaultValue>
+                    </double>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="MyMoc_to_Wclass">
+            <containment>
+                <parent>
+                    <hasClass name="MyMoc">
+                        <mimName>SecondMom</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Wclass">
+                        <mimName>SecondMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="MyMoc_to_Qclass">
+            <containment>
+                <parent>
+                    <hasClass name="MyMoc">
+                        <mimName>SecondMom</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Qclass">
+                        <mimName>SecondMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </mim>
+    <interMim>
+        <relationship name="ManagedElement_to_FirstMoc">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>ComTop</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FirstMoc">
+                        <mimName>DicosMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+    <interMim>
+        <relationship name="ManagedElement_to_TheVirtualContainer">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>ComTop</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TheVirtualContainer">
+                        <mimName>DicosMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+    <interMim>
+        <relationship name="SecondMoc_to_MyMoc">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SecondMoc">
+                        <mimName>DicosMom</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="MyMoc">
+                        <mimName>SecondMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>100</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+</models>

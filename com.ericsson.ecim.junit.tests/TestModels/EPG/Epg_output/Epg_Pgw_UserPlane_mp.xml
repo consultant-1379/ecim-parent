@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_UserPlane" namespace="urn:com:ericsson:ecim:Epg_Pgw_UserPlane" namespacePrefix="epg_pgw_userplane" organization="Ericsson EAB, NDO EPG" release="1" revision="" version="2">
+        <description>Epg pgw userplane</description>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Mtu">
+            <description>Maximum transfer unit</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="4"/>
+                <extension name="originatingMimName" value="Epg_Pgw"/>
+                <extension name="originatingMimRelease" value="5"/>
+            </domainExtension>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>1280</min>
+                        <max>1500</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Board">
+            <description>Must be a valid control-plane board</description>
+            <baseType>
+                <string>
+                    <validValues>^gu-0/(20|1[0-9]|[1-9])/1</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="UserPlane">
+            <description>User plane settings</description>
+            <root/>
+            <attribute name="userPlaneID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="mtu">
+                <description>Maximum transfer unit</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Mtu">
+                        <mimName>Epg_Pgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Session">
+            <description>Session settings</description>
+            <attribute name="sessionID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Board">
+            <description>Board name</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='@boardId = /ManagedElement/Epg/Node/BoardAllocation/@boardAllocationId'><name path='.'/>: Must be a valid board</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="boardId">
+                <description>name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="Board">
+                        <mimName>Epg_Pgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Block">
+            <description>New sessions blocked</description>
+            <attribute name="blockID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_UserPlane</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Block_to_Board">
+            <containment>
+                <parent>
+                    <hasClass name="Block">
+                        <mimName>Epg_Pgw_UserPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Board">
+                        <mimName>Epg_Pgw_UserPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Session_to_Block">
+            <containment>
+                <parent>
+                    <hasClass name="Session">
+                        <mimName>Epg_Pgw_UserPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Block">
+                        <mimName>Epg_Pgw_UserPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="UserPlane_to_Session">
+            <containment>
+                <parent>
+                    <hasClass name="UserPlane">
+                        <mimName>Epg_Pgw_UserPlane</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Session">
+                        <mimName>Epg_Pgw_UserPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Pgw_to_UserPlane">
+            <containment>
+                <parent>
+                    <hasClass name="Pgw">
+                        <mimName>Epg_Pgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="UserPlane">
+                        <mimName>Epg_Pgw_UserPlane</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

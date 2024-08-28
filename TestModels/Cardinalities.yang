@@ -1,0 +1,78 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-sep-04 14:47:38 using 
+    * com.ericsson.ecim.yang.m2m 2.11.2.qualifier
+*/
+module Cardinalities {
+	namespace "urn:com:ericsson:ecim:Cardinalities";
+	prefix Cardinalities;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+  import ietf-yang-types {
+    prefix "yang";
+  }
+
+	organization "Ericsson";
+	description "asdf";
+
+	revision "2014-09-04" {
+		ericsson:correction 1;
+		ericsson:release 1;
+		ericsson:version 1;
+	}
+	
+	//enumerate all the different list min/max values
+    list NoMinNoMax
+	{
+		//enumerate all the different leaf-list min/max values
+		leaf-list LeafListNoMinNoMax {
+         	type string;
+ 		}	    			
+		leaf-list LeafListNoMin2Max {
+			max-elements 2;
+         	type string;
+ 		}
+		leaf-list LeafList1MinNoMax {
+			min-elements 1;
+         	type string;
+ 		}	         		
+		leaf-list LeafList1Min2Max {
+			min-elements 1;
+			max-elements 2;
+         	type string;
+ 		}
+ 		//The following test-case fails
+ 		leaf-list LeafList1MinUnBoundedMax {
+			min-elements 1;
+			max-elements unbounded;
+         	type string;
+ 		}
+	}
+	list ListNoMin2Max
+	{
+		max-elements 2;
+		list InsideListNoMin2Max
+		{
+		}
+	}
+	list List1MinNoMax
+	{
+		min-elements 1;
+		container InsideList1MinNoMax
+		{
+			
+		}
+	}
+	list List1Min2Max
+	{
+		min-elements 1;
+		max-elements 2;
+		grouping InsideList1Min2Max
+		{
+			
+		}
+	}
+}

@@ -1,0 +1,217 @@
+@namespace(uri="http://www.ericsson.com/2010/Yang", prefix="yang")
+package yang;
+
+abstract class NamedElement {
+  attr String[1] name;
+}
+
+abstract class AbstractModule extends NamedElement {
+  attr int yangVersion;
+  attr String[*] includeModules;
+  attr String organization;
+  attr String contact;
+  attr String description;
+  attr String reference;
+  val Import[*] imports;
+  val Revision[*] revisions;
+  val ModuleStatement[*] statements;
+}
+
+class Module extends AbstractModule {
+  attr String namespace;
+  val Prefix prefix;
+}
+
+class SubModule extends AbstractModule {
+  val BelongsTo belongsTo;
+}
+
+class Import {
+  attr String moduleName;
+  val Prefix prefix;
+}
+
+class BelongsTo extends Import {
+}
+
+class Prefix extends NamedElement {
+}
+
+class Revision {
+  attr EDate date;
+  attr String description;
+  attr String reference;
+}
+
+abstract class ModuleStatement {
+  attr String description;
+  val Property[*] properties;
+  attr String reference;
+}
+
+class Extension extends ModuleStatement, NamedElement {
+  attr String argument;
+}
+
+class TypeDefinition extends ModuleStatement, NamedElement {
+  val Type type;
+  attr String units;
+  attr String defaultValue;
+  attr StatusKind status;
+}
+
+enum StatusKind {
+  current = 0;
+  obsolete = 1;
+  deprecated = 2;
+}
+
+class Feature extends ModuleStatement {
+}
+
+class Identity extends ModuleStatement, NamedElement {
+	attr String base;
+}
+
+class Deviation extends ModuleStatement {
+}
+
+class Rpc extends ModuleStatement, NamedElement {
+  val IfFeature ifFeature;
+  attr StatusKind status;
+  val RpcParameter[1] input;
+  val RpcParameter[1] output;
+}
+
+class RpcParameter {
+  val ModuleStatement[*] statements;
+}
+
+class IfFeature {
+  attr String feature;
+}
+
+abstract class Type extends ModuleStatement {
+}
+
+class DataType extends Type, NamedElement {
+  ref Prefix namespace;
+  attr String length;
+  attr String range;
+  attr String path;
+  attr String pattern;
+}
+
+class UnionType extends Type {
+  val Type[*] unionOf;
+}
+
+class Property extends NamedElement {
+  ref Prefix namespace;
+  val Value value;
+}
+
+class Enumeration extends Type {
+  val EnumLiteral[*] enumLiterals;
+}
+
+class EnumLiteral extends NamedElement {
+  val Value value;
+}
+
+class Grouping extends DataDefinition {
+  attr String uses;
+  val ModuleStatement[*] elements;
+}
+
+abstract class Node extends DataDefinition {
+  val DataDefinition[*] children;
+}
+
+class Container extends Node {
+  val When when;
+  val IfFeature[*] ifFeatures;
+  attr String presence;
+  attr boolean config;
+  attr StatusKind status;
+  attr String uses;
+}
+
+class Augment extends ModuleStatement, NamedElement {
+  attr StatusKind status;
+  val DataDefinition[*] elements;
+}
+
+class Notification extends ModuleStatement, NamedElement {
+  val DataDefinition[*] elements;
+}
+
+abstract class DataDefinition extends NamedElement, ModuleStatement, ChoiceElement {
+  val Must[*] musts;
+}
+
+class Leaf extends DataDefinition {
+  val Type type;
+  val When when;
+  val IfFeature ifFeature;
+  attr String units;
+  attr Boolean mandatory;
+  val Value defaultValue;
+  attr boolean config;
+  attr StatusKind status;
+}
+
+class List extends Node {
+  attr String key;
+  attr String ~unique;
+  attr Integer min;
+  attr Integer max;
+  attr String orderedBy;
+}
+
+class LeafList extends Leaf, List {
+}
+
+class When {
+  attr String[1] value;
+  attr String description;
+  attr String reference;
+}
+
+class Must {
+  attr String[1] expression;
+  attr String errorAppTag;
+  attr String errorMessage;
+  attr String description;
+  attr String reference;
+}
+
+class AnyXml extends DataDefinition {
+}
+
+abstract class ChoiceElement {
+}
+
+class Case extends ChoiceElement, NamedElement {
+  val DataDefinition[*] elements;
+}
+
+class Choice extends DataDefinition {
+  val ChoiceElement[*] elements;
+}
+
+abstract class Value {
+}
+
+class StringValue extends Value {
+  attr String value;
+}
+
+class IntValue extends Value {
+  attr int value;
+}
+
+class BooleanValue extends Value {
+  attr boolean value;
+}
+

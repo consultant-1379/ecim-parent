@@ -1,0 +1,584 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:45:59 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RtnIpsec" {
+	namespace "urn:com:ericsson:ecim:RtnIpsec";
+	prefix "RtnIpsec";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RtnL3Router {
+		prefix "RtnL3Router";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RtnFilterTypes {
+		prefix "RtnFilterTypes";
+	}
+
+	description "ECIM Transport Ipsec MOM.";
+
+	revision "2015-10-13" {
+		ericsson:contact "EAB/FJP/TA UABERPE";
+		ericsson:version "1";
+		ericsson:release "2";
+		ericsson:correction "2";
+		ericsson:author "EAB/FJP/TA UABERPE";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport/RtnL3Router:Router" {
+		list "IpsecTunnel" {
+			key "ipsecTunnelId";
+			max-elements 1;
+			list "IpsecPolicy" {
+				key "ipsecPolicyId";
+				max-elements 1;
+				uses RtnIpsec:IpsecPolicy;
+			}
+
+			list "Ikev2Session" {
+				key "ikev2SessionId";
+				max-elements 1;
+				uses RtnIpsec:Ikev2Session;
+			}
+
+			uses RtnIpsec:IpsecTunnel;
+		}
+
+	}
+
+	typedef "ChildSaDirection" {
+		type enumeration {
+			enum "IN" {
+				value 0;
+			}
+
+			enum "OUT" {
+				value 1;
+			}
+
+		}
+
+		description "Child  Security Association(SA) direction.";
+	}
+
+	typedef "AuthenticationMethod" {
+		type enumeration {
+			enum "PSK" {
+				value 0;
+			}
+
+			enum "CERTIFICATE" {
+				value 1;
+			}
+
+		}
+
+		description "Available authentication methods.";
+	}
+
+	typedef "DiffieHellmanGroup" {
+		type enumeration {
+			enum "MODP_1024_GROUP_2" {
+				value 2;
+				description "Specification:  RFC_5996. ";
+			}
+
+			enum "MODP_2048_GROUP_14" {
+				value 14;
+				description "Specification:  RFC_3526.
+";
+			}
+
+		}
+
+		description "Diffie-Hellman groups. 
+";
+	}
+
+	typedef "IkeEncryptionAlgorithm" {
+		type enumeration {
+			enum "ENCR_3DES" {
+				value 3;
+				description "Specification:  RFC_5996. 
+";
+			}
+
+			enum "ENCR_AES_CBC_128" {
+				value 1024;
+				description "Specification:  RFC_5996. 
+";
+			}
+
+			enum "ENCR_AES_CBC_256" {
+				value 1026;
+				description "Specification:  RFC_5996. 
+";
+			}
+
+		}
+
+		description "Ike encryption algorithms. 
+";
+	}
+
+	typedef "IkeIntegrityAlgorithm" {
+		type enumeration {
+			enum "AUTH_HMAC_MD5_96" {
+				value 1;
+				description "Specification:  RFC_5996. 
+";
+			}
+
+			enum "AUTH_HMAC_SHA1_96" {
+				value 2;
+				description "Specification:  RFC_5996. 
+";
+			}
+
+			enum "AUTH_AES_XCBC_96" {
+				value 5;
+				description "Specification: RFC_5996. 
+";
+			}
+
+		}
+
+		description "Ike integrity algorithms. 
+";
+	}
+
+	typedef "PseudoRandomFunction" {
+		type enumeration {
+			enum "PRF_HMAC_MD5" {
+				value 1;
+				description "Specification:  RFC_2104. 
+";
+			}
+
+			enum "PRF_HMAC_SHA1" {
+				value 2;
+				description "Specification:  RFC2104. 
+";
+			}
+
+			enum "PRF_AES128_XCBC" {
+				value 4;
+				description "Specification:  RFC_4434. 
+";
+			}
+
+		}
+
+		description "Available pseudo-random functions. 
+";
+	}
+
+	typedef "ChildSaEncryptionAlgorithm" {
+		type enumeration {
+			enum "ENCR_NULL" {
+				value 11;
+				description "Specification:  RFC_2410. ";
+			}
+
+			enum "ENCR_AES_CBC_128" {
+				value 1024;
+				description "Specification:  RFC_5996. ";
+			}
+
+			enum "ENCR_AES_CBC_256" {
+				value 1026;
+				description "Specification:  RFC_5996. ";
+			}
+
+		}
+
+		description "Child Security Association(SA) encryption algorithms.";
+	}
+
+	typedef "ChildSaIntegrityAlgorithm" {
+		type enumeration {
+			enum "AUTH_HMAC_MD5_96" {
+				value 1;
+				description "Specification:  RFC_5996. 
+";
+			}
+
+			enum "AUTH_HMAC_SHA1_96" {
+				value 2;
+				description "Specification:  RFC_5996. 
+";
+			}
+
+			enum "AUTH_AES_XCBC_96" {
+				value 5;
+				description "Specification:  RFC_5996. 
+
+
+";
+			}
+
+		}
+
+		description "Child Security Association(SA) integrity algorithms.";
+	}
+
+	typedef "ConnectionType" {
+		type enumeration {
+			enum "RESPONDER" {
+				value 1;
+				description
+				"ME will act as responder for bringing up IKEv2 session with its IKE peer.";
+			}
+
+			enum "BOTH" {
+				value 2;
+				description "ME can act as initiator or responder.";
+			}
+
+		}
+
+		description "Connection type for IKE session.
+";
+	}
+
+	typedef "TransportProtocolName" {
+		type enumeration {
+			enum "TCP" {
+				value 1;
+			}
+
+			enum "UDP" {
+				value 2;
+			}
+
+			enum "SCTP" {
+				value 3;
+			}
+
+			enum "ICMP" {
+				value 4;
+			}
+
+		}
+
+		description "Enumeration of well known transport protocols.";
+	}
+
+	typedef "IdentityOrigin" {
+		type enumeration {
+			enum "SUBJECT" {
+				value 0;
+			}
+
+			enum "SUBJECT_ALT_NAME" {
+				value 1;
+			}
+
+		}
+
+		description "Identity Origin ";
+	}
+
+	typedef "PresharedKey" {
+		type string {
+			length "1..130";
+			pattern "^(0x([0-9a-fA-F])+)$|^(([^0]|0($|[^x])).*)$";
+		}
+
+		description
+		"Derived string used as presharedkey.
+Install a preshared key for the IKEv2 session.
++The pre-shared key has to be either a valid hexadecimal number or an ASCII string.
++Regexp: ^(0x([0-9a-fA-F])+)$|^(([^0]|0($|[^x])).*)$
+
+The installation of the pre-shared key is completed if the action is completed without error. Any error returned by the action indicates that the installation is not performed.
+If both credential and trustCategory have valid references, then the preshared key is not used even if it is installed.
+";
+	}
+
+	grouping "Ikev2Proposal" {
+		description
+		"Holds an IKEv2 transform proposal used during IKEv2 SA negotiation.
+
+Multiple IKEv2 Transforms can be proposed during an IKEv2 session initiation in an ordered list.";
+		leaf "diffieHellmanGroup" {
+			type RtnIpsec:DiffieHellmanGroup;
+			description "Specifies a Diffie-Hellman group. 
+When unset (nil), the node will send all diffie-hellman groups supported by the node in the proposal. The node will in such a case send a diffie-hellman value based on diffie-hellman group 14 in the initial exchange.
+";
+		}
+
+		leaf "encryptionAlgorithm" {
+			type RtnIpsec:IkeEncryptionAlgorithm;
+			description "Specifies an encryption algorithm. 
+When unset (nil), the node will send all encryption algorithms supported by the node in the proposal.
+";
+		}
+
+		leaf "integrityAlgorithm" {
+			type RtnIpsec:IkeIntegrityAlgorithm;
+			description "Specifies an algorithm for integrity check. 
+When unset (nil), the node will send all integrity algorithms supported by the node in the proposal.
+";
+		}
+
+		leaf "pseudoRandomFunction" {
+			type RtnIpsec:PseudoRandomFunction;
+			description "Specifies the type of Pseudo-random function.
+When unset (nil), the node will send all prf algorithms supported by the node in the proposal.
+";
+		}
+
+	}
+
+	grouping "ChildSaLifetime" {
+		description "Lifetime for the negotiated ChildSAs.";
+		leaf "dataLimit" {
+			type RtnFilterTypes:DataLimit;
+			description "Specifies the maximum amount of data that is allowed to be transmitted on a SA before rekeying.
+";
+		}
+
+		leaf "timeLimit" {
+			type RtnFilterTypes:TimeLimit;
+			mandatory true;
+			description "The maximum lifetime when an SA can be used.";
+		}
+
+	}
+
+	grouping "IpsecProposal" {
+		description "Ipsec Transform to be proposed during SA negotiation.";
+		leaf "encryptionAlgorithm" {
+			type RtnIpsec:ChildSaEncryptionAlgorithm;
+			description "Specifies the algorithm used for encryption.
+
+When unset (nil), the node will send all encryption algorithms supported by the hardware in the proposal.";
+		}
+
+		leaf "integrityAlgorithm" {
+			type RtnIpsec:ChildSaIntegrityAlgorithm;
+			description "Specifies the algorithm used for integrity check.
+
+When unset (nil), the node will send all integrity algorithms supported by the hardware in the proposal.";
+		}
+
+	}
+
+	grouping "Ikev2Session" {
+		description "Ikev2Session is used to specify that IKEv2 should be used to negotiate SA’s for the tunnel. 
+
+It contains parameters specific to the IKEv2 protocol.";
+		leaf "localIdentityOrigin" {
+			type RtnIpsec:IdentityOrigin;
+			mandatory true;
+			description
+			"This attribute controls whether the local identity is derived from the subject field or the subjectAltName in the used IPsec node certificate.  This attribute is only relevant for certificate based authentication.";
+			ericsson:restricted;
+		}
+
+		leaf "ikev2SessionId" {
+			type string;
+			mandatory true;
+			description "Value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "ikev2PolicyProfile" {
+			type string {
+				pattern "(.*=.*,)*Ikev2PolicyProfile=.*";
+			}
+
+			mandatory true;
+			description "Reference to an IKE policy profile instance.";
+			ericsson:restricted;
+		}
+
+		leaf "operationalState" {
+			type ECIM_CommonLibrary:OperState;
+			mandatory true;
+			config true;
+			description "Operational state of the IKEv2 session.
+
+It is disabled if it is not possible to establish an IKEv2 SA due to e.g. authentication problems.";
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use.";
+		}
+
+		ericsson:installPreSharedKey {
+			description "Install a preshared key for the IKEv2 session.
+
+The installation of the pre-shared key is completed if the action is completed without error. Any error returned by the action indicates that the installation is not performed.
+If both credential and trustCategory have valid references, then the preshared key is not used even if it is installed.";
+			input {
+				leaf "presharedKey" {
+					type RtnIpsec:PresharedKey;
+					mandatory true;
+					description "String used as presharedkey.";
+				}
+
+			}
+
+		}
+
+		ericsson:restartIkeSa {
+			description
+			"This will cause the node to delete the IKE SA and initiate the negotiation of a new IKE SA.";
+		}
+
+	}
+
+	grouping "IpsecTunnel" {
+		description
+		"Configuration and runtime information of an Ipsec tunnel between two end points.";
+		leaf "remoteAddress" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			mandatory true;
+			description "Tunnel remote end point external peer.
+
+Valid reference is PeerIpv4 in Transport Route fragement.";
+			ericsson:restricted;
+		}
+
+		leaf "ipsecTunnelId" {
+			type string;
+			mandatory true;
+			description "Value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "localAddress" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			mandatory true;
+			description "Tunnel local endpoint assigned IP address.
+
+Valid reference is AddressIpv4 in L3 infra fragment.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use.";
+		}
+
+		leaf-list "reservedBy" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description
+			"Contains a list of MO instances that reserve this MO instance.";
+		}
+
+		leaf "operationalState" {
+			type ECIM_CommonLibrary:OperState;
+			mandatory true;
+			config true;
+			description
+			"The operational state.
+
+The operationalState is disabled if the associated Ikev2Session is disabled.";
+		}
+
+		leaf-list "availabilityStatus" {
+			type ECIM_CommonLibrary:AvailStatus;
+			config true;
+			description
+			"The availability status.
+
+It contains details about operationalState.
+";
+		}
+
+	}
+
+	grouping "IpsecPolicy" {
+		description "Holds configuration information for Ipsec policies.";
+		leaf "ipsecPolicyId" {
+			type string;
+			mandatory true;
+			description "Value component of the RDN.
+";
+			ericsson:restricted;
+		}
+
+		leaf "ipsecProposalProfile" {
+			type string {
+				pattern "(.*=.*,)*IpsecProposalProfile=.*";
+			}
+
+			mandatory true;
+			description "Reference to an Ipsec proposal profile. ";
+			ericsson:restricted;
+		}
+
+		list "remoteTrafficSelector" {
+			max-elements 2;
+			config true;
+			description "Ordered list of traffic selectors to be used for SA negotiation. 
+
+If remoteTrafficSelector is not specified, it means wildcard(i.e. any possible IP address, protocol etc).
+The first in the list has the highest priority. Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			ericsson:restricted;
+			uses RtnIpsec:remoteTrafficSelector;
+		}
+
+		leaf "antiReplayProtection" {
+			type boolean;
+			mandatory true;
+			description "Enable or disable anti replay protection.
+
+";
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use.";
+		}
+
+	}
+
+	grouping "TrafficSelector" {
+		description "Traffic selector to be used for SA negotiation.";
+		leaf "addressRange" {
+			type RtnFilterTypes:IpAddressRangeStr;
+			mandatory true;
+			description "Specifies the IPv4 or IPv6 address range. 
+";
+		}
+
+	}
+
+}

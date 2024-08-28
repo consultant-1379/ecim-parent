@@ -1,0 +1,639 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:36:14 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ECIM_BrM" {
+	namespace "urn:com:ericsson:ecim:ECIM_BrM";
+	prefix "ECIM_BrM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	organization "EMC/QRT/EB";
+	description "BRM Root Class
+
+";
+
+	revision "2015-12-07" {
+		ericsson:version "3";
+		ericsson:contact "EMC/QRT/EA Zulfikarali Charolia";
+		ericsson:release "3";
+		ericsson:author "EMC/QRT/EA Zulfikarali Charolia";
+		ericsson:correction "0";
+		ericsson:revision "0";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:SystemFunctions" {
+		list "BrM" {
+			key "brMId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "BrmBackupManager" {
+				key "brmBackupManagerId";
+				list "BrmBackup" {
+					key "brmBackupId";
+					uses ECIM_BrM:BrmBackup;
+				}
+
+				list "BrmBackupHousekeeping" {
+					key "brmBackupHousekeepingId";
+					max-elements 1;
+					uses ECIM_BrM:BrmBackupHousekeeping;
+				}
+
+				list "BrmBackupScheduler" {
+					key "brmBackupSchedulerId";
+					max-elements 1;
+					list "BrmSingleEvent" {
+						key "brmSingleEventId";
+						uses ECIM_BrM:BrmSingleEvent;
+					}
+
+					list "BrmPeriodicEvent" {
+						key "brmPeriodicEventId";
+						uses ECIM_BrM:BrmPeriodicEvent;
+					}
+
+					list "BrmCalendarBasedPeriodicEvent" {
+						key "brmCalendarBasedPeriodicEventId";
+						uses ECIM_BrM:BrmCalendarBasedPeriodicEvent;
+					}
+
+					uses ECIM_BrM:BrmBackupScheduler;
+				}
+
+				list "BrmBackupLabelStore" {
+					key "brmBackupLabelStoreId";
+					max-elements 1;
+					uses ECIM_BrM:BrmBackupLabelStore;
+				}
+
+				uses ECIM_BrM:BrmBackupManager;
+			}
+
+			list "BrmRollbackAtRestore" {
+				key "brmRollbackAtRestoreId";
+				max-elements 1;
+				uses ECIM_BrM:BrmRollbackAtRestore;
+			}
+
+			uses ECIM_BrM:BrM;
+		}
+
+	}
+
+	typedef "BrmBackupStatus" {
+		type enumeration {
+			enum "BRM_BACKUP_COMPLETE" {
+				value 1;
+				description "The backup is complete and can be safely restored.";
+			}
+
+			enum "BRM_BACKUP_INCOMPLETE" {
+				value 2;
+				description "The backup is incomplete. The reason can be failure during creation or deletion. 
+An incomplete backup can never be restored. The only operation permitted on an incomplete backup is to delete it.";
+			}
+
+			enum "BRM_BACKUP_CORRUPTED" {
+				value 3;
+				description "The backup is corrupted. 
+A corrupted backup is never allowed to be restored. The only operation permitted on a corrupted backup is to delete it.";
+			}
+
+		}
+
+		description "Indicates the status of a Backup. 
+The status is INCOMPLETE during creation or deletion of a backup. Once a backup is successfully created, its status is COMPLETE. If the integrity of the backup is violated, it is marked as CORRUPTED.";
+	}
+
+	typedef "BrmBackupCreationType" {
+		type enumeration {
+			enum "MANUAL" {
+				value 1;
+				description "Backup created via a manual operation. 
+A backup of this creation type is subject to housekeeping based on maximum number defined in BrmBackupHousekeeping MO and remove-oldest policy.";
+			}
+
+			enum "SCHEDULED" {
+				value 2;
+				description "Backup created automatically based on a preconfigured schedule. 
+A backup of this creation type is subject to housekeeping based on maximum number defined in BrmBackupScheduler MO and remove-oldest policy";
+			}
+
+			enum "SYSTEM_CREATED" {
+				value 3;
+				description "Backup automatically created by the managed element.
+A backup of this creation type is not subject to any housekeeping policy defined by the management system and can only be removed by the managed element. Such a backup is primarily used for automatic recovery from catastrophic failures, but may also be used as any other backup if the management system chooses to restore the managed element with it.
+";
+			}
+
+		}
+
+		description "Backup creation type.";
+	}
+
+	typedef "BrmManualBackupAutoDelete" {
+		type enumeration {
+			enum "ENABLED" {
+				value 1;
+				description "Enabled.";
+			}
+
+			enum "DISABLED" {
+				value 2;
+				description "Disabled.";
+			}
+
+		}
+
+		description
+		"Indicates whether or not the implementation of BRM automatically does the housekeeping of manual backups.";
+	}
+
+	typedef "BrmAutoExport" {
+		type enumeration {
+			enum "DISABLED" {
+				value 2;
+				description "Disabled.";
+			}
+
+			enum "ENABLED" {
+				value 1;
+				description "Enabled.";
+			}
+
+		}
+
+		description
+		"Indicates whether or not a scheduled backup is automatically exported at successful creation.";
+	}
+
+	typedef "ActionInvocationResult" {
+		type int32;
+		description
+		"Indicates whether an asynchronous operation was successfully invoked. (The actual result of the operation will be communicated by other means.)
+
+A value of zero indicates success. Non-zero error codes are implementation-specific.";
+	}
+
+	typedef "EcimPasswordString" {
+		type string;
+		description "Holds the password string.";
+	}
+
+	grouping "BrM" {
+		description "ECIM Backup and Restore Management top-level class.
+
+ECIM BRM encompasses all the operations associated with the backup and restore of the managed element.";
+		leaf "brMId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN. 
+";
+			ericsson:restricted;
+		}
+
+		leaf "exportPackageLabelPrefix" {
+			type string;
+			description "Free text to help better identify a backup export package when residing outside the ME.
+If specified, BRM prefixes this text to the label that it generates for the backup export package.";
+		}
+
+	}
+
+	grouping "BrmBackupManager" {
+		description "Serves as container for Backup instances of a particular backupType and backupDomain.
+
+This class also provides the actions for creating new backups, importing backups from other locations, and deleting existing backups of the corresponding type and domain.";
+		leaf "brmBackupManagerId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN. 
+";
+			ericsson:restricted;
+		}
+
+		leaf "backupType" {
+			type string;
+			mandatory true;
+			config true;
+			description " Type of backup, for example System Data or User Data.
+            ";
+		}
+
+		leaf "backupDomain" {
+			type string;
+			mandatory true;
+			config true;
+			description "Backup domain, for example System.";
+		}
+
+		list "progressReport" {
+			key "actionId";
+			min-elements 1;
+			max-elements 1;
+			config true;
+			description "Represents the progress report and  final result of the ongoing (asynchronous) action, for example createBackup. 
+This MO supports only one action to be executed at a time.
+            ";
+			uses ECIM_CommonLibrary:AsyncActionProgress;
+		}
+
+	}
+
+	grouping "BrmBackup" {
+		description
+		"Represents one backup of the type and domain specified by the BrmBackupManager in which it is contained.";
+		leaf "brmBackupId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN. 
+";
+			ericsson:restricted;
+		}
+
+		leaf "backupName" {
+			type string;
+			mandatory true;
+			config true;
+			description "Backup name, provided by the operator. ";
+		}
+
+		leaf "creationTime" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			config true;
+			description
+			"Date and time when the backup was created, i.e., start time of backup procedure.";
+		}
+
+		leaf "status" {
+			type ECIM_BrM:BrmBackupStatus;
+			mandatory true;
+			config true;
+			description "Status of the backup.";
+		}
+
+		list "progressReport" {
+			key "actionId";
+			min-elements 1;
+			max-elements 1;
+			config true;
+			description "Represents the progress report and  final result of the ongoing (asynchronous) action in this MO, for example restore. 
+This MO supports only one action to be executed at a time.
+            ";
+			uses ECIM_CommonLibrary:AsyncActionProgress;
+		}
+
+		leaf "creationType" {
+			type ECIM_BrM:BrmBackupCreationType;
+			mandatory true;
+			config true;
+			description
+			"Creation type; whether manually created or automatically via BrmBackupScheduler.";
+		}
+
+		list "swVersion" {
+			config true;
+			description "The administrative data portion of active software versions as specified in the software inventory management, when the backup is created.
+";
+			uses ECIM_CommonLibrary:ProductData;
+		}
+
+	}
+
+	grouping "BrmSingleEvent" {
+		description "A single scheduled backup event.
+This construct can be used to configure a single, one-shot, scheduled backup event by specifying the desired date and time.
+";
+		leaf "brmSingleEventId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN. 
+";
+			ericsson:restricted;
+		}
+
+		leaf "scheduledTime" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			description "Scheduled time.";
+		}
+
+	}
+
+	grouping "BrmPeriodicEvent" {
+		description "Periodic backup event.
+This construct can be used to configure a periodic scheduled backup event by specifying the number of months, weeks, days, hours, or minutes. For instance, in order to configure a scheduled backup event to occur every 12 hours, the following setup must be done: hours = 12.
+If more than one attribute is set, the values are added when calculating the next scheduled event. For example, if hours = 6 and minutes = 30, the scheduled backup event occurs every 6 hour and 30 minutes. The start time for calculating scheduled events is assumed to be the current system time by default, unless explicitly set using the startTime attribute. Furthermore, if the configured event is to stop at a specific date, attribute stopTime must be set accordingly. Note that the default value of stopTime is the end of a century. Daylight saving adjustments in Spring and Fall are addressed in such a way that the affected scheduled backup events are triggered exactly once only";
+		leaf "brmPeriodicEventId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN. 
+";
+			ericsson:restricted;
+		}
+
+		leaf "months" {
+			type uint16;
+			mandatory true;
+			status deprecated;
+			description "Deprecated, The number of months.
+Replaced by CalendarBasedPeriodicEvent.month.";
+		}
+
+		leaf "weeks" {
+			type uint16;
+			mandatory true;
+			description "The number of weeks.";
+		}
+
+		leaf "days" {
+			type uint16;
+			mandatory true;
+			description "The number of days.";
+		}
+
+		leaf "hours" {
+			type uint16;
+			mandatory true;
+			description "The number of hours.";
+		}
+
+		leaf "minutes" {
+			type uint16;
+			mandatory true;
+			description "The number of minutes.";
+		}
+
+		leaf "startTime" {
+			type ECIM_CommonLibrary:DateTime;
+			description "Start time. It is an optional attribute.
+If not specified, the implementation uses the current system time as the default value.";
+		}
+
+		leaf "stopTime" {
+			type ECIM_CommonLibrary:DateTime;
+			default "2099-12-31T23:59:59";
+			description
+			"Stop time. It is an optional attribute. The default value is the end of the century.";
+		}
+
+	}
+
+	grouping "BrmBackupHousekeeping" {
+		description "Provides optional support for automated housekeeping of manually created backups. 
+
+If autoDelete is set to ENABLED before creating a new manual backup, BRM first checks the number of manual backups, and if the limit specified by the value of maxStoredManualBackups is reached, BRM removes the oldest manual backup before creating a new one.";
+		leaf "brmBackupHousekeepingId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN. 
+";
+			ericsson:restricted;
+		}
+
+		leaf "maxStoredManualBackups" {
+			type uint16;
+			mandatory true;
+			description "Maximum number of manual backups, per backup type, to store in the ME. 
+When this limit is reached, if autoDelete=ENABLED, BRM removes the oldest manual backup before creating a new one. Otherwise an error is returned when createBackup() is invoked and the NMS must perform the required housekeeping activity before attempting to create a new backup.";
+		}
+
+		leaf "autoDelete" {
+			type ECIM_BrM:BrmManualBackupAutoDelete;
+			mandatory true;
+			description "Determines whether automated housekeeping of manual backups is enabled.
+If ENABLED and the number of backups already stored on the ME is equal to the value of maxStoredManualBackups, the oldest backup is removed before creating a new one. If set to DISABLED, no backup is removed. Instead, when action createBackup() is invoked, it returns a failure parameter.";
+		}
+
+	}
+
+	grouping "BrmBackupScheduler" {
+		description "Provides optional support for scheduling backup creation.
+Each instance of BrmBackupScheduler MOC serves as the backup scheduler for the backup type indicated by its parent instance of BrmBackupManager. The scheduled backup events can be instances of BrmSingleEvent MOC, BrmCalnedarBasedPeriodicEvent MOC, or BrmPeriodicEvent MOC contained in the instance of BrmBackupScheduler.";
+		leaf "brmBackupSchedulerId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "maxStoredScheduledBackups" {
+			type uint16;
+			default "5";
+			description "The maximum number of scheduled backups, per backup type, to store in the ME.
+When this limit is reached, the oldest scheduled backup is deleted by BRM before creating a new one.";
+		}
+
+		leaf "scheduledBackupName" {
+			type string;
+			default "BACKUP";
+			description "The configurable portion of the scheduled backup name.
+The scheduled backups are named <scheduledBackupName>-<creation date and time>, where creation date and time is of type DateTime defined in the common library.";
+		}
+
+		list "progressReport" {
+			key "actionId";
+			max-elements 1;
+			config true;
+			description
+			"Reports the progress and final result of the ongoing (asynchronous) scheduled backup operation.";
+			uses ECIM_CommonLibrary:AsyncActionProgress;
+		}
+
+		leaf "mostRecentlyCreatedAutoBackup" {
+			type string;
+			config true;
+			description
+			"The name of the scheduled backup created most recently by the backup scheduler.";
+		}
+
+		leaf "autoExport" {
+			type ECIM_BrM:BrmAutoExport;
+			description "Determines whether a scheduled backup is to be automatically exported at successful creation.
+If set to ENABLED, the scheduled backup specified by the attribute mostRecentlyCreatedAutoBackup is exported to the location specified by attribute autoExportUri after it is successfully created. Note that the automatic export is only triggered if creation of the scheduled backup was successful. Otherwise, no export operation is triggered, even if this attribute is set to ENABLED. Also, note that setting this attribute to ENABLED has no impact on the scheduled backups that were already created and stored prior to the new configuration.
+
+";
+		}
+
+		leaf "autoExportUri" {
+			type string;
+			description "Uri used by the backup scheduler when automatically exporting a scheduled backup.
+If attribute autoExport is set to ENABLED, this uri specifies the location to which the scheduled backup is automatically exported.";
+		}
+
+		list "autoExportPassword" {
+			key "password";
+			max-elements 1;
+			description "Password used by the backup scheduler when automatically exporting a scheduled backup.
+If attribute autoExport is set to ENABLED, this password is used for authentication when automatically exporting the scheduled backup. No need to specify this attribute if no password is required for accessing auroExportUri.";
+			uses ECIM_CommonLibrary:EcimPassword;
+		}
+
+		leaf "adminState" {
+			type ECIM_CommonLibrary:BasicAdmState;
+			mandatory true;
+			description "Administrative state of the scheduler.";
+		}
+
+		leaf "nextScheduledTime" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "The date and time when the next scheduled event is triggered.
+This is the earliest scheduled event from the set of configured events, i.e. single, periodic, and calendar-based periodic events.";
+		}
+
+		leaf "schedulerState" {
+			type ECIM_CommonLibrary:OperState;
+			config true;
+			status deprecated;
+			description "Deprecated, Operational state of the scheduler. State ENABLED confirms that the scheduler is successfully configured and that the next event is calculated. State DISABLED indicates that no more scheduled events are triggered by the scheduler.
+Replaced by nextScheduledTime.";
+		}
+
+	}
+
+	grouping "BrmCalendarBasedPeriodicEvent" {
+		description "Periodic backup event using calendar-based interval.
+This construct can be used to configure a periodic scheduled backup event by specifying the desired interval using the calendar. For instance, in order to configure a scheduled backup event to occur every night at 2:00 am, the following setup must be done: time = 02:00:00.
+The start time for calculating scheduled events is by default the current system time, unless explicitly set using the startTime attribute. Furthermore, if the configured event is to stop at a specific date, stopTime attribute must be set accordingly. Note that the default value of stopTime is the end of the century. A scheduled backup event of this type is triggered only if ALL the conditions with regard to attribute values are satisfied. For example, if dayOfWeek is set to Monday and dayOfMonth is set to 1, the event is triggered only if the first day of month is Monday.
+Daylight saving adjustments in Spring and Fall are addressed in such a way that the affected scheduled backup events are triggered exactly once.";
+		leaf "brmCalendarBasedPeriodicEventId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "month" {
+			type ECIM_CommonLibrary:Month;
+			mandatory true;
+			description "Month.";
+		}
+
+		leaf "dayOfWeek" {
+			type ECIM_CommonLibrary:DayOfWeek;
+			mandatory true;
+			description "Day of week.";
+		}
+
+		leaf "dayOfMonth" {
+			type ECIM_CommonLibrary:DayOfMonth;
+			mandatory true;
+			description "Day of month.";
+		}
+
+		leaf "time" {
+			type ECIM_CommonLibrary:Time;
+			mandatory true;
+			description "This is the time when the scheduled event must occur.";
+		}
+
+		leaf "dayOfWeekOccurrence" {
+			type ECIM_CommonLibrary:DayOfWeekOccurrence;
+			mandatory true;
+			description
+			"The occurrence of the day of week specified by dayOfWeek attribute in the month.";
+		}
+
+		leaf "startTime" {
+			type ECIM_CommonLibrary:DateTime;
+			description "Start time. It is an optional attribute. 
+If not specified, the implementation uses the current system time as the default value.";
+		}
+
+		leaf "stopTime" {
+			type ECIM_CommonLibrary:DateTime;
+			default "2099-12-31T23:59:59";
+			description
+			"Stop time. It is an optional attribute. The default value is the end of the century.";
+		}
+
+	}
+
+	grouping "BrmRollbackAtRestore" {
+		description "Provides optional support for confirmation of a restore action or automatic rollback after an unconfirmed restore operation was executed.
+The existence of an instance of this class indicates that this feature is supported by the implementation.";
+		leaf "brmRollbackAtRestoreId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "timeAllowedBeforeRollback" {
+			type uint16;
+			default "3600";
+			description
+			"Number of seconds to wait for action confirmRestore to invoke before performing the rollback to the state before restore.";
+		}
+
+		leaf "timeRemainingBeforeRollback" {
+			type uint16;
+			config true;
+			description "The remaining number of seconds before performing the rollback to the state before restore.
+The countdown stops after confirmRestore action is invoked on the BrmBackup MO, representing the restored backup. If action confirmRestore is not invoked before the expiration of the rollback timer, an automatic rollback is triggered. Countdown starts at restore, and stops when confirmRestore() is invoked.";
+		}
+
+	}
+
+	grouping "BrmBackupLabelStore" {
+		description "Provides optional support for labeling of certain backups.
+This class contains attributes that help distinguish certain backups such as the last restored backup, primary restore candidate, and so on.";
+		leaf "brmBackupLabelStoreId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "lastRestoredBackup" {
+			type string;
+			config true;
+			description "The name of the backup that was last used to restore the ME.
+This does not imply that the currently running version of the system is the same as this backup, but instead shows which one of the backups was last used to restore the ME. In a system that has never been restored using a backup, this attribute is empty.";
+		}
+
+		leaf "lastCreatedBackup" {
+			type string;
+			config true;
+			description "The name of the last backup created.
+This backup can be MANUAL or SCHEDULED. Note that this attribute is not updated in the case of a failed attempt to create a backup, which would result in an INCOMPLETE backup.";
+		}
+
+		leaf "lastImportedBackup" {
+			type string;
+			config true;
+			description "The name of the last backup imported to the ME.
+Note that this attribute is not updated in the case of a failed attempt to import a backup.";
+		}
+
+		leaf "lastExportedBackup" {
+			type string;
+			config true;
+			description "The name of the last backup exported from the ME.
+Note that this attribute is not updated in the case of a failed attempt to export a backup.";
+		}
+
+		leaf-list "restoreEscalationList" {
+			type string;
+			config true;
+			description "Specifies a list of backups by name, in the order that is to be used to restore the ME when needed.
+Specifically, the first element of this ordered list identifies the “primary restore candidate”. If the attempt to restore the ME with a given backup fails, the next backup in the list must be tried.";
+		}
+
+	}
+
+}

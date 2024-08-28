@@ -1,0 +1,101 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 14, 2015 9:51:03 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RtnL3Library" {
+	namespace "urn:com:ericsson:ecim:RtnL3Library";
+	prefix "RtnL3Library";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	description "Library for common L3 types, including abstract classes.";
+
+	revision "2015-10-14" {
+		ericsson:correction "0";
+		ericsson:release "5";
+		ericsson:author "EAB/FJP/TA UABERPE";
+		ericsson:contact "EAB/FJP/TA UABERPE";
+		ericsson:version "1";
+	}
+
+	typedef "Origin" {
+		type enumeration {
+			enum "STATIC" {
+				value 0;
+				description "Statically configured resource.";
+			}
+
+			enum "DHCP" {
+				value 1;
+				description "Source of the resource is DHCP.";
+			}
+
+			enum "IKEV2" {
+				value 2;
+				description "Source of the resource is Internet Key Exchange (IKEv2).";
+			}
+
+			enum "SYSTEM_DEFAULT" {
+				value 3;
+				description "System default (automatically added) resource.";
+			}
+
+			enum "NDP" {
+				value 4;
+				description "Source of the resource is NDP.
+";
+			}
+
+			enum "LINK_LOCAL_DYNAMIC" {
+				value 5;
+				description "Link local resource.";
+			}
+
+		}
+
+		description "Possible origins of an assigned IP address.";
+	}
+
+	typedef "EnableDisable" {
+		type enumeration {
+			enum "ENABLE" {
+				value 1;
+			}
+
+			enum "DISABLE" {
+				value 0;
+			}
+
+		}
+
+		description "Type including ENABLE and DISABLE values.";
+	}
+
+	typedef "BfdStaticRoutesInterfaceType" {
+		type enumeration {
+			enum "DISABLED" {
+				value 0;
+			}
+
+			enum "ENABLED" {
+				value 1;
+			}
+
+		}
+
+		description "State of bfdStaticRoutes.";
+	}
+
+	typedef "EthPCP" {
+		type uint8 {
+			range "0..7";
+		}
+
+		description
+		"Specifies the PCP value for ARP packets using this interface (does only effect VLAN-interfaces).";
+	}
+
+}

@@ -1,0 +1,189 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 17, 2015 4:50:40 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "TheClasses" {
+	namespace "urn:com:ericsson:ecim:TheClasses";
+	prefix "TheClasses";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	description "qwe";
+
+	revision "2015-04-17" {
+		ericsson:release "1";
+		ericsson:version "1";
+	}
+
+	list "Root" {
+		key "rootId";
+		list "ClassAbc" {
+			key "classAbcId";
+			uses TheClasses:ClassAbc;
+		}
+
+		uses TheClasses:Root;
+	}
+
+	typedef "Gender" {
+		type enumeration {
+			enum "MALE" {
+				value 1;
+			}
+
+			enum "FEMALE" {
+				value 2;
+			}
+
+		}
+
+	}
+
+	typedef "SsnType" {
+		type string {
+			length "11";
+			pattern "\d{3}-\d{2}-\d{4}";
+		}
+
+		description "Social Security Data type";
+	}
+
+	grouping "Root" {
+		description "qwe";
+		leaf "rootId" {
+			type string;
+			mandatory true;
+			description "123";
+			ericsson:restricted;
+		}
+
+		leaf-list "multiStringAttr" {
+			type string;
+			max-elements 10;
+			description "wer";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "multiIntAttr" {
+			type int32;
+			max-elements 10;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "multiBoolAttr" {
+			type boolean;
+			max-elements 10;
+			description "123";
+			ericsson:non-unique-leaf-list;
+		}
+
+	}
+
+	grouping "ClassAbc" {
+		description "qwe";
+		leaf "gender" {
+			type TheClasses:Gender;
+			mandatory true;
+		}
+
+		leaf "firstName" {
+			type string;
+			mandatory true;
+		}
+
+		leaf "lastName" {
+			type string {
+				pattern "[A-Z][a-z]+";
+			}
+
+			mandatory true;
+		}
+
+		leaf "ssn" {
+			type TheClasses:SsnType;
+			mandatory true;
+		}
+
+		leaf "myDn" {
+			type string {
+				pattern "(.*=.*,)*ClassAbc=.*";
+			}
+
+			mandatory true;
+		}
+
+		leaf-list "siblingSsns" {
+			type TheClasses:SsnType;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		list "person" {
+			key "ssn";
+			max-elements 1;
+			description "qwe";
+			uses TheClasses:person;
+		}
+
+		list "manyPersons" {
+			key "ssn";
+			min-elements 1;
+			description "qwe";
+			uses TheClasses:manyPersons;
+		}
+
+		leaf "classAbcId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "PersonStruct" {
+		description "qwe";
+		leaf "firstName" {
+			type string;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "lastName" {
+			type string;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "ssn" {
+			type TheClasses:SsnType;
+			mandatory true;
+		}
+
+		leaf "gender" {
+			type TheClasses:Gender;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "myDn" {
+			type string {
+				pattern "(.*=.*,)*ClassAbc=.*";
+			}
+
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf-list "siblingSsns" {
+			type TheClasses:SsnType;
+			description "qwe";
+		}
+
+	}
+
+}

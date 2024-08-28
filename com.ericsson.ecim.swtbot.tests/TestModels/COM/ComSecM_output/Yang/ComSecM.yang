@@ -1,0 +1,304 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:13:41 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ComSecM" {
+	namespace "urn:com:ericsson:ecim:ComSecM";
+	prefix "ComSecM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ComTop {
+		prefix "ComTop";
+	}
+
+	organization "EAB/FLE/CD";
+	description "ECIM Security Management fragment. 
+
+The Security Management fragment must encompass most system security aspects to be configured on the Managed Element. This version of the model contains authentication and authorization, the User Management aspects. Authentication and authorization methods must contribute to the UserManagement MOC in a modular way.";
+
+	revision "2014-09-22" {
+		ericsson:author "EAB/FLE/CD XSANBOJ";
+		ericsson:release "1";
+		ericsson:version "11";
+		ericsson:revision "0";
+		ericsson:correction "0";
+	}
+
+	augment "/ComTop:ManagedElement/ComTop:SystemFunctions" {
+		list "SecM" {
+			key "secMId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "UserManagement" {
+				key "userManagementId";
+				min-elements 1;
+				max-elements 1;
+				list "AuthenticationOrder" {
+					key "authenticationOrderId";
+					max-elements 1;
+					uses ComSecM:AuthenticationOrder;
+				}
+
+				list "AuthorizationOrder" {
+					key "authorizationOrderId";
+					max-elements 1;
+					uses ComSecM:AuthorizationOrder;
+				}
+
+				uses ComSecM:UserManagement;
+			}
+
+			list "Tls" {
+				key "tlsId";
+				max-elements 1;
+				uses ComSecM:Tls;
+			}
+
+			uses ComSecM:SecM;
+		}
+
+	}
+
+	typedef "CipherList" {
+		type string {
+			pattern
+			"^([!-]?([A-Za-z0-9]+[_-])*[A-Za-z0-9]+(\+([A-Za-z0-9]+[_-])*[A-Za-z0-9]+)*:)*[!-]?([A-Za-z0-9]+[_-])*[A-Za-z0-9]+(\+([A-Za-z0-9]+[_-])*[A-Za-z0-9]+)*$|^$";
+		}
+
+		description "Derived string for the specification of a cipher list.
+
+Contains colon-delimited (':') cipher strings that can be of any value of the members contained by a Cipher struct. A cipher string indicates an individual cipher or a set of ciphers that use the same protocol version, key exchange etc. The cipher strings can be combined in logical order and operation by character '+'. They can be optionally preceded by either an '!' or a '-' character. Character '!' means that the preceded cipher or cipher type is permanently deleted from the list. Character '-' means that the preceded cipher or cipher type is deleted from the list, but any of the ciphers can be added by later options.
+
+They must contain at least one positive expression, that is, without character '!' or '-' in the cipher string, otherwise the filter results in an empty cipher suite.
+
+Cipher strings with special meaning:
+ALL - all cipher suites except for the NULL encryption ciphers, which must be explicitly enabled. NULL authentication ciphers are included.
+DEFAULT - all cipher suites except the NULL authentication and NULL encryption ciphers.
+
+Example: 
+
+ALL:!SSLv2:!RSA:!aRSA:!3DES:!DES:!MD5 
+ALL:!EXP-EDH-RSA-DES-CBC-SHA
+AES:-kRSA
+AES:RC4
+kEDH+EXPORT:-MD5, assume that the listed cipher strings are valid values of members of Cipher structs.";
+	}
+
+	grouping "SecM" {
+		description "Security Management root MOC.";
+		leaf "secMId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "AuthenticationOrder" {
+		description "MO Class used to view the order of authentication methods.";
+		leaf "authenticationOrderId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		list "authenticationMethodOrder" {
+			min-elements 1;
+			config true;
+			description "The order in which authentication methods are to be used. 
+
+Methods must be called up in the order specified by the orderNumber member. The method is referenced by the methodReference member.";
+			uses ComSecM:MethodOrder;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+	}
+
+	grouping "AuthorizationOrder" {
+		description "MO Class used to view the order of authorization methods.";
+		leaf "authorizationOrderId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		list "authorizationMethodOrder" {
+			min-elements 1;
+			config true;
+			description "The order in which authorization methods are to be used.
+
+Methods must be called up in the order specified by the orderNumber member. The method is referenced by the methodReference member.";
+			uses ComSecM:MethodOrder;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+	}
+
+	grouping "UserManagement" {
+		description "User Management MOC. ";
+		leaf "userManagementId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+		leaf-list "targetType" {
+			type string;
+			description "Lists the target types of the ME for Target Based Access Control (TBAC).
+
+This attribute is optional for Authentication Methods that require TBAC configuration. Authentication Methods use TBAC to determine the following: whether a user can be authorized in the ME, and which authorization profiles apply to the user in the ME, based on the target types specified in this attribute.
+
+This attribute can contain any classifier string for the ME such as geographical, for example: 'stockholm', network, for example 'ims', or functional identifiers, for example 'cscf', and any combination of these.
+
+The generic behavior of TBAC for authorization is as follows:
+
+TBAC is LOCKED in the ME: authorization is performed without TBAC. 
+TBAC is UNLOCKED in the ME: authorization is performed if the targets that the user is provided with exactly match at least one string of configured target types. Otherwise, authorization fails.
+
+Determining the authorization profiles of the user is specific per Authentication Method.
+
+The LOCKED and UNLOCKED states of TBAC in the ME are controlled by the Authentication Methods.
+
+Example value: 'cscf.ims.stockholm'.";
+			ericsson:non-unique-leaf-list;
+		}
+
+	}
+
+	grouping "MethodOrder" {
+		description "Struct that represents the order of an authentication or authorization method. 
+
+The referred method must be used by a security function, that is, authentication or authorization in the given order.";
+		leaf "orderNumber" {
+			type int16;
+			mandatory true;
+			description "The method (1-*) order number.";
+		}
+
+		leaf "methodReference" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			mandatory true;
+			description "An MO Reference to the method.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "Freetext label to describe reason for the method order.";
+		}
+
+	}
+
+	grouping "Tls" {
+		description
+		"Configures system-wide properties of Transport Layer Security (TLS).";
+		leaf "tlsId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		list "enabledCiphers" {
+			key "name";
+			config true;
+			description "Lists the ciphers as filtered by the attribute cipherFilter. 
+
+Ciphers are ordered by strength. The strongest cipher is offered first.";
+			uses ComSecM:Cipher;
+		}
+
+		leaf "cipherFilter" {
+			type ComSecM:CipherList;
+			mandatory true;
+			description "Specifies a filter for the cipher suite.
+
+Applied on the ciphers listed in attribute supportedCiphers. The result is shown in attribute enabledCiphers.";
+		}
+
+		list "supportedCiphers" {
+			key "name";
+			config true;
+			description "Lists the ciphers supported by the ME.";
+			uses ComSecM:Cipher;
+		}
+
+	}
+
+	grouping "Cipher" {
+		description "Represents a cipher algorithm.";
+		leaf "protocolVersion" {
+			type string;
+			description "A keyword that identifies the cipher protocol version.
+
+For example: 'TLSv1'.";
+		}
+
+		leaf "keyExchange" {
+			type string;
+			description "A keyword that identifies the cipher key exchange algorithm.
+
+For example: 'kEDH'.";
+		}
+
+		leaf "authentication" {
+			type string;
+			description "A keyword that identifies the cipher authentication algorithm.
+
+For example: 'aRSA'.";
+		}
+
+		leaf "encryption" {
+			type string;
+			description "A keyword that identifies the cipher encryption algorithm.
+
+For example: 'AES'.";
+		}
+
+		leaf "mac" {
+			type string;
+			description "A keyword that identifies the cipher Message Authentication Code algorithm.
+
+For example: 'SHA'.";
+		}
+
+		leaf "export" {
+			type string;
+			description
+			"Shows 'EXPORT' if the cipher is classified as an EXPORT cipher, otherwise empty.";
+		}
+
+		leaf "name" {
+			type string;
+			mandatory true;
+			description "A keyword that identifies the cipher name. 
+
+For example: 'TLS_DHE_RSA_WITH_AES_256_CBC_SHA'.";
+		}
+
+	}
+
+}

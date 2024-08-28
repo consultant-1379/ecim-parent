@@ -1,0 +1,94 @@
+<project default="yang2xsd" basedir=".">
+
+	<property name="dist_name" value="DMX_Netconf" />
+
+	<property name="srcdir" location="src" />
+	<property name="outdir" location="out" />
+	<property name="yangdir" location="${srcdir}/yang" />
+	<property name="yindir" location="${outdir}/yin" />
+	<property name="xsddir" location="${outdir}/xsd" />
+	<property name="xsddir1" location="Hacked_xsd" />
+	<property name="xsddir3" location="xsd" />
+	<property name="xsd.srcdir" location="${srcdir}/XmlSchemas" />
+
+	<property name="pyangdir" location="utils/pyang" />
+	<property name="pyang" location="${pyangdir}/bin/pyang" />
+	<property name="pyang.plugindir" location="${pyangdir}/plugins" />
+
+	<patternset id="yang2xsd_yang_files" includes="*.yang" />
+
+	<fileset id="xsd_copy_src" dir="${xsd.srcdir}">
+		<include name="**/*.xsd" />
+	</fileset>
+
+
+	<fileset id="yang2xsd_xsd_src" dir="${yangdir}">
+		<patternset refid="yang2xsd_yang_files" />
+	</fileset>
+
+	<fileset id="yang2xsd_ying_src" dir="${yangdir}">
+		<patternset refid="yang2xsd_yang_files" />
+	</fileset>
+	
+	<target name="check.lib">
+		<condition property="lib.exists">
+			<available file="${pyangdir}/lib/pyang-1.4.1/bin/pyang"/>
+		</condition>
+	</target>
+	
+	<target name="init" depends="check.lib" unless="lib.exists">
+		<gunzip src="${pyangdir}/lib/pyang-1.4.1.tar.gz" dest="${pyangdir}/lib/pyang-1.4.1.tar"/>
+		<untar src="${pyangdir}/lib/pyang-1.4.1.tar" dest="${pyangdir}/lib/"/>
+		<delete file="${pyangdir}/lib/pyang-1.4.1.tar" />
+		<chmod perm="ugo+rx" type="file" verbose="true">
+			<fileset dir="${pyangdir}">
+				<include name="**/*.py"/>
+				<include name="**/*.pyc"/>
+				<include name="**/bin/*"/>
+			</fileset>
+		</chmod>
+	</target>
+	
+	<target name="yang2xsd" depends="init">
+		<delete dir="${xsddir}" />
+		<mkdir dir="${xsddir}" />
+		<apply executable="${pyang}" addsourcefile="true" vmlauncher="false" dir="${xsddir}" dest="${xsddir}" verbose="true">
+			<arg value="-f" />
+			<arg value="bsp" />
+			<arg value="--path" />
+			<arg value="${yangdir}" />
+			<arg value="--plugindir" />
+			<arg value="${pyang.plugindir}" />
+			<arg value="-o" />
+			<targetfile />
+			<fileset refid="yang2xsd_xsd_src" />
+			<mapper type="glob" from="*.yang" to="*.xsd" />
+		</apply>
+	</target>
+
+	<target name="yang2xsd_link" depends="init">
+		<delete dir="${xsddir1}" />
+		<mkdir dir="${xsddir1}" />
+		<apply executable="${pyang}" addsourcefile="true" vmlauncher="false" dir="${xsddir1}" dest="${xsddir1}" verbose="true">
+			<arg value="-f" />
+			<arg value="bsp" />
+			<arg value="--path" />
+			<arg value="${yangdir}" />
+			<arg value="--bsp-linkxsd" />
+			<arg value="${xsddir3}" />
+			<arg value="--plugindir" />
+			<arg value="${pyang.plugindir}" />
+			<arg value="-o" />
+			<targetfile />
+			<fileset refid="yang2xsd_xsd_src" />
+			<mapper type="glob" from="*.yang" to="*.xsd" />
+		</apply>
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${yindir}" />
+		<delete dir="${xsddir}" />
+		<delete dir="${xsddir1}" />
+	</target>
+
+</project>

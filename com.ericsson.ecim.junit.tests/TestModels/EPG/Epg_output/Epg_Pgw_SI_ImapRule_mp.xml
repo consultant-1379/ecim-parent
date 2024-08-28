@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_SI_ImapRule" namespace="urn:com:ericsson:ecim:Epg_Pgw_SI_ImapRule" namespacePrefix="epg_pgw_si_imaprule" organization="Ericsson EAB, NDO EPG" release="1" revision="" version="3">
+        <description>IMAP rule</description>
+        <enum name="AggregatedVolume">
+            <description>Volume type reported for aggregated charging</description>
+            <enumMember name="bearer">
+                <description>Count volume for bearer level</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="application">
+                <description>Count volume for application level</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="Operation">
+            <description>Limit match to operation being performed</description>
+            <enumMember name="login">
+                <description>Apply rule for LOGIN command</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="RuleName">
+            <description>Must be a string beginning with a number or letter and consisting of letters, numbers, dashes and underscores.</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>63</max>
+                    </lengthRange>
+                    <validValues>^[[:alnum:]][[:alnum:]_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString62">
+            <description>string up to 62 tokens</description>
+            <baseType>
+                <string>
+                    <validValues>^[A-Za-z0-9][_0-9A-Za-z-]{0,62}$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedU32">
+            <description>Ranged Unit 0 .. 4294967295</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>0</min>
+                        <max>4294967295</max>
+                    </range>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="PriorityKey">
+            <description>String containing only decimal digits.&#13;
+First digit cannot be zero, range is 1-999999.&#13;
+</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>6</max>
+                    </lengthRange>
+                    <validValues>^[1-9][0-9]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="ImapRule">
+            <description>IMAP rule</description>
+            <root/>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='exists(./Term/@termID)'><name path='.'/>: Missing mandatory managed object 'term'</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <attribute name="imapRuleId">
+                <description>Rule name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleName">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Term">
+            <description>Define a service identification term</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='exists(./From/@fromID)'><name path='.'/>: Missing mandatory managed object 'from'</assert>
+            <assert id='set' test='exists(./Then/@thenID)'><name path='.'/>: Missing mandatory managed object 'then'</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <attribute name="name">
+                <description>Term name</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleName">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="termID">
+                <description>Identifier of the term.&#13;
+Determines the term priority based on lexical order.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="PriorityKey">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="From">
+            <description>Define match criteria</description>
+            <attribute name="fromID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Then">
+            <description>Action to take if the 'from' condition is matched</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $rule in ./@editContent satisfies ($rule = /ManagedElement/Epg/Pgw/ServiceIdentification/ImapEditRule/@imapEditRuleId)'><name path='.'/>,editContent: edit-rule must be configured under [managed-element epg pgw service-identification imap-edit-rule]</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $rule in ./@editContent satisfies (exists(../From/Imap/@operation))'><name path='.'/>,editContent: requires match criteria 'from imap operation login'</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="thenID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="payload">
+                <description>Service data flow identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedU32">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="aggregatedVolume">
+                <description>Volume type reported for aggregated charging</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="AggregatedVolume">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="editContent">
+                <description>Apply rule to edit content</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString62">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Imap">
+            <description>Match IMAP sessions</description>
+            <attribute name="imapID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="operation">
+                <description>Limit match to operation being performed</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Operation">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="ImapRule_to_Term">
+            <containment>
+                <parent>
+                    <hasClass name="ImapRule">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Term">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>128</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Term_to_From">
+            <containment>
+                <parent>
+                    <hasClass name="Term">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="From">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Term_to_Then">
+            <containment>
+                <parent>
+                    <hasClass name="Term">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Then">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="From_to_Imap">
+            <containment>
+                <parent>
+                    <hasClass name="From">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Imap">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="ServiceIdentification_to_ImapRule">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ImapRule">
+                        <mimName>Epg_Pgw_SI_ImapRule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>512</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_RS_AwarePolicyBRouting" namespace="urn:com:ericsson:ecim:Epg_Pgw_RS_AwarePolicyBRouting" namespacePrefix="epg_pgw_rs_awarepolicybrouting" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="2">
+        <description>Aware policy based routing settings</description>
+        <derivedDataType name="Name">
+            <description>Must be a string of 100 or fewer characters and may contain letters, numbers, decimals and dashes.</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>100</max>
+                    </lengthRange>
+                    <validValues>^[\.0-9A-Za-z-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="AccessControlRule">
+            <description>Must be an access control rule identifier or a range of access control rule identifiers</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>21</max>
+                    </lengthRange>
+                    <validValues>^[0-9]{1,10}([-][0-9]{1,10})?$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="AwarePolicyBasedRouting">
+            <description>Aware policy based routing settings</description>
+            <root/>
+            <attribute name="awarePolicyBasedRoutingID">
+                <description>nameSingle instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RS_AwarePolicyBRouting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Map">
+            <description>Map access control rules to service APN</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $apn in @mapId satisfies (exists(/ManagedElement/Epg/Pgw/Apn[@apnId eq $apn]/AwarePolicyBasedRouting))'><name path='.'/>: aware-policy-based-routing must be set for the APN</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="mapId">
+                <description>service-apn</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="Name">
+                        <mimName>Epg_Pgw_RS_AwarePolicyBRouting</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="accessControlRule">
+                <description>Access control rule identifier or set of access control rule identifiers mapped to service APN</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="AccessControlRule">
+                            <mimName>Epg_Pgw_RS_AwarePolicyBRouting</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>64</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="AwarePolicyBasedRouting_to_Map">
+            <containment>
+                <parent>
+                    <hasClass name="AwarePolicyBasedRouting">
+                        <mimName>Epg_Pgw_RS_AwarePolicyBRouting</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Map">
+                        <mimName>Epg_Pgw_RS_AwarePolicyBRouting</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>16</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="RuleSpace_to_AwarePolicyBasedRouting">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AwarePolicyBasedRouting">
+                        <mimName>Epg_Pgw_RS_AwarePolicyBRouting</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

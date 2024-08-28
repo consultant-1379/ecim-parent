@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Apr 20, 2015 4:08:56 PM using:
+	* com.ericsson.ecim.m2m 3.0.0.qualifier
+	* com.ericsson.ecim.dsl 3.0.0.qualifier
+	* com.ericsson.ecim.edm 3.0.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+  </momMetaData>
+  <mim author="" contact="" date="" docNo="" name="EcimEnum" namespace="urn:com:ericsson:ecim:EcimEnum" namespacePrefix="ecimenum" organization="" release="2" revision="" version="4">
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <enum name="equipmentList">
+      <description>Equipment List</description>
+      <enumMember name="router">
+        <description>router</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="switchL2">
+        <description>switchL2</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="switchL3">
+        <description>switchL3</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="SBG">
+        <description>SBG</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="slotMachine">
+        <description>slotMachine</description>
+        <value>6</value>
+      </enumMember>
+    </enum>
+    <class name="enumerations">
+      <description>enumerations</description>
+      <root/>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="enumWithSingleStringValue">
+        <dataType>
+          <enumRef name="equipmentList">
+            <defaultValue>slotMachine</defaultValue>
+            <mimName>EcimEnum</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+      <attribute name="enumWithMultipleValues">
+        <dataType>
+          <sequence>
+            <enumRef name="equipmentList">
+              <mimName>EcimEnum</mimName>
+            </enumRef>
+            <minLength>1</minLength>
+            <maxLength>4</maxLength>
+            <nonUnique/>
+            <seqDefaultValue>
+              <defaultValue>SBG</defaultValue>
+            </seqDefaultValue>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="enumWithEmptyDefaultValue">
+        <mandatory/>
+        <dataType>
+          <sequence>
+            <enumRef name="equipmentList">
+              <mimName>EcimEnum</mimName>
+            </enumRef>
+            <minLength>1</minLength>
+            <maxLength>4</maxLength>
+            <nonUnique/>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="enumWithSingleValue">
+        <dataType>
+          <enumRef name="equipmentList">
+            <defaultValue>slotMachine</defaultValue>
+            <mimName>EcimEnum</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+    </class>
+  </mim>
+  <interMim>
+    <relationship name="Root_to_enumerations">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="true"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>RootMom</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="enumerations">
+            <mimName>EcimEnum</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

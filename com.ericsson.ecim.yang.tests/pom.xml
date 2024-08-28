@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright Ericsson AB 2012. All Rights Reserved. No part of this software 
+	may be reproduced in any form without the written permission of the copyright 
+	owner. Contributors: Bernd Hufmann - initial implementation -->
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>ecim-parent</artifactId>
+		<groupId>com.ericsson.ecim</groupId>
+		<version>3.1.1</version>
+	</parent>
+
+	<artifactId>com.ericsson.ecim.yang.tests</artifactId>
+	<groupId>com.ericsson.ecim</groupId>
+	<packaging>eclipse-test-plugin</packaging>
+	
+	<properties>
+		<!-- Workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=397015 -->
+		<sonar.sources/>
+		<sonar.tests>src</sonar.tests>
+	</properties>
+
+	<name>EcimToolchain Yang TestSuite</name>
+
+	<build>
+		<!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->
+		<resources>
+			<resource>
+				<directory>resources</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<useUIHarness>false</useUIHarness>
+					<useUIThread>false</useUIThread>
+					<application>org.eclipse.pde.junit.runtime.nonuithreadtestapplication</application>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

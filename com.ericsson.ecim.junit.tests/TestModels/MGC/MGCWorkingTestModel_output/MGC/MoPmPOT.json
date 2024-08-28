@@ -1,0 +1,201 @@
+{
+		"name" : "MoPm" ,
+		"ss7" : "false" ,
+		"visible" : "true" ,
+		"desc" : "\nPM Monitor parameters and actions.\n    " ,
+		"filename" : "MoPmPOT.json" ,
+		"max_entries" : "1" ,
+		"modid" : "93456" ,
+		"attrs" : {
+				"pmId" : {
+						"name" : "pmId" ,
+						"keytype" : "ECIM_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "The MoClass key of the pm" ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "false"
+				} ,
+				"pmIpAddress" : {
+						"name" : "pmIpAddress" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe IP address of the target host where the PM Monitor reports will be stored.\n      " ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmDirectory" : {
+						"name" : "pmDirectory" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe directory on the target host, which stores the PM monitor reports.\n      " ,
+						"types" : "derived1_255" ,
+						"default" : "unset" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmUserid" : {
+						"name" : "pmUserid" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe account name to be used to store the PM monitor reports into the target host.\n      " ,
+						"types" : "derived1_255" ,
+						"default" : "unset" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmPassword" : {
+						"name" : "pmPassword" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe password for the user ID.\n      " ,
+						"types" : "derived0_32" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmCPULoad" : {
+						"name" : "pmCPULoad" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThe system load average in a one-minute period of time.\n\nIf the actual system load average exceeds the defined value, PM monitor tasks will be revoked or stopped according to priority settings.\n\nThe unit is percentage. The range is from 0 to 90 and the default value is 87.\n      "
+						,
+						"types" : "derived0_90" ,
+						"default" : "87" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"pmFreeMem" : {
+						"name" : "pmFreeMem" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThe amount of the system free memory.\n\nIf the amount of system free memory is less than the defined value, PM monitor tasks will be revoked or stopped according to priority settings.\n\nThe unit is percentage. The range is from 0 to 20 and the default value is 10.\n      "
+						,
+						"types" : "derived0_20" ,
+						"default" : "10" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"dnPrefix" : {
+						"name" : "dnPrefix" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nA Distinguished Name is used to uniquely identify a node, and is composed of prefix and bs id in MGC.\nThe definition of Distinguished Name Prefix must obey the rules defined in 3GPP TS 32.300.\n      " ,
+						"types" : "derived0_256" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				}
+		} ,
+		"actions" : {
+				"pmAction" : {
+						"name" : "pmAction" ,
+						"admOpId" : "0" ,
+						"paras" : {
+								"return" : {
+										"types" : "EcimString" ,
+										"default" : ""
+								} ,
+								"pmActionValue" : {
+										"name" : "pmActionValue" ,
+										"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+										"default" : ""
+								}
+						}
+				}
+		} ,
+		"codecs" : {
+		} ,
+		"brs" : {
+		} ,
+		"enums" : {
+				"enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" : {
+						"name" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"attrs" : {
+								"eLow" : {
+										"default" : "2" ,
+										"name" : "eLow"
+								} ,
+								"eMedium" : {
+										"default" : "3" ,
+										"name" : "eMedium"
+								} ,
+								"eHigh" : {
+										"default" : "1" ,
+										"name" : "eHigh"
+								}
+						}
+				}
+		} ,
+		"deriveds" : {
+				"derived1_255" : {
+						"name" : "derived1_255" ,
+						"stereotypes" : "EcimDerivedString" ,
+						"basetype" : "EcimString" ,
+						"length" : "1..255" ,
+						"range" : "" ,
+						"pattern" : ""
+				} ,
+				"derived0_256" : {
+						"name" : "derived0_256" ,
+						"stereotypes" : "EcimDerivedString" ,
+						"basetype" : "EcimString" ,
+						"length" : "0..256" ,
+						"range" : "" ,
+						"pattern" : ""
+				} ,
+				"derived0_90" : {
+						"name" : "derived0_90" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "0..90" ,
+						"pattern" : ""
+				} ,
+				"derived0_20" : {
+						"name" : "derived0_20" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "0..20" ,
+						"pattern" : ""
+				} ,
+				"derived0_32" : {
+						"name" : "derived0_32" ,
+						"stereotypes" : "EcimDerivedString" ,
+						"basetype" : "EcimString" ,
+						"length" : "0..32" ,
+						"range" : "" ,
+						"pattern" : ""
+				}
+		}
+}

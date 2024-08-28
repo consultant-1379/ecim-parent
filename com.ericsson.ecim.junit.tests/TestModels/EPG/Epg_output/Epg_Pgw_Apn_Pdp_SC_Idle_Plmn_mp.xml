@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_Apn_Pdp_SC_Idle_Plmn" namespace="urn:com:ericsson:ecim:Epg_Pgw_Apn_Pdp_SC_Idle_Plmn" namespacePrefix="epg_pgw_apn_pdp_sc_idle_plmn" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="3">
+        <description>Idle timeout settings</description>
+        <enum name="MeasurementType">
+            <description>Point of reference for time measurement</description>
+            <enumMember name="since-creation">
+                <description>Relative to the PDP context creation time</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="since-update">
+                <description>Relative to the last PDP context update time</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Timeout">
+            <description>Maximum continuous idle time for a context</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>1</min>
+                        <max>525600</max>
+                    </range>
+                    <unit>minutes</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString20">
+            <description>PLMN name consists of up to 20 letters, numbers, periods and dashes</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>20</max>
+                    </lengthRange>
+                    <validValues>^[A-Za-z.0-9-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="SgsnPlmnId">
+            <description>Timeout settings based on SGSN PLMN IDs</description>
+            <root/>
+            <attribute name="sgsnPlmnIdID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Plmn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noSupervision">
+                <description>Don't allow idle supervision based on SGSN PLMN ID</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Plmn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Plmn">
+            <description>Timeout settings based on SGSN PLMN</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='@plmnId = /ManagedElement/Epg/Pgw/Plmn/@plmnId'><name path='.'/>: plmn must be configured under [managed-element epg pgw]</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <attribute name="plmnId">
+                <description>Public land mobile network name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString20">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Plmn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="PlmnId">
+            <description>PLMN ID of the SGSN</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='some $plmnId in ../@plmnId satisfies (@plmnIdId = /ManagedElement/Epg/Pgw/Plmn[@plmnId eq $plmnId]/PlmnId/@plmnIdId)'><name path='.'/>: plmn-id must be configured under [managed-element epg pgw plmn]</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="plmnIdId">
+                <description>SGSN public land mobile network identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="measurementType">
+                <description>Point of reference for time measurement</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="MeasurementType">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Plmn</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Plmn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="SgsnPlmnId_to_Plmn">
+            <containment>
+                <parent>
+                    <hasClass name="SgsnPlmnId">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Plmn</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Plmn">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Plmn</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Plmn_to_PlmnId">
+            <containment>
+                <parent>
+                    <hasClass name="Plmn">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Plmn</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="PlmnId">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Plmn</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="apn-idletimeout-to-plmn">
+            <containment>
+                <parent>
+                    <hasClass name="IdleTimeout">
+                        <mimName>Epg_Pgw_Apn</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SgsnPlmnId">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Plmn</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

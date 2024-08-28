@@ -1,0 +1,317 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Nov 20, 2015 2:45:07 PM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ComTopMom" {
+	namespace "urn:com:ericsson:ecim:ComTopMom";
+	prefix "ComTopMom";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	organization "LMI/R";
+	description
+	"ECIM Top Level Model. This is the root level for the Ericsson Common Information Model. It contains the singleton, root Managed Object Class, ManagedElement under which the complete model is contained. Directly under ManagedElement are managed-function level classes SystemFunctions, Equipment, Transport and the root MOC of any managed functions. ";
+
+	revision "2010-07-27" {
+		ericsson:author "EIMBENE";
+		ericsson:version "2";
+		ericsson:contact "LMI/ROO/SE Michael Behan";
+		ericsson:release "0";
+	}
+
+	list "ManagedElement" {
+		key "managedElementId";
+		list "SystemFunctions" {
+			key "systemFunctionsId";
+			min-elements 1;
+			max-elements 1;
+			uses ComTopMom:SystemFunctions;
+		}
+
+		list "Equipment" {
+			key "equipmentId";
+			min-elements 1;
+			max-elements 1;
+			uses ComTopMom:Equipment;
+		}
+
+		list "Transport" {
+			key "transportId";
+			max-elements 1;
+			uses ComTopMom:Transport;
+		}
+
+		uses ComTopMom:ManagedElement;
+	}
+
+	typedef "BasicAdmState" {
+		type enumeration {
+			enum "LOCKED" {
+				value 0;
+				description "  ";
+			}
+
+			enum "UNLOCKED" {
+				value 1;
+				description " ";
+			}
+
+		}
+
+		description "The following administrative states are supported when this enumeration is used:
+
+- LOCKED: The resource is administratively prohibited from performing services for its users.
+- UNLOCKED: The resource is administratively permitted to perform services for its users. This is independent of its inherent operability.";
+	}
+
+	typedef "OperState" {
+		type enumeration {
+			enum "DISABLED" {
+				value 0;
+				description " ";
+			}
+
+			enum "ENABLED" {
+				value 1;
+				description " ";
+			}
+
+		}
+
+		description "The following operational states are supported when this enumeration is used:
+
+- DISABLED
+- ENABLED";
+	}
+
+	typedef "SchemaFormat" {
+		type enumeration {
+			enum "MP_DTD" {
+				value 0;
+				description " ";
+			}
+
+		}
+
+		description "The data modelling language the schema is written in.";
+	}
+
+	typedef "DateTime" {
+		type string {
+			length "20..31";
+			pattern
+			"/^([1-9][0-9][0-9][0-9])-([0-1][0-9])-([0-3][0-9])T([0-2][0-9]):([0-5][0-9]):([0-5][0-9])\.([0-9]*)(\S+)$/;";
+		}
+
+		description "The lexical space of dateTime consists of finite-length sequences of characters of the form: '-'? yyyy '-' mm '-' dd 'T' hh ':' mm ':' ss ('.' s+)? (zzzzzz)?
+
+where:
+YYYY = four-digit year
+MM = two-digit month (01=January, etc.)
+DD = two-digit day of month (01 through 31)
+hh = two digits of hour (00 through 23) (am/pm NOT allowed)
+mm = two digits of minute (00 through 59)
+ss = two digits of second (00 through 59)
+s = one or more digits representing a decimal fraction of a second
+TZD = time zone designator (Z or +hh:mm or -hh:mm)";
+	}
+
+	typedef "IpDNSAddress" {
+		type string {
+			length "1..253";
+		}
+
+		description "The IpDNSAddress type represents an IP address, version 4 or version 6, or a DNS domain name.
+
+If the address is specified as a V4 IP address then the address should be specified in dotted-quad decimal notation in accordance with RFC791.
+
+IPv4 address within range [1-126,128-223].[0-255].[0-255].[0-255], 7-15 characters. 
+
+Valid characters: 0123456789.
+
+If the address is specified as a V6 IP address then the address should be specified in colon separated hexadecimal notation as described in RFC 4291 section 2.2 items 1 and 2.
+
+IPv6 addresses shall have a length range of 3-39 characters.
+
+Valid characters: 0123456789abcdefABCDEF:
+
+If the address is specified as a DNS domain name the name should be fully qualified whenever possible.
+Internet domain names are only loosely specified. Section 3.5 of RFC 1034 recommends a syntax (modified in section 2.1 of RFC 1123).";
+	}
+
+	typedef "DateTimeWithoutOffset" {
+		type string {
+			length "19";
+		}
+
+		description "For calender date and time of day in extended format without time zone designator.
+
+YYYY-MM-DDThh:mm:ss
+
+The character [T] shall be used as time designator to indicate the start of the representation of the time of day component in the expression. 
+
+The hyphen [-] and the colon [:] shall be used as separators within the date and time of day expressions, respectively.
+";
+		reference "ISO 8601:2004(E)";
+	}
+
+	typedef "DifferenceFromUTC" {
+		type string {
+			length "6";
+		}
+
+		description "Difference between the value of the localDateTime attribute and UTC (Coordinated Universal Time).
+
+The following format shall be used
+
+[+/-]hh:mm
+
+It shall be expressed as positive (i.e. with the leading plus sign [+]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day.
+
+Example:  +01:00";
+		reference "ISO 8601:2004(E)";
+	}
+
+	grouping "ManagedElement" {
+		description "The top-level class in the Common Information Model is the ManagedElement root MOC.  From this class, all model entities are contained.  
+The MOC has attributes that provide information on the managed elements identity, primary location and the products it contains.  ";
+		leaf "managedElementId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.  This key attribute shall be set during the commissioning of the managed element to a simple alphanumeric value.  
+The value should be unique within the network namespace.  ";
+			ericsson:restricted;
+		}
+
+		leaf "siteLocation" {
+			type string;
+			config true;
+			description
+			"This is a freetext attribute used for storing geographic or postal address data to assist staff in locating physical equipment.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description
+			"A freetext string for additional information to assist Managed Element identification.";
+		}
+
+		list "productIdentity" {
+			config true;
+			description "The product identities are used to clearly identify the product numbers and revisions that form this Managed Element.  This may refer to a single product or to several products that constitute managed functions within this Managed Element instance.
+ Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses ComTopMom:productIdentity;
+		}
+
+		leaf "localDateTime" {
+			type ComTopMom:DateTimeWithoutOffset;
+			description "This is the local date and time for the ManagedElement.
+
+The following format shall be used.
+
+YYYY-MM-DDThh:mm:ss
+
+The meaning of each field is as follows:
+YYYY is a 4-digit year.
+MM is the month within the year (starting with 01).
+DD is the day within the month (starting with 01).
+T shall be used as time designator to indicate the start of the time of day component in the expression.
+hh is the hour within the day (24-hour clock, starting with 00).
+mm is the minute within the hour (starting with 00).
+ss is the second within the minute (starting with 00).
+
+The hyphen [-] and the colon [:] shall be used as separators within the date and time of day expressions, respectively.";
+		}
+
+		leaf "timeZone" {
+			type string;
+			description "This is the timeZone that the Managed Element resides in.
+
+The possible values for this attribute are defined in the public-domain zoneinfo (or Olson) database.
+
+Locations are identified by a string indicating the continent or ocean and then the name of the location, which is typically the largest city within the region. 
+See http://www.twinsun.com/tz/tz-link.htm for more information.
+
+Example: Europe/Stockholm
+";
+		}
+
+		leaf "dateTimeOffset" {
+			type ComTopMom:DifferenceFromUTC;
+			config true;
+			description
+			"Difference between the value of the localDateTime attribute and UTC (Coordinated Universal Time).";
+		}
+
+	}
+
+	grouping "SystemFunctions" {
+		description
+		"The SystemFunctions MOC is the container class for all common functions provided by the managed element.  Examples of these functions include Fault and Performance Management, System and Heartbest Management amongst others.  The common functions are categorised as either Common Base or Common Optional.  Common Base functions are always present regardless of node tyope while Common Optional functions may be present depending on the necessary capabilities of the node.  ";
+		leaf "systemFunctionsId" {
+			type string;
+			mandatory true;
+			description
+			"The value component of the RDN. It shall always be equal to 1.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "Equipment" {
+		description
+		"The Equipment MOC is the container for modelling the physical entities that can be managed within the Managed Element.  ";
+		leaf "equipmentId" {
+			type string;
+			mandatory true;
+			description
+			"The value component of the RDN.  It shall always be equal to 1.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "Transport" {
+		description
+		"The Transport MOC is the container for all transport related functions used within the managed element.  Its usage is dependent on the node type; where the node's primary function is to handle transport functions, the necessary fragments may be included directly within an applications xyzFunctions branch.  If the node's primary function is something other than transport handling, then the required transport fragments shall be contain by this MOC.  ";
+		leaf "transportId" {
+			type string;
+			mandatory true;
+			description
+			"The value component of the RDN. It shall always be equal to 1.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "ProductIdentity" {
+		description
+		"A struct that contains product designation, number and revision information.  ";
+		leaf "productNumber" {
+			type string;
+			mandatory true;
+			description
+			"The product number in Ericsson ABC format.  See Ericsson Corporate Basic Standards for information.";
+		}
+
+		leaf "productRevision" {
+			type string;
+			mandatory true;
+			description
+			"The product revision in the form R[1-9][A-Z].  See Ericsson Corporate Basic Standards for information.";
+		}
+
+		leaf "productDesignation" {
+			type string;
+			mandatory true;
+			description
+			"The product designation is the common name for the product.  ";
+		}
+
+	}
+
+}

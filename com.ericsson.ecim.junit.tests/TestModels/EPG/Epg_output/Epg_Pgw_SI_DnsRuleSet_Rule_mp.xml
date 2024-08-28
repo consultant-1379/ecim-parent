@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_SI_DnsRuleSet_Rule" namespace="urn:com:ericsson:ecim:Epg_Pgw_SI_DnsRuleSet_Rule" namespacePrefix="epg_pgw_si_dnsruleset_rule" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="2">
+        <description>DnsRuleSet_Rule</description>
+        <derivedDataType name="RuleName">
+            <description>Rule name</description>
+            <baseType>
+                <string>
+                    <validValues>^[A-Za-z0-9][_0-9A-Za-z-]{0,62}$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="PriorityKey">
+            <description>String containing only decimal digits.&#13;
+First digit cannot be zero, range is 1-999999.&#13;
+</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>6</max>
+                    </lengthRange>
+                    <validValues>^[1-9][0-9]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="Rule">
+            <description>Rule to be included in this rule set</description>
+            <root/>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='@name = ../../DnsRule/@dnsRuleId'><name path='.'/>: Rule <value-of select='@name'/> must be configured</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="ruleID">
+                <description>Identifier of the rule set.&#13;
+Determines the rule set priority based on lexical order.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="PriorityKey">
+                        <mimName>Epg_Pgw_SI_DnsRuleSet_Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="name">
+                <description>Rule name</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleName">
+                        <mimName>Epg_Pgw_SI_DnsRuleSet_Rule</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="DnsRuleSet_to_Rule">
+            <containment>
+                <parent>
+                    <hasClass name="DnsRuleSet">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Rule">
+                        <mimName>Epg_Pgw_SI_DnsRuleSet_Rule</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>128</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

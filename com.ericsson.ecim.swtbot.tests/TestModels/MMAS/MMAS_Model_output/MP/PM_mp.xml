@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Nov 20, 2015 2:32:34 PM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>huiping</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>huiping</signature>
+        </approvedBy>
+    </momMetaData>
+    <mim name="PM" namespace="urn:com:ericsson:ecim:PM" namespacePrefix="pm" release="1" revision="1" version="2">
+        <description>MMAS PM MOM</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <class name="PmJobs">
+            <description>The class PmJobs is the Performance Management (PM) jobs definitions node.</description>
+            <attribute name="pmJobsId">
+                <description>This attribute defines the identity of the Pmjobs instance.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="PmJob">
+            <description>The class PmJob is the Performance Management (PM) job definition node for MMAS.</description>
+            <attribute name="pmJobId">
+                <description>This attribute defines the identity of the Pmjob instance. For now, the PM framework accepts only integers.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="name">
+                <description>This attribute defines the name of the job.</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="state">
+                <description>This attribute defines the state of the job.Possible values are as follows: "active", "delete", "resume", "suspend".</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="moc">
+                <description>This attribute defines the list of groups of counters (called MOCs) for this job. If it includes more than one MOC, they must be separated by ";"</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="startTime">
+                <description>This attribute defines the start time of the job.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <string>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="stopTime">
+                <description>This attribute defines the stop time of the job.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <string>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="granularityPeriod">
+                <description>This attribute defines the time between counters measurements.
+   Possible values are as follows: 5, 15, 30, 60.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <int32>
+                        <defaultValue>15</defaultValue>
+                    </int32>
+                </dataType>
+            </attribute>
+            <attribute name="reporter">
+                <description>This optional attribute defines the report type of the job.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <string>
+                        <defaultValue>com.ericsson.mmas.pm.report.SimpleReporter</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Pm">
+            <description>PM root MOC</description>
+            <root/>
+            <attribute name="pmId">
+                <description>key attribute</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Pm_to_PmJobs">
+            <containment>
+                <parent>
+                    <hasClass name="Pm">
+                        <mimName>PM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="PmJobs">
+                        <mimName>PM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="PmJobs_to_PmJob">
+            <containment>
+                <parent>
+                    <hasClass name="PmJobs">
+                        <mimName>PM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="PmJob">
+                        <mimName>PM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </mim>
+    <interMim>
+        <relationship name="Mmas_to_Pm">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="Mmas">
+                        <mimName>MMAS</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Pm">
+                        <mimName>PM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

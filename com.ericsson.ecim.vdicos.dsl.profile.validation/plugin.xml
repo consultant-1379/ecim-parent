@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?><plugin>
+<extension point="org.eclipse.emf.validation.constraintProviders">
+      <category id="com.ericsson.ecim.vdicos.dsl.profile.validation.vdicosprofile" mandatory="false" name="com.ericsson.ecim.vdicos.dsl.profile.validation.vdicosprofile"/>
+      <constraintProvider cache="false" mode="Batch">
+         <package namespaceUri="http:///schemas/VDicosProfile/"/>
+         <constraints categories="com.ericsson.ecim.vdicos.dsl.profile.validation.vdicosprofile">
+            <constraint id="VDicosProfile.VDicosClass.TspNameMustEitherBeEmptyOrDifferOnlyInCase" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="TspNameMustEitherBeEmptyOrDifferOnlyInCase" severity="ERROR" statusCode="3">
+               <message>The tspName property must either be empty or differ only in case when compared to the class name</message><![CDATA[(self.tspName.oclIsUndefined() = false) implies self.tspName = '' or self.base_Class.name.toLower() = self.tspName.toLower()]]></constraint>
+            <constraint id="VDicosProfile.VDicosClass.VirtualContainersCannotHaveAttributes" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="VirtualContainersCannotHaveAttributes" severity="ERROR" statusCode="3">
+               <message>If class is a virtual container, then it must have no attributes other than the key attribute</message><![CDATA[-- Only the key attribute is allowed if class has isVirtualContainer=true
+self.isVirtualContainer implies self.base_Class.getAllAttributes()->select(e|e.association.oclIsUndefined())->size()<=1]]></constraint>
+            <constraint id="VDicosProfile.VDicosAttribute.TspNameMustEitherBeEmptyOrDifferOnlyInCase" isEnabledByDefault="true" lang="OCLpivot" mode="Batch" name="TspNameMustEitherBeEmptyOrDifferOnlyInCase" severity="ERROR" statusCode="3">
+               <message>The tspName property must either be empty or differ only in case when compared to the attribute name</message><![CDATA[(self.tspName.oclIsUndefined() = false) implies self.tspName = '' or (self.base_Property.name.toLower() = self.tspName.toLower())]]></constraint>
+         </constraints>
+      </constraintProvider>
+   </extension>
+   <extension point="org.eclipse.emf.validation.constraintBindings">
+      <clientContext id="VDicosAttributeClientContext">
+         <selector class="com.ericsson.ecim.vdicos.dsl.profile.validation.selectors.VDicosAttributeClientSelector"/>
+      </clientContext>
+      <binding context="VDicosAttributeClientContext">
+         <constraint ref="com.ericsson.ecim.vdicos.dsl.profile.validation.VDicosProfile.VDicosAttribute.TspNameMustEitherBeEmptyOrDifferOnlyInCase"/>
+      </binding>
+      <clientContext id="VDicosClassClientContext">
+         <selector class="com.ericsson.ecim.vdicos.dsl.profile.validation.selectors.VDicosClassClientSelector"/>
+      </clientContext>
+      <binding context="VDicosClassClientContext">
+         <constraint ref="com.ericsson.ecim.vdicos.dsl.profile.validation.VDicosProfile.VDicosClass.TspNameMustEitherBeEmptyOrDifferOnlyInCase"/>
+         <constraint ref="com.ericsson.ecim.vdicos.dsl.profile.validation.VDicosProfile.VDicosClass.VirtualContainersCannotHaveAttributes"/>
+      </binding>
+   </extension>
+</plugin>

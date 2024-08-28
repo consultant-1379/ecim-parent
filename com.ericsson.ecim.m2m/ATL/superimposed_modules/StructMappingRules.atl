@@ -1,0 +1,590 @@
+-- /**
+-- * This transform maps an EcimStruct to an MP StructType as well as managing the various datatype mappings
+-- *
+-- * superimposition-dependencies: ECIMtoMP 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 03/02/2010
+-- */
+
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module StructMappingRules;
+create OUT : MP from IN : UML;
+
+--Map an EcimStruct to an MP StructType
+rule EcimStructToStructType(s: UML!Class)
+{
+--	from s: UML!Class(not s.isAbstract and s.hasStereotype('ECIM Base Profile::EcimStruct') and (s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimMom') or s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimLibrary')))		
+	using 
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(s);	
+	}		
+	to t: MP!StructType
+	(
+		description <- thisModule.hasDescription(s),
+		name <- s.name,
+		isExclusive <- thisModule.hasIsExclusive(s),
+		structMember <- s.ownedAttribute
+		->select(e|e.hasStereotypeApplied())--ignore properties with no stereotypes as these are association properties
+		->collect(e|thisModule.EcimGeneralAttributeToStructMemberType(e)),
+		domainExtension <- thisModule.getDomainExtensionForOriginatingMomInfoPlusFilter(s, s.getCurrentPackage(), s.getNearestPackage())
+		--CPP properties that are not supported
+		--applicationTag <-
+		--domainExtension <- 		
+	)
+	do
+	{
+		--generate domainExtensions if there are any
+		if (domainExtensions->size() > 0)
+		{
+			--before creating the extensions we group them by domain so that they can be outputted together
+			t.domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,s));
+		}
+		t;
+	}		
+}
+
+--
+rule EcimGeneralAttributeToStructMemberType(s: UML!Property)
+{
+--	from s: UML!Property(s.oclIsTypeOf(UML!Property) and s.hasStereotype('ECIM Base Profile::EcimStructMember'))		
+	using 
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(s);	
+	}
+	to t: MP!StructMemberType
+	(
+		name <- s.name,
+		description <- thisModule.hasDescription(s),
+		domainExtension <- thisModule.defineStructMemberDomainExtensionType(s),
+	
+		--Note: This is a real pain of a transform as the datatypes are placed directly under the StructMemberType
+		--The types should be a nested composition type like they are for attributes etc.
+		string <- thisModule.isStructMemberStringType(s),
+		int8 <- thisModule.isStructMemberInt8Type(s),
+		int16 <- thisModule.isStructMemberInt16Type(s),
+		int32 <- thisModule.isStructMemberInt32Type(s),
+		int64 <- thisModule.isStructMemberInt64Type(s),
+		uint8 <- thisModule.isStructMemberUInt8Type(s),
+		uint16 <- thisModule.isStructMemberUInt16Type(s),
+		uint32 <- thisModule.isStructMemberUInt32Type(s),
+		uint64 <- thisModule.isStructMemberUInt64Type(s),
+		integer <- thisModule.isStructMemberIntegerType(s),
+		boolean <- thisModule.isStructMemberBooleanType(s),
+		double <- thisModule.isStructMemberDoubleType(s),		
+		enumRef <- thisModule.isStructMemberEnumerationType(s),
+		moRef <- thisModule.isStructMemberMoRefType(s),
+		sequence <- thisModule.isStructMemberSequenceType(s),
+		derivedDataTypeRef <- thisModule.isStructMemberDerivedType(s),
+		
+		--Support the ECIMGeneralProperties
+		deprecated <- thisModule.isDeprecated(s),
+		obsolete <- thisModule.isObsolete(s),
+		filter <- thisModule.hasFilter(s),
+		specification <- thisModule.hasSpecification(s),
+		preliminary <- thisModule.isPreliminary(s),
+		statusInformation <- thisModule.hasStatusInformation(s),
+		decisionPoint <- thisModule.hasDecisionPoint(s),
+		
+		--Support the ECIMCpiBehaviourProperties
+		dependencies <- thisModule.hasDependencies(s),
+		disturbances <- thisModule.hasDisturbances(s),
+		takesEffect  <- thisModule.hasTakesEffect(s), 
+		precondition <- thisModule.hasPrecondition(s),
+		sideEffects <- thisModule.hasSideEffects(s)
+		
+		--CPP properties that are not supported
+		--applicationTag <- 
+		--Note:UML does not support constraints on attributes, you must set
+		--the constraint on the owning class. We support that!
+		--dependenciesScript <- 
+		--feature <-
+		--interfaceOnly <- 
+		--visibility <- 
+	)
+	do
+	{
+		--generate domainExtensions if there are any
+		if (domainExtensions->size() > 0)
+		{
+			--before creating the extensions we group them by domain so that they can be outputted together
+			t.domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,s));
+		}
+		t;
+	}	
+	
+}
+
+--**Note: Because of the awful way datatypes are defined on StructMemberType we must do the following conditional checks
+--**The types should be a nested composition type like they are for attributes etc.
+helper def : isStructMemberStringType(property : UML!Property) : MP!StringType =
+	if(property.getTypeName() = 'EcimString' and property.upper = 1)
+	then
+		if(thisModule.isCOM() and property.hasInlinePropertiesSet())
+		then
+			OclUndefined--The type will be created as a DerivedType ref later
+		else
+			thisModule.CreateStringDataType(property)
+		endif
+	else
+		OclUndefined
+	endif;
+
+lazy rule CreateStringDataType
+{
+	from s: UML!Property
+	to t: MP!StringType
+	(
+		lengthRange <- thisModule.hasLengthRange(s),
+		stringLength <- thisModule.hasStringLength(s),
+		defaultValue <- thisModule.hasDefault(s),
+		validValues <- thisModule.hasValidValues(s),
+		isPassphrase <- thisModule.hasIsPassphrase(s),
+		
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif		
+		
+		--CPP properties that are not supported
+		--alphabet <- 
+		--date <-
+		--ipV4Address <- 
+		--ipV6Address <- 
+		--macAddress <-
+		--time <-
+	)
+}
+
+helper def : isStructMemberDoubleType(property : UML!Property) : MP!Int8Type =
+	if(property.getTypeName() = 'EcimFloat' and property.upper = 1)
+	then		
+		if(thisModule.isCOM() and property.hasInlinePropertiesSet())
+		then
+			OclUndefined--The type will be created as a DerivedType ref later
+		else
+			thisModule.CreateDoubleDataType(property)
+		endif		
+	else
+		OclUndefined
+	endif;
+
+lazy rule CreateDoubleDataType
+{
+	from s: UML!Property
+	to t: MP!DoubleType
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s)
+	)
+}
+
+helper def : isStructMemberInt8Type(property : UML!Property) : MP!Int8Type =
+	if(property.getTypeName() = 'EcimInt8' and property.upper = 1)
+	then
+		if(thisModule.isCOM() and property.hasInlinePropertiesSet())
+		then
+			OclUndefined--The type will be created as a DerivedType ref later
+		else
+			thisModule.CreateInt8DataType(property)
+		endif			
+	else
+		OclUndefined
+	endif;
+
+lazy rule CreateInt8DataType
+{
+	from s: UML!Property
+	to t: MP!Int8Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif		
+	)
+}
+
+helper def : isStructMemberInt16Type(property : UML!Property) : MP!Int16Type =
+	if(property.getTypeName() = 'EcimInt16' and property.upper = 1)
+	then
+		if(thisModule.isCOM() and property.hasInlinePropertiesSet())
+		then
+			OclUndefined--The type will be created as a DerivedType ref later
+		else
+			thisModule.CreateInt16DataType(property)
+		endif		
+	else
+		OclUndefined
+	endif;
+
+lazy rule CreateInt16DataType
+{
+	from s: UML!Property
+	to t: MP!Int16Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif				
+	)
+}
+
+helper def : isStructMemberInt32Type(property : UML!Property) : MP!Int32Type =
+	if(property.getTypeName() = 'EcimInt32' and property.upper = 1)
+	then
+		if(thisModule.isCOM() and property.hasInlinePropertiesSet())
+		then
+			OclUndefined--The type will be created as a DerivedType ref later
+		else
+			thisModule.CreateInt32DataType(property)
+		endif
+	else
+		OclUndefined
+	endif;
+
+lazy rule CreateInt32DataType
+{
+	from s: UML!Property
+	to t: MP!Int32Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif				
+	)
+}
+
+helper def : isStructMemberInt64Type(property : UML!Property) : MP!Int64Type =
+	if((property.getTypeName() = 'EcimInt64' or (property.getTypeName() = 'EcimInteger' and not thisModule.isDWAXE())) and property.upper = 1)
+	then
+		if(thisModule.isCOM() and property.hasInlinePropertiesSet())
+		then
+			OclUndefined--The type will be created as a DerivedType ref later
+		else
+			thisModule.CreateInt64DataType(property)
+		endif
+	else
+		OclUndefined
+	endif;
+
+helper def : isStructMemberIntegerType(property : UML!Property) : MP!IntegerType =
+	if((property.getTypeName() = 'EcimInteger' and thisModule.isDWAXE()) and property.upper = 1)
+	then
+		thisModule.CreateIntegerDataType(property)
+	else
+		OclUndefined
+	endif;
+
+lazy rule CreateInt64DataType
+{
+	from s: UML!Property
+	to t: MP!Int64Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif				
+	)
+}
+
+lazy rule CreateIntegerDataType
+{
+	from s: UML!Property
+	to t: MP!IntegerType
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif				
+	)
+}
+
+helper def : isStructMemberUInt8Type(property : UML!Property) : MP!UInt8Type =
+	if(property.getTypeName() = 'EcimUInt8' and property.upper = 1)
+	then
+		if(thisModule.isCOM() and property.hasInlinePropertiesSet())
+		then
+			OclUndefined--The type will be created as a DerivedType ref later
+		else
+			thisModule.CreateUInt8DataType(property)
+		endif
+	else
+		OclUndefined
+	endif;
+
+lazy rule CreateUInt8DataType
+{
+	from s: UML!Property
+	to t: MP!Uint8Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif		 			
+	)
+}
+
+helper def : isStructMemberUInt16Type(property : UML!Property) : MP!UInt16Type =
+	if(property.getTypeName() = 'EcimUInt16' and property.upper = 1)
+	then
+		if(thisModule.isCOM() and property.hasInlinePropertiesSet())
+		then
+			OclUndefined--The type will be created as a DerivedType ref later
+		else
+			thisModule.CreateUInt16DataType(property)
+		endif
+	else
+		OclUndefined
+	endif;
+
+lazy rule CreateUInt16DataType
+{
+	from s: UML!Property
+	to t: MP!Uint16Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif					
+	)
+}
+
+helper def : isStructMemberUInt32Type(property : UML!Property) : MP!UInt32Type =
+	if(property.getTypeName() = 'EcimUInt32' and property.upper = 1)
+	then
+		if(thisModule.isCOM() and property.hasInlinePropertiesSet())
+		then
+			OclUndefined--The type will be created as a DerivedType ref later
+		else
+			thisModule.CreateUInt32DataType(property)
+		endif
+	else
+		OclUndefined
+	endif;
+
+lazy rule CreateUInt32DataType
+{
+	from s: UML!Property
+	to t: MP!Uint32Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif					
+	)
+}
+
+helper def : isStructMemberUInt64Type(property : UML!Property) : MP!UInt64Type =
+	if(property.getTypeName() = 'EcimUInt64' and property.upper = 1)
+	then
+		if(thisModule.isCOM() and property.hasInlinePropertiesSet())
+		then
+			OclUndefined--The type will be created as a DerivedType ref later
+		else
+			thisModule.CreateUInt64DataType(property)
+		endif		
+	else
+		OclUndefined
+	endif;
+
+lazy rule CreateUInt64DataType
+{
+	from s: UML!Property
+	to t: MP!Uint64Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif				
+	)
+}
+
+helper def : isStructMemberBooleanType(property : UML!Property) : MP!BooleanType =
+	if(property.getTypeName() = 'EcimBoolean' and property.upper = 1)
+	then
+		if(thisModule.isCOM() and property.hasInlinePropertiesSet())
+		then
+			OclUndefined--The type will be created as a DerivedType ref later
+		else
+			thisModule.CreateBooleanDataType(property)
+		endif	
+	else
+		OclUndefined
+	endif;
+
+lazy rule CreateBooleanDataType
+{
+	from s: UML!Property
+	to t: MP!BooleanType
+	(
+		defaultValue <- thisModule.hasDefault(s)
+	)
+}
+
+--Support for MoRefs Struct members. We do not support structs though as MP DTD has no support for this
+helper def : isStructMemberMoRefType(property : UML!Property) : MP!MoRefType =
+	if((property.hasStereotype('ECIM Base Profile::EcimAssociation')  and property.upper = 1) or (property.type.isEcimMOC() and property.upper = 1) or (property.type.hasStereotype('ECIM Base Profile::EcimAbstractMoClass') and property.upper = 1))
+	then
+		thisModule.CreateMoRefDataType(property)
+	else
+		OclUndefined
+	endif;
+
+--Abstract rule for MoRef types
+lazy abstract rule CreateMoRefDataType
+{
+	from s: UML!Property
+	to t: MP!MoRefType
+	(
+	)
+}
+
+--Assign an MOC type
+lazy rule CreateConcreteMoRefDataType extends CreateMoRefDataType
+{
+	from s: UML!Property(not s.type.hasStereotype('ECIM Base Profile::EcimAbstractMoClass'))
+	to t: MP!MoRefType
+	(
+		name <- s.type.name,
+		mimName <- thisModule.hasMimNameType(s.type.getNearestPackage()),--get the name of the mom that the MO class lives in
+		mimVersion <- thisModule.hasMimVersionType(s.type.getNearestPackage())--get the version of the mom that the MO class lives in
+
+	)
+}
+
+--Abstract types always get mapped to the special Class name "ManagedObject"
+lazy rule CreateAbstractMoRefDataType extends CreateMoRefDataType
+{
+	from s: UML!Property(s.type.hasStereotype('ECIM Base Profile::EcimAbstractMoClass'))
+	to t: MP!MoRefType
+	(
+		name <- 'ManagedObject',
+		mimName <- if thisModule.isDWAXE() then thisModule.CreateMimNameType('EcimCommon') else OclUndefined endif
+	)
+}
+
+helper def : isStructMemberEnumerationType(property : UML!Property) : MP!EnumRefType =
+	if(property.type.oclIsTypeOf(UML!Enumeration) and property.upper = 1)
+	then
+		thisModule.CreateEnumerationDataType(property)
+	else
+		OclUndefined
+	endif;
+
+rule CreateEnumerationDataType(s: UML!Property)
+{
+--	from s: UML!Property
+	to t: MP!EnumRefType
+	(
+		name <- s.type.name,
+		defaultValue <- thisModule.hasDefault(s),
+		mimName <- thisModule.hasMimNameType(thisModule.getOwningOrCurrentPackageForStructMember(s))--the owning package name
+--		mimName <- thisModule.hasMimNameType(s.type.getNearestPackage())--get the name of the mom that the MO class lives in
+--		mimVersion <- thisModule.hasMimVersionType(s.type.getNearestPackage())--get the version of the mom that the MO class lives in	
+	)
+	do
+	{
+		t;
+	}
+}
+
+
+helper def : isStructMemberDerivedType(property : UML!Property) : MP!DerivedDataTypeRefType =
+	if((property.type.hasStereotype('ECIM Base Profile::EcimDerivedInteger') or property.type.hasStereotype('ECIM Base Profile::EcimDerivedString') or property.type.hasStereotype('ECIM Base Profile::EcimDerivedFloat') or property.type.hasStereotype('ECIM Base Profile::EcimDerivedBoolean')) and property.type.oclIsTypeOf(UML!DataType) and property.upper = 1)
+	then
+		if(thisModule.isCOM() or thisModule.isDWAXE())	
+		then
+			thisModule.CreateDerivedDataType(property)
+		else
+			OclUndefined
+		endif
+	else
+		--If the property has inline information we should create a reference to the outlined type
+		if(thisModule.isCOM() and property.hasInlinePropertiesSet() and property.upper = 1)
+		then
+			thisModule.CreateDerivedDataTypeFromInline(property)
+		else
+			OclUndefined
+		endif
+	endif;
+
+--Create a regular DerivedType Ref
+rule CreateDerivedDataType(s: UML!Property)
+{
+	to t: MP!DerivedDataTypeRefType
+	(
+		name <- s.type.name,
+		defaultValue <- thisModule.hasDefault(s),		
+		mimName <- thisModule.hasMimNameType(thisModule.getOwningOrCurrentPackageForStructMember(s))--the owning package name
+	)
+	do
+	{
+		t;
+	}
+}
+
+--Create a DerivedType Ref from inline information
+rule CreateDerivedDataTypeFromInline(s: UML!Property)
+{
+	to t: MP!DerivedDataTypeRefType
+	(
+		name <- thisModule.CreateDerivedTypeName(s),
+		defaultValue <- thisModule.hasDefault(s),		
+		mimName <- thisModule.hasMimNameType(thisModule.getOwningOrCurrentPackageForStructMember(s))--get the name of the mom that the TypedElement lives in
+	)
+	do
+	{
+		t;
+	}
+}
+
+helper def : isStructMemberSequenceType(property : UML!Property) : MP!SequenceType =
+	if((property.type.oclIsTypeOf(UML!DataType) or property.type.oclIsTypeOf(UML!Class) or property.type.oclIsTypeOf(UML!Enumeration) or property.hasStereotype('ECIM Base Profile::EcimAssociation')) and property.upper <> 1)
+	then
+		thisModule.ResolveSequenceDataType(property)
+	else
+		OclUndefined
+	endif;

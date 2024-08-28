@@ -1,0 +1,300 @@
+{
+    "name": "MoMgcfPOT",  
+    "ss7": "true", 
+    "visible": "true",
+    "desc": "Data for the Media Gateway Controller.", 
+    "filename": "MoMgcfPOT.json", 
+    "mandatory": "1",
+    "max_entries": "1",
+    "modid": "1", 
+    "attrs": {
+        "boardType": {
+            "name": "boardType", 
+            "isRestricted": "false", 
+            "desc": "the board hardware type", 
+            "types": "enumboardType", 
+            "range": "eGEP2 (1),eGEP3 (2)", 
+            "default": "eGEP2", 
+            "category": "ims_mobile", 
+            "changereq": "true", 
+            "visible": "true"
+            "maxaccess": "read-write", 
+            "realtime": "1", 
+            "validc": ""
+        }, 
+        "countryCode": {
+            "name": "countryCode", 
+            "isRestricted": "false", 
+            "desc": "Country Code", 
+            "types": "EcimDeriveContryCode", 
+            "range": "0..3", 
+            "default": "", 
+            "category": "ims_mobile", 
+            "changereq": "true", 
+            "visible": "true"
+            "maxaccess": "read-write", 
+            "realtime": "1", 
+            "validc": "0-9"
+        }, 
+        "isrFE0": {
+            "name": "isrFE0", 
+            "isRestricted": "false", 
+            "desc": "Displays blade name for the ISR FE instance 0, which is also known as the Mtpl2 FE Instance 0.", 
+            "types": "EcimDeriveIsrFE0", 
+            "range": "0..32", 
+            "default": "", 
+            "category": "ims_fixed", 
+            "changereq": "true", 
+            "visible": "true"
+            "maxaccess": "read-only", 
+            "realtime": "1", 
+            "validc": "A-Z,a-z,0-9,.,-,/,:,_"
+        }, 
+        "sipProfileCodecs": {
+            "name": "sipProfileCodecs", 
+            "isRestricted": "false", 
+            "desc": "This attribute defines the codecs supported by the profile in call.\n\nAudio Codecs:\n\ng711mLaw: G.711 mu-law scaling (PCMU RFC3551)\n\ng711aLaw: G.711 A-law scaling (PCMA RFC3551)\n\ng729a: G.729 Annex A (G729 RFC4749)\n\ng7231: G.723.1 Dual-rate speech coder (G723 RFC3551)\n\ngsmFr: GSM frame (GSM RFC3551)\n\n", 
+            "types": "IpsigCodecsTC", 
+            "range": "", 
+            "default": "", 
+            "category": "ims_fixed", 
+            "changereq": "false", 
+            "visible": "true"
+            "maxaccess": "read-write", 
+            "realtime": "0", 
+            "validc": ""
+        },         
+        "localSctpPort": {
+            "name": "localSctpPort", 
+            "isRestricted": "false", 
+            "desc": "This variable holds the port number of\nthe MGC's SCTP stack when MGC operates\nin server mode.", 
+            "types": "EcimDeriveLocalSctp", 
+            "range": "1..65535", 
+            "default": "2944", 
+            "category": "ims_fixed", 
+            "changereq": "false", 
+            "visible": "true"
+            "maxaccess": "read-only", 
+            "realtime": "0", 
+            "validc": ""
+        }
+    },
+    "actions": {
+        "mgcLock": {
+            "name": "mgcLock", 
+            "paras": {
+                "mgcForceLock": {
+                    "name": "mgcForceLock", 
+                    "stereotypes": "EcimParameter" 
+                    "type": "MGCLocking"                    
+                    "default": "1"                    
+                }, 
+                "mgcGraceLock": {
+                    "name": "mgcGraceLock", 
+                    "stereotypes": "EcimParameter" 
+                    "type": "MGCLocking"                    
+                    "default": "2"                    
+                } 
+            }
+        },
+        "mgcConfig": {
+            "name": "mgcConfig", 
+            "paras": {
+                "mgcSS7Config": {
+                    "name": "mgcSS7Config", 
+                    "stereotypes": "EcimParameter" 
+                    "type": "enumMgcConfig"                    
+                    "default": "eReinitBE"                    
+                }
+            }
+        }        
+    },      
+    "enums": {
+        "enumboardType": {
+            "name": "enumboardType", 
+            "attrs": {
+                "eGEP2": {
+                    "default": "1", 
+                    "name": "eGEP2" 
+                }, 
+                "eGEP3": {
+                    "default": "2", 
+                    "name": "eGEP3"
+                }
+            }
+        },
+        "enumMgcConfig": {
+            "name": "enumMgcConfig", 
+            "attrs": {
+                "eReinitBE": {
+                    "default": "1", 
+                    "name": "eReinitBE" 
+                }, 
+                "eReinitFE": {
+                    "default": "2", 
+                    "name": "eReinitFE"
+                },
+                "eReStartSs7": {
+                    "default": "3", 
+                    "name": "eReStartSs7" 
+                }, 
+                "eCancelSs7": {
+                    "default": "4", 
+                    "name": "eCancelSs7"
+                }                
+            }
+        }        
+    },
+    "deriveds": {
+        "MGCLocking": {
+            "name": "MGCLocking"
+            "stereotypes": "EcimDeriveInteger",
+            "length": "1",
+            "range": "",                                           
+            "pattern": ""
+        },
+        "TdmGroupLocking": {
+            "name": "TdmGroupLocking"
+            "stereotypes": "EcimDeriveInteger",
+            "length": "1",
+            "range": "",                                           
+            "pattern": ""
+        }
+    },    
+    "codecs": {
+        "IpsigCodecsTC": {
+            "description": "This textual convention defines the \ndifferent Codecs that are supported for \nVoIP and multimedia calls.               \nThe bit positions to be set and \ncorresponding                               \ndecimal values are (bit pos./dec. value):\nLabel       Bit pos./Dec value Name\n------------------------------------------\nVoIP Codecs\no g711mLaw      ( 0 - 128)     : G.711, mLaw\no g711aLaw      ( 1 - 64 )     : G.711, ALaw \no g729a         ( 2 - 32 )     : G.729A\no g7231         ( 3 - 16 )     : G.723.1\no gsmFr         ( 4 - 8  )     : GSM FR\no gsmEfr        ( 5 - 4  )     : GSM EFR\no amr           ( 6 - 2  )     : GSM AMR\no dtmfToneRelay ( 7 - 1  )     : DTMF Tone \nRelay (RFC2833)                             \no g72632        ( 8 - 32768)   : G.726 32K\no comfortNoise  ( 9 - 16384)   : Comfort \nNoise (RFC3389)\no clearMode     (10 - 8192 )   : Clearmode \no g72624        (11 - 4096 )     : G.726 24k\no g711aLawDynamic(13 - 1024 )   : G.711,aLaw \no g711mLawDynamic(14 - 512 )    : G.711,mLaw\no evrc          (12 - 2048 )   : EVRC\n                           \n--------------------------------------------\nFuture VoIP Codecs Reserved Space\no reserved12  (12 - 2048 )     : reserved12\no reserved15  (15 - 256  )     : reserved15\n--------------------------------------------\nVideo Codecs not supported\no h263v1      (16 - 8388608)   :H.263 \nversion 1, (static payload can be used on IP \nside)                                       \no h263v2      (17 - 4194304)   :H.263 \nversion 2 ITU-T H.263 (02/98), (dynamic \npayload used on IP side)                    \no h263v3      (18 - 2097152)   :H.263 \nversion 3 ITU-T H.263 (2000), (dynamic \npayload used on IP side)                    \no mpeg4       (19 - 1048576)   : MPEG4\no reserved20  (20 - 524288 )   : reserved20\no reserved21  (21 - 262144 )   : reserved21\no reserved22  (22 - 131072 )   : reserved22\no reserved23  (23 - 65536  )   : reserved23\no reserved24  (24 - 2147483648): reserved24\no t38fax      (25 - 1073741824): T38Fax\no reserved26  (26 - 536870912 ): reserved26\no reserved27  (27 - 268435456 ): reserved27\no reserved28  (28 - 134217728 ): reserved28\no reserved29  (29 - 67108864  ): reserved29\no reserved30  (30 - 33554432  ): reserved30\no h264        (31 - 16777216  ): H.264", 
+            "name": "IpsigCodecsTC",        
+            "bits": [
+                [
+                    "g711mLaw", 
+                    "128\n"
+                ], 
+                [
+                    "g711aLaw", 
+                    "64\n"
+                ], 
+                [
+                    "g729a", 
+                    "32\n"
+                ], 
+                [
+                    "g7231", 
+                    "16\n"
+                ], 
+                [
+                    "gsmFr", 
+                    "8\n"
+                ], 
+                [
+                    "gsmEfr", 
+                    "4\n"
+                ], 
+                [
+                    "amr", 
+                    "2\n"
+                ], 
+                [
+                    "dtmfToneRelay", 
+                    "1\n"
+                ], 
+                [
+                    "g72632", 
+                    "32768\n"
+                ], 
+                [
+                    "comfortNoise", 
+                    "16384\n"
+                ], 
+                [
+                    "clearMode", 
+                    "8192\n"
+                ], 
+                [
+                    "g72624", 
+                    "4096\n"
+                ], 
+                [
+                    "evrc", 
+                    "2048\n"
+                ], 
+                [
+                    "g711aLawDynamic", 
+                    "1024\n"
+                ], 
+                [
+                    "g711mLawDynamic", 
+                    "512\n"
+                ], 
+                [
+                    "reserved15", 
+                    "\n"
+                ], 
+                [
+                    "h263v1", 
+                    "8388608\n"
+                ], 
+                [
+                    "h263v2", 
+                    "4194304\n"
+                ], 
+                [
+                    "h263v3", 
+                    "2097152\n"
+                ], 
+                [
+                    "mpeg4", 
+                    "1048576\n"
+                ], 
+                [
+                    "reserved20", 
+                    "\n"
+                ], 
+                [
+                    "reserved21", 
+                    "\n"
+                ], 
+                [
+                    "reserved22", 
+                    "\n"
+                ], 
+                [
+                    "reserved23", 
+                    "\n"
+                ], 
+                [
+                    "reserved24", 
+                    "\n"
+                ], 
+                [
+                    "t38fax", 
+                    "1073741824\n"
+                ], 
+                [
+                    "reserved26", 
+                    "\n"
+                ], 
+                [
+                    "reserved27", 
+                    "\n"
+                ], 
+                [
+                    "reserved28", 
+                    "\n"
+                ], 
+                [
+                    "reserved29", 
+                    "\n"
+                ], 
+                [
+                    "reserved30", 
+                    "\n"
+                ], 
+                [
+                    "h264", 
+                    "16777216\n"
+                ]
+            ]
+        }    
+    }    
+}

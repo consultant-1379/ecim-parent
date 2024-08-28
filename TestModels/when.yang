@@ -1,0 +1,79 @@
+module "when" {
+
+  namespace "urn:com:ericsson:yang:when";
+
+  prefix "when";
+
+  organization
+    "Ericsson AB.";
+
+  contact
+    "Web:   <http://www.ericsson.com>";
+
+  description
+    "This YANG module defines the configuration data
+    and operational state data for Context in IPOS.
+
+    Copyright (c) 2014 Ericsson AB.
+    All rights reserved.";
+
+  revision 2014-09-15 {
+    description
+      "Initial revision.";
+    reference
+      "A YANG Data Model for Routing Management
+      draft-ietf-netmod-routing-cfg-15.";
+  }
+  
+  
+   
+ augment "/when:lA" {
+ 	when "ifType='ds0'";
+	leaf augmentedLeaf {
+		when "ifType='ds0'";
+		type string;
+	}	
+  }
+  
+  
+  grouping gA
+  {
+	leaf gLeafA {
+		type uint32;
+		when "ifType='ds0'";
+	}
+	leaf-list gLeafListB{
+		type uint32;
+		when "ifType='ds0'";
+	}
+  }
+  
+  container cA
+  {
+  	when "ifType='ds0'";
+  	uses gA{when "ifType='ds0'";}
+  }
+  
+	list lA {
+		key "leafA";
+		when "ifType='ds0'";
+		leaf leafA {
+             type uint32;
+             when "ifType='ds0'";
+		}
+		leaf-list leafListB{
+       		type uint32;
+       		when "ifType='ds0'";
+		}
+ 		choice myChoice {
+       		when "ifType='ds0'";
+			default a;
+			case a {
+		 		when "ifType='ds0'";
+				leaf a {
+					type uint16;
+				}
+			}
+		}      
+	}
+}

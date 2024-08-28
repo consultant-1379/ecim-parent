@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.ericsson.ecim</groupId>
+		<artifactId>ecim-parent</artifactId>
+		<version>3.1.1</version>
+	</parent>
+	<artifactId>com.ericsson.ecim.swtbot.tests</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+	
+	<properties>
+		<!-- Workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=397015 -->
+		<sonar.sources/>
+		<sonar.tests>src</sonar.tests>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<executions>
+					<execution>
+						<id>copy-golden-files</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<!-- destination folder where the golden files must be copied to -->
+							<outputDirectory>${basedir}/target/TestModels/</outputDirectory>
+							<resources>
+								<resource>
+									<!-- folder where the golden files are stored -->
+									<directory>TestModels/</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<useUIHarness>true</useUIHarness>
+					<useUIThread>false</useUIThread>
+					<dependencies>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.platform.feature.group</artifactId>
+							<version>4.4</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.papyrus.sdk.feature.feature.group</artifactId>
+							<version>1.0.2</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.papyrus.extra.dsml.validation.feature.feature.group</artifactId>
+							<version>1.0.2</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.ericsson.ecim.feature.feature.group</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.ericsson.ecim.coremw.feature.feature.group</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.ericsson.ecim.mmas.feature.feature.group</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.ericsson.ecim.cpp.feature.feature.group</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.ericsson.ecim.vdicos.feature.feature.group</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.ericsson.ecim.yang.feature.feature.group</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.ericsson.ecim.mgc.feature.feature.group</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.ericsson.ecim.stn.feature.feature.group</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.adocus.mma.papyrus.feature.feature.group</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>se.ericsson.systemtools.xmlProcessing.tools.feature.feature.group</artifactId>
+						</dependency>
+					</dependencies>
+					<product>org.eclipse.platform.ide</product>
+					<redirectTestOutputToFile>true</redirectTestOutputToFile>
+					<test>SWTBotTestSuite</test>
+					<argLine>${tycho.testArgLine} -Xms128m -Xmx4G -XX:MaxPermSize=256m -Djub.consumers=XML -Djub.xml.file=${basedir}/target/swtbot-test-benchmarks.xml</argLine>
+					<showEclipseLog>true</showEclipseLog>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

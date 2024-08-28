@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Apr 20, 2015 4:14:21 PM using:
+	* com.ericsson.ecim.m2m 3.0.0.qualifier
+	* com.ericsson.ecim.dsl 3.0.0.qualifier
+	* com.ericsson.ecim.edm 3.0.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+  </momMetaData>
+  <mim author="" contact="" date="" docNo="" name="AMom" namespace="urn:com:ericsson:ecim:AMom" namespacePrefix="amom" organization="" release="1" revision="" version="1">
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <class name="TheRoot">
+      <root/>
+      <attribute name="theRootId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="isGood">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <boolean>
+            <defaultValue>true</defaultValue>
+          </boolean>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="FmAlarmModel">
+      <root/>
+      <attribute name="fmAlarmModelId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="FmAlarmType">
+      <attribute name="fmAlarmTypeId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="TheRoot_to_FmAlarmModel">
+      <containment>
+        <parent>
+          <hasClass name="TheRoot">
+            <mimName>AMom</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="FmAlarmModel">
+            <mimName>AMom</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+    <relationship name="FmAlarmModel_to_FmAlarmType">
+      <containment>
+        <parent>
+          <hasClass name="FmAlarmModel">
+            <mimName>AMom</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="FmAlarmType">
+            <mimName>AMom</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </mim>
+  <interMim>
+    <relationship name="Fm_to_FmAlarmModel">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="false"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Fm">
+            <mimName>FM</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="FmAlarmModel">
+            <mimName>AMom</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

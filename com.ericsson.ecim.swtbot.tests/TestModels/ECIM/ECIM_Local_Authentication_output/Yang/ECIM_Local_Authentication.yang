@@ -1,0 +1,665 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:36:59 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ECIM_Local_Authentication" {
+	namespace "urn:com:ericsson:ecim:ECIM_Local_Authentication";
+	prefix "ECIM_Local_Authentication";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import ECIM_Security_Management {
+		prefix "ECIM_Security_Management";
+	}
+
+	description "Implements management and authentication of local users.";
+
+	revision "2015-02-18" {
+		ericsson:contact "ETH\XES Balazs Kovacs";
+		ericsson:version "2";
+		ericsson:correction "0";
+		ericsson:author "ETH\XES Balazs Kovacs";
+		ericsson:release "0";
+	}
+
+	augment
+	"/ECIM_Top:ManagedElement/ECIM_Top:SystemFunctions/ECIM_Security_Management:SecM/ECIM_Security_Management:UserManagement"
+	{
+		list "LocalAuthenticationMethod" {
+			key "localAuthenticationMethodId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "PasswordPolicy" {
+				key "passwordPolicyId";
+				uses ECIM_Local_Authentication:PasswordPolicy;
+			}
+
+			list "PasswordQuality" {
+				key "passwordQualityId";
+				uses ECIM_Local_Authentication:PasswordQuality;
+			}
+
+			list "AccountPolicy" {
+				key "accountPolicyId";
+				uses ECIM_Local_Authentication:AccountPolicy;
+			}
+
+			list "AdministratorAccount" {
+				key "administratorAccountId";
+				min-elements 1;
+				max-elements 1;
+				uses ECIM_Local_Authentication:AdministratorAccount;
+			}
+
+			list "UserAccountM" {
+				key "userAccountMId";
+				min-elements 1;
+				max-elements 1;
+				list "UserAccount" {
+					key "userAccountId";
+					uses ECIM_Local_Authentication:UserAccount;
+				}
+
+				uses ECIM_Local_Authentication:UserAccountM;
+			}
+
+			uses ECIM_Local_Authentication:LocalAuthenticationMethod;
+		}
+
+	}
+
+	typedef "PasswordState" {
+		type enumeration {
+			enum "VALID" {
+				value 0;
+				description
+				"The password is valid based on system time, password changed time, and aging policy.";
+			}
+
+			enum "EXPIRED_MUSTCHANGE" {
+				value 1;
+				description "The password is expired based on system time, password changed time, and aging policy.
+
+The user is forced to change password at next login.";
+			}
+
+			enum "EXPIRED" {
+				value 2;
+				description "The password is expired based on system time, password changed time, and aging policy.
+
+The password must be reset by the MS.";
+			}
+
+		}
+
+		description "The states of a password.";
+	}
+
+	typedef "AccountUsageState" {
+		type enumeration {
+			enum "ACTIVE" {
+				value 1;
+				description "The account is active based on configured account policy threshold.
+
+There was at least one successful authentication to the account.";
+			}
+
+			enum "DORMANT" {
+				value 2;
+				description
+				"The account is dormant based on configured account policy threshold.";
+			}
+
+			enum "UNUSED" {
+				value 0;
+				description "The account is unused.
+
+No successful authentication was performed to the account.";
+			}
+
+		}
+
+		description "The state of the account based on user login activity.";
+	}
+
+	typedef "AccountState" {
+		type enumeration {
+			enum "LOCKED" {
+				value 0;
+				description "The account is locked. Authentication is not possible.";
+			}
+
+			enum "UNLOCKED" {
+				value 1;
+				description "The account is unlocked. Authentication is possible.";
+			}
+
+		}
+
+		description "The possible states of an account.";
+	}
+
+	typedef "EcimPasswordString" {
+		type string;
+		description "Password string.";
+	}
+
+	typedef "RoleString" {
+		type string {
+			length "1..70";
+			pattern "(^[a-z,A-Z][a-z,A-Z,0-9,'_','\-','.']*[a-z,A-Z,0-9]$)";
+		}
+
+		description "Type for valid Role strings.";
+	}
+
+	typedef "AccountIdString" {
+		type string {
+			pattern "^[a-z][-a-z0-9_]{0,30}$";
+		}
+
+		description "The character string allowed for user account identification.";
+	}
+
+	grouping "LocalAuthenticationMethod" {
+		description "The root MOC of Local Authentication.";
+		leaf "localAuthenticationMethodId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+	}
+
+	grouping "PasswordPolicy" {
+		description "Configures properties of password policy.";
+		leaf "passwordPolicyId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "expireWarning" {
+			type int16 {
+				range "1..24855";
+			}
+
+			default "7";
+			description "Password expiry warning in days.
+
+Specifies the number of days before the expiry date when the ME starts to notify the user at authentication to change password due to approaching expiry date. No value means expiry warnings are never sent.";
+		}
+
+		leaf "failureCountInterval" {
+			type int32 {
+				range "1..*";
+			}
+
+			default "1800";
+			description "The time interval within which consecutive failed login attempts count in seconds.
+
+Specifies the time interval it takes to obsolete records in passwordFailureTimes used for attribute maxFailure. No value means the failure counter is reset only on successful authentication.";
+		}
+
+		leaf "historyLength" {
+			type int32 {
+				range "1..*";
+			}
+
+			default "12";
+			description "Specifies the number of passwords remembered by the ME to avoid the reuse of old passwords. 
+
+No value means old passwords are not recorded.";
+		}
+
+		leaf "lockoutDuration" {
+			type int32 {
+				range "1..*";
+			}
+
+			description "Account lockout duration in seconds due to password failures.
+
+Specifies the time in seconds after a locked account is unlocked automatically. An administrative lock placed on the user account by configuring administrativeState is not managed by this attribute. No value means that only the administrator can unlock an account manually by invoking unlockOperationalLock action on the UserAccount MO.";
+		}
+
+		leaf "maxAge" {
+			type int16 {
+				range "1..24855";
+			}
+
+			default "90";
+			description "Password maximum age in days.
+
+Specifies the number of days after a password is considered expired. No value means passwords never expire.";
+		}
+
+		leaf "maxFailure" {
+			type int32 {
+				range "1..*";
+			}
+
+			default "3";
+			description "Maximum failed login attempts to lock an account.
+
+Specifies the number of consecutive failed login attempts that can be performed before the account gets locked automatically, as counted in passworFailureTimes of the respective UserAccount Managed Objects. No value means that an unlimited number of failed attempts is allowed.
+";
+		}
+
+		leaf "minLength" {
+			type int32;
+			mandatory true;
+			description "Minimum length of passwords.
+
+Specifies the minimum character lengths of passwords that the ME can accept.";
+		}
+
+		leaf "minAge" {
+			type int32 {
+				range "1..24855";
+			}
+
+			default "15";
+			description "Password minimum age in days.
+
+Specifies the minimum number of days that need to pass before a password can be changed. No value means there is no control on the minimum age of passwords.";
+		}
+
+		leaf-list "reservedByAccount" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description "The accounts using this policy.
+
+Lists the Distinguished Names of UserAccount Managed Objects.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+		leaf "passwordQuality" {
+			type string {
+				pattern "(.*=.*,)*PasswordQuality=.*";
+			}
+
+			mandatory true;
+			description "The password quality parameters used.
+
+Refers to the DN of a PasswordQuality MO.";
+		}
+
+	}
+
+	grouping "UserAccount" {
+		description "Represents a user account. 
+
+The O&M users need to authenticate to a UserAccount MO to access the ME.";
+		leaf "userAccountId" {
+			type ECIM_Local_Authentication:AccountIdString;
+			mandatory true;
+			description "The user ID to be provided at authentication.";
+			ericsson:restricted;
+		}
+
+		leaf "accountPolicy" {
+			type string {
+				pattern "(.*=.*,)*AccountPolicy=.*";
+			}
+
+			mandatory true;
+			description "The account policy.
+
+Refers to the DN of an AccountPolicy MO.";
+		}
+
+		leaf "accountState" {
+			type ECIM_Local_Authentication:AccountState;
+			mandatory true;
+			config true;
+			description "The state of the account.
+
+In LOCKED state, users are not able to authenticate to this account.
+In UNLOCKED state, users are able to authenticate to this account.
+
+Automatic operational locking and unlocking of the user account changes the account state to LOCKED or UNLOCKED, respectively. Automatic lock can be placed due to failed login attempts, expired password, or dormant account. Manual locking and unlocking performed by the attribute administrativeState is also reflected by the account state. A manual lock has precedence over an automatic lock, thus enabling an account must always start with checking the value  of the administrativeState attribute and setting it UNLOCKED. If already UNLOCKED and the account state is LOCKED, the ME automatically locked the account, unlockOperationalLock must be invoked for unlock.";
+		}
+
+		leaf "administrativeState" {
+			type ECIM_CommonLibrary:BasicAdmState;
+			mandatory true;
+			description "The administrative state of the account.
+
+Specifies the state of the account based on administration performed by the MS. 
+
+If set to UNLOCKED but accountState is LOCKED, unlockOperationalLock must be invoked.";
+		}
+
+		leaf "lastLoginTime" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "The date of the last successful login.";
+		}
+
+		leaf "lockedTime" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "The time the account was locked.
+
+Specifies the time the account was locked regardless if that was due to an administrative lock or an automatic operational lock. The value is cleared when the account is unlocked.";
+		}
+
+		leaf "passwordChangedTime" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "The time the password was last changed or reset.";
+		}
+
+		leaf-list "passwordFailureTimes" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "Dates of failed login attempts.
+
+The list of dates when a user tried to authenticate to this account and failed. The attribute can be reset by a successful authentication. The dates outside the time-window set by passwordFailureCountInterval are removed.";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "passwordPolicy" {
+			type string {
+				pattern "(.*=.*,)*PasswordPolicy=.*";
+			}
+
+			mandatory true;
+			description "The password policy.
+
+Refers to the DN of a PasswordPolicy MO.";
+		}
+
+		leaf "passwordState" {
+			type ECIM_Local_Authentication:PasswordState;
+			config true;
+			description "The state of the password.
+
+Has no value if the password is not initialized by resetPassword action after creating the account; thus, no password is set.
+
+If the state is EXPIRED_MUSTCHANGE the password must be changed by the user at login. After a grace period the state turns to EXPIRED and the account becomes LOCKED; only the MS can reset the password in that state.";
+		}
+
+		leaf-list "roles" {
+			type ECIM_Local_Authentication:RoleString;
+			description "The authorization profile of the user account.
+
+List the roles of the account for Role Based Access Control. The user authenticating to this account will receive the permissions defined in an authorization model.";
+		}
+
+		leaf "userName" {
+			type string;
+			description "The full name of the user assigned to the account.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+		leaf "accountUsageState" {
+			type ECIM_Local_Authentication:AccountUsageState;
+			mandatory true;
+			config true;
+			description "The state of the account based on user activity.
+
+The account is DORMANT if the system time passes the value of the lastLogin attribute plus the dormantTimer, thus indicating lock due to account inactivity. When the account is DORMANT the account gets locked by changing accountState to LOCKED.
+
+The account is UNUSED when no successful authentication was performed to it.
+
+The account is ACTIVE in all other cases.";
+		}
+
+	}
+
+	grouping "PasswordQuality" {
+		description "Configures the dimensions of password quality checking.";
+		leaf "passwordQualityId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "maxConsecutivePerClass" {
+			type int16 {
+				range "1..*";
+			}
+
+			default "3";
+			description "Maximum consecutive characters per class in a password.
+
+Specifies the maximum number of characters that can appear consecutively from a given character class. No value means that consecutive character classes are not checked. Possible character classes are digits, uppercase, lowercase, and other characters.
+";
+		}
+
+		leaf "minDigit" {
+			type int16 {
+				range "1..*";
+			}
+
+			description "Minimum number of digits in passwords.
+
+Minimum number of digits a new password must have to be accepted by the ME. No value means the check is disabled.";
+		}
+
+		leaf "minLower" {
+			type int16 {
+				range "1..*";
+			}
+
+			description "Minimum number of lower case characters in passwords.
+
+Minimum number of lower case characters a new password must have to be accepted by the ME. No value means the check is disabled.";
+		}
+
+		leaf "minOther" {
+			type int16 {
+				range "1..*";
+			}
+
+			description "Minimum number of non-alphanumeric characters in passwords.
+
+Minimum number of non-alphanumeric characters a new password must have to be accepted by the ME. No value means the check is disabled.";
+		}
+
+		leaf "minPoints" {
+			type int16 {
+				range "1..4";
+			}
+
+			mandatory true;
+			description "Minimum password quality points.
+
+Minimum number of quality points a new password must have to be accepted by the ME. One quality point is awarded for each character class used in the password. Possible character classes are digits, uppercase, lowercase, and other characters.";
+		}
+
+		leaf "minUpper" {
+			type int16 {
+				range "1..*";
+			}
+
+			description "Minimum number of upper case characters in passwords.
+
+Minimum number of upper case characters a new password must have to be accepted by the ME. No value means the check is disabled.";
+		}
+
+		leaf-list "reservedBy" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description "The managed objects using this PasswordQuality MO.
+
+Lists the Distinguished Names of PasswordPolicy Managed Objects or the AdministratorAccount.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+	}
+
+	grouping "AdministratorAccount" {
+		description "The administrator account.
+
+Used for initial and recovery scenarios when authentication to regular O&M accounts is inaccessible.";
+		leaf "administratorAccountId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.
+
+The user ID to be provided at authentication.";
+			ericsson:restricted;
+		}
+
+		leaf "lastLoginTime" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "The date of the last successful login.";
+		}
+
+		leaf "passwordChangedTime" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "The time the password was last changed.";
+		}
+
+		leaf-list "passwordFailureTimes" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "Dates of failed login attempts.
+
+The list of dates when a user tried to authenticate to this account and failed. The attribute can be reset by a successful authentication. The dates outside the time-window set by passwordFailureCountInterval are removed.";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "passwordFailureCountInterval" {
+			type int32 {
+				range "1..*";
+			}
+
+			default "86400";
+			description "The time interval within which consecutive failed login attempts count in seconds.
+
+Specifies the time interval it takes to obsolete records in passwordFailureTimes used for attribute passwordMaxFailure. No value means the failure counter is reset only on successful authentication.";
+		}
+
+		leaf "passwordHistoryLength" {
+			type int32;
+			mandatory true;
+			config true;
+			description
+			"Specifies the number of passwords remembered by the ME to avoid reuse of old passwords.";
+		}
+
+		leaf "passwordMaxFailure" {
+			type int32 {
+				range "1..*";
+			}
+
+			default "3";
+			description "Maximum failed login attempts to send an authentication failure alarm.
+
+Specifies the number of consecutive failed login attempts that can be performed before the account is alarmed, as counted in passwordFailureTimes. No value disables alarm sending.";
+		}
+
+		leaf "passwordMinLength" {
+			type int32;
+			mandatory true;
+			config true;
+			description "Minimum length of passwords.
+
+Specifies the minimum character lengths of passwords that the ME can accept.";
+		}
+
+		leaf "passwordQuality" {
+			type string {
+				pattern "(.*=.*,)*PasswordQuality=.*";
+			}
+
+			mandatory true;
+			description "The password quality parameters used.
+
+Refers to the DN of a PasswordQuality MO.";
+		}
+
+	}
+
+	grouping "AccountPolicy" {
+		description "Configures properties of account policy.";
+		leaf "accountPolicyId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "dormantTimer" {
+			type uint16 {
+				range "1..*";
+			}
+
+			default "180";
+			description "Account dormant timer in days.
+
+Specifies the number of days it takes for the ME to automatically lock an account that was not used in this time period. The dormant state is calculated based on the lastLoginTime attribute and the current system time.  No value means the account dormant time is not measured.";
+		}
+
+		leaf-list "reservedByAccount" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description "The accounts using this policy.
+
+Lists the Distinguished Names of UserAccount Managed Objects.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+	}
+
+	grouping "UserAccountM" {
+		description "Contains and enables the management of O&M user accounts.";
+		leaf "userAccountMId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+	}
+
+}

@@ -1,0 +1,945 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:33:12 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ECIM_LM" {
+	namespace "urn:com:ericsson:ecim:ECIM_LM";
+	prefix "ECIM_LM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	organization "ERICSSON/EMC/BUCI";
+	description "ECIM License Management model fragment.";
+
+	revision "2014-11-10" {
+		ericsson:contact "eprgggz";
+		ericsson:author "EMC/ Gustavo Garcia Gomez";
+		ericsson:release "3";
+		ericsson:correction "0";
+		ericsson:revision "0";
+		ericsson:version "2";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:SystemFunctions" {
+		list "Lm" {
+			key "lmId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "FeatureKey" {
+				key "featureKeyId";
+				uses ECIM_LM:FeatureKey;
+			}
+
+			list "CapacityKey" {
+				key "capacityKeyId";
+				list "GracePeriod" {
+					key "gracePeriodId";
+					max-elements 1;
+					uses ECIM_LM:GracePeriod;
+				}
+
+				list "WarningThreshold" {
+					key "warningThresholdId";
+					max-elements 1;
+					uses ECIM_LM:WarningThreshold;
+				}
+
+				uses ECIM_LM:CapacityKey;
+			}
+
+			list "EmergencyUnlock" {
+				key "emergencyUnlockId";
+				min-elements 1;
+				max-elements 1;
+				uses ECIM_LM:EmergencyUnlock;
+			}
+
+			list "IntegrationUnlock" {
+				key "integrationUnlockId";
+				max-elements 1;
+				uses ECIM_LM:IntegrationUnlock;
+			}
+
+			list "MaintenanceUnlock" {
+				key "maintenanceUnlockId";
+				max-elements 1;
+				uses ECIM_LM:MaintenanceUnlock;
+			}
+
+			list "SystemTriggeredUnlock" {
+				key "systemTriggeredUnlockId";
+				max-elements 1;
+				uses ECIM_LM:SystemTriggeredUnlock;
+			}
+
+			list "AutonomousMode" {
+				key "autonomousModeId";
+				max-elements 1;
+				uses ECIM_LM:AutonomousMode;
+			}
+
+			list "KeyFileManagement" {
+				key "keyFileManagementId";
+				max-elements 1;
+				list "KeyFileInformation" {
+					key "keyFileInformationId";
+					uses ECIM_LM:KeyFileInformation;
+				}
+
+				uses ECIM_LM:KeyFileManagement;
+			}
+
+			list "FeatureState" {
+				key "featureStateId";
+				uses ECIM_LM:FeatureState;
+			}
+
+			list "CapacityState" {
+				key "capacityStateId";
+				list "WarningThreshold" {
+					key "warningThresholdId";
+					max-elements 1;
+					uses ECIM_LM:WarningThreshold;
+				}
+
+				list "GracePeriod" {
+					key "gracePeriodId";
+					max-elements 1;
+					uses ECIM_LM:GracePeriod;
+				}
+
+				uses ECIM_LM:CapacityState;
+			}
+
+			uses ECIM_LM:Lm;
+		}
+
+	}
+
+	typedef "LmState" {
+		type enumeration {
+			enum "LOCKED" {
+				value 0;
+				description
+				"No key file is available for the License Manager, so license requests are rejected.";
+			}
+
+			enum "NORMAL" {
+				value 1;
+				description
+				"Key file is available for the License Manager, so license requests are granted accordingly.";
+			}
+
+			enum "INTEGRATION_UNLOCK" {
+				value 2;
+				description "All license requests are granted until first key file is delivered.
+
+The maximum duration the License Manager can function in this operational mode is pre-defined. When maximum duration expires and no other unlock applies, the License Manager goes into LOCKED operational state.";
+			}
+
+			enum "MAINTENANCE_UNLOCK" {
+				value 3;
+				description "All license requests are granted for maintenance purposes.
+
+The maximum duration the License Manager can function in this operational state is pre-defined. When maximum duration expires and no other unlock applies, the License Manager goes into LOCKED operational state.";
+			}
+
+			enum "EMERGENCY_UNLOCK" {
+				value 4;
+				description "All license requests are granted due to an emergency situation.
+
+The maximum duration the License Manager can function in this operational state is pre-defined. When maximum duration expires and no other unlock applies, the License Manager goes into LOCKED operational state.";
+			}
+
+			enum "AUTONOMOUS_MODE" {
+				value 5;
+				description "The key file is not accessible and license requests are granted based on cached license information.
+
+The maximum duration the License Manager can function in this operational state is pre-defined. When maximum duration expires and no unlock state applies, the License Manager goes into LOCKED operational state.";
+			}
+
+			enum "SYSTEM_TRIGGERED_UNLOCK" {
+				value 6;
+				description "All license requests are granted due to unlock state being triggered by some event in the License Manager.
+
+The maximum duration the License Manager can function in this operational state is pre-defined.";
+			}
+
+		}
+
+		description "Operational modes of the License Manager.";
+	}
+
+	typedef "LmActivationState" {
+		type enumeration {
+			enum "INACTIVE" {
+				value 0;
+				description "The operational mode or grace period is inactive.";
+			}
+
+			enum "ACTIVATED" {
+				value 1;
+				description "The operational mode or grace period is activated.";
+			}
+
+			enum "ACTIVATED_EXPIRING" {
+				value 2;
+				description "The operational mode or grace period is about to expire.";
+			}
+
+			enum "EXPIRED" {
+				value 3;
+				description "The operational mode or grace period has expired.
+
+Note: The state is not applicable to all operational modes.";
+			}
+
+		}
+
+		description
+		"Operational modes activation states and License Manager grace period.";
+	}
+
+	typedef "LmFeatureState" {
+		type enumeration {
+			enum "DEACTIVATED" {
+				value 0;
+			}
+
+			enum "ACTIVATED" {
+				value 1;
+			}
+
+		}
+
+		description
+		"Indicates whether or not a certain feature is administratively activated.";
+	}
+
+	typedef "LmLicenseState" {
+		type enumeration {
+			enum "DISABLED" {
+				value 0;
+				description
+				"There is no valid license available for the feature or capacity.";
+			}
+
+			enum "ENABLED" {
+				value 1;
+				description
+				"There is valid license available for the feature or capacity.";
+			}
+
+		}
+
+		description "The license state of a resource.";
+	}
+
+	typedef "LmServiceState" {
+		type enumeration {
+			enum "INOPERABLE" {
+				value 0;
+			}
+
+			enum "OPERABLE" {
+				value 1;
+			}
+
+		}
+
+		description
+		"Whether a certain service is operable or not based on license and feature states.";
+	}
+
+	typedef "LmPercentageType" {
+		type uint8 {
+			range "0..100";
+		}
+
+		description
+		"Defines numeric data type with range 0..100 to express percentage.";
+	}
+
+	typedef "EcimPasswordString" {
+		type string;
+		description "This type enables secure handling of passwords.";
+	}
+
+	grouping "Lm" {
+		description
+		"Supports activities and contains information related to license management.";
+		leaf "lmId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "fingerprint" {
+			type string;
+			mandatory true;
+			description "The unique identification of the Managed Element.";
+		}
+
+		leaf "fingerprintUpdateable" {
+			type boolean;
+			mandatory true;
+			config true;
+			description
+			"Indicates whether or not the fingerprint of the Managed Element can be updated.";
+		}
+
+		leaf "lmState" {
+			type ECIM_LM:LmState;
+			mandatory true;
+			config true;
+			description "The current operational state of the License Manager.";
+		}
+
+		leaf "lastInventoryChange" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			config true;
+			description "Date and time of the last change in the license inventory.
+
+Change in the license inventory may occur when the key file is updated on the Managed Element or when license information is refreshed by synchronizing with license servers.";
+		}
+
+		leaf "lastLicenseInventoryRefresh" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			config true;
+			description
+			"Date and time when License Manager last synchronized the license inventory of the Managed Element.";
+		}
+
+		leaf "referenceToLicenseServer" {
+			type string;
+			config true;
+			description "Reference to the primary license server used by the License Manager.
+
+For instance, the reference can contain the IP address of the server or locate its configuration interface. The attribute value is NULL if the License Manager does not rely on any license server.";
+		}
+
+	}
+
+	grouping "FeatureKey" {
+		description
+		"Key of a licensed feature that is available for the Managed Element.";
+		leaf "featureKeyId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "state" {
+			type string {
+				pattern "(.*=.*,)*FeatureState=.*";
+			}
+
+			config true;
+			description "State information for the feature associated with this key.";
+		}
+
+		leaf "name" {
+			type string;
+			mandatory true;
+			config true;
+			description "The name of the feature represented by the key.";
+		}
+
+		leaf "validFrom" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			config true;
+			description "The date and time from which the key is valid.";
+		}
+
+		leaf "expiration" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "The key expiry date and time.
+
+For perpetual keys, the value is NULL.";
+		}
+
+		leaf "shared" {
+			type boolean;
+			config true;
+			description "Indicates whether the key is shared among Managed Elements or dedicated to the Managed Element.
+
+A key is dedicated to the Managed Element if the key can be used only by the Managed Element. This is always the case when the ELIM format is used. A key can be shared among multiple Managed Elements if it is installed on a License Server to which multiple Managed Elements connect.";
+		}
+
+		leaf "keyId" {
+			type string;
+			config true;
+			description "Identity of the feature under license control.
+
+E.g., CXC4011234, FAT1021234";
+		}
+
+		leaf "productType" {
+			type string;
+			config true;
+			description "Identifier of the type of product to which the capacity is related.
+
+This attribute is used only in systems where the different applications use separate key files to identify which application or product the capacity belongs to, e.g. “SASN”, “GSN_GGSN”, “SSR 8000”.";
+		}
+
+	}
+
+	grouping "CapacityKey" {
+		description
+		"Key of a licensed capacity that is available for the Managed Element.";
+		leaf "capacityKeyId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		list "licensedCapacityLimit" {
+			min-elements 1;
+			max-elements 1;
+			config true;
+			description
+			"Licensed capacity limit as defined in the installed key file.";
+			uses ECIM_LM:LmCapacityValue;
+		}
+
+		leaf "capacityUnit" {
+			type string;
+			mandatory true;
+			config true;
+			description "The licensed capacity measuring unit.";
+		}
+
+		leaf "grantedCapacityLevel" {
+			type int32;
+			mandatory true;
+			config true;
+			description "The capacity level currently granted by the License Manager.
+
+The attribute value is based on requests and releases of capacity units made by License Users. If such requests and releases are not made by License Users, the value of the attribute defaults to the licensed capacity limit. Note: The value of the attribute is not based on Performance Management data.
+";
+		}
+
+		leaf "licensedCapacityLimitReached" {
+			type boolean;
+			mandatory true;
+			config true;
+			description
+			"Indicates whether or not current capacity usage reaches the licensed capacity limit.";
+		}
+
+		leaf "state" {
+			type string {
+				pattern "(.*=.*,)*CapacityState=.*";
+			}
+
+			config true;
+			description "State information for the capacity associated with this key.";
+		}
+
+		leaf "name" {
+			type string;
+			mandatory true;
+			config true;
+			description "The name of the feature represented by the key.";
+		}
+
+		leaf "validFrom" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			config true;
+			description "The date and time from which the key is valid.";
+		}
+
+		leaf "expiration" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "The key expiry date and time.
+
+For perpetual keys, the value is NULL.";
+		}
+
+		leaf "shared" {
+			type boolean;
+			config true;
+			description "Indicates whether the key is shared among Managed Elements or dedicated to the Managed Element.
+
+A key is dedicated to the Managed Element if the key can be used only by the Managed Element. This is always the case when the ELIM format is used. A key can be shared among multiple Managed Elements if it is installed on a License Server to which multiple Managed Elements connect.";
+		}
+
+		leaf "keyId" {
+			type string;
+			config true;
+			description "Identity of the feature under license control.
+
+E.g., CXC4011234, FAT1021234";
+		}
+
+		leaf "productType" {
+			type string;
+			config true;
+			description "Identifier of the type of product to which the capacity is related.
+
+This attribute is used only in systems where the different applications use separate key files to identify which application or product the capacity belongs to, e.g. “SASN”, “GSN_GGSN”, “SSR 8000”.";
+		}
+
+	}
+
+	grouping "LmCapacityValue" {
+		description "Defines a capacity value.";
+		leaf "value" {
+			type int32;
+			description "The capacity value.
+
+The value is invalid if noLimit=true.";
+		}
+
+		leaf "noLimit" {
+			type boolean;
+			mandatory true;
+			description
+			"True if the value is unlimited, false if the value is defined by attribute value.";
+		}
+
+	}
+
+	grouping "EmergencyUnlock" {
+		description "Emergency Unlock state information.";
+		leaf "emergencyUnlockId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "activationState" {
+			type ECIM_LM:LmActivationState;
+			mandatory true;
+			config true;
+			description "Activation state of Emergency Unlock.";
+		}
+
+		leaf "expiration" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "Expiry date and time of Emergency Unlock.
+
+The value is NULL if the activation state is INACTIVE.";
+		}
+
+		leaf "activationsLeft" {
+			type uint8;
+			mandatory true;
+			config true;
+			description "Remaining allowed Emergency Unlock activations left.";
+		}
+
+	}
+
+	grouping "IntegrationUnlock" {
+		description "Integration Unlock state information.";
+		leaf "integrationUnlockId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "activationState" {
+			type ECIM_LM:LmActivationState;
+			mandatory true;
+			config true;
+			description "Activation state of Integration Unlock.";
+		}
+
+		leaf "expiration" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "Expiry date and time of Integration Unlock.
+
+The value is NULL if the activation state is INACTIVE.";
+		}
+
+		leaf "activationsLeft" {
+			type uint8;
+			mandatory true;
+			config true;
+			description "Remaining allowed Integration Unlock activations left.";
+		}
+
+	}
+
+	grouping "MaintenanceUnlock" {
+		description "Maintenance Unlock state information.";
+		leaf "maintenanceUnlockId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "activationState" {
+			type ECIM_LM:LmActivationState;
+			mandatory true;
+			config true;
+			description "Maintenance Unlock activation state.";
+		}
+
+		leaf "expiration" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "Expiry date and time of Maintenance Unlock.
+
+The value is NULL if the activation state is INACTIVE.";
+		}
+
+		leaf "activationsLeft" {
+			type uint8;
+			mandatory true;
+			config true;
+			description "Remaining allowed Maintenance Unlock activations left.";
+		}
+
+	}
+
+	grouping "SystemTriggeredUnlock" {
+		description "System Triggered Unlock state information.";
+		leaf "systemTriggeredUnlockId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "activationState" {
+			type ECIM_LM:LmActivationState;
+			mandatory true;
+			config true;
+			description "System Triggered Unlock activation state.";
+		}
+
+		leaf "expiration" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "Expiry date and time of System Triggered Unlock.
+
+The value is NULL if the activation state is INACTIVE.";
+		}
+
+	}
+
+	grouping "AutonomousMode" {
+		description "Autonomous Mode state information.";
+		leaf "autonomousModeId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "activationState" {
+			type ECIM_LM:LmActivationState;
+			mandatory true;
+			config true;
+			description "Autonomous Mode activation state.";
+		}
+
+		leaf "expiration" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			config true;
+			description "Expiry date and time of Autonomous Mode.
+
+The value is NULL if the activation state is INACTIVE.";
+		}
+
+	}
+
+	grouping "GracePeriod" {
+		description "Grace period information of the associated capacity.";
+		leaf "gracePeriodId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "gracePeriodState" {
+			type ECIM_LM:LmActivationState;
+			mandatory true;
+			config true;
+			description "Grace period state of the capacity.";
+		}
+
+		leaf "gracePeriodExpiration" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "Expiry date and time of the grace period.
+
+The value is NULL if grace-period state is inactive.";
+		}
+
+	}
+
+	grouping "KeyFileManagement" {
+		description
+		"Enables installation of key files and provides information about the installed key file.";
+		leaf "keyFileManagementId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		list "reportProgress" {
+			key "actionId";
+			max-elements 1;
+			config true;
+			description
+			"Reference to the progress report including the result of the initiated key file installation.";
+			uses ECIM_CommonLibrary:AsyncActionProgress;
+		}
+
+	}
+
+	grouping "KeyFileInformation" {
+		description
+		"Basic information about the key file installed on the Managed Element.";
+		leaf "keyFileInformationId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "sequenceNumber" {
+			type int32;
+			mandatory true;
+			config true;
+			description "Sequence number of the key file.
+
+If sequence number is not available, this value is 0.
+";
+		}
+
+		leaf "installationTime" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			config true;
+			description
+			"Date and time when key file was installed on the Managed Element.";
+		}
+
+		leaf "locatable" {
+			type boolean;
+			mandatory true;
+			config true;
+			description
+			"Indicates whether or not the key file can currently be located.";
+		}
+
+		leaf "productType" {
+			type string;
+			config true;
+			description "Identifier of the product type to which the capacity is related.
+
+This attribute is used only in systems where different applications use separate key files to identify to which application or product the capacity belongs, e.g: SASN, GSN_GGSN, or SSR 8000.";
+		}
+
+	}
+
+	grouping "WarningThreshold" {
+		description "Warning threshold information of the associated capacity.";
+		leaf "warningThresholdId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "warningThreshold" {
+			type ECIM_LM:LmPercentageType;
+			mandatory true;
+			description "Defines the capacity usage level at which an alarm is raised.
+
+The threshold is expressed in terms of percentage in range 0-100, where 90 is default value.";
+		}
+
+		leaf "warningThresholdReached" {
+			type boolean;
+			mandatory true;
+			config true;
+			description
+			"Indicates whether or not current capacity usage reaches warning threshold.";
+		}
+
+	}
+
+	grouping "FeatureState" {
+		description
+		"This MO class defines different licensing-related states of a feature.";
+		leaf "featureStateId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "featureState" {
+			type ECIM_LM:LmFeatureState;
+			mandatory true;
+			description
+			"Indicates whether or not the feature is administratively activated.";
+		}
+
+		leaf "licenseState" {
+			type ECIM_LM:LmLicenseState;
+			mandatory true;
+			config true;
+			description
+			"Indicates whether or not a valid license key enables the feature usage.";
+		}
+
+		leaf "serviceState" {
+			type ECIM_LM:LmServiceState;
+			mandatory true;
+			config true;
+			description "Indicates whether or not the service is operational.
+
+The value of serviceState is derived from featureState and licenseState. If featureState is ACTIVATED and licenseState is ENABLED, serviceState is OPERABLE. In all other cases, serviceState is INOPERABLE.";
+		}
+
+		leaf "description" {
+			type string;
+			mandatory true;
+			config true;
+			description "The description of the feature.";
+		}
+
+		leaf-list "featureKey" {
+			type string {
+				pattern "(.*=.*,)*FeatureKey=.*";
+			}
+
+			config true;
+			description "Key instances associated with this feature.";
+		}
+
+		leaf "keyId" {
+			type string;
+			mandatory true;
+			config true;
+			description "Identity of the feature under license control.
+
+E.g., CXC4011234, FAT1021234";
+		}
+
+	}
+
+	grouping "CapacityState" {
+		description "States of capacities that are supported by a Managed Element.";
+		leaf "capacityStateId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "licenseState" {
+			type ECIM_LM:LmLicenseState;
+			mandatory true;
+			config true;
+			description
+			"Indicates whether or not a valid license key enables the capacity usage.";
+		}
+
+		leaf "description" {
+			type string;
+			mandatory true;
+			config true;
+			description "The description of the capacity.";
+		}
+
+		leaf-list "capacityKey" {
+			type string {
+				pattern "(.*=.*,)*CapacityKey=.*";
+			}
+
+			config true;
+			description "Key instances associated with this capacity.";
+		}
+
+		leaf "keyId" {
+			type string;
+			mandatory true;
+			config true;
+			description "Identity of the feature under license control.
+
+E.g., CXC4011234, FAT1021234";
+		}
+
+		list "currentCapacityLimit" {
+			min-elements 1;
+			max-elements 1;
+			config true;
+			description
+			"Licensed capacity limit as defined by the currently valid license key.";
+			uses ECIM_LM:LmCapacityValue;
+		}
+
+		leaf "capacityUnit" {
+			type string;
+			mandatory true;
+			config true;
+			description "The licensed capacity measuring unit.";
+		}
+
+		leaf "grantedCapacityLevel" {
+			type int32;
+			mandatory true;
+			config true;
+			description "The capacity level currently granted by the License Manager.
+
+The attribute value is based on requests and releases of capacity units made by License Users. If such requests and releases are not made by License Users, the value of the attribute defaults to the licensed capacity limit. Note: The value of the attribute is not based on Performance Management data.
+";
+		}
+
+		leaf "licensedCapacityLimitReached" {
+			type boolean;
+			mandatory true;
+			config true;
+			description
+			"Indicates whether or not current capacity usage reaches the licensed capacity limit.";
+		}
+
+		leaf "featureState" {
+			type ECIM_LM:LmFeatureState;
+			description "State of the optional capability feature";
+		}
+
+		leaf "serviceState" {
+			type ECIM_LM:LmServiceState;
+			config true;
+			description "Service state of the optional capability feature";
+		}
+
+	}
+
+}

@@ -1,0 +1,2705 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Jan 21, 2013 5:13:10 PM using:
+	* com.ericsson.ecim.m2m 2.6.0.qualifier
+	* com.ericsson.ecim.dsl 2.6.0.qualifier
+	* com.ericsson.ecim.edm 2.6.0.qualifier
+-->
+<!--
+This file was automatically generated from RSD
+-->
+<!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>D</dtdVersion>
+  <momMetaData>
+    <momTitle>WRAT Managed Object Model</momTitle>
+    <momSubTitle/>
+    <momIdentity>
+      <docNum>1/155 54-FAY 101 150/1</docNum>
+      <docLang>Uen</docLang>
+      <docRev>PA1</docRev>
+      <docDate>Thu Dec 20 10:25:00 CET 2012</docDate>
+    </momIdentity>
+    <createdBy>
+      <signature>xrsmark</signature>
+      <name/>
+    </createdBy>
+    <approvedBy>
+      <signature/>
+      <name/>
+    </approvedBy>
+  </momMetaData>
+  <mim name="WRAT_MODEL_A" version="1" release="10" author="epetoma" date="Thu Dec 20 10:25:00 CET 2012" revision="PA1">
+    <applicationTag>Based on the RBS Application MOM rev. BF</applicationTag>
+    <copyright>
+      <company>Ericsson AB 2011</company>
+      <year>2011</year>
+      <disclaimer>The contents of this document are subject to revision without notice due to continued progress in methodology, design and manufacturing. Ericsson shall have no liability for any error or damage of any kind resulting from the use of this document.</disclaimer>
+    </copyright>
+    <mimParts>
+      <mimPart>
+        <name>CommonDefinitions</name>
+        <label>EMX_BUILD_LABEL_NOT_DEFINED</label>
+        <label>MOM-CPP-C13-LSV94</label>
+      </mimPart>
+    </mimParts>
+    <struct name="SfpInformation">
+      <description>Gives information about the SFP port. Only valid if the attribute sfpPort is true.</description>
+      <structMember name="sfpProductNumber">
+        <description>The product number of an SFP module.
+</description>
+        <string/>
+      </structMember>
+      <structMember name="sfpType">
+        <description>The type of SFP.
+
+Example: GE_1000_BASE_T  or GE_1000_BASE_CX.
+</description>
+        <string/>
+      </structMember>
+      <structMember name="sfpState">
+        <description>The state of the SFP port.
+</description>
+        <enumRef name="SfpState"/>
+      </structMember>
+    </struct>
+    <struct name="AccountInfo">
+      <description>Accounting information</description>
+      <structMember name="remoteHost">
+        <description>The domain name, IPv4 or IPv6 address to the remote host (file server).
+
+The input format for an IPv4 address is four fields of digits, separated by a dot. Each field consists of one to three digits.
+
+The input format for an IPv6 address is as defined in specification RFC 4291, chapter 2.2, bullet 1 and 2.
+
+The input format for a domain name is as defined in specification RFC 952.
+When address resolution is requested and the DNS server responds with a list of resolved addresses, the first address presented by the DNS server is used by this attribute. Note that you need to configure a name-to-IP-address association in the DNS server, with an address that belongs to the correct address family. This means that a host name defininition in the DNS server should not mix IPv4 and IPv6 addresses. Instead, use two separate host names: one that resolves to the IPv4 address and one that resolves to IPv6 address.</description>
+        <string>
+          <lengthRange>
+            <max>255</max>
+            <min>0</min>
+          </lengthRange>
+        </string>
+      </structMember>
+      <structMember name="userID">
+        <description>User ID for logging in to the remote host (file server).
+</description>
+        <string>
+          <lengthRange>
+            <max>21</max>
+            <min>1</min>
+          </lengthRange>
+        </string>
+      </structMember>
+      <structMember name="password">
+        <description>Password used for logging in to the remote host (file server).
+</description>
+        <string>
+          <lengthRange>
+            <max>21</max>
+            <min>1</min>
+          </lengthRange>
+        </string>
+      </structMember>
+    </struct>
+    <struct name="AdminProductData">
+      <description>Administrative Product Data</description>
+      <structMember name="productNumber">
+        <description>The product number of the product or document.
+
+Examples: ABC 101 001, CXC 123 456, 1/BFD 101 999
+
+For UpgradePackage, this is the document number of the upgrade package.
+
+Maximum length for a product number is 36 when referring to a document.
+
+The product number is mandatory for the MOs: ConfigurationVersion, UpgradePackage, LoadModule, PiuType, Subrack and SubrackProdType.
+</description>
+        <string>
+          <lengthRange>
+            <max>24</max>
+            <min>1</min>
+          </lengthRange>
+        </string>
+      </structMember>
+      <structMember name="productRevision">
+        <description>The revision state of the product.
+
+Examples: R1, r1a, R1A02, P7B
+
+The product revision is mandatory for the MOs: ConfigurationVersion, UpgradePackage, LoadModule, PiuType, Subrack and SubrackProdType.
+</description>
+        <string>
+          <lengthRange>
+            <max>7</max>
+            <min>1</min>
+          </lengthRange>
+        </string>
+      </structMember>
+      <structMember name="productName">
+        <description>The name of the product.
+
+The product name is mandatory for the MOs: ConfigurationVersion, UpgradePackage, LoadModule, PiuType, Subrack and SubrackProdType.
+</description>
+        <string>
+          <lengthRange>
+            <max>12</max>
+            <min>1</min>
+          </lengthRange>
+        </string>
+      </structMember>
+      <structMember name="productInfo">
+        <description>Information about the product.
+
+If AdminProductData is used by LoadModule the range is 0.. (unlimited).
+</description>
+        <string>
+          <lengthRange>
+            <max>13</max>
+            <min>0</min>
+          </lengthRange>
+          <defaultValue>&quot;&quot;</defaultValue>
+        </string>
+      </structMember>
+      <structMember name="productionDate">
+        <description>The production date is represented in two ways:
+
+- the preferred syntax is four-digits for the year, two digits for the month, and two digits for the day, a total of eight characters.
+Example: 19991231
+
+- the date is also be represented by two digits for the year, followed by the letter W for week, and two digits for the number of the week, a total of five characters.
+Example: 99W52
+
+The production date is mandatory for the MOs: ConfigurationVersion, UpgradePackage and LoadModule.
+</description>
+        <string>
+          <lengthRange>
+            <max>8</max>
+            <min>0</min>
+          </lengthRange>
+          <defaultValue>&quot;&quot;</defaultValue>
+        </string>
+      </structMember>
+    </struct>
+    <struct name="EulOptimalNoiseFloorLockDataStruct">
+      <structMember name="eulNoiseFloorLock">
+        <description>When set to true, locks the noise floor level. Used in conjunction with eulOptimalNoiseFloorEstimate to be able to lock the noise floor level to either the current level, when eulOptimalNoiseFloorEstimate is set to -1 (= undefined) or to a value defined in eulOptimalNoiseFloorEstimate.
+</description>
+        <boolean>
+          <defaultValue>false</defaultValue>
+        </boolean>
+      </structMember>
+      <structMember name="eulOptimalNoiseFloorEstimate">
+        <description>Used in conjunction with eullNoiseFloorLock to be able to lock the noise floor level to either the current level, when eulOptimalNoiseFloorEstimate is set to -1 (=undefined value), or to a value defined in eulOptimalNoiseFloorEstimate.
+</description>
+        <long>
+          <range>
+            <max>-1</max>
+            <min>-1150</min>
+            <min>-1</min>
+          </range>
+          <defaultValue>-1040</defaultValue>
+          <unit>dBm</unit>
+          <multiplicationFactor>0.1</multiplicationFactor>
+          <resolution>1</resolution>
+          <undefinedValue>-1</undefinedValue>
+        </long>
+      </structMember>
+    </struct>
+    <struct name="EulDynRotRangeStruct">
+      <structMember name="eulDynRotMin">
+        <description>The minimum RoT level allowed, that is the minimum value allowed for eulMaxRotCoverage and Dynamic RoT Level.
+
+Requirement: DYNROT1_AD_RBS-OSS_3051:00632 Rev A
+</description>
+        <long>
+          <range>
+            <max>550</max>
+            <min>0</min>
+          </range>
+          <defaultValue>50</defaultValue>
+          <unit>dB</unit>
+          <multiplicationFactor>0.1</multiplicationFactor>
+          <resolution>1</resolution>
+        </long>
+      </structMember>
+      <structMember name="eulDynRotMax">
+        <description>The maximum RoT level allowed, that is the maximum value allowed for eulMaxRotCoverage and Dynamic RoT Level.
+
+Requirement: DYNROT1_AD_RBS-OSS_3051:00631 Rev A
+</description>
+        <long>
+          <range>
+            <max>550</max>
+            <min>0</min>
+          </range>
+          <defaultValue>100</defaultValue>
+          <unit>dB</unit>
+          <multiplicationFactor>0.1</multiplicationFactor>
+          <resolution>1</resolution>
+        </long>
+      </structMember>
+    </struct>
+    <enum name="Information">
+      <description>Information about results from upgrade actions.</description>
+      <enumMember name="EXECUTED">
+        <description>The invoked action has been successfully executed without warnings. One of three possible main results of executed action. The other two are:
+EXECUTED_WITH_WARNINGS and EXECUTION_FAILED.
+
+Valid values for type of invoked action:
+INSTALL
+CANCEL_INSTALL
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="UNSPECIFIED">
+        <description>An error or warning that is not specified is detected. See additionalInfo in the structure ActionResultData for further details.
+
+Valid values for type of invoked action:
+INSTALL
+CANCEL_INSTALL
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="LM_CHECKSUM_VER_FAILED">
+        <description>A load module checksum verification has failed.
+
+Value valid for type of invoked action:
+INSTALL
+VERIFY_UPGRADE
+UPGRADE
+</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="NOT_ENOUGH_AVAIL_DISK_SPACE">
+        <description>There is not enough disk space for the required number of new CVs to be created automatically during an upgrade.
+
+Valid values for type of invoked action:
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="MAX_NO_CV_WILL_BE_EXCEEDED">
+        <description>The maximum number of allowed CVs will be exceeded if the required number of new CVs is created automatically during an upgrade.
+
+Valid values for type of invoked action:
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="UPGRADE_FROM_CURRENT_UP_NOT_ALLOWED">
+        <description>The Upgrade Window element in the UCF does not specify the current Upgrade Package as a valid upgrade-from version.
+
+Valid values for type of invoked action:
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>5</value>
+      </enumMember>
+      <enumMember name="NON_SUPPORTED_PIU">
+        <description>A plug-in-unit that is not supported is detected, that is, the plug-in-unit in the node is not defined in the UCF. 
+
+This fault does not prevent an upgrade execution.
+
+Valid values for type of invoked action:
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>6</value>
+      </enumMember>
+      <enumMember name="FAULTY_PIU">
+        <description>  A faulty plug-in-unit has been detected. 
+This fault does not prevent an upgrade execution.
+
+Valid values for type of invoked action:
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>7</value>
+      </enumMember>
+      <enumMember name="CREATION_OF_CV_FAILED">
+        <description>The auto-creation of an install CV failed.
+
+Value valid for type of invoked action:
+INSTALL
+
+</description>
+        <value>8</value>
+      </enumMember>
+      <enumMember name="ACTION_NOT_ALLOWED">
+        <description>The requested action is not allowed as another action is already in progress for another UpgradePackage MO.
+
+Valid values for type of invoked action:
+INSTALL
+CANCEL_INSTALL
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>9</value>
+      </enumMember>
+      <enumMember name="INST_MANUALLY_CANCELLED">
+        <description>An ongoing installation has been cancelled (aborted) due to request from client.
+
+Value valid for type of invoked action:
+INSTALL
+</description>
+        <value>10</value>
+      </enumMember>
+      <enumMember name="FTP_SERVER_NOT_ACCESSIBLE">
+        <description>The FTP server to be used for downloads of load modules is not accessible.
+
+Value valid for type of invoked action:
+INSTALL
+</description>
+        <value>11</value>
+      </enumMember>
+      <enumMember name="INSUF_DISK_FOR_LMS">
+        <description>The required disk space for load modules to be installed is insufficient.
+
+Value valid for type of invoked action:
+INSTALL
+</description>
+        <value>12</value>
+      </enumMember>
+      <enumMember name="FTP_SERVER_IP_ADDR_ERROR">
+        <description>Error detected in the IP address of the FTP server.
+
+Value valid for type of invoked action:
+INSTALL
+</description>
+        <value>13</value>
+      </enumMember>
+      <enumMember name="DELTA_INSTALL_MERGE_ERROR">
+        <description>The install of the delta UCF failed, that is, the analysis of the delta UCF with the current active UP's UCF failed.
+
+Valid value for type of invoked action:
+INSTALL</description>
+        <value>14</value>
+      </enumMember>
+      <enumMember name="SELECTIVE_INSTALL_ERROR">
+        <description>Error detected during the selection phase of an install.
+
+Value valid for type of invoked action:
+INSTALL
+
+
+</description>
+        <value>15</value>
+      </enumMember>
+      <enumMember name="EXECUTION_FAILED">
+        <description>The execution of invoked action failed. One of three possible main results of executed action. The other two are:
+EXECUTED and EXECUTED_WITH_WARNINGS.
+
+Valid values for type of invoked action:
+INSTALL
+CANCEL_INSTALL
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>16</value>
+      </enumMember>
+      <enumMember name="EXECUTED_WITH_WARNINGS">
+        <description>The action has been successfully executed but with warnings.One of three possible main results of executed action. The other two are:
+EXECUTED and EXECUTION_FAILED.
+
+Valid values for type of invoked action:
+INSTALL
+CANCEL_INSTALL
+VERIFY_UPGRADE</description>
+        <value>17</value>
+      </enumMember>
+      <enumMember name="LM_FILES_NOT_INST">
+        <description>All load module files required for a supported plug-in-unit (according to the UCF) are not installed.
+
+Valid values for type of invoked action:
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>18</value>
+      </enumMember>
+      <enumMember name="NOT_SUPPORTED_SUBRACK_TYPE">
+        <description>A subrack that is not supported is detected, that is, the subrack in the node is not defined in the UCF. This will prevent an upgrade from being executed. </description>
+        <value>19</value>
+      </enumMember>
+      <enumMember name="SLOT_OF_PIU_NOT_CONNECTED_TO_SWA">
+        <description>A Slot related to a plug-in-unit is not connected to an SwAllocation.
+
+Valid values for type of invoked action:
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>20</value>
+      </enumMember>
+      <enumMember name="LM_TYPE_NOT_ALLOWED">
+        <description>ManagedObject(s) will be connected (via an SwAllocation) to Repertoire(s) referencing load modules of not allowed types. Both configured data and data in the UCF has been used to predict the SwAllocation connections during upgrade.
+
+Valid values for type of invoked action:
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>21</value>
+      </enumMember>
+      <enumMember name="PIUTYPE_NOT_UNIQUE">
+        <description>Several SwAllocations connected to the same Slot define the same PiuType.
+
+Valid values for type of invoked action:
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>22</value>
+      </enumMember>
+      <enumMember name="PIUTYPE_LOADLIST_INCONSISTENT">
+        <description>All Repertoires in a SwAllocation do not support the same set of PiuTypes.
+
+Valid values for type of invoked action:
+VERIFY_UPGRADE
+ UPGRADE</description>
+        <value>23</value>
+      </enumMember>
+      <enumMember name="PROGRAM_INSTANCES_INCONSISTENT">
+        <description>The result of combining UCF data for program instance values with how repertoires are connected to an upgradeable PIU is inconsistent. 	
+	
+Valid values for type of invoked action:	
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>24</value>
+      </enumMember>
+      <enumMember name="HEAP_SIZE_INCONSISTENT">
+        <description>The result of combining UCF data for heap size values with how repertoires are connected to an upgradeable PIU is inconsistent. 	
+	
+Valid values for type of invoked action:	
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>25</value>
+      </enumMember>
+      <enumMember name="POOL_SIZE_INCONSISTENT">
+        <description>The result of combining UCF data for pool size values with how repertoires are connected to an upgradeable PIU is inconsistent. 	
+	
+Valid values for type of invoked action:	
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>26</value>
+      </enumMember>
+      <enumMember name="LOADER_DATA_INCONSISTENT">
+        <description>The result of combining UCF data for loader type and device loader name with how repertoires are connected to an upgradeable PIU is inconsistent. 	
+	
+Valid values for type of invoked action:	
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>27</value>
+      </enumMember>
+      <enumMember name="DEVICE_LOADER_INFORMATION_INCONSISTENT">
+        <description>The result of combining UCF data for device loader information with how repertoires are connected to an upgradeable PIU is inconsistent. 	
+	
+Valid values for type of invoked action:	
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>28</value>
+      </enumMember>
+      <enumMember name="LOADER_TYPE_NOT_ALLOWED_FOR_PARENT_MO">
+        <description>The result of combining UCF data for loader type with how repertoires are connected to an upgradeable PIU is inconsistent. 	
+	
+Valid values for type of invoked action:
+VERIFY_UPGRADE
+UPGRADE</description>
+        <value>29</value>
+      </enumMember>
+      <enumMember name="ACTION_NOT_ALLOWED_IF_MORE_THAN_ONE_UP">
+        <description>The action is not allowed if more than one UP exists on node.</description>
+        <value>30</value>
+      </enumMember>
+      <enumMember name="ACTION_ALLOWED_ONLY_IF_UP_HWSENSITIVE">
+        <description>The action is allowed only if the attribute actualTypeOfUP indicates that the UP type is HW_SENSITIVE and if the UP type in all referring CVs are of type HW_SENSITIVE.</description>
+        <value>31</value>
+      </enumMember>
+      <enumMember name="ACTION_ALLOWED_ONLY_FOR_CURRENT_UP">
+        <description>The action is only allowed for current (active) UP.</description>
+        <value>32</value>
+      </enumMember>
+      <enumMember name="REMOVED_LM_FILES">
+        <description>The load module files that have been removed.</description>
+        <value>33</value>
+      </enumMember>
+      <enumMember name="REMOVED_LM_FILES_XML_FILE">
+        <description>An XML file that contains information of load module files that have been removed.</description>
+        <value>34</value>
+      </enumMember>
+      <enumMember name="REFERRING_CV_INFO">
+        <description>Information about the CVs, where this UpgradePackage MO exists.</description>
+        <value>35</value>
+      </enumMember>
+      <enumMember name="UCF_VALIDATION_ERROR">
+        <description>There is syntax or format problem detected in the UCF.</description>
+        <value>36</value>
+      </enumMember>
+      <enumMember name="INIT_UP_ERROR">
+        <description>Initialitation of the Upgrade Package Mo failed i.e. the setting of an attribute in the UpgradePackageMo with data specfied in the UCF failed.</description>
+        <value>37</value>
+      </enumMember>
+      <enumMember name="AUE_REPORTED_FAILURE">
+        <description>An AUE has reported failure or has not answered within an expected time.</description>
+        <value>38</value>
+      </enumMember>
+      <enumMember name="AUE_REPORTED_WARNING">
+        <description>An AUE has reported warning.</description>
+        <value>39</value>
+      </enumMember>
+      <enumMember name="LACK_OF_DISK_SPACE_ON_C_DISK">
+        <description>There is not enough with disk space for the required Load Module files to be installed.</description>
+        <value>40</value>
+      </enumMember>
+      <enumMember name="NO_NODE_TYPE_LIST_FOUND_THAT_MATCHES_USED_PIUS">
+        <description>Not all used PIUs in the node are supported by a specific node type according to the Upgrade Control File.</description>
+        <value>41</value>
+      </enumMember>
+      <enumMember name="DISK_HEALTH_CHECK_FAILURE">
+        <description>Error(s) detected during disk health check, such as: corrupt file system, configuration version(s) and/or upgrade package(s).</description>
+        <value>42</value>
+      </enumMember>
+      <enumMember name="MISMATCHED_LM_PATH">
+        <description>The LM file path in the UCF is not matches the one configured in the node.</description>
+        <value>43</value>
+      </enumMember>
+      <enumMember name="REPERTOIRE_REPLACEMENT_ERROR_DETECTED">
+        <description>Repertoire replacement definitions in the ExplicitReplacment UCF are not consistent i.e. depending on selected upgrade action.</description>
+        <value>44</value>
+      </enumMember>
+    </enum>
+    <enum name="InvokedAction">
+      <description>The invoked action.</description>
+      <enumMember name="VERIFY_UPGRADE">
+        <description>The verifyUpgrade action has been invoked.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="UPGRADE">
+        <description>An upgrade action (one of the variants) has been invoked.</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="INSTALL">
+        <description>An install action (one of the variants) has been invoked.</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="CANCEL_INSTALL">
+        <description>The cancelInstall action has been invoked.</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="SHRINK">
+        <description>The shrink action has been invoked.</description>
+        <value>5</value>
+      </enumMember>
+      <enumMember name="READREFERRINGCVINFORMATION">
+        <description>The readReferringCvInformation action has been invoked.</description>
+        <value>6</value>
+      </enumMember>
+      <enumMember name="RESTORE_SU">
+        <description>The restoreSu action has been invoked.</description>
+        <value>7</value>
+      </enumMember>
+    </enum>
+    <enum name="EmergencyStatus">
+      <description>This enumeration specifies the different stages of the emergency state.</description>
+      <enumMember name="NEVER_USED">
+        <description>EmergencyStatus has not been activated since installation of the LKF.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="ACTIVE">
+        <description>EmergencyStatus goes from NEVER_USED to ACTIVE, the first time the node is emergency-unlocked. The licenses are open for the emergency state as described in the documentation about licensing. The maximum time in this state is 7 days. After expiry, EmergencyStatus goes to USE_DEGRADED. EmergencyStatus goes from ACTIVE to NEVER_USED when the LKF is installed with emergency unlock reset.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="USE_DEGRADED">
+        <description>EmergencyStatus goes to USE_DEGRADED from ACTIVE. 
+All features and capacities are license-controlled in accordance with the installed LKF. 
+
+EmergencyStatus remains in USE_DEGRADED until:
+an emergency unlock of the node and EmergencyStatus goes to ACTIVE_AGAIN or,
+an LKF is installed with an entry, emergency unlock reset. Then EmergencyStatus goes to NEVER_USED. </description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="ACTIVE_AGAIN">
+        <description>The EmergencyStatus goes from USE_DEGRADED to ACTIVE_AGAIN at emergency unlock of  the node. The licenses are open for the emergency state as described in the documentation about licensing. The maximum time in this state is 7 days. After expiry the EmergencyStatus goes from ACTIVE_AGAIN to USE_DISABLED. The EmergencyStatus goes from ACTIVE_AGAIN to NEVER_USED at installation of an emergency unlock reset LKF.</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="USE_DISABLED">
+        <description>The EmergencyStatus goes to USE_DISABLED from ACTIVE_AGAIN. 
+All features and capacities are license-controlled in accordance with the installed LKF. 
+The node remains in USE_DISABLED until an LKF with the entry, emergency unlock reset, is installed. Then it goes to NEVER_USED.</description>
+        <value>4</value>
+      </enumMember>
+    </enum>
+    <enum name="SeqRestarts">
+      <description>The sequential restarts.</description>
+      <enumMember name="RESTARTS_WITH_NO_LIMITS">
+        <description>This attributes indicates unlimited restarts and no faulty marking of the PIU. Used for critical PIU's such as TUBs, SCBs and some ET-boards.
+
+</description>
+        <value>-1</value>
+      </enumMember>
+      <enumMember name="RESTARTS_WITH_FAULT_MARKED">
+        <description>This attributes indicates the following sequential restarts:
+-cold with fault marked (not loaded). Alarm sent.
+</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="RESTARTS_WITH_COLD_TEST">
+        <description>This attributes indicates the following sequential restarts:
+-cold with test
+-cold with fault marked (not loaded). Alarm sent. 
+</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="RESTARTS_WITH_COLD">
+        <description>This attributes indicates the following sequential restarts:
+-cold
+-cold with test
+-cold with fault marked (not loaded). Alarm sent. 
+</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="RESTARTS_WITH_WARM">
+        <description>This attributes indicates the following sequential restarts:
+-warm
+-cold
+-cold with test
+-cold with fault marked (not loaded). Alarm sent. 
+</description>
+        <value>3</value>
+      </enumMember>
+    </enum>
+    <enum name="SilPortState">
+      <description>Indication of Switch Internal Link port status.</description>
+      <enumMember name="PORT_ACTIVE">
+        <description>The port is active.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="PORT_PASSIVE">
+        <description>The port is not active.</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="PORT_NOT_CONNECTED">
+        <description>The port is not connected.</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="PORT_LOCKED">
+        <description>The port is locked.</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="PORT_NOT_INSTALLED">
+        <description>The post is not installed.</description>
+        <value>5</value>
+      </enumMember>
+    </enum>
+    <enum name="RestartRank">
+      <description>This is used in the manualRestart action for the MOs ManagedElement, PlugInUnit and PiuDevice.</description>
+      <enumMember name="RESTART_WARM">
+        <description>Restarts the MO with the same software. The software is not reloaded from the disk. The traffic is affected least.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="RESTART_REFRESH">
+        <description>Reloads the software from the disk, restarts the MO, and resets parts of the hardware. The traffic is affected more than for a warm restart.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="RESTART_COLD">
+        <description>Reloads the software from the disk, restarts the MO, and resets all hardware. The traffic is affected more than for a refresh restart.</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="RESTART_COLDWTEST">
+        <description>Reloads the software from the disk, restarts the MO, and resets and tests the hardware. The traffic is affected most.</description>
+        <value>3</value>
+      </enumMember>
+    </enum>
+    <enum name="AdmState">
+      <description>Administrative states.</description>
+      <enumMember name="LOCKED">
+        <description>The resource is administratively prohibited from performing services for its users. </description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="UNLOCKED">
+        <description>The resource is administratively permitted to perform services for its users. This is independent of its inherent operability.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="SHUTTING_DOWN">
+        <description>Use of the resource is administratively permitted to existing instances of use only. While the system remains in the shutting down state the manager may at any time cause the managed object to revert to the unlocked state.</description>
+        <value>2</value>
+      </enumMember>
+    </enum>
+    <enum name="AvailabilityStatus">
+      <description>Indicates possible status values of a corresponding availabilityStatus attribute. Since more than one status may be present at the same time while only one is shown, they are shown in the following order of priority (highest first):
+
+NOT_INSTALLED
+POWER_OFF
+IN_TEST
+DEPENDENCY_LOCKED
+DEPENDENCY_FAILED
+FAILED
+OFF_LINE
+DEGRADED
+OFF_DUTY
+LOG_FULL
+NO_STATUS</description>
+      <enumMember name="NO_STATUS">
+        <description>No other availability status for this resource is currently present.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="IN_TEST">
+        <description>The resource is undergoing a test procedure. Tests that do not exclude additional users can be present in any operational state or administrative state.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="FAILED">
+        <description>The resource has an internal fault that prevents it from operating. The operational state is disabled.</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="POWER_OFF">
+        <description>The resource requires power to be applied and is not powered on. The operational state is disabled.</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="OFF_LINE">
+        <description>The resource requires a routine operation to be performed to place it online and make it available for use. The operation may be manual, automatic, or both. The operational state is disabled or enabled.</description>
+        <value>8</value>
+      </enumMember>
+      <enumMember name="OFF_DUTY">
+        <description>The resource has been made inactive by some internal control process in accordance with a predetermined time schedule. Under normal conditions the control process can be expected to reactivate the resource at some scheduled time, and it is therefore considered to be optional. The operational state is enabled or disabled.</description>
+        <value>16</value>
+      </enumMember>
+      <enumMember name="DEGRADED">
+        <description>The service available from the resource is degraded in some respect, such as in speed or operating capacity. However, the resource remains available for service, either because some services are satisfactory or because degraded service is preferable to no service at all. The operational state is enabled.</description>
+        <value>64</value>
+      </enumMember>
+      <enumMember name="NOT_INSTALLED">
+        <description>The resource represented by the managed object is not present, or is incomplete. For example, a plug-in unit is missing, a cable is disconnected, or a software module is not loaded. The operational state is disabled.</description>
+        <value>128</value>
+      </enumMember>
+      <enumMember name="LOG_FULL">
+        <description>This indicates a log full condition. Currently not used.</description>
+        <value>256</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_LOCKED">
+        <description>The administrative state of a resource that this resource depends on is locked or the availability status of the other resource is dependency locked. The operational state is disabled.</description>
+        <value>544</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_FAILED">
+        <description>The availability status of a resource that this resource depends on is failed or dependency failed. The operational state is disabled.</description>
+        <value>1056</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_SHUTTINGDOWN">
+        <description>The administrative state of a resource that this resource depends on is shutting down or the availability status of the other resource is dependency shutting down. The operational state is disabled.</description>
+        <value>2080</value>
+      </enumMember>
+    </enum>
+    <enum name="OperState">
+      <description>Operational states.</description>
+      <enumMember name="DISABLED">
+        <description>The resource is totally inoperable and unable to provide service to the user(s).</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="ENABLED">
+        <description>The resource is partially or fully operable and available for use.</description>
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="RestartReason">
+      <description>The restart reason.</description>
+      <enumMember name="PLANNED_RECONFIGURATION">
+        <description>Restart ordered to perform planned activities such as reconfigurations.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="UNPLANNED_NODE_EXTERNAL_PROBLEMS">
+        <description>Restart ordered to resolve node external problems.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="UNPLANNED_NODE_UPGRADE_PROBLEMS">
+        <description>Restart ordered to resolve upgrade problems.</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="UNPLANNED_O_AND_M_ISSUE">
+        <description>Restart ordered to resolve O&amp;M issues.</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="UNPLANNED_CYCLIC_RECOVERY">
+        <description>Restart ordered to stop further auto recovery attempts.</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="UNPLANNED_LOCKED_RESOURCES">
+        <description>Restart ordered to release locked resources.</description>
+        <value>5</value>
+      </enumMember>
+      <enumMember name="UNPLANNED_COLD_WITH_HW_TEST">
+        <description>Restart ordered to perform HW tests.</description>
+        <value>6</value>
+      </enumMember>
+      <enumMember name="UNPLANNED_CALL_PROCESSING_DEGRADATION">
+        <description>Restart ordered to improve Call Set Up or Call Drop Rate.</description>
+        <value>7</value>
+      </enumMember>
+      <enumMember name="UNPLANNED_LOW_COVERAGE">
+        <description>Restart ordered to improve Cell Availability.</description>
+        <value>8</value>
+      </enumMember>
+      <enumMember name="UPGRADE_BOARD_RESTART">
+        <description>Restart ordered to effectuate autoconfiguration of a plug-in unit.
+
+This is only used for PlugInUnit MO.</description>
+        <value>30</value>
+      </enumMember>
+      <enumMember name="OPERATOR_CLASSIFIED_PROBLEMS">
+        <description>Restart ordered to resolve procedural errors or office environmental problems.
+Example: power, grounding, temperature, humidity or security problems.</description>
+        <value>31</value>
+      </enumMember>
+    </enum>
+    <enum name="ProtocolType">
+      <description>The protocol type.</description>
+      <enumMember name="ANY">
+        <description>Any IP protocol.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="ICMP">
+        <description>ICMP</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="TCP">
+        <description>TCP</description>
+        <value>6</value>
+      </enumMember>
+      <enumMember name="UDP">
+        <description>UDP</description>
+        <value>17</value>
+      </enumMember>
+      <enumMember name="SCTP">
+        <description>SCTP</description>
+        <value>132</value>
+      </enumMember>
+      <enumMember name="RAWIP">
+        <description>Raw IP sockets.</description>
+        <value>255</value>
+      </enumMember>
+    </enum>
+    <enum name="ActivationVals">
+      <description>Possible states set by operator for licensed feature.</description>
+      <enumMember name="ACTIVATED">
+        <description>Operator allows usage of the feature.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="DEACTIVATED">
+        <description>Operator does not allow usage of the feature.</description>
+        <value>0</value>
+      </enumMember>
+    </enum>
+    <enum name="StateVals">
+      <description>Possible states of a particular feature.</description>
+      <enumMember name="ENABLED">
+        <description>The particular feature is enabled.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="DISABLED">
+        <description>The particular feature is disabled.</description>
+        <value>0</value>
+      </enumMember>
+    </enum>
+    <enum name="RouteType">
+      <description>The types of the routes found in the IP routing table.</description>
+      <enumMember name="INET_RTPROTO_OTHER">
+        <description>The source of information is unknown.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="INET_RTPROTO_LOCAL">
+        <description>Route created from local configuration data (both static and interface routes).
+Each interface created gets an entry in the routing table of the RO.
+</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="INET_RTPROTO_NETMGMT">
+        <description>Route added by SNMP.</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="INET_RTPROTR_ICMP">
+        <description>Route added by ICMP redirect message.</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="INET_RTPROTO_OSPF">
+        <description>Route added by OSPF.</description>
+        <value>13</value>
+      </enumMember>
+    </enum>
+    <enum name="MacHsL1ParamStateMode">
+      <description>&lt;p>MAC HS L1 Ack parameter setting mode.&lt;/p>&lt;p>User category: Ericsson personnel&lt;/p></description>
+      <enumMember name="IGNORE">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="SET">
+        <value>1</value>
+      </enumMember>
+      <enumMember name="SETANDFREEZE">
+        <value>2</value>
+      </enumMember>
+      <enumMember name="RELEASE">
+        <value>3</value>
+      </enumMember>
+    </enum>
+    <enum name="SchFlowControlState">
+      <description>&lt;p>Defines whether flow control is activated (ON) or deactivated (OFF).&lt;/p></description>
+      <enumMember name="OFF">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="ON">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="Nbap_ActiveBearer">
+      <description>&lt;p>The NBAP bearer that is active.&lt;/p></description>
+      <enumMember name="NONE">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="UNI_SAAL_TP_REF1">
+        <value>1</value>
+      </enumMember>
+      <enumMember name="UNI_SAAL_TP_REF2">
+        <value>2</value>
+      </enumMember>
+      <enumMember name="SCTP_REF">
+        <value>3</value>
+      </enumMember>
+    </enum>
+    <enum name="AirRateTypeSelector">
+      <enumMember name="ACKNOWLEDGED">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="TRANSMITTED">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="CpcCapability">
+      <enumMember name="CPC_NON_CAPABLE">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="CPC_CAPABLE">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="EDch2msTtiCapability">
+      <enumMember name="EDCH_2MS_TTI_NON_CAPABLE">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="EDCH_2MS_TTI_CAPABLE">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="EDchCapability">
+      <enumMember name="EDCH_NON_CAPABLE">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="EDCH_CAPABLE">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="FDpchCapability">
+      <enumMember name="FDPCH_NON_CAPABLE">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="FDPCH_CAPABLE">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="HsdpaCapability">
+      <enumMember name="HSDPA_NON_CAPABLE">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="HSDPA_CAPABLE">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="HsdpaDbMcCapability">
+      <enumMember name="HSDPA_DB_MC_NON_CAPABLE">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="HSDPA_DB_MC_CAPABLE">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="HsdpaMcCapability">
+      <enumMember name="HSDPA_MC_NON_CAPABLE">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="HSDPA_MC_CAPABLE">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="HsdpaMcMimoCapability">
+      <enumMember name="HSDPA_MC_MIMO_NON_CAPABLE">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="HSDPA_MC_MIMO_CAPABLE">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="QueueSelectAlgorithm">
+      <enumMember name="EQUAL_RATE">
+        <value>5</value>
+      </enumMember>
+      <enumMember name="MAXIMUM_CQI">
+        <value>4</value>
+      </enumMember>
+      <enumMember name="PROPORTIONAL_FAIR_HIGH">
+        <value>2</value>
+      </enumMember>
+      <enumMember name="PROPORTIONAL_FAIR_LOW">
+        <value>3</value>
+      </enumMember>
+      <enumMember name="PROPORTIONAL_FAIR_MEDIUM">
+        <value>1</value>
+      </enumMember>
+      <enumMember name="ROUND_ROBIN">
+        <value>0</value>
+      </enumMember>
+    </enum>
+    <enum name="TxDiversityIndicator">
+      <enumMember name="NBAP_INACTIVE">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="NBAP_ACTIVE">
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="HsBranch">
+      <enumMember name="BRANCH_A">
+        <value>0</value>
+      </enumMember>
+      <enumMember name="BRANCH_B">
+        <value>1</value>
+      </enumMember>
+      <enumMember name="BOTH_BRANCHES">
+        <value>2</value>
+      </enumMember>
+    </enum>
+    <enum name="UsageState">
+      <description>Usage state according to X.731</description>
+      <enumMember name="IDLE">
+        <description>The resource is not currently in use.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="ACTIVE">
+        <description>The resource is in use, and has sufficient spare capacity to provide for additional users simultaneously.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="BUSY">
+        <description>The resource is in use, but it has no spare capacity to provide for additional users at this instant. </description>
+        <value>2</value>
+      </enumMember>
+    </enum>
+    <exception name="ActionNotAllowedException">
+      <description>The action is not allowed, the UpgradePackage MO is in wrong state. 
+
+For example if you try 'upgrade()' before an 'install()' or 'forcedInstall()' has been done.
+</description>
+      <exceptionParameter name="message">
+        <dataType>
+          <string/>
+        </dataType>
+      </exceptionParameter>
+    </exception>
+    <exception name="MoAccessException"/>
+    <exception name="RepairDeliveryNoteAlreadyExistsException">
+      <description>Only one operator entry is allowed in the hardware log.</description>
+    </exception>
+    <exception name="NoAccessToHwLogException">
+      <description>Communication with the board/unit is lost, or access to the hardware log is not possible.</description>
+    </exception>
+    <exception name="ChecksumhandlerException">
+      <description>Exception thrown when the control of checksum for loadmodules has been rejected due to 'null' recieved from resource layer.</description>
+    </exception>
+    <exception name="NotUniqueFroIdException">
+      <description>Exception thrown when a fro Id is not unique.</description>
+    </exception>
+    <exception name="WebServerPathConfigurationException">
+      <description>This class is an exception class thrown when failed to configure the webserver root path
+
+</description>
+    </exception>
+    <exception name="InvalidIndexException">
+      <description>Index specified is invalid, i.e. it is out of the range of valid indices.</description>
+      <exceptionParameter name="invalidIndex">
+        <description>The exception message.
+</description>
+        <dataType>
+          <string/>
+        </dataType>
+      </exceptionParameter>
+    </exception>
+    <exception name="FroNotAccessibleException">
+      <description>Exception that is thrown when a FRO (Facade Resource Object in the resource layer) cannot be accessed.</description>
+    </exception>
+    <exception name="FroRequestFailedException">
+      <description>Exception that is thrown when the result of a request to a FRO (Facade Resource Object in the resource layer) is not ok.</description>
+    </exception>
+    <exception name="ValueOutOfRangeException">
+      <description>Exception thrown when an MO attribute is requested to be set, but the requested value is not accepted.</description>
+    </exception>
+    <exception name="IllegalArgumentTypeException">
+      <description>Exception thrown if the argument supplied is of the wrong type, for example in an action.</description>
+    </exception>
+    <exception name="IpAddressException">
+      <description>Erroneous Ip Address Format</description>
+      <exceptionParameter name="message">
+        <dataType>
+          <string/>
+        </dataType>
+      </exceptionParameter>
+    </exception>
+    <exception name="InvalidReferenceException"/>
+    <exception name="RepairDeliveryNoteDoesNotExistException">
+      <description>No operator entry in the hardware log has been written.</description>
+    </exception>
+    <exception name="IsReservedCanNotSetPathIdException">
+      <description>Exception thrown when an attempt is made to set or change the aal2PathId of an Aal2PathVccTp while its reserved by an other Aal2PathGrp</description>
+    </exception>
+    <exception name="IsUnlockedCanNotSetPathOwnerException">
+      <description>Exception thrown when an attempt is made to set or change the aal2PathOwner of an Aal2PathVccTp while its not LOCKED.</description>
+    </exception>
+    <exception name="NoAvailRouteException"/>
+    <exception name="ImpossibleCollectAtmInfoException">
+      <description>Exception thrown when gathering of ATM info fails.</description>
+    </exception>
+    <exception name="DisableExistingProgramsException">
+      <description>Exception thrown when disabling of existing programs for some reason fails.</description>
+    </exception>
+    <exception name="EnableExistingProgramException">
+      <description>Exception thrown when enabling of existing programs fails.</description>
+    </exception>
+    <exception name="ExplicitReplacementInInformationForRPUsException">
+      <description>Exception thrown when replacement of existing RPU information fails.</description>
+    </exception>
+    <exception name="FileCopyException">
+      <description>Exception thrown when copying of files fails.</description>
+    </exception>
+    <exception name="FileNotExistException">
+      <description>Exception thrown when the specified file does not exist.</description>
+    </exception>
+    <exception name="FindAndReplaceException"/>
+    <exception name="HeapPoolSettingsException">
+      <description>Exception thrown when the heap or pool setting is incorrect.</description>
+    </exception>
+    <exception name="InstallOfLoadModulesCancelledException">
+      <description>Exception thrown when the installation of Load Modules is cancelled.</description>
+    </exception>
+    <exception name="InstallOfLoadModulesPartlyExcecutedException">
+      <description>Exception thrown when the installment of Load Modules is only partly executed.</description>
+    </exception>
+    <exception name="InstallOfLoadModulesRejectedException">
+      <description>Exception thrown when the install of Load Modules is rejected.</description>
+    </exception>
+    <exception name="InstallRejectedFTP_ServerNotAccessibleException">
+      <description>Exception thrown when the install is rejected due to FTP server is not accessible.</description>
+    </exception>
+    <exception name="InstallRejectedGetLoadModuleFileException">
+      <description>Exception thrown when the install is rejected due to error when trying to retreive Load Module.</description>
+    </exception>
+    <exception name="InstallRejectedInsufficientDiskSpaceException">
+      <description>Exception thrown when the install is rejected due to insufficient disk space.</description>
+    </exception>
+    <exception name="InstallRejectedIP_AddressException">
+      <description>Exception thrown when install is rejected due to erronous IP address.</description>
+    </exception>
+    <exception name="InstallRejectedLoadListFileException"/>
+    <exception name="InstallRequestException">
+      <description>Exception thrown when the installation of a Load Module fails.</description>
+    </exception>
+    <exception name="InsufficientDiskSpaceException">
+      <description>Exception thrown when the disk space is insufficient.</description>
+    </exception>
+    <exception name="JvmMO_HandlerException"/>
+    <exception name="LoadModuleFIlePathLengthOutOfRangeException">
+      <description>Exception thrown when file path for the Load Module is out of length.</description>
+    </exception>
+    <exception name="LoadModuleMO_HandlerException"/>
+    <exception name="ManagedElementDataMO_HandlerException"/>
+    <exception name="MandatoryElementIsMissingException"/>
+    <exception name="MergeControlFileException">
+      <description>Exception thrown when the merger of control files fails.</description>
+    </exception>
+    <exception name="ParseException"/>
+    <exception name="ParserFactoryException"/>
+    <exception name="PIU_MO_HandlerException"/>
+    <exception name="PiuTypeDefinitionMissingInUpgradeControlFileException">
+      <description>Exception thrown when PiuType definitions is missing in the UCF file.</description>
+    </exception>
+    <exception name="PiuTypeMO_HandlerException"/>
+    <exception name="ProductNumberAndRevisionAlreadyInUseException">
+      <description>Exception thrown when the product number and revision is already used.</description>
+    </exception>
+    <exception name="ProgramConfigurationException"/>
+    <exception name="ReconfigureProgramsException">
+      <description>Exception thrown when reconfiguration of programs fails.</description>
+    </exception>
+    <exception name="ReferencedElementMissingException">
+      <description>Exception thrown when the referenced element is missing.</description>
+    </exception>
+    <exception name="RepertoireMO_HandlerException"/>
+    <exception name="ReplaceConfigSupportMOsOpException"/>
+    <exception name="ReserveLoadModulesException">
+      <description>Exception thrown when reserving a Load Module fails.</description>
+    </exception>
+    <exception name="SelectiveInstallFailureException">
+      <description>Exception thrown when a selective install fails.</description>
+    </exception>
+    <exception name="SlotMO_HandlerException"/>
+    <exception name="SwAllocationMO_HandlerException"/>
+    <exception name="UnexpectedAttributeException">
+      <description>Exception thrown when an unexpected attribute occurs at upgrade.</description>
+    </exception>
+    <exception name="UnexpectedAttributeFormatException">
+      <description>Exception thrown when an unexpected format of the attribute occurs.</description>
+    </exception>
+    <exception name="UnexpectedElementException">
+      <description>Exception thrown when </description>
+    </exception>
+    <exception name="UpgradeControlFileDataException"/>
+    <exception name="UpgradeControlFileNotFoundException"/>
+    <exception name="UpgradeControlFileParserException"/>
+    <exception name="UpgradePackageDeleteException">
+      <description>Exception thrown when its not possible to delete the upgrade package.</description>
+    </exception>
+    <exception name="UpgradePackageDeleteNotAllowedException">
+      <description>Exception thrown when its not allowed to delete the upgrade package.</description>
+    </exception>
+    <exception name="UpgradePackageDoesNotExistException">
+      <description>Exception thrown when the specified upgrade package does not exist.</description>
+    </exception>
+    <exception name="UpgradePackageFileSystemErrorException">
+      <description>Exception thrown when an error in the file system occurs.</description>
+    </exception>
+    <exception name="UpgradeRejectedException">
+      <description>Exception thrown when the upgrade is rejected.</description>
+    </exception>
+    <exception name="ValidateException"/>
+    <exception name="VerifyChecksumException">
+      <description>Exception thrown when the checksum is incorrect.</description>
+    </exception>
+    <exception name="VerifyCreationOfCVsException">
+      <description>Exception thrown when its not possible to verify the creation of CV's.</description>
+    </exception>
+    <exception name="VerifyOperationalPIUsException"/>
+    <exception name="VerifyRejectedException"/>
+    <exception name="VerifyRequestException"/>
+    <exception name="VerifySupportedPIUsException"/>
+    <exception name="VerifyUpgradeHandlerException"/>
+    <exception name="VerifyUpgradeWindowException"/>
+    <exception name="AttributeValueOutOfRangeException">
+      <description>Exception thrown when an attribute value is out of range.</description>
+    </exception>
+    <exception name="CancelInstallRequestException">
+      <description>Exception thrown when a cancel install equest for some reason fails.</description>
+    </exception>
+    <exception name="ClearAllPiuTypesReferencedByPlugInUnitException">
+      <description>Exception thrown when its not possible to clear all PiuTypes referenced by PlugInUnit.</description>
+    </exception>
+    <exception name="ConditionallyMandatoryAttributeOrElementMissingException">
+      <description>Exception thrown when an conditional mandatory attribute (or element) is missing.</description>
+    </exception>
+    <exception name="ConfigurationVersionMO_HandlerException">
+      <description>Exception thrown when the creation of a CV during upgrade fails.</description>
+    </exception>
+    <exception name="CreateLoadModuleException">
+      <description>Exception thrown when the creation of a load module fails.</description>
+    </exception>
+    <exception name="SwAllocationNotFoundException">
+      <description>This class is an exception class thrown when a equipment specific error occurs.
+
+</description>
+    </exception>
+    <exception name="RepertoireNotFoundException">
+      <description>This class is an exception class thrown when a equipment specific error occurs.
+
+</description>
+    </exception>
+    <exception name="WrongUserTypeException"/>
+    <exception name="UsageNotPermittedException"/>
+    <exception name="NoDiskException">
+      <description>Exception thrown when there is no hard disk.</description>
+    </exception>
+    <exception name="NoSuchAttributeException">
+      <description>Exception thrown when an MO attribute is requested to be accessed but the access 
+method for the is not defined (the attribute can not be accessed)
+</description>
+    </exception>
+    <exception name="NotHandledAttributeTypeException">
+      <description>Exception class thrown when an attribute of not handled type is requested. </description>
+    </exception>
+    <exception name="NotReservedException"/>
+    <exception name="NotSupportedException"/>
+    <exception name="OccupiedException"/>
+    <exception name="RemovalFailedException">
+      <description>Exception thrown when an element cannot be removed from a sequence.</description>
+    </exception>
+    <exception name="RestartRejectedException">
+      <description>Exception thrown when restart of the PlugInUnit is not allowed.</description>
+    </exception>
+    <exception name="TransactionException"/>
+    <exception name="TransactionRequiredException">
+      <description>Exception class thrown when an MO is accessed outside a transaction but the access method requires a transaction.</description>
+    </exception>
+    <exception name="UndeletableMoException">
+      <description>Exception thrown when MO is not possible to delete.</description>
+    </exception>
+    <exception name="MoCardinalityViolationException">
+      <description>Exception class thrown when the creation of an MO fails due to child - parent 
+cardinality violation. The cardinality is specified in the MIM. 
+</description>
+    </exception>
+    <exception name="MoHasChildrenException">
+      <description>Exception class thrown when an MO is requested to be deleted, but the MO has children, which must be deleted first.</description>
+    </exception>
+    <exception name="MoNameAlreadyTakenException">
+      <description>Exception thrown when an MO is created and the distinguished name of the MO is already in use.</description>
+    </exception>
+    <exception name="MoNotPossibleToReserveException">
+      <description>Exception thrown when by an MO if its not possible to reserve the MO.</description>
+    </exception>
+    <exception name="MoNotReservedByUserException">
+      <description>Exception thrown when a user tries to release an MO that is not reserved by this user.</description>
+    </exception>
+    <exception name="MoReservedNotDeletableException">
+      <description>Exception thrown when trying to delete an MO that is reserved by another MO (user).</description>
+    </exception>
+    <exception name="AttrNotSettableAtCreateException">
+      <description>Exception thrown when a create is ordered with 
+attribute values that are not settable at create.
+</description>
+    </exception>
+    <exception name="AttrValueNotUniqueException">
+      <description>Exception thrown when a value of an attribute is not unique.</description>
+    </exception>
+    <exception name="MaxNumberExceededException">
+      <description>Exception thrown when the maximum number of childrens for an MO is exceeded.</description>
+    </exception>
+    <exception name="MoCanNotBeCreatedException"/>
+    <exception name="IllegalParentException">
+      <description>Exception thrown when the parent of the MO is of the wrong type.</description>
+    </exception>
+    <exception name="FroNotLockedException">
+      <description>Exception thrown when a fRo cannot be accessed.</description>
+    </exception>
+    <exception name="GeneralErrorException">
+      <description>Exception thrown by an MO when there is a general error.</description>
+    </exception>
+    <exception name="IdentityNotAllowedException">
+      <description>Exception thrown when an identity (LDN) specified at create is not allowed.</description>
+    </exception>
+    <exception name="IllegalMoTypeException">
+      <description>Exception thrown when a reference to an MO is of a unexpected/wrong MO type.</description>
+    </exception>
+    <exception name="MoCanNotBeDeletedException">
+      <description>Exception thrown when its not possible to delete an MO.</description>
+    </exception>
+    <exception name="ListOfTimeSlotsNotUniqueException">
+      <description>Exception thrown when a time slot appears more than once in the time slot list.</description>
+    </exception>
+    <exception name="NotUniqueLineNoException"/>
+    <exception name="WrongPhysPathTermTypeException"/>
+    <exception name="IncorrectOsi155SpiIdException"/>
+    <exception name="RouteNotFoundException">
+      <description>Invalid IP route has been given as a parameter to an action.</description>
+      <exceptionParameter name="routeNotFound">
+        <description>Exception message.
+</description>
+        <dataType>
+          <string/>
+        </dataType>
+      </exceptionParameter>
+    </exception>
+    <exception name="InvalidRouteException">
+      <description>Invalid IP route has been given as a parameter to an action.</description>
+      <exceptionParameter name="invalidRoute">
+        <dataType>
+          <string/>
+        </dataType>
+      </exceptionParameter>
+    </exception>
+    <exception name="IpException"/>
+    <exception name="IpFormatException"/>
+    <exception name="UnknownCcIdException">
+      <description>The indicated Communication Context ID does not exist.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="TxbDoesNotSupportHsException">
+      <description>This operation cannot be performed if the TX board does not support HS.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="TotalNumOfUsersAboveMaxException">
+      <description>Total number of users is above maximum.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="TotalAvgPowerAboveMaxException">
+      <description>Total average power is above maximum.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="TestBoardDependencyException">
+      <description>Board test cannot be done, since dependency to other board is not fulfilled.</description>
+    </exception>
+    <exception name="SysConstantsFullException">
+      <description>No more system constants can currently be overridden since the space reserved for overridden system constants is full.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="SlaveTuNotStableException">
+      <description>The slave TU or CBU is not stable.</description>
+    </exception>
+    <exception name="ResourcesNotAvailableException">
+      <description>Not possible to allocate enough resources, for example, hardware resources.</description>
+    </exception>
+    <exception name="ResourceLockedException">
+      <description>The accessed resource is locked to another transaction (transaction collision).</description>
+    </exception>
+    <exception name="RepairDeliveryNoteDoesNotExistException">
+      <description>No operator entry in the hardware log has been written.</description>
+    </exception>
+    <exception name="RepairDeliveryNoteAlreadyExistsException">
+      <description>Only one operator entry is allowed in the hardware log.</description>
+    </exception>
+    <exception name="RbsConfigurationFailedException">
+      <description>The configuration of the RBS failed.</description>
+    </exception>
+    <exception name="ParameterValueErrorException">
+      <description>Parameter value not acceptable.</description>
+    </exception>
+    <exception name="OperationNotAllowedException">
+      <description>Operation not allowed in current state.</description>
+    </exception>
+    <exception name="OperationFailedException">
+      <description>Operation failed due to some temporary internal error.</description>
+    </exception>
+    <exception name="OcnsIsNotConfiguredException">
+      <description>OCNS cannot be activated if the cell has no OCNS configuration.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="OcnsIsActiveException">
+      <description>OCNS cannot be configured when OCNS is active on the cell.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="NoTxDiversityException">
+      <description>TX diversity not configured for the corresponding carrier.</description>
+    </exception>
+    <exception name="NotInitiatedException">
+      <description>The specified sector has not been initiated.</description>
+    </exception>
+    <exception name="NotHsdpaCapableException">
+      <description>The cell is not HSDPA capable.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="NotFoundException">
+      <description>The specified item is not found.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="NotEnoughDiskSpaceException">
+      <description>There is not enough disk space on the node in order to execute the operation. </description>
+    </exception>
+    <exception name="NotActiveException">
+      <description>The function is not active.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="NoSlaveTuException">
+      <description>No slave TU or CBU is in service.</description>
+    </exception>
+    <exception name="NoConnectionWithAuxiliaryUnitException">
+      <description>Connection with the auxiliary unit lost.</description>
+    </exception>
+    <exception name="NoAccessToHwLogException">
+      <description>Communication with the board/unit lost, or access to the hardware log is not possible.</description>
+    </exception>
+    <exception name="MoNotLockedException">
+      <description>Administrative state for the MO is not locked.</description>
+    </exception>
+    <exception name="MoDisabledException">
+      <description>This action cannot be performed if operational state is disabled for the MO.</description>
+    </exception>
+    <exception name="MoAccessException">
+      <description>Operation failed for some unspecified reason.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="MeasurementPeriodOverlapException">
+      <description>There is a mutual conflict between the values of the measurement period, the measurement time and/or the reporting period.</description>
+    </exception>
+    <exception name="MacHsIsSetupException">
+      <description>HSDPA is setup in the cell.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="InternalErrorException">
+      <description>An internal error that was detected by the hardware has occurred.</description>
+    </exception>
+    <exception name="HsdpaCodeResourceMismatchException">
+      <description>There is no HSDPA Code Resource with the defined hsCodeResourceId.</description>
+    </exception>
+    <exception name="FunctionNotSupportedException">
+      <description>Function not supported on this MO, for example, due to hardware limitations.</description>
+    </exception>
+    <exception name="FunctionNotImplementedException">
+      <description>The underlying functionality has not yet been implemented.</description>
+    </exception>
+    <exception name="FtpServerNotAccessibleException">
+      <description>FTP server is not accessible. This may depend on erroneous IP address, username, password, or that the IP communication with the FTP server is down, or that the FTP server itself is malfunctioning.</description>
+    </exception>
+    <exception name="FrequencyBandNotSupportedException">
+      <description>The defined frequency band is not supported by hardware.</description>
+    </exception>
+    <exception name="DeviceNotAvailableException">
+      <description>A device is not allocated and setup.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="DeviceDisabledException">
+      <description>A device must be enabled, but is not.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="ConfigurationNotSupportedException">
+      <description>The requested configuration is not supported.</description>
+    </exception>
+    <exception name="CellNotSetupException">
+      <description>The cell is not setup by the RNC.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="CellHaveBeenSetupByRncException">
+      <description>The cell is setup by the RNC.</description>
+    </exception>
+    <exception name="BatteryNotFullyChargedException">
+      <description>Battery not fully charged/charging ongoing.</description>
+    </exception>
+    <exception name="BatteryNotConnectedException">
+      <description>Battery not connected.</description>
+    </exception>
+    <exception name="BandAndFrequencyMismatchException">
+      <description>The band of the sector does not match the defined frequencies of the antenna branches of the sector.</description>
+    </exception>
+    <exception name="AlreadyInitiatedException">
+      <description>The sector has already been initiated.</description>
+    </exception>
+    <exception name="AlreadyActiveOnRelatedDchException">
+      <description>Measurement/test is already active on related DCH. It is not possible to have the test on both transport and physical channel at the same time.
+
+User category: Ericsson personnel</description>
+    </exception>
+    <exception name="AlreadyActiveException">
+      <description>An attempt to start/activate a function failed,
+since it has already been started or is active.</description>
+    </exception>
+    <exception name="AttributeNotSettableAtMoCreateException">
+      <description>Exception thrown when an MO create is ordered with attribute values that are not allowed to set at creation.
+
+Note: There this exception is created because the similar one in CPP is packaged in &quot;UnusedDefs&quot;, interpreted as that it should not be used.
+</description>
+    </exception>
+    <class name="ManagedObject">
+      <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.
+</description>
+    </class>
+    <class name="Iub">
+      <description>This MO models the Iub interface. Iub is the interface between an RBS and the associated RNC.
+
+Persistent: Yes
+Use cases: Integrate RBS in the Radio Network
+</description>
+      <attribute name="nbapDscp">
+        <description>Differentiated Services Code Point (DSCP) value for NBAP-C and NBAP-D.
+
+Use cases: Integrate RBS in the Radio Network
+Requirement: IUBCPIP_AD_RBS-OSS_6011:01217 Rev:A
+
+Ref. [CB_ICC]</description>
+        <dataType>
+          <long>
+            <range>
+              <max>63</max>
+              <min>0</min>
+            </range>
+            <defaultValue>0</defaultValue>
+          </long>
+        </dataType>
+        <takesEffect>At next restart.</takesEffect>
+      </attribute>
+      <attribute name="IubId">
+        <description>The value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="rbsId">
+        <description>Used by OSS-RC to identify an RBS and the corresponding Iub in RNC. The attribute is not used by RBS itself, it only serves as storage for OSS-RC.
+
+Use cases: Integrate RBS in the Radio Network
+
+Ref. [CB_ICC]</description>
+        <mandatory/>
+        <dataType>
+          <long>
+            <range>
+              <max>2147483647</max>
+              <min>0</min>
+            </range>
+            <resolution>1</resolution>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use.
+
+Ref. [CB_MOP]</description>
+        <dataType>
+          <string>
+            <lengthRange>
+              <max>128</max>
+              <min>0</min>
+            </lengthRange>
+            <defaultValue>&quot;&quot;</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="userPlaneIpResourceRef">
+        <description>Local user plane IP resource available for the Iub, that is, an instance of the IpAccessHostEt MO class. Use cases: Integrate RBS in the Radio Network.
+Requirement: CommonUPIP_AD_RBS-OSS_6011:00996 Rev:B
+Ref. [CB_ICC]</description>
+        <mandatory/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+        <dependencies>Required if userPlaneTransportOption is set to IPv4.</dependencies>
+        <takesEffect>At next establishment of a transport bearer.</takesEffect>
+      </attribute>
+    </class>
+    <class name="IubDataStreams">
+      <description>This MO models all the Iub Data Streams between RNC and RBS for Common as well as Dedicated channels.
+
+The RDN of this MO is IubDataStreams=1.
+
+Persistent: Yes
+Use cases: Integrate RBS in the Radio Network
+</description>
+      <systemCreated/>
+      <attribute name="IubDataStreamsId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="NbapCommon">
+      <description>This MO models the Node B Application Part for common procedures.
+
+Persistent: Yes
+Use cases: Integrate RBS in the Radio Network
+</description>
+      <attribute name="activeBearer">
+        <description>Specifies which UniSaalTp is active when ATM is transport bearer alt. that Sctp is active when IPv4 is bearer. 
+
+Possible values:
+&#x2022; NONE = No active bearer.
+&#x2022; UNI_SAAL_TP_REF1 = Attribute uniSaalTpRef1 is used.
+&#x2022; UNI_SAAL_TP_REF2 = Attribute uniSaalTpRef2 is used.
+&#x2022; SCTP_REF = Attribute sctpRef is used.
+
+Use cases: Integrate RBS in the Radio Network
+Requirement: IUBCPIP_AD_RBS-OSS_6011:01593 Rev:A, IUBCPIP_AD_RBS-OSS_6011:01712 Rev:A
+
+Ref. [CB_ICC]</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="Nbap_ActiveBearer"/>
+        </dataType>
+      </attribute>
+      <attribute name="auditRetransmissionT">
+        <description>Time between successive audit retransmissions. 
+
+Use cases: Integrate RBS in the Radio Network
+
+Ref. [CB_ICC]</description>
+        <dataType>
+          <long>
+            <range>
+              <max>150</max>
+              <min>1</min>
+            </range>
+            <defaultValue>5</defaultValue>
+            <unit>s</unit>
+            <multiplicationFactor>1</multiplicationFactor>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="availabilityStatus">
+        <description>The availability status of the protocol termination.
+Possible values:
+&#x2022; NOT_INSTALLED
+&#x2022; POWER_OFF
+&#x2022; IN_TEST
+&#x2022; DEPENDENCY_LOCKED
+&#x2022; DEPENDENCY_FAILED
+&#x2022; FAILED
+&#x2022; OFF_LINE
+&#x2022; DEGRADED
+&#x2022; OFF_DUTY
+&#x2022; LOG_FULL
+&#x2022; NO STATUS = Full availability.
+Ref. [CB_MOP]</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="AvailabilityStatus"/>
+        </dataType>
+        <specification>ITU-T rec. X.731</specification>
+      </attribute>
+      <attribute name="l3EstablishSupervisionT">
+        <description>Maximum allowed time to establish NBAP communication: Successfull establishment of layer 2 followed by a successful audit procedure.
+
+Use cases: Integrate RBS in the Radio Network
+
+Ref. [CB_ICC]</description>
+        <dataType>
+          <long>
+            <range>
+              <max>600</max>
+              <min>1</min>
+            </range>
+            <defaultValue>30</defaultValue>
+            <unit>s</unit>
+            <multiplicationFactor>1</multiplicationFactor>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="NbapCommonId">
+        <description>The value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="operationalState">
+        <description>Defines the operational state.
+
+Possible values:
+&#x2022; DISABLED
+&#x2022; ENABLED
+
+Ref. [CB_MOP]</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="OperState"/>
+        </dataType>
+        <specification>ITU-T rec. X.731</specification>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use.
+
+Ref. [CB_MOP]</description>
+        <dataType>
+          <string>
+            <lengthRange>
+              <max>128</max>
+              <min>0</min>
+            </lengthRange>
+            <defaultValue>&quot;&quot;</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="sctpRef">
+        <description>Reference to the Sctp instance used. The reference is only used if the controlPlaneTransportOption is set to IPv4.
+
+Use cases: Integrate RBS in the Radio Network
+Requirement: IUBCPIP_AD_RBS-OSS_6011:01219 Rev:A
+
+Ref. [CB_ICC]</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="NbapDedicated">
+      <description>This MO models the Node B Application Part for dedicated procedures.
+
+Persistent: Yes
+Use cases: Integrate RBS in the Radio Network
+</description>
+      <attribute name="activeBearer">
+        <description>Specifies which UniSaalTp is active when ATM is transport bearer alt. that Sctp is active when IPv4 is bearer. 
+
+Possible values:
+&#x2022; NONE = No active bearer.
+&#x2022; UNI_SAAL_TP_REF1 = Attribute uniSaalTpRef1 is used.
+&#x2022; UNI_SAAL_TP_REF2 = Attribute uniSaalTpRef2 is used.
+&#x2022; SCTP_REF = Attribute sctpRef is used.
+
+Use cases: Integrate RBS in the Radio Network
+Requirement: IUBCPIP_AD_RBS-OSS_6011:01594 Rev:A, IUBCPIP_AD_RBS-OSS_6011:01712 Rev:A
+
+Ref. [CB_ICC]</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="Nbap_ActiveBearer"/>
+        </dataType>
+      </attribute>
+      <attribute name="availabilityStatus">
+        <description>The availability status of the protocol termiantion.
+
+Possible values:
+&#x2022; NOT_INSTALLED
+&#x2022; POWER_OFF
+&#x2022; IN_TEST
+&#x2022; DEPENDENCY_LOCKED
+&#x2022; DEPENDENCY_FAILED
+&#x2022; FAILED
+&#x2022; OFF_LINE
+&#x2022; DEGRADED
+&#x2022; OFF_DUTY
+&#x2022; LOG_FULL
+&#x2022; NO STATUS = Full availability.
+
+Ref. [CB_MOP] </description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="AvailabilityStatus"/>
+        </dataType>
+      </attribute>
+      <attribute name="NbapDedicatedId">
+        <description>&lt;p>The value component of the RDN.&lt;/p></description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="operationalState">
+        <description>Defines the operational state.
+
+Possible values:
+&#x2022; DISABLED
+&#x2022; ENABLED
+
+Ref. [CB_MOP]</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="OperState"/>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use.
+
+Ref. [CB_MOP]</description>
+        <dataType>
+          <string>
+            <lengthRange>
+              <max>128</max>
+              <min>0</min>
+            </lengthRange>
+            <defaultValue>&quot;&quot;</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="sctpRef">
+        <description>Reference to the Sctp instance used. The reference is only used if the controlPlaneTransportOption is set to IPv4.
+
+Use cases: Integrate RBS in the Radio Network
+Requirement: IUBCPIP_AD_RBS-OSS_6011:01221 Rev:A
+
+Ref. [CB_ICC]</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="NodeBFunction">
+      <description>This MO models the radio network resources in a node B (RBS).
+
+The RDN of this MO is NodeBFunction=1.
+
+Persistent: Yes
+</description>
+      <systemCreated/>
+      <attribute name="NodeBFunctionId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="NodeBLocalCell">
+      <description>This MO models a cell, that is, a geographical area that can be identified by a UE from a (cell) identification broadcast from one UTRAN Access Point.
+
+Precondition: When deleting this MO the cell must not be setup by the RNC (availabilityStatus must be OFF_LINE).
+Persistent: Yes
+Use cases: Configure RBS at Site, Add Capacity, Increase Coverage</description>
+      <attribute name="availabilityStatus">
+        <description>The availability status of the cell.
+
+Possible values:
+&#x2022; NOT_INSTALLED
+&#x2022; POWER_OFF
+&#x2022; IN_TEST
+&#x2022; DEPENDENCY_LOCKED
+&#x2022; DEPENDENCY_FAILED
+&#x2022; FAILED
+&#x2022; OFF_LINE
+&#x2022; DEGRADED
+&#x2022; OFF_DUTY
+&#x2022; LOG_FULL
+&#x2022; NO STATUS = Full availability.
+
+Ref. [CB_MOP]</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="AvailabilityStatus"/>
+        </dataType>
+        <specification>ITU-T rec. X.731</specification>
+      </attribute>
+      <attribute name="cellRange">
+        <description>Defines the maximum range (in meters) for random access detection (random access distance). For soft handover the RBS adds a soft handover margin internally.
+
+Note that the actual cell range resolution is 3 chips, that is, around 234 m.
+
+Use cases: Increase Coverage
+Requirement: CELL_RBS_OM:2, CELL_RBS_FU:11, CELL_RBS_FU:9, EXRNG_FU_RBS_5302:07619
+
+Ref. [CB_SYC]</description>
+        <dataType>
+          <long>
+            <range>
+              <max>200000</max>
+              <min>250</min>
+            </range>
+            <defaultValue>35000</defaultValue>
+            <unit>m</unit>
+            <multiplicationFactor>1</multiplicationFactor>
+          </long>
+        </dataType>
+        <dependencies>If a license key for the features 'Extended Range up to 80 km' or 'Extended Range up to 200 km' exists, this range must not be exceeded, otherwise the default value must not be exceeded.</dependencies>
+        <precondition>Cell not setup by the RNC (availabilityStatus=OFF_LINE).</precondition>
+      </attribute>
+      <attribute name="localCellId">
+        <description>The identity of the RBS local cell.
+
+Use cases: Integrate RBS in the Radio Network
+Requirement: CELL_RBS_OM:2, CELL_RBS_FU:11
+
+Ref. [CB_MOP]</description>
+        <mandatory/>
+        <dataType>
+          <long>
+            <range>
+              <max>268435455</max>
+              <min>0</min>
+            </range>
+          </long>
+        </dataType>
+        <dependencies>Value must be the same as in the corresponding RNC MO UtranCell.</dependencies>
+        <specification>3GPP TS 25.433, NBAP, UTRAN Iub interface NBAP signalling</specification>
+        <precondition>Cell not setup by the RNC (availabilityStatus=OFF_LINE).</precondition>
+      </attribute>
+      <attribute name="maxDlPowerCapability">
+        <description>The maximum downlink power capability for the cell. The attribute is calculated and reported to the RNC.
+
+Requirement: BCM_FU_RBS_6011:00854 Rev:A
+
+Ref. [CB_MOP]</description>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long>
+            <range>
+              <max>500</max>
+              <min>-1</min>
+            </range>
+            <unit>dBm</unit>
+            <multiplicationFactor>0.1</multiplicationFactor>
+            <undefinedValue>-1</undefinedValue>
+          </long>
+        </dataType>
+        <specification>3GPP TS 25.433, NBAP, UTRAN Iub interface NBAP signalling</specification>
+      </attribute>
+      <attribute name="minDlPowerCapability">
+        <description>The minimum downlink power capability for the cell. The attribute is calculated and reported to the RNC.
+
+Requirement: BCM_FU_RBS_6011:00855 Rev:A
+
+Ref. [CB_MOP]</description>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long>
+            <range>
+              <max>500</max>
+              <min>-301</min>
+            </range>
+            <unit>dBm</unit>
+            <multiplicationFactor>0.1</multiplicationFactor>
+            <undefinedValue>-301</undefinedValue>
+          </long>
+        </dataType>
+        <specification>3GPP TS 25.433, NBAP, UTRAN Iub interface NBAP signalling</specification>
+      </attribute>
+      <attribute name="minSpreadingFactor">
+        <description>Indicates the minimum spreading factor supported by the cell.
+
+Specification: 3GPP TS 25.433, NBAP, UTRAN Iub interface NBAP signalling
+
+Ref. [CB_MOP]</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long>
+            <range>
+              <max>512</max>
+              <min>4</min>
+              <min>8</min>
+              <min>16</min>
+              <min>32</min>
+              <min>64</min>
+              <min>128</min>
+              <min>256</min>
+              <min>512</min>
+            </range>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="operationalState">
+        <description>Defines the operational state.
+
+Possible values:
+&#x2022; DISABLED
+&#x2022; ENABLED
+
+Requirement: CELL_RBS_FU:9
+
+Ref. [CB_MOP]</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="OperState"/>
+        </dataType>
+        <specification>ITU-T rec. X.731</specification>
+      </attribute>
+      <attribute name="NodeBLocalCellId">
+        <description>The value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="coherenceMode">
+        <description>Specifies how large part of the preamble that is accumulated coherently. 
+
+When coherenceMode is 4, the parameter Rach::preambleThreshold (RNC MOM) is recommended to be reduced 3 steps (1.5 dB) from 35 to 32.
+
+Possible values:
+&#x2022; 2 = Accumulate ¼ of the preamble coherently and the rest non-coherently.
+&#x2022; 4 = Accumulate the whole preamble coherently.
+
+Requirement: EXRNG_FU_RBS_5302:07741
+User category: Ericsson personnel
+
+Ref. [CB_MOP]</description>
+        <noNotification/>
+        <dataType>
+          <long>
+            <range>
+              <max>4</max>
+              <min>2</min>
+              <min>4</min>
+            </range>
+            <defaultValue>2</defaultValue>
+          </long>
+        </dataType>
+        <precondition>Cell not setup by the RNC (availabilityStatus=OFF_LINE).</precondition>
+      </attribute>
+      <attribute name="operatingBand">
+        <description>Operating frequency band according to 3GPP.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <dataType>
+          <long>
+            <range>
+              <max>21</max>
+              <min>1</min>
+              <min>19</min>
+            </range>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="numOfRxAntennas">
+        <description>The number of antennas that can be used for uplink beamforming/MIMO.</description>
+        <mandatory/>
+        <dataType>
+          <long>
+            <range>
+              <max>4</max>
+              <min>1</min>
+              <min>2</min>
+              <min>4</min>
+            </range>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="numOfTxAntennas">
+        <description>The number of antennas that can be used for downlink beamforming/MIMO.</description>
+        <mandatory/>
+        <dataType>
+          <long>
+            <range>
+              <max>4</max>
+              <min>1</min>
+              <min>2</min>
+              <min>4</min>
+            </range>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="administrativeState">
+        <description>The administrative state. Possible values:
+- LOCKED
+- UNLOCKED</description>
+        <noNotification/>
+        <dataType>
+          <enumRef name="AdmState">
+            <defaultValue>LOCKED</defaultValue>
+          </enumRef>
+        </dataType>
+        <specification>ITU X.731</specification>
+        <takesEffect>Immediately</takesEffect>
+      </attribute>
+      <attribute name="usageState">
+        <description>Indicates the usage state of the NodeBLocalCell.
+
+Possible values:
+- IDLE
+- BUSY
+
+The NodeBLocalCell becomes BUSY when the cell has been setup by the RNC.</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="UsageState"/>
+        </dataType>
+        <specification>ITU X.731</specification>
+      </attribute>
+      <attribute name="uarfcnDl">
+        <description>Downlink UTRA Absolute Radio Frequency Channel Number. Specifies the channel number for the central downlink frequency.
+The mapping from channel number to physical frequency is described in 3GPP specification TS 25.104.
+</description>
+        <mandatory/>
+        <restricted/>
+        <dataType>
+          <long>
+            <range>
+              <max>16383</max>
+              <min>0</min>
+            </range>
+          </long>
+        </dataType>
+        <filter>FDD</filter>
+        <dependencies>An intra-frequency relation has the same channel number in the uplink for both cells, and the same number in the downlink for both cells. Otherwise it is considered an inter-frequency relation.
+The channel number may not be changed in such a way that the maximum number of intra-frequency relations (31) or inter-frequency relations (32) under this cell is violated. The same restriction applies for all UtranCells having this cell as the target cell in a relation. If more than one channel number needs to be changed in order to fulfill the restrictions, all changes need to be made in the same transaction.
+The channel number may also not be changed in such a way that any of the UtranRelations marked as load sharing candidates becomes an intra-frequency relation.</dependencies>
+        <specification>TS 25.104</specification>
+        <disturbances>Changing this attribute may affect ongoing traffic.</disturbances>
+      </attribute>
+      <attribute name="uarfcnUl">
+        <description>Uplink UTRA Absolute Radio Frequency Channel Number. Specifies the channel number for the central uplink frequency.
+The mapping from channel number to physical frequency is described in 3GPP specification TS 25.104.
+</description>
+        <readOnly/>
+        <dataType>
+          <long>
+            <range>
+              <max>16383</max>
+              <min>0</min>
+            </range>
+          </long>
+        </dataType>
+        <filter>FDD</filter>
+        <dependencies>An intra-frequency relation has the same channel number in the uplink for both cells, and the same number in the downlink for both cells. Otherwise it is considered an inter-frequency relation.
+The channel number may not be changed in such a way that the maximum number of intra-frequency relations (31) or inter-frequency relations (32) under this cell is violated. The same restriction applies for all cells having this cell as the target cell in a relation. If more than one channel number needs to be changed in order to fulfill the restrictions, all changes need to be made in the same transaction.
+The channel number may also not be changed in such a way that any of the UtranRelations marked as load sharing candidates becomes an intra-frequency relation.</dependencies>
+        <specification>TS 25.104</specification>
+        <disturbances>Changing this attribute may affect ongoing traffic.</disturbances>
+      </attribute>
+      <attribute name="bandwidthDl">
+        <description>Denotes the carrier bandwidth in downlink.
+
+Example: 50 = 5.0 MHz </description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <long>
+            <range>
+              <max>50</max>
+              <min>38</min>
+            </range>
+            <defaultValue>50</defaultValue>
+            <unit>0.1 MHz</unit>
+          </long>
+        </dataType>
+        <dependencies>Can only be set to another value than default in case a valid license key for the feature is installed, that is if NodeBFunction::licenseStateConfigurableCarrierBandwidth = ENABLED. If the value is other than default when the license state changes from ENABLED to DISABLED, a corresponding Carrier_ConfigurableCarrierBandwidthLicenseNotValid alarm is generated.</dependencies>
+        <takesEffect>At next cell setup.</takesEffect>
+        <precondition>Cell must not be setup by the RNC. If corresponding sector is initialized the TR devices used by the carrier must be capable of setting DL bandwidth.</precondition>
+      </attribute>
+      <attribute name="bandwidthUl">
+        <description>Denotes the carrier bandwidth in uplink.
+
+Example: 50 = 5.0 MHz </description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <long>
+            <range>
+              <max>50</max>
+              <min>38</min>
+            </range>
+            <defaultValue>50</defaultValue>
+            <unit>0.1 MHz</unit>
+          </long>
+        </dataType>
+        <dependencies>Can only be set to another value than default in case a valid license key for the feature is installed, that is if NodeBFunction::licenseStateConfigurableCarrierBandwidth = ENABLED. If the value is other than default when the license state changes from ENABLED to DISABLED, a corresponding Carrier_ConfigurableCarrierBandwidthLicenseNotValid alarm is generated.</dependencies>
+        <takesEffect>At next cell setup.</takesEffect>
+        <precondition>Cell must not be setup by the RNC. If corresponding sector is initialized the TR devices used by the carrier must be capable of setting DL bandwidth.</precondition>
+      </attribute>
+      <attribute name="partOfSectorPower">
+        <description>The requested part of the total power in the Sector that should be allocated for the cell. The output power is evenly distributed over the antenna connectors used for TX transmission that are allocated for the cell.
+If the total amount of power per antenna connector is over 100% when the cell is unlocked, an alarm will be generated.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <long>
+            <range>
+              <max>100</max>
+              <min>0</min>
+            </range>
+            <defaultValue>100</defaultValue>
+            <unit>1%</unit>
+            <resolution>1</resolution>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="sectorEquipmentFunctionRef">
+        <description>Reference to an instance of SectorEquipmentFunction MO.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="NodeBLocalCellGroup">
+      <description>This MO models a group of NodeBLocalCells that share common baseband equipment cluster. Within the NodeBLocalCellGroup you can do softer handover.
+TBD.</description>
+      <attribute name="administrativeState">
+        <description>The administrative state. Valid values:
+- UNLOCKED
+- LOCKED</description>
+        <noNotification/>
+        <dataType>
+          <enumRef name="AdmState">
+            <defaultValue>LOCKED</defaultValue>
+          </enumRef>
+        </dataType>
+        <takesEffect>Immediately</takesEffect>
+      </attribute>
+    </class>
+    <class name="CellResources">
+      <description>This MO models all basic physical and transport channels related to the cell.  Basic physical channels: PCPICH, SCPICH, PSCH, SSCH and PCCPCH. Transport channels: BCH.
+
+The RDN of this MO is CellResources=1.
+
+Persistent: No
+Use cases: Manage Cell
+</description>
+      <attribute name="availabilityStatus">
+        <description>The availability status of the cell resources.
+
+Possible values: ???
+&#x2022; NOT_INSTALLED
+&#x2022; POWER_OFF
+&#x2022; IN_TEST
+&#x2022; DEPENDENCY_LOCKED
+&#x2022; DEPENDENCY_FAILED
+&#x2022; FAILED
+&#x2022; OFF_LINE
+&#x2022; DEGRADED
+&#x2022; OFF_DUTY
+&#x2022; LOG_FULL
+&#x2022; NO STATUS = Full availability.
+
+Ref. [CB_MOP] </description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="AvailabilityStatus"/>
+        </dataType>
+        <specification>ITU-T rec. X.731</specification>
+      </attribute>
+      <attribute name="operationalState">
+        <description>Defines the operational state.
+
+Possible values:
+&#x2022; DISABLED
+&#x2022; ENABLED
+
+Ref. [CB_MOP]</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="OperState"/>
+        </dataType>
+        <specification>ITU-T rec. X.731</specification>
+      </attribute>
+      <attribute name="CellResourcesId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="numOfBch">
+        <description>The number of BCH, Broadcast CHannel in the cell. The BCH is a fixed rate point to multi point downlink channel, used to convey system information in the whole coverage area of the cell.
+
+Persistent: No
+Use cases: Manage Cell</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long>
+            <range>
+              <max>1</max>
+              <min>0</min>
+            </range>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="numOfPccpch">
+        <description>The number of PCCPCH, Primary Common Control Physical CHannel in the cell. This downlink physical channel carries the transport channel BCH.
+
+Persistent: No
+Use cases: Manage Cell
+</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long>
+            <range>
+              <max>1</max>
+              <min>0</min>
+            </range>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="numOfPcpich">
+        <description>The number of PCPICH, Primary Common Pilot CHannel in the cell. This is a fixed rate downlink physical channel that carries a predefined symbol sequence. PCPICH is used as phase reference for other downlink physical channels. No transport channel is carried on PCPICH.
+
+Persistent: No
+Use cases: Manage Cell</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long>
+            <range>
+              <max>1</max>
+              <min>0</min>
+            </range>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="numOfPsch">
+        <description>The number of physical channel PSCH, Primary Synchronization CHannel in the cell. This is a downlink physical channel used to find the scrambling code of the cell. The PSCH transmits the Primary Synchronization Code, which is the same for every cell in the system and known by each UE. It is sent simultaneously with the transmission on the SSCH. No transport channel is carried on PSCH.
+
+Persistent: No
+Use cases: Manage Cell</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long>
+            <range>
+              <max>1</max>
+              <min>0</min>
+            </range>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="numOfScpich">
+        <description>The number of SCPICH, Secondary Common Pilot CHannel in the cell. This is a fixed rate downlink physical channel that carries a predefined symbol sequence. SCPICH is used as phase reference for other downlink physical channels on a second antenna branch in certain MIMO configurations. No transport channel is carried on SCPICH.
+
+Persistent: No
+Use cases: Manage Cell</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long>
+            <range>
+              <max>1</max>
+              <min>0</min>
+            </range>
+          </long>
+        </dataType>
+      </attribute>
+      <attribute name="numOfSsch">
+        <description>The number of physical channel SSCH, Secondary Synchronization CHannel in the cell. This is a downlink physical channel used to find the scrambling code of the cell. SSCH transmits a sequence of 15 codes, simultaneously with transmission on the PSCH. By identifying the sequence the UE can derive the primary scrambling code of the cell. No transport channel is carried on SSCH.
+
+Persistent: No
+Use cases: Manage Cell</description>
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long>
+            <range>
+              <max>1</max>
+              <min>0</min>
+            </range>
+          </long>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="CommonChannelResources">
+      <description>This MO models all physical and transport channels related to the common channels. Physical channels: SCCPCH, PRACH, PICH and AICH. Transport channel: FACH, PCH and RACH.
+
+The RDN of this MO is CommonChannelResources=1.
+
+Persistent: No
+Use cases: Manage Cell</description>
+      <attribute name="operationalState">
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="OperState"/>
+        </dataType>
+      </attribute>
+      <attribute name="numOfAich">
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long/>
+        </dataType>
+      </attribute>
+      <attribute name="numOfFach">
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long/>
+        </dataType>
+      </attribute>
+      <attribute name="numOfPch">
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long/>
+        </dataType>
+      </attribute>
+      <attribute name="numOfPich">
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long/>
+        </dataType>
+      </attribute>
+      <attribute name="numOfPrach">
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long/>
+        </dataType>
+      </attribute>
+      <attribute name="numOfRach">
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long/>
+        </dataType>
+      </attribute>
+      <attribute name="numOfSccpch">
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <long/>
+        </dataType>
+      </attribute>
+      <attribute name="CommonChannelResourcesId">
+        <mandatory/>
+        <noNotification/>
+        <readOnly/>
+        <restricted/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="availabilityStatus">
+        <noNotification/>
+        <nonPersistent/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="AvailabilityStatus"/>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="NodeBFunction_to_Iub">
+      <containment>
+        <parent>
+          <hasClass name="NodeBFunction"/>
+        </parent>
+        <child>
+          <hasClass name="Iub"/>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Iub_to_IubDataStreams">
+      <containment>
+        <parent>
+          <hasClass name="Iub"/>
+        </parent>
+        <child>
+          <hasClass name="IubDataStreams"/>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Iub_to_NbapCommon">
+      <containment>
+        <parent>
+          <hasClass name="Iub"/>
+        </parent>
+        <child>
+          <hasClass name="NbapCommon"/>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Iub_to_NbapDedicated">
+      <containment>
+        <parent>
+          <hasClass name="Iub"/>
+        </parent>
+        <child>
+          <hasClass name="NbapDedicated"/>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="NodeBLocalCellGroup_to_NodeBLocalCell">
+      <containment>
+        <parent>
+          <hasClass name="NodeBLocalCellGroup"/>
+        </parent>
+        <child>
+          <hasClass name="NodeBLocalCell"/>
+          <cardinality>
+            <min>0</min>
+            <max>6</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="NodeBFunction_to_NodeBLocalCellGroup">
+      <containment>
+        <parent>
+          <hasClass name="NodeBFunction"/>
+        </parent>
+        <child>
+          <hasClass name="NodeBLocalCellGroup"/>
+          <cardinality>
+            <min>0</min>
+            <max>8</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="NodeBLocalCell_to_CellResources">
+      <containment>
+        <parent>
+          <hasClass name="NodeBLocalCell"/>
+        </parent>
+        <child>
+          <hasClass name="CellResources"/>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="NodeBLocalCell_to_CommonChannelResources">
+      <containment>
+        <parent>
+          <hasClass name="NodeBLocalCell"/>
+        </parent>
+        <child>
+          <hasClass name="CommonChannelResources"/>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+  </mim>
+</models>

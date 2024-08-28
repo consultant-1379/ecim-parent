@@ -1,0 +1,732 @@
+-- /**
+-- * This transform takes an ECIM compliant model (UML) as input and generates a YANG compliant output.
+-- * NOTE: There is a hard limit of nesting levels(change it in the HelperFunctions) to avoid long DNs and recursive containment
+-- * NOTE: Inheritance not supported so flattener must run first.
+-- * TODO: Special characters in the documentation cause problems. Today we only fix quotes.
+-- * NOTE: Regex's are escaped by XText causing problems must be escaped, see http://www.w3.org/TR/2004/REC-xmlschema-2-20041028/#regexs, but
+-- * escaping these characters is going to be very difficult as they are context specific and we don't know the context. They should
+-- * be escaped in the UML model by the modeller.
+-- * 
+-- * superimposition-dependencies: 
+-- * library-dependencies: HelperFunctions.atl
+-- *
+-- * Author: Ronan Barrett and Andreas Jakobik
+-- * Date: 16/02/2012
+-- */
+
+
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @path YANG=/com.ericsson.yang/model/Yang.ecore
+-- @nsURI PARAM=http://ericsson.com/ECIM/ParameterModel
+
+module UmlPackageToYangModule;
+create OUT : YANG from IN : UML, IN2 : PARAM;
+
+uses HelperFunctions;
+
+--Template for converting packages to modules/sub-modules
+abstract rule PackageToModule
+{
+	from s : UML!Package(s.oclIsTypeOf(UML!Package))
+	using
+	{
+		--local storage of the packages to be imported to satify the augment statement
+		augp : Set(UML!Package) = s.ownedElement->select(e|e.oclIsTypeOf(UML!Association) and e.hasStereotype('ECIM Base Profile::EcimContribution'))->collect(e|thisModule.augmentImportBuilder(e,e.getNearestPackage(),e.getTargetEndType(), Sequence{}))->flatten();	
+		
+	}	
+	to t : YANG!AbstractModule
+	(
+		name <- s.name,
+		prefix <- pre,
+		namespace <- 'urn:com:ericsson:ecim:'+t.name,
+		organization <- s.getOrganizationValue,	
+		description <- thisModule.hasDescription(s),
+				
+		--always include a import to the Ericsson extensions library. it will get too complex calculating whether we need this or not
+		imports <- thisModule.CreateInclude('ericsson-yang-extensions','ericsson'),		
+		
+		--create imports for datatypes and structs and enumerations (defined on a stereotyped property or parameter) that are not defined in this package
+		--also add imports for the augment types
+		--we remove all duplicates by calling asSet()
+		--we ignore standard ECIM types definied in the 'EcimDataType' library
+		imports <- s.allOwnedElements()->select(e|e.hasStereotype('ECIM Base Profile::EcimStructMember') or e.hasStereotype('ECIM Base Profile::EcimAttribute_RW') or e.hasStereotype('ECIM Base Profile::EcimAttribute_RO') or e.hasStereotype('ECIM Base Profile::EcimKeyAttribute')or e.hasStereotype('ECIM Base Profile::EcimParameter') or e.hasStereotype('ECIM Base Profile::EcimResult'))->select(e|e.type.getNearestPackage() <> s and (e.type.oclIsTypeOf(UML!DataType) or e.type.oclIsTypeOf(UML!Enumeration) or e.type.hasStereotype('ECIM Base Profile::EcimStruct')))->collect(e|e.type.getNearestPackage())->union(augp)->reject(e|e.name='EcimDataType')->collect(e|e.name)->asSet()->flatten()->collect(e|thisModule.ResolveImport(e)),
+
+		--if there are contributions then don't nest the elements directly. If there are then use an augment
+		statements <- if s.getContributions()->size() = 0 then s.ownedElement->select(e|e.oclIsTypeOf(UML!Class))->select(e|thisModule.isClassRoot(e)) else s.getContributions() endif,
+		
+		statements <- UML!Enumeration.allInstances()->select(e|e.getNearestPackage().name = thisModule.getParameter()),		
+		statements <- UML!DataType.allInstances()->select(e|e.getNearestPackage().name = thisModule.getParameter()),
+		statements <- s.ownedElement->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.hasStereotype('ECIM Base Profile::EcimStruct') and thisModule.isExclusive(e))->select(e|e.getNearestPackage().name = thisModule.getParameter()),
+		statements <- UML!Class.allInstances()->select(e|e.oclIsTypeOf(UML!Class) and not e.isAbstract and not thisModule.isExclusive(e) and e.getNearestPackage().name = thisModule.getParameter())->collect(e|thisModule.ClassToGrouping(e))--every class/struct gets a grouping		
+		
+	),
+	pre : YANG!Prefix
+	(
+		name <- t.name	
+	)
+}
+
+--Convert EcimMom UML packages to Yang SubModules
+rule PackageToSubModule extends PackageToModule
+{
+	from s : UML!Package(s.oclIsTypeOf(UML!Package) and s.hasStereotype('ECIM Base Profile::EcimMom') and s.getNearestPackage().name = thisModule.getParameter())		
+	to t : YANG!Module
+	(				
+		--build include list based on contribution ends. Only include packages which have been PackageImported.
+		--includeModules <- s.getContributions()->collect(e|e.memberEnd->select(f|f.aggregation=#none))->flatten()->collect(e|e.type.getNearestPackage())->select(e|e.getModel() = s.getModel())->flatten()->collect(e|e.name)
+	)
+	do
+	{
+		--this assignment must be in a do section as it must run after the statements in the to section
+		t.revisions <- thisModule.CreateMomRevision(s);
+	}
+}
+
+--Convert EcimLibrary UML packages to Yang Modules
+rule LibraryPackageToSubModule extends PackageToModule
+{
+	from s : UML!Package(s.oclIsTypeOf(UML!Package) and s.hasStereotype('ECIM Base Profile::EcimLibrary') and s.getNearestPackage().name = thisModule.getParameter())	
+	to t : YANG!Module
+	(
+	)
+	do
+	{
+		--this assignment must be in a do section as it must run after the statements in the to section
+		t.revisions <- thisModule.CreateLibraryRevision(s);
+	}	
+}
+
+--Create an include
+rule CreateInclude(name : String, prefix : String)
+{
+	to t : YANG!Import
+	(
+		moduleName <- name,
+		prefix <- pre
+	),
+	pre : YANG!Prefix
+	(
+		name <- prefix
+	)
+	do
+	{
+		t;		
+	}
+}
+
+--Create a revision for a MOM
+rule CreateMomRevision(s : UML!Package)
+{
+	to t : YANG!Revision
+	(
+		date <- t.convertDate(s.getDateValue),
+		properties <- Set{s.getRevisionValue,s.getContactValue,s.getSpecificationValue,s.getAuthorValue,s.getCorrectionValue,s.getDocNoValue,s.getStatusInformationValue,s.getReleaseValue,s.getVersionValue}
+	)
+	do
+	{
+		t;		
+	}
+}
+
+rule CreateExtensionProperty(prefix : String, name : String)
+{
+	to t : YANG!Property
+	(
+		prefix <- YANG!Prefix.allInstances()->select(e|e.name=prefix)->first(),
+		name <- name
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateExtensionPropertyString(prefix : String, name : String, v : String)
+{
+	to t : YANG!Property
+	(
+		prefix <- YANG!Prefix.allInstances()->select(e|e.name=prefix)->first(),
+		name <- name,
+		value <- valueType
+	),
+	valueType : YANG!StringValue
+	(
+		value <- v
+	)
+	do
+	{
+		t;
+	}
+}
+
+--Create a revision for a Library
+rule CreateLibraryRevision(s : UML!Package)
+{
+	to t : YANG!Revision
+	(
+		date <- t.convertDate(s.getDateValue),
+		properties <- Set{s.getContactValue,s.getSpecificationValue,s.getAuthorValue,s.getCorrectionValue,s.getDocNoValue,s.getStatusInformationValue,s.getReleaseValue,s.getVersionValue}
+	)
+	do
+	{
+		t;		
+	}
+}
+
+--Create an import for every unique type defined in a different package
+rule ResolveImport(packageName : String)
+{
+	to t : YANG!Import
+	(
+		moduleName <- packageName,
+		prefix <- prefix
+	),
+	prefix : YANG!Prefix
+	(
+		name <- packageName
+	)
+	do
+	{
+		t;		
+	}
+}
+
+--Match the root classes and build the association hierarchy. Only run if there are no contributions i.e. This rule only fires for the top of the tree
+rule RootClassToList
+{
+	from s : UML!Class(s.getNearestPackage().getContributions()->size() = 0 and s.oclIsTypeOf(UML!Class) and thisModule.isClassRoot(s) and not s.isAbstract and s.getNearestPackage().name = thisModule.getParameter())
+	to t : YANG!ListWithStatus
+	(
+		name <- s.name,	
+		key <- s.attribute->select(e|thisModule.isKey(e))->first().name,		
+		status <- s.getStatus(),
+
+		--classes contain other classes based on the containment relationships they are part of
+		children <- s.attribute->select(e|not e.association.oclIsUndefined() and e.aggregation = #composite)->collect(e|thisModule.ContainmentToList(e.association,0)),
+		children <- thisModule.CreateUses(s)		
+	)
+}
+
+--Match the contributions and build the association hierarchy
+rule ContributionToAugmentAndList
+{
+	from s : UML!Association(s.oclIsTypeOf(UML!Association) and s.hasStereotype('ECIM Base Profile::EcimContribution') and s.getNearestPackage().name = thisModule.getParameter())
+	using
+	{
+		end : UML!Property = s.getMemberEnds()->select(e|e.aggregation = #composite)->first();
+		type : UML!Class = end.type;
+		minCardinalityOnAugmentListMessage : String = 'The min-elements value for this statement is : ' + end.lower + '.';
+	}
+	to t : YANG!Augment
+	(
+		--the name begins with a slash, then we have the target prefix (which is the model name), then a comma, then the target element's fully qualified dn
+		name <- '/'+thisModule.augmentDNBuilder(s,s.getNearestPackage(),s.getTargetEndType(), Sequence{}),
+		name <- t.name.substring(1,t.name.size()-1),
+		elements <- list
+	),
+	list : YANG!ListWithStatus
+	(
+		name <- type.name,
+		key <- type.attribute->select(e|thisModule.isKey(e))->first().name,
+		status <- type.getStatus(),	
+		max <- if end.upper = -1 then OclUndefined else end.upper.toString() endif,		
+
+		--we cannot have a min value in an Augment that is not 0 as it will break Yang. Yang insists on augments being optional
+		--so instead of stating the min we add a comment to clarify
+		description <- if end.lower > 0 then minCardinalityOnAugmentListMessage else OclUndefined endif,		
+		
+		--the association end type contains other classes based on the containment relationships they are part of
+		children <- type.attribute->select(e|not e.association.oclIsUndefined() and e.aggregation = #composite)->collect(e|thisModule.ContainmentToList(e.association,0)),
+
+		children <- thisModule.CreateUses(type)		
+	)
+}
+
+--Match the containments and build the association hierarchy. The loopCount ensures we don't go into an infinite loop and that containment depths are not too deep
+rule ContainmentToList(s : UML!Association, loopCount : Integer)
+{
+	using
+	{
+		end : UML!Property = s.getMemberEnds()->select(e|e.aggregation = #composite)->first();
+		type : UML!Class = end.type;
+	}
+	to t : YANG!ListWithStatus
+	(
+		name <- type.name,	
+		key <- type.attribute->select(e|thisModule.isKey(e))->first().name,
+		min <- if end.lower = 0 then OclUndefined else end.lower endif,
+		max <- if end.upper = -1 then OclUndefined else end.upper.toString() endif,	
+		status <- type.getStatus(),	
+		
+		children <- if loopCount < thisModule.listNestingMaxLevel then type.attribute->select(e|not e.association.oclIsUndefined() and e.aggregation = #composite)->collect(e|thisModule.ContainmentToList(e.association, loopCount+1)) else OclUndefined endif,
+		children <- thisModule.CreateUses(type)		
+	)
+	do
+	{
+		t;	
+	}
+}
+
+rule CreateUses(element : OclAny)
+{
+	to t: YANG!Uses
+	(
+		name <- element.getNearestPackage().name +':'+element.name
+	)
+	do
+	{
+		t;	
+	}	
+}
+
+--Map classes/structs to grouping
+lazy rule ClassToGrouping
+{
+	from s : UML!Class(s.oclIsTypeOf(UML!Class) and not s.isAbstract and not thisModule.isExclusive(s))
+	to t : YANG!Grouping
+	(
+		name <- s.name,
+		status <- s.getStatus(),	
+		description <- thisModule.hasDescription(s),
+		children <- s.attribute->select(e|e.association.oclIsUndefined()),
+		properties <- s.ownedOperation
+	)
+}
+
+--Map structs, with exclusive flag set to false, to grouping/choice
+rule ExclusiveStructToGroupingAndChoice
+{
+	from s : UML!Class(s.oclIsTypeOf(UML!Class) and not s.isAbstract and s.hasStereotype('ECIM Base Profile::EcimStruct') and thisModule.isExclusive(s) and s.getNearestPackage().name = thisModule.getParameter())
+	to t : YANG!Grouping
+	(
+		name <- s.name,
+		status <- s.getStatus(),	
+		description <- thisModule.hasDescription(s),
+		children <- chc
+	),
+	chc : YANG!Choice
+	(
+		name <- s.name,
+		elements <- s.attribute->select(e|e.association.oclIsUndefined())
+	)
+}
+	
+--Match datatypes
+rule DataTypeToTypeDefinition
+{
+	from s : UML!DataType(s.oclIsTypeOf(UML!DataType) and s.getNearestPackage().name = thisModule.getParameter())
+	to t : YANG!TypeDefinition
+	(
+		name <- s.name,
+		status <- s.getStatus(),		
+		type <- thisModule.DataTypeToDataType(s),
+		description <- thisModule.hasDescription(s),
+		reference <- thisModule.getSpecification(s) 
+	)
+}
+
+--Abstract datatype matching rule
+lazy abstract rule DataTypeToDataType
+{
+	from s : UML!DataType(s.oclIsTypeOf(UML!DataType))
+	to t : YANG!DataType
+	(
+		name <- thisModule.convertEcimTypeToYANGType(s.general->first())--TODO:This use of first is not very good!
+	)
+}
+
+--Match string derived data types
+lazy rule StringDataTypeToTypeDefinition extends DataTypeToDataType
+{
+	from s : UML!DataType(s.oclIsTypeOf(UML!DataType) and s.hasStereotype('ECIM Base Profile::EcimDerivedString'))
+	to t : YANG!DataType
+	(
+		length <- if(thisModule.getLength(s).oclIsUndefined()) then OclUndefined else t.compressRange(thisModule.getLength(s)) endif,
+		pattern <- thisModule.getPattern(s)
+	)
+}
+
+--Match numeric and float derived data types
+lazy rule NumericDataTypeToTypeDefinition extends DataTypeToDataType
+{
+	from s : UML!DataType(s.oclIsTypeOf(UML!DataType) and s.hasStereotype('ECIM Base Profile::EcimDerivedInteger'))
+	to t : YANG!DataType
+	(
+		range <- if(thisModule.getRange(s).oclIsUndefined()) then OclUndefined else thisModule.CreateRange(t.compressRange(thisModule.getRange(s))) endif
+	)
+}
+
+--Match numeric and float derived data types
+lazy rule FloatDataTypeToTypeDefinition extends DataTypeToDataType
+{
+	from s : UML!DataType(s.oclIsTypeOf(UML!DataType) and s.hasStereotype('ECIM Base Profile::EcimDerivedFloat'))
+	to t : YANG!DataType
+	(
+		range <- if(thisModule.getRange(s).oclIsUndefined()) then OclUndefined else thisModule.CreateRange(t.compressRange(thisModule.getRange(s))) endif,	
+		fractionDigits <- thisModule.getResolution(t,s)
+	)
+}
+
+--Match boolean derived data types
+lazy rule BooleanDataTypeToTypeDefinition extends DataTypeToDataType
+{
+	from s : UML!DataType(s.oclIsTypeOf(UML!DataType) and s.hasStereotype('ECIM Base Profile::EcimDerivedBoolean'))
+	to t : YANG!DataType
+	(
+
+	)
+}
+
+--Match enumeration types
+rule EnumerationToTypeDefinition
+{
+	from s : UML!Enumeration(s.oclIsTypeOf(UML!Enumeration) and s.getNearestPackage().name = thisModule.getParameter())
+	to t : YANG!TypeDefinition
+	(
+		name <- s.name,
+		status <- s.getStatus(),
+		type <- enum,
+		description <- thisModule.hasDescription(s)
+	),
+	enum : YANG!Enumeration
+	(
+		enumLiterals <- s.ownedLiteral
+	)	
+}
+
+--Match enumeration literal types
+rule EnumerationLiteralToEnumLiteral
+{
+	from s : UML!EnumerationLiteral(s.oclIsTypeOf(UML!EnumerationLiteral) and s.getNearestPackage().name = thisModule.getParameter())
+	to t : YANG!EnumLiteral
+	(
+		name <- s.name,
+		value <- value,
+		description <- thisModule.hasDescription(s)
+	),
+	--ECIM only supports integer values on enumeration literals so we only support this mapping here. If the value is too large output 0
+	value : YANG!IntValue
+	(
+		value <- if (s.specification.oclIsTypeOf(UML!LiteralInteger)) then s.specification.integerValue() else 0 endif
+	)
+}
+
+--This abstract rule covers the common mapping between properties and leafs/leaflists
+abstract rule AbstractPropertyToLeaf
+{
+	from s: UML!Property(s.oclIsTypeOf(UML!Property))
+	to t : YANG!Leaf
+	(
+		name <- s.name,		
+		config <- s.isConfig,
+		status <- s.getStatus(),
+		description <- thisModule.hasDescription(s),		
+		properties <- thisModule.isRestricted(s),--Ericsson extension for restricted flag		
+		type <- typ
+	),
+	typ : YANG!DataType
+	(
+		name <- thisModule.getTypeAsString(s),
+		fractionDigits <- if s.type.name = 'EcimFloat' then thisModule.getResolution(typ,s) else OclUndefined endif,--only show resolution if type is float
+		length <- if(thisModule.getLength(s).oclIsUndefined()) then OclUndefined else typ.compressRange(thisModule.getLength(s)) endif,
+		range <- if(thisModule.getRange(s).oclIsUndefined()) then OclUndefined else thisModule.CreateRange(typ.compressRange(thisModule.getRange(s))) endif,		
+		pattern <- if s.type.oclIsTypeOf(UML!Class) then thisModule.getMoRefPattern(s) else thisModule.getPattern(s) endif--set a pattern if the type was a MoRef	
+	)
+}
+
+--Rule for single value properties, which do *not* have a struct as their type
+rule PropertyToLeaf extends AbstractPropertyToLeaf
+{
+	from s : UML!Property(s.oclIsTypeOf(UML!Property) and s.upper = 1 and s.owner.oclIsTypeOf(UML!Class) and (s.owner.hasStereotype('ECIM Base Profile::EcimMoClass') or s.owner.hasStereotype('ECIM Base Profile::EcimStruct')) and s.association.oclIsUndefined() and not s.type.hasStereotype('ECIM Base Profile::EcimStruct') and s.getNearestPackage().name = thisModule.getParameter())
+	to t : YANG!Leaf
+	(
+		mandatory <- s.isMandatory,
+		defaultValue <- if(s.lower = 0 and not s.defaultValue.oclIsUndefined()) then thisModule.CreateValue(s.defaultValue) else OclUndefined endif
+	)
+}
+
+--Rule for multi-valued properties, which do *not* have a struct as their type
+rule MultiPropertyToLeafList extends AbstractPropertyToLeaf
+{
+	from s : UML!Property(s.oclIsTypeOf(UML!Property) and (s.upper > 1 or s.upper = -1) and s.owner.oclIsTypeOf(UML!Class) and (s.owner.hasStereotype('ECIM Base Profile::EcimMoClass') or s.owner.hasStereotype('ECIM Base Profile::EcimStruct')) and s.association.oclIsUndefined() and not s.type.hasStereotype('ECIM Base Profile::EcimStruct') and s.getNearestPackage().name = thisModule.getParameter())
+	to t : YANG!LeafList
+	(
+		properties <- if (not s.isUnique and not s.type.oclIsTypeOf(UML!Class) and not s.type.oclIsTypeOf(UML!Enumeration)) then thisModule.CreateExtensionProperty('ericsson', 'non-unique-leaf-list') else OclUndefined endif,--if the multi-value attribute is not unique and the type is a simple type add an extension in yang
+		min <- if (s.lower > 0) then s.lower else OclUndefined endif,
+		max <- if (s.upper = -1) then OclUndefined else s.upper.toString() endif--if the upper is infinite then show no max
+	)
+}
+
+--**Attribute with struct type rules begin here**
+--If it is readOnly: create list with or without a key; uses grouping.
+rule ReadOnlyPropertyWithStructTypeToList
+{
+	from s : UML!Property(s.oclIsTypeOf(UML!Property) and s.owner.oclIsTypeOf(UML!Class) and (s.owner.hasStereotype('ECIM Base Profile::EcimMoClass') or s.owner.hasStereotype('ECIM Base Profile::EcimStruct')) and s.association.oclIsUndefined() and s.type.hasStereotype('ECIM Base Profile::EcimStruct') and s.isReadOnly and s.getNearestPackage().name = thisModule.getParameter())
+	using
+	{
+		key : UML!Property = s.type.attribute->select(e|thisModule.isKey(e))->first();--store the struct key if there is one 	
+	}
+	to t : YANG!ListWithStatus
+	(
+		name <- s.name,
+		key <- if(not key.oclIsUndefined()) then key.name else OclUndefined endif,--show the key if there is one
+		description <- thisModule.hasDescription(s),	
+		config <- s.isConfig,
+		status <- s.getStatus(),
+		min <- if (s.lower > 0) then s.lower else OclUndefined endif,
+		max <- if (s.upper = -1) then OclUndefined else s.upper.toString() endif,--if the upper is infinite then show no max	
+		properties <- thisModule.isRestricted(s),--Ericsson extension for restricted flag		
+		children <- thisModule.CreateUses(s.type)		
+	)
+}
+
+--If it is readWrite and has a key: create list with a key; uses grouping.
+rule ReadWritePropertyWithKeyAndStructTypeToList
+{
+	from s : UML!Property(s.oclIsTypeOf(UML!Property) and s.owner.oclIsTypeOf(UML!Class) and (s.owner.hasStereotype('ECIM Base Profile::EcimMoClass') or s.owner.hasStereotype('ECIM Base Profile::EcimStruct')) and s.association.oclIsUndefined() and s.type.hasStereotype('ECIM Base Profile::EcimStruct') and not s.isReadOnly and not thisModule.getKey(s.type).oclIsUndefined() and s.getNearestPackage().name = thisModule.getParameter())
+	using
+	{
+		key : UML!Property = thisModule.getKey(s.type);--store the struct key if there is one 	
+	}
+	to t : YANG!ListWithStatus
+	(
+		name <- s.name,
+		key <- if(not key.oclIsUndefined()) then key.name else OclUndefined endif,--show the key if there is one
+		config <- s.isConfig,
+		min <- if (s.lower > 0) then s.lower else OclUndefined endif,
+		max <- if (s.upper = -1) then OclUndefined else s.upper.toString() endif,--if the upper is infinite then show no max	
+		status <- s.getStatus(),
+		description <- thisModule.hasDescription(s),	
+		properties <- thisModule.isRestricted(s),--Ericsson extension for restricted flag		
+		children <- thisModule.CreateUses(s.type)		
+	)
+}
+
+--If it is readWrite and has no key and its cardinality is 0..1 or 1:  create container; uses grouping.
+rule ReadWritePropertyWithNoKeyAndStructTypeToContainer
+{
+	from s : UML!Property(s.oclIsTypeOf(UML!Property) and s.upper = 1 and s.owner.oclIsTypeOf(UML!Class) and (s.owner.hasStereotype('ECIM Base Profile::EcimMoClass') or s.owner.hasStereotype('ECIM Base Profile::EcimStruct')) and s.association.oclIsUndefined() and s.type.hasStereotype('ECIM Base Profile::EcimStruct') and not s.isReadOnly and thisModule.getKey(s.type).oclIsUndefined() and s.getNearestPackage().name = thisModule.getParameter())
+	to t : YANG!Container
+	(
+		name <- s.name,
+		presence <- 'This Container points to a Struct which has no key.',
+		config <- s.isConfig,
+		description <- thisModule.hasDescription(s),
+		status <- s.getStatus(),		
+		properties <- thisModule.isRestricted(s),--Ericsson extension for restricted flag		
+		children <- thisModule.CreateUses(s.type)
+	)
+}
+
+--If it is readWrite and has no key and its max cardinality is greater then use yang-extension keylessConfigList.
+rule ReadWritePropertyWithNoKeyAndMultiAndStructTypeToList
+{
+	from s : UML!Property(s.oclIsTypeOf(UML!Property) and (s.upper > 1 or s.upper = -1) and s.owner.oclIsTypeOf(UML!Class) and (s.owner.hasStereotype('ECIM Base Profile::EcimMoClass') or s.owner.hasStereotype('ECIM Base Profile::EcimStruct')) and s.association.oclIsUndefined() and s.type.hasStereotype('ECIM Base Profile::EcimStruct') and not s.isReadOnly and thisModule.getKey(s.type).oclIsUndefined() and s.getNearestPackage().name = thisModule.getParameter())
+	using
+	{
+		warningText : String = 'Note: This is a writable struct.';	
+	}
+	to t : YANG!ListWithStatus
+	(
+		name <- s.name,	
+		properties <- thisModule.CreateExtensionProperty('ericsson', 'keyless-config-list'),--Ericsson extension so the user knows the list isn't a normal one		
+		config <- true,--this must always have config false
+		min <- if (s.lower > 0) then s.lower else OclUndefined endif,
+		max <- if (s.upper = -1) then OclUndefined else s.upper.toString() endif,--if the upper is infinite then show no max	
+		status <- s.getStatus(),	
+		properties <- thisModule.isRestricted(s),--Ericsson extension for restricted flag
+		description <- if thisModule.hasDescription(s).oclIsUndefined() then warningText else thisModule.hasDescription(s) + ' '+warningText endif,
+		children <- thisModule.CreateUses(s)		
+	)
+}
+
+--**Attribute with struct type rules end here**
+
+--Ericsson extension for Action support in Yang
+--rule OperationToAction
+--{
+--	from s : UML!Operation(s.oclIsTypeOf(UML!Operation) and s.owner.oclIsTypeOf(UML!Class) and s.getNearestPackage().name = thisModule.getParameter())
+--	to t : YANG!Property
+--	(
+--		name <- s.name,
+--		prefix <- YANG!Prefix.allInstances()->select(e|e.name='ericsson')->first(),
+--		description <- thisModule.hasDescription(s)
+--		children <- if(s.ownedParameter->select(e|e.hasStereotype('ECIM Base Profile::EcimParameter'))->select(e|e.direction<>#return)->size() > 0) then thisModule.CreateInputType(s) else OclUndefined endif,
+--		children <- s.ownedParameter->select(e|e.hasStereotype('ECIM Base Profile::EcimResult'))->collect(e|thisModule.CreateOutputType(s))--if a return type was set return one otherwise don't
+--	)
+--}
+
+--This abstract rule covers the common mapping between params and leafs/leaflists, but not structs
+abstract rule AbstractParameterToLeaf
+{
+	from s: UML!Parameter(s.hasStereotype('ECIM Base Profile::EcimParameter') or s.hasStereotype('ECIM Base Profile::EcimResult'))
+	to t : YANG!Leaf
+	(
+		-- artf335832 
+		name <- if (s.hasStereotype('ECIM Base Profile::EcimResult')) then 'returnValue' else s.name endif,
+		description <- thisModule.hasDescription(s),
+		type <- typ
+	),
+	typ : YANG!DataType
+	(
+		name <- thisModule.getTypeAsString(s),
+		fractionDigits <- if s.type.name = 'EcimFloat' then thisModule.getResolution(typ,s) else OclUndefined endif,--only show resolution if type is float
+		length <- if(thisModule.getLength(s).oclIsUndefined()) then OclUndefined else typ.compressRange(thisModule.getLength(s)) endif,
+		range <- if(thisModule.getRange(s).oclIsUndefined()) then OclUndefined else thisModule.CreateRange(typ.compressRange(thisModule.getRange(s))) endif,		
+		pattern <- if s.type.oclIsTypeOf(UML!Class) then thisModule.getMoRefPattern(s) else thisModule.getPattern(s) endif--set a pattern if the type was a MoRef	
+	)
+}
+
+--This concrete rule converts a single valued UML param to a Yang leafs
+rule ParameterToLeaf extends AbstractParameterToLeaf
+{
+	from s: UML!Parameter((s.hasStereotype('ECIM Base Profile::EcimParameter') or s.hasStereotype('ECIM Base Profile::EcimResult')) and s.upper = 1 and not s.type.hasStereotype('ECIM Base Profile::EcimStruct') and s.getNearestPackage().name = thisModule.getParameter())
+	to t : YANG!Leaf
+	(
+		mandatory <- s.isMandatory,
+		defaultValue <- if(s.lower = 0 and not s.defaultValue.oclIsUndefined()) then thisModule.CreateValue(s.defaultValue) else OclUndefined endif
+	)
+}
+
+--This concrete rule converts a multi-valued UML param to a Yang leafs
+rule ParameterToLeafList extends AbstractParameterToLeaf
+{
+	from s: UML!Parameter((s.hasStereotype('ECIM Base Profile::EcimParameter') or s.hasStereotype('ECIM Base Profile::EcimResult')) and (s.upper > 1 or s.upper = -1) and not s.type.hasStereotype('ECIM Base Profile::EcimStruct') and s.getNearestPackage().name = thisModule.getParameter())
+	to t : YANG!LeafList
+	(
+		min <- if (s.lower > 0) then s.lower else OclUndefined endif,
+		max <- if (s.upper = -1) then OclUndefined else s.upper.toString() endif--if the upper is infinite then show no max	
+	)
+}
+
+--**Parameter with struct type rules begin here**
+--If it has a type of struct that has a key defined.
+rule ParameterWithKeyWithStructTypeToList
+{
+	from s : UML!Parameter((s.hasStereotype('ECIM Base Profile::EcimParameter') or s.hasStereotype('ECIM Base Profile::EcimResult')) and s.type.hasStereotype('ECIM Base Profile::EcimStruct') and not thisModule.getKey(s.type).oclIsUndefined() and s.getNearestPackage().name = thisModule.getParameter())
+	using
+	{
+		key : UML!Property = s.type.attribute->select(e|thisModule.isKey(e))->first();--store the struct key if there is one 	
+	}
+	to t : YANG!ListWithStatus
+	(
+		name <- s.name,
+		key <- if(not key.oclIsUndefined()) then key.name else OclUndefined endif,--show the key if there is one
+		min <- if (s.lower > 0) then s.lower else OclUndefined endif,
+		max <- if (s.upper = -1) then OclUndefined else s.upper.toString() endif,--if the upper is infinite then show no max		
+		status <- s.getStatus(),		
+		description <- thisModule.hasDescription(s),
+		children <- thisModule.CreateUses(s)		
+	)
+}
+
+--If it has a type of struct that has a no key defined and is a single value parameter.
+rule SingleParameterWithNoKeyWithStructTypeToContainer
+{
+	from s : UML!Parameter((s.hasStereotype('ECIM Base Profile::EcimParameter') or s.hasStereotype('ECIM Base Profile::EcimResult')) and s.upper = 1 and s.type.hasStereotype('ECIM Base Profile::EcimStruct') and thisModule.getKey(s.type).oclIsUndefined() and s.getNearestPackage().name = thisModule.getParameter())
+	to t : YANG!Container
+	(
+		name <- s.name,
+		presence <- 'This Container points to a Struct which has no key.',
+		status <- s.getStatus(),	
+		description <- thisModule.hasDescription(s),		
+		children <- thisModule.CreateUses(s)	
+	)
+}
+
+--If it has a type of struct that has a no key defined and is a single value parameter.
+rule MultiParameterWithNoKeyWithStructTypeToList
+{
+	from s : UML!Parameter((s.hasStereotype('ECIM Base Profile::EcimParameter') or s.hasStereotype('ECIM Base Profile::EcimResult')) and (s.upper > 1 or s.upper = -1) and s.type.hasStereotype('ECIM Base Profile::EcimStruct') and thisModule.getKey(s.type).oclIsUndefined() and s.getNearestPackage().name = thisModule.getParameter())
+	to t : YANG!ListWithStatus
+	(
+		name <- s.name,
+		properties <- thisModule.CreateExtensionProperty('ericsson', 'keyless-config-list'),--Ericsson extension so the user knows the list isn't a normal one
+		config <- true,--this must always have config false
+		min <- if (s.lower > 0) then s.lower else OclUndefined endif,
+		max <- if (s.upper = -1) then OclUndefined else s.upper.toString() endif,--if the upper is infinite then show no max		
+		status <- s.getStatus(),
+		description <- thisModule.hasDescription(s),
+		children <- thisModule.CreateUses(s)	
+	)
+}
+
+--**Parameter with struct type rules end here**
+
+--Paramaterised called rule to create a input type for an action
+--rule CreateInputType(operation : UML!Operation)
+--{
+--	to input : YANG!ActionInput
+--	(
+--		--All input params are assigned here
+--		children <- operation.ownedParameter->select(e|e.hasStereotype('ECIM Base Profile::EcimParameter'))->select(e|e.direction<>#return)
+--	)
+--	do
+--	{
+--		input;
+--	}	
+--}
+
+--Paramaterised called rule to create a output type for an action
+--rule CreateOutputType(operation : UML!Operation)
+--{
+--	to output : YANG!ActionOutput
+--	(
+--		--All output params are assigned here
+--		children <- operation.ownedParameter->select(e|e.hasStereotype('ECIM Base Profile::EcimResult'))->select(e|e.direction=#return)
+--	)
+--	do
+--	{
+--		output;
+--	}
+--}
+
+--Create a default based on type
+rule CreateValue(s : UML!ValueSpecification)
+{
+	to iv : YANG!IntValue
+	(
+	),
+	sv : YANG!StringValue
+	(
+	),
+	bv : YANG!BooleanValue
+	(
+	)
+	do
+	{
+		if(s.oclIsTypeOf(UML!LiteralString))
+		{
+			sv.value <- s.getValue();
+			sv;
+		}
+		else if(s.oclIsTypeOf(UML!LiteralBoolean))
+		{
+			--only set a default if it was true. XText goes nuts if you try and set it to false.
+			sv.value <- if s.isValue() then 'true' else OclUndefined endif;
+			if sv.value then sv else OclUndefined endif;
+		}
+		else if(s.oclIsTypeOf(UML!LiteralInteger))
+		{
+			sv.value <- s.getValue().toString();
+			sv;
+		}
+		else
+		{
+			OclUndefined;
+		}		
+	}
+}
+
+	--Create a range
+rule CreateRange(range : String)--, error_app_tag : String, error_message : String, description : String, reference : String)
+{
+	to t : YANG!Range
+	(
+		expression <- range
+	)
+	do
+	{
+		t;		
+	}
+}

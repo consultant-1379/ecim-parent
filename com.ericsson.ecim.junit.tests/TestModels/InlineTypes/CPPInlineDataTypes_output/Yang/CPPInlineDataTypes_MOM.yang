@@ -1,0 +1,763 @@
+/*
+  Copyright (c) 2013 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2013-jun-26 12:40:13 using 
+    * com.ericsson.ecim.yang.m2m 2.7.0.qualifier
+*/
+module CPPInlineDataTypes_MOM {
+	namespace "urn:com:ericsson:ecim:CPPInlineDataTypes_MOM";
+	prefix CPPInlineDataTypes_MOM;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	organization "Ericsson";
+
+	revision "2013-06-26" {
+		ericsson:release 1;
+		ericsson:version 2;
+	}
+
+	list RootMoc {
+		key id;
+		uses "CPPInlineDataTypes_MOM:RootMoc";
+	}
+
+	typedef DerivedString {
+		type string {
+			length "1..2|3..4";
+			pattern ".*";
+		}
+
+	}
+
+	typedef DerivedBoolean {
+		type boolean;
+	}
+
+	typedef DerivedFloat {
+		type decimal64 {
+			fraction-digits 2;
+		}
+
+	}
+
+	typedef DerivedInteger {
+		type int32 {
+			range "1..3|4..5";
+		}
+
+	}
+
+	grouping RootMoc {
+		leaf id {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+		leaf stringNoPatternOrLength {
+			type string;
+		}
+
+		leaf stringWithPatternAndLength {
+			type string;
+		}
+
+		leaf-list stringMultiWithPatternAndMultiLength {
+			type string;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list stringMultiWithNoPatternOrLength {
+			type string;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf floatWithNoMFOrResOrRange {
+			type decimal64;
+		}
+
+		leaf floatWithMFAndResAndRange {
+			type decimal64;
+		}
+
+		leaf-list floatMultiWithMFAndResAndMultiRange {
+			type decimal64;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list floatMultiWithNoMFOrResOrRange {
+			type decimal64;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf int64WithNoMFOrResOrRange {
+			type int64;
+		}
+
+		leaf int32WithInline {
+			type int32;
+		}
+
+		leaf-list int8MultiWithMFAndResAndMultiRange {
+			type int8;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list int16MultiWithNoMFOrResOrRange {
+			type int16;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf uint64WithNoMFOrResOrRange {
+			type uint64;
+		}
+
+		leaf uint32WithMFAndResAndRange {
+			type uint32;
+		}
+
+		leaf-list uint8MultiWithMFAndResAndMultiRange {
+			type uint8;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list uint16MultiWithNoMFOrResOrRange {
+			type uint16;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf boolean {
+			type boolean;
+		}
+
+		leaf-list booleanMulti {
+			type boolean;
+			max-elements 7;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf derivedStringUser {
+			type "CPPInlineDataTypes_MOM:DerivedString";
+		}
+
+		leaf cppAllPropertiesFilledIn {
+			type string;
+		}
+
+		leaf derivedBooleanUser {
+			type "CPPInlineDataTypes_MOM:DerivedBoolean";
+		}
+
+		leaf derivedFloatUser {
+			type "CPPInlineDataTypes_MOM:DerivedFloat";
+		}
+
+		leaf derivedIntegerUser {
+			type "CPPInlineDataTypes_MOM:DerivedInteger";
+		}
+
+		leaf-list derivedStringUserSequence {
+			type "CPPInlineDataTypes_MOM:DerivedString";
+			max-elements 10;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list derivedBooleanUserSequence {
+			type "CPPInlineDataTypes_MOM:DerivedBoolean";
+			max-elements 2;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list derivedFloatUserSequence {
+			type "CPPInlineDataTypes_MOM:DerivedFloat";
+			max-elements 5;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list derivedIntegerUserSequence {
+			type "CPPInlineDataTypes_MOM:DerivedInteger";
+			max-elements 19;
+			ericsson:non-unique-leaf-list;
+		}
+
+		container structSingle {
+			presence "This Container points to a Struct which has no key.";
+			uses "CPPInlineDataTypes_MOM:StructWithInlineProps";
+		}
+
+		list structMulti {
+			max-elements 10;
+			config false;
+			description "Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses "CPPInlineDataTypes_MOM:StructWithInlineProps";
+		}
+
+		leaf int32NoInline {
+			type int32;
+		}
+
+		leaf-list int32MultiNoInline {
+			type int32;
+			max-elements 10;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list int32MultiWithInline {
+			type int32;
+			max-elements 10;
+			ericsson:non-unique-leaf-list;
+		}
+
+		ericsson:action actionX {
+			input {
+				leaf boolean {
+					type boolean;
+					mandatory true;
+				}
+
+				leaf-list booleanMulti {
+					type boolean;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf derivedBooleanUser {
+					type "CPPInlineDataTypes_MOM:DerivedBoolean";
+					mandatory true;
+				}
+
+				leaf-list derivedBooleanUserSequence {
+					type "CPPInlineDataTypes_MOM:DerivedBoolean";
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf derivedIntegerUser {
+					type "CPPInlineDataTypes_MOM:DerivedInteger";
+					mandatory true;
+				}
+
+				leaf-list derivedIntegerUserSequence {
+					type "CPPInlineDataTypes_MOM:DerivedInteger";
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf derivedFloatUser {
+					type "CPPInlineDataTypes_MOM:DerivedFloat";
+					mandatory true;
+				}
+
+				leaf-list derivedFloatUserSequence {
+					type "CPPInlineDataTypes_MOM:DerivedFloat";
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf derivedStringUser {
+					type "CPPInlineDataTypes_MOM:DerivedString";
+					mandatory true;
+				}
+
+				leaf-list derivedStringUserSequence {
+					type "CPPInlineDataTypes_MOM:DerivedString";
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf stringNoPatternOrLength {
+					type string;
+					mandatory true;
+				}
+
+				leaf stringWithPatternOrLength {
+					type string;
+					mandatory true;
+				}
+
+				leaf-list stringMultiNoPatternOrLength {
+					type string;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf-list stringMultiWithPatternOrLength {
+					type string;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf int32WithInlineProps {
+					type int32;
+					mandatory true;
+				}
+
+				leaf int32WithNoInlineProps {
+					type int32;
+					mandatory true;
+				}
+
+				leaf-list int32MultiWithInlineProps {
+					type int32;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf-list int32MultiNoInlineProps {
+					type int32;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf int8WithInlineProps {
+					type int32;
+					mandatory true;
+				}
+
+				leaf int8WithNoInlineProps {
+					type int32;
+					mandatory true;
+				}
+
+				leaf-list int8MultiWithInlineProps {
+					type int8;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf-list int8MultiNoInlineProps {
+					type int8;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf uint32WithInlineProps {
+					type uint32;
+					mandatory true;
+				}
+
+				leaf uint32WithNoInlineProps {
+					type int32;
+					mandatory true;
+				}
+
+				leaf-list uint32MultiWithInlineProps {
+					type uint32;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf-list uint32MultiNoInlineProps {
+					type uint32;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf uint8WithInlineProps {
+					type uint8;
+					mandatory true;
+				}
+
+				leaf uint8WithNoInlineProps {
+					type int32;
+					mandatory true;
+				}
+
+				leaf-list uint8MultiWithInlineProps {
+					type uint8;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf-list uint8MultiNoInlineProps {
+					type uint8;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf floatWithInlineProps {
+					type decimal64;
+					mandatory true;
+				}
+
+				leaf floatWithNoInlineProps {
+					type decimal64;
+					mandatory true;
+				}
+
+				leaf-list floatMultiWithInlineProps {
+					type decimal64;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf-list floatMultiNoInlineProps {
+					type decimal64;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf int64WithInlineProps {
+					type int64;
+					mandatory true;
+				}
+
+				leaf int64WithNoInlineProps {
+					type int64;
+					mandatory true;
+				}
+
+				leaf-list int64MultiWithInlineProps {
+					type int64;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf-list int64MultiNoInlineProps {
+					type int64;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf int16WithInlineProps {
+					type int16;
+					mandatory true;
+				}
+
+				leaf int16WithNoInlineProps {
+					type int16;
+					mandatory true;
+				}
+
+				leaf-list int16MultiWithInlineProps {
+					type int16;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf-list int16MultiNoInlineProps {
+					type int16;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf uint64WithInlineProps {
+					type uint64;
+					mandatory true;
+				}
+
+				leaf uint64WithNoInlineProps {
+					type uint64;
+					mandatory true;
+				}
+
+				leaf-list uint64MultiWithInlineProps {
+					type uint64;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf-list uint64MultiNoInlineProps {
+					type uint64;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf uint16WithInlineProps {
+					type uint16;
+					mandatory true;
+				}
+
+				leaf uint16WithNoInlineProps {
+					type uint16;
+					mandatory true;
+				}
+
+				leaf-list uint16MultiWithInlineProps {
+					type uint16;
+					min-elements 1;
+					max-elements 10;
+				}
+
+				leaf-list uint16MultiNoInlineProps {
+					type uint16;
+					min-elements 1;
+					max-elements 10;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionReturnIntWithInline {
+			output {
+				leaf returnType {
+					type int32;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionReturnFloatNoInline {
+			output {
+				leaf returnType {
+					type decimal64;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionReturnFloatWithInline {
+			output {
+				leaf returnType {
+					type decimal64;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionReturnIntNoInline {
+			output {
+				leaf returnType {
+					type int32;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionReturnDerivedString {
+			output {
+				leaf returnType {
+					type "CPPInlineDataTypes_MOM:DerivedString";
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionReturnStringWithInline {
+			output {
+				leaf returnType {
+					type string;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionReturnStringNoInline {
+			output {
+				leaf returnType {
+					type string;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionReturnMultiIntWithInline {
+			output {
+				leaf-list returnType {
+					type uint64;
+					min-elements 1;
+					max-elements 10;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionReturnMultiIntNoInline {
+			output {
+				leaf-list returnType {
+					type int16;
+					min-elements 1;
+					max-elements 10;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionReturnMultiStringWithInline {
+			output {
+				leaf-list returnType {
+					type string;
+					min-elements 1;
+					max-elements 10;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionReturnMultiStringNoInline {
+			output {
+				leaf-list returnType {
+					type string;
+					min-elements 1;
+					max-elements 10;
+				}
+
+			}
+
+		}
+
+	}
+
+	grouping StructWithInlineProps {
+		leaf stringNoPatternOrLength {
+			type string;
+		}
+
+		leaf stringWithPatternAndLength {
+			type string;
+		}
+
+		leaf-list stringMultiWithPatternAndMultiLength {
+			type string;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list stringMultiWithNoPatternOrLength {
+			type string;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf floatWithNoMFOrResOrRange {
+			type decimal64;
+		}
+
+		leaf floatWithMFAndResAndRange {
+			type decimal64;
+		}
+
+		leaf-list floatMultiWithMFAndResAndMultiRange {
+			type decimal64;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list floatMultiWithNoMFOrResOrRange {
+			type decimal64;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf int64WithNoMFOrResOrRange {
+			type int64;
+		}
+
+		leaf int32WithMFAndResAndRange {
+			type int32;
+		}
+
+		leaf-list int8MultiWithMFAndResAndMultiRange {
+			type int8;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list int16MultiWithNoMFOrResOrRange {
+			type int16;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf uint64WithNoMFOrResOrRange {
+			type uint64;
+		}
+
+		leaf uint32WithMFAndResAndRange {
+			type uint32;
+		}
+
+		leaf-list uint8MultiWithMFAndResAndMultiRange {
+			type uint8;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list uint16MultiWithNoMFOrResOrRange {
+			type uint16;
+			max-elements 8;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf boolean {
+			type boolean;
+		}
+
+		leaf-list booleanMulti {
+			type boolean;
+			max-elements 7;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf derivedStringUser {
+			type "CPPInlineDataTypes_MOM:DerivedString";
+		}
+
+		leaf derivedBooleanUser {
+			type "CPPInlineDataTypes_MOM:DerivedBoolean";
+		}
+
+		leaf derivedFloatUser {
+			type "CPPInlineDataTypes_MOM:DerivedFloat";
+		}
+
+		leaf derivedIntegerUser {
+			type "CPPInlineDataTypes_MOM:DerivedInteger";
+		}
+
+		leaf-list derivedStringUserSequence {
+			type "CPPInlineDataTypes_MOM:DerivedString";
+			max-elements 10;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list derivedBooleanUserSequence {
+			type "CPPInlineDataTypes_MOM:DerivedBoolean";
+			max-elements 2;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list derivedFloatUserSequence {
+			type "CPPInlineDataTypes_MOM:DerivedFloat";
+			max-elements 5;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list derivedIntegerUserSequence {
+			type "CPPInlineDataTypes_MOM:DerivedInteger";
+			max-elements 19;
+			ericsson:non-unique-leaf-list;
+		}
+
+	}
+
+}

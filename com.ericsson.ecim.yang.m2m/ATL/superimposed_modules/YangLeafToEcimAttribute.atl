@@ -1,0 +1,142 @@
+-- /**
+-- * This transform takes a YANG model as input and generates a ECIM compliant model (UML) as output.
+-- * NOTE: All restrictions should be noted here
+-- * 
+-- * superimposition-dependencies: 
+-- * library-dependencies: HelperFunctions.atl
+-- * Yang Model Dependencies: ericsson-yang-extensions.yang
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 22/08/2014
+-- */
+
+-- ECIMMM must be pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml in launcher
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI YANG=http://www.ericsson.com/2010/Yang
+
+module YangLeafToEcimAttribute;
+
+--Note:IN2 is for the augments model. One must be present if we do it like this. We could alternatively write a HOT to allow many augment files in. We also need to
+--think about how this will be called via the GUI/CLI
+create OUT : UML from IN : YANG, ECIM_MM : UML, YANG_MM : UML, ECIM_DT : UML, ECIM : UML, YANG_GM : UML, IN2 : YANG,-- IN3 : YANG
+	IN3: YANG, IN4: YANG, IN5: YANG, IN6: YANG, IN7: YANG, IN8: YANG, IN9: YANG, IN10: YANG, 
+	IN11: YANG, IN12: YANG, IN13: YANG, IN14: YANG, IN15: YANG, IN16: YANG, IN17: YANG, IN18: YANG, IN19: YANG, IN20: YANG, 
+	IN21: YANG, IN22: YANG, IN23: YANG, IN24: YANG, IN25: YANG, IN26: YANG, IN27: YANG, IN28: YANG, IN29: YANG, IN30: YANG, 
+	IN31: YANG, IN32: YANG, IN33: YANG, IN34: YANG, IN35: YANG, IN36: YANG, IN37: YANG, IN38: YANG, IN39: YANG, IN40: YANG, 
+	IN41: YANG, IN42: YANG, IN43: YANG, IN44: YANG, IN45: YANG, IN46: YANG, IN47: YANG, IN48: YANG, IN49: YANG, IN50: YANG, 
+	IN51: YANG, IN52: YANG, IN53: YANG, IN54: YANG, IN55: YANG, IN56: YANG, IN57: YANG, IN58: YANG, IN59: YANG, IN60: YANG, 
+	IN61: YANG, IN62: YANG, IN63: YANG, IN64: YANG, IN65: YANG, IN66: YANG, IN67: YANG, IN68: YANG, IN69: YANG, IN70: YANG, 
+	IN71: YANG, IN72: YANG, IN73: YANG, IN74: YANG, IN75: YANG, IN76: YANG, IN77: YANG, IN78: YANG, IN79: YANG, IN80: YANG, 
+	IN81: YANG, IN82: YANG, IN83: YANG, IN84: YANG, IN85: YANG, IN86: YANG, IN87: YANG, IN88: YANG, IN89: YANG, IN90: YANG, 
+	IN91: YANG, IN92: YANG, IN93: YANG, IN94: YANG, IN95: YANG, IN96: YANG, IN97: YANG, IN98: YANG, IN99: YANG, IN100: YANG; 
+
+uses HelperFunctions;
+
+rule CreateLeafToProperty(s : YANG!Leaf, node: YANG!Node)
+{
+	using
+	{
+		st_rw : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimAttribute_RW')->first();
+		st_ro : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimAttribute_RO')->first();
+		yangStereotype : UML!Stereotype = UML!Stereotype.allInstancesFrom('YANG_MM')->select(e|e.name='YangAttribute')->first();
+		isConfigTrue : Boolean = thisModule.isConfigTrue(s);
+		lower : Integer = if s.mandatory then 1 else 0 endif;
+		
+		--store a refine element if this element was refined
+		refine : YANG!Refine = node.children->select(e|e.oclIsTypeOf(YANG!Uses))->collect(e|e.refine)->flatten()->select(e|e.name=s.name)->first();
+
+		readOnly : Boolean = if refine.oclIsUndefined() then not isConfigTrue else if refine.config.oclIsUndefined() then not isConfigTrue else not refine.config endif endif;
+		reference : String = if refine.oclIsUndefined() then if s.reference.oclIsUndefined() then OclUndefined else s.reference endif else if refine.reference.oclIsUndefined() then if s.reference.oclIsUndefined() then OclUndefined else s.reference endif else refine.reference endif endif;
+		ecimStereotype :  UML!Stereotype = if (readOnly) then st_ro else st_rw endif;
+	}	
+	to property : UML!Property
+	(
+		name <- s.name,
+		lower <- if refine.oclIsUndefined() then lower else if refine.mandatory.oclIsUndefined() then lower else if refine.mandatory then 1 else 0 endif endif endif,	
+		upper <- if(s.type.oclIsTypeOf(YANG!Bits)) then s.type.bit->size() else 1 endif,--bits types are multi-valued based on the number of bits		
+		--type <- thisModule.mapType(s.type, s),
+		type <- thisModule.mapType(s.type, node),
+		defaultValue <- thisModule.CreateDefault(s),
+		isReadOnly <- readOnly,
+		ownedComment <- if refine.oclIsUndefined() then thisModule.hasDescription(s) else if refine.description.oclIsUndefined() then thisModule.hasDescription(s) else thisModule.hasDescription(refine) endif endif,
+		isUnique <- if(s.type.oclIsTypeOf(YANG!Bits)) then true else false endif
+	)
+	do
+	{
+		thisModule.leafRefAssignments(s.type,property);
+		if(not reference.oclIsUndefined())
+		{
+			property.setValue(yangStereotype,'reference', reference);
+		}
+		property.applyStereotype(ecimStereotype);
+		property.applyStereotype(yangStereotype);		
+		thisModule.applyYangKeyStereotype(s,property);
+		property;
+	}
+}
+
+--
+rule CreateLeafListToProperty(s : YANG!LeafList, node: YANG!Node)
+{
+	using
+	{
+		st_rw : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimAttribute_RW')->first();
+		st_ro : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimAttribute_RO')->first();
+		yangStereotype : UML!Stereotype = UML!Stereotype.allInstancesFrom('YANG_MM')->select(e|e.name='YangAttribute')->first();	
+		isConfigTrue : Boolean = thisModule.isConfigTrue(s);
+		lower : Integer = if s.min.oclIsUndefined() then 0 else s.min endif;
+		upper : Integer = if(s.type.oclIsTypeOf(YANG!Bits)) then s.type.bit->size() else if s.max.oclIsUndefined() then -1 else s.max endif endif;
+		
+		--store a refine element if this element was refined
+		refine : YANG!Refine = node.children->select(e|e.oclIsTypeOf(YANG!Uses))->collect(e|e.refine)->flatten()->select(e|e.name=s.name)->first();
+		
+		readOnly : Boolean = if refine.oclIsUndefined() then not isConfigTrue else if refine.config.oclIsUndefined() then not isConfigTrue else not refine.config endif endif;
+		reference : String = if refine.oclIsUndefined() then if s.reference.oclIsUndefined() then OclUndefined else s.reference endif else if refine.reference.oclIsUndefined() then if s.reference.oclIsUndefined() then OclUndefined else s.reference endif else refine.reference endif endif;
+		ecimStereotype :  UML!Stereotype = if (readOnly) then st_ro else st_rw endif;
+	}	
+	to property : UML!Property
+	(
+		name <- s.name,
+		lower <- if refine.oclIsUndefined() then lower else if refine.min.oclIsUndefined() then lower else refine.min endif endif,		
+		upper <- if refine.oclIsUndefined() then upper else if refine.max.oclIsUndefined() then upper else refine.max endif endif,
+		type <- thisModule.mapType(s.type,s),
+		isReadOnly <- readOnly,
+		ownedComment <- if refine.oclIsUndefined() then thisModule.hasDescription(s) else if refine.description.oclIsUndefined() then thisModule.hasDescription(s) else thisModule.hasDescription(refine) endif endif,
+		isUnique <- if(s.type.oclIsTypeOf(YANG!Bits)) then true else false endif
+	)
+	do
+	{
+		thisModule.leafRefAssignments(s.type,property);
+		if(not reference.oclIsUndefined())
+		{
+			property.setValue(yangStereotype,'reference', reference);
+		}
+		property.applyStereotype(ecimStereotype);
+		property.applyStereotype(yangStereotype);
+		property;
+	}
+}
+
+rule leafRefAssignments(type : YANG!Type, property : UML!Property)
+{
+	using
+	{
+		st_leafRef : UML!Stereotype = UML!Stereotype.allInstancesFrom('YANG_MM')->select(e|e.name='YangLeafRef')->first();	
+	}
+	do
+	{
+		if(type.oclIsTypeOf(YANG!LeafRef))
+		{
+			property.setValue(st_leafRef,'path',type.path);
+			property.applyStereotype(st_leafRef);
+		}
+		else if(type.oclIsTypeOf(YANG!TypeDefinition))
+		{
+			if (type.type.oclIsTypeOf(YANG!LeafRef))
+			{
+				property.setValue(st_leafRef,'path',type.type.path);
+				property.applyStereotype(st_leafRef);
+			}
+		}
+	}
+}

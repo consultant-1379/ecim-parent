@@ -1,0 +1,297 @@
+module ericsson-yang-extensions {
+
+    namespace "urn:com:ericsson:ericsson-yang-extensions";
+
+    prefix ericsson ;
+
+    organization
+
+    "Ericsson";
+ 
+
+    revision "2013-05-06" {
+
+        description "Updated by Balazs Lengyel. 
+
+        Added argument for many extensions.
+
+        Added version and author.";
+
+    }
+
+
+
+    revision "2015-01-22" {
+
+        description "Updated by Balazs Lengyel. 
+
+        correction,revision,version,release";
+
+    }
+
+    revision "2015-02-17" {
+        description "RB. 
+        minor fixes";
+    }
+
+
+       extension action {
+
+         description
+
+           "Takes as argument the name of the action.
+
+         
+
+         Might contain only a single input and a single output substatement.
+
+         
+
+             The input substatement may only contain leafs, leaf-lists or lists,
+
+             modeling single-value, multi-value attributes or structs 
+
+         the same way as EcimAttribute or rather as 
+
+         a number of EcimAttributes.
+
+
+
+         The output statement MUST contain zero or one leaf or leaf-list 
+
+             or list named returnValue, returnValue,
+
+             modeling single-value, multi-value attributes or structs 
+
+         the same way as a single EcimAttribute.";
+
+
+
+         argument "name";
+
+       }
+
+
+
+    extension keyless-config-list {
+
+        description "The statement  can only be a substatement of a list statement.
+
+                         A list's  keyless-config-list substatement overrides the list config marking. 
+
+                         It indicates that the list is writable and contains configuration data 
+
+                         irespective of whether it is marked config false or config true.";
+
+    }
+
+
+
+    extension restricted {
+
+        description "Comment me";
+
+    }
+
+
+
+    extension non-unique-leaf-list {
+
+        description "Comment me";
+
+    }
+
+
+
+    extension contact {
+
+        description "Comment me";
+
+        argument "value";
+
+    }
+
+
+
+    extension correction {
+
+        description 
+
+        	"Holds the ECIM correction release number of this model instance. 
+
+        	It is stepped for each backward compatible correction of this package, 
+
+        	when a later version already exists. 
+
+        	
+
+        	The statement MUST be a substatement to the YANG revision statement.
+
+        	Only one correction statement per revision is allowed.
+
+
+
+		Recommendation: The value should be a value fulfilling the 
+
+		regular expression: [0123456789]+.";
+
+        	argument "value";
+
+    }   
+
+
+
+    extension date {
+
+        description "Comment me";
+
+        argument "value";
+
+    }   
+
+
+
+    extension docNo {
+
+        description "Comment me";
+
+        argument "value";
+
+    }   
+
+
+
+    extension organization {
+
+        description "Comment me";
+
+        argument "value";
+
+    }   
+
+
+
+    extension revision {
+
+        description 
+
+        	"Document revision for the MOM.
+
+        	
+
+        	The statement MUST be a substatement to the YANG revision statement.
+
+        	Only one ericsson revision statement per revision is allowed.
+
+
+
+		Rule: The value can be anything.";
+
+        argument "value";
+
+    }   
+
+
+
+    extension release {
+
+        description 
+
+        	"Holds the ECIM release number (for example 0, 1, 2, ...) 
+
+        	to be stepped for each new minor and backward compatible version. 
+
+        	
+
+        	The statement MUST be a substatement to the YANG revision statement.
+
+        	Only one release statement per revision is allowed.
+
+
+
+		Rule: The value SHALL be a value fulfilling the 
+
+		regular expression: [0123456789]+.";
+
+        argument "value";
+
+    }   
+
+    
+
+    extension specification {
+
+        description "Comment me";
+
+        argument "value";
+
+    }   
+
+
+
+    extension statusInformation {
+
+        description "Comment me";
+
+        argument "text";
+
+    }   
+
+
+
+    extension author {
+
+        description "Comment me";
+
+        argument "name";
+
+    }   
+
+
+
+    extension version {
+
+        description 
+
+        	"Holds the ECIM version number (for example 1, 2, 3, ...) 
+
+        	to be stepped for each new major version. 
+
+
+
+        	The statement MUST be a substatement to the YANG revision statement.
+
+        	Only one version statement per revision is allowed.
+
+
+
+		Rule: The value shall be a value fulfilling the 
+
+		regular expression: [0123456789]+.";
+
+        argument "value";
+
+    }   
+
+    
+
+    extension ecim-mount-point {
+
+        description 
+
+        	"Defines that an augment statement is used to link the contained 
+
+        	schema tree onto the single rooted ECIM schema tree. The augment 
+
+        	only has effect in the ECIM domain. domain.
+
+        	
+
+        	The statement  can only be a substatement of a top level list or 
+
+        	container statement. Only one ecim-mount-point  statement per 
+
+        	container/list is allowed.";        	
+    }
+
+}

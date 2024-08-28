@@ -1,0 +1,92 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-sep-04 14:47:38 using 
+    * com.ericsson.ecim.yang.m2m 2.11.2.qualifier
+*/
+module IdentitiesOtherModule {
+  namespace "urn:com:ericsson:ecim:IdentitiesOtherModule";
+	prefix IdentitiesOtherModule;
+
+	import Identities {prefix IdentitiesX;}
+	
+	organization "Ericsson";
+	description "asdf";
+	revision 2014-12-03 {
+		description trialVersion ;
+	}
+  
+  identity d {
+    base "IdentitiesX:a";//using quotes
+    description
+      "Identity d";
+  }  
+  
+  //contains a and b members in output
+  identity basedOnA {
+    base "IdentitiesX:a";//using quotes
+    description
+      "Identity basedOnA";
+  }
+
+  //contains b members in output
+  identity basedOnB {
+  	base IdentitiesX:b;//no quotes
+    description
+      "Identity basedOnB";
+  }
+
+	list myListRemoteQuotes{
+		key noQuotesToC;
+		leaf noQuotesToC {
+			type identityref {				
+			base IdentitiesX:c;			
+      		} 
+		}
+	}
+	
+	list myListRemoteNoQuotes{
+		key quotesToC;
+		leaf quotesToC {
+			type identityref {				
+			base "IdentitiesX:c";			
+      		} 
+		}
+	}	
+
+	list myListLocalQuotes{
+		key simpleBasedOnA;
+		leaf simpleBasedOnA {
+			type identityref {				
+			base basedOnA;			
+      		} 
+		}
+	}	
+	
+	list myListLocalNoQuotes{
+		key quotesBasedOnB;
+		leaf quotesBasedOnB {
+			type identityref {				
+			base "basedOnB";			
+      		} 
+		}
+	}		
+	
+	list myListy{
+		key quotesPrefixedBasedOnB;
+		leaf quotesPrefixedBasedOnB {
+			type identityref {				
+			base "IdentitiesOtherModule:basedOnB";			
+      		} 
+		}
+	}
+
+	list myListz{
+		key prefixedBasedOnB;
+		leaf prefixedBasedOnB {
+			type identityref {				
+				base IdentitiesOtherModule:basedOnB;					
+      		} 
+		}
+	}	
+}

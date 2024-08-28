@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_RS_MonitoringKey" namespace="urn:com:ericsson:ecim:Epg_Pgw_RS_MonitoringKey" namespacePrefix="epg_pgw_rs_monitoringkey" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="2">
+        <description>Monitoring key settings</description>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedU32">
+            <description>Ranged Unit 0 .. 4294967295</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>0</min>
+                        <max>4294967295</max>
+                    </range>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString21">
+            <description>Must be an access control rule identifier or a range of access control rule identifiers</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>21</max>
+                    </lengthRange>
+                    <validValues>^[0-9]{1,10}([-][0-9]{1,10}){0,1}$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="MonitoringKey">
+            <description>Monitoring key settings</description>
+            <root/>
+            <attribute name="monitoringKeyID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RS_MonitoringKey</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Default">
+            <description>Default monitoring key settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @defaultMonitoringKey satisfies (not(exists(@disabled)) and not(exists(@useAccessControlRule)))'><name path='.'/>,defaultMonitoringKey: The following attributes can not be combined: default-monitoring-key, disabled, use-access-control-rule</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @disabled satisfies (not(exists(@defaultMonitoringKey)) and not(exists(@useAccessControlRule)))'><name path='.'/>,disabled: The following attributes can not be combined: default-monitoring-key, disabled, use-access-control-rule</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @useAccessControlRule satisfies (not(exists(@defaultMonitoringKey)) and not(exists(@disabled)))'><name path='.'/>,useAccessControlRule: The following attributes can not be combined: default-monitoring-key, disabled, use-access-control-rule</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="defaultID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RS_MonitoringKey</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="defaultMonitoringKey">
+                <description>Use this monitoring key if not found in map table</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedU32">
+                        <mimName>Epg_Pgw_RS_MonitoringKey</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="disabled">
+                <description>Default monitoring key disabled</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RS_MonitoringKey</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="useAccessControlRule">
+                <description>Use access control rule identifier as monitoring key</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_RS_MonitoringKey</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Map">
+            <description>Map of access control rules to a monitoring key</description>
+            <attribute name="mapId">
+                <description>Monitoring key identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="accessControlRule">
+                <description>Access control rule identifier or set of access control rule identifiers mapped to monitoring key</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RS_MonitoringKey</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>512</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="accessControlGroup">
+                <description>Access control group identifier or set of access control group identifiers mapped to monitoring key</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RS_MonitoringKey</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>256</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="MonitoringKey_to_Default">
+            <containment>
+                <parent>
+                    <hasClass name="MonitoringKey">
+                        <mimName>Epg_Pgw_RS_MonitoringKey</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Default">
+                        <mimName>Epg_Pgw_RS_MonitoringKey</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="MonitoringKey_to_Map">
+            <containment>
+                <parent>
+                    <hasClass name="MonitoringKey">
+                        <mimName>Epg_Pgw_RS_MonitoringKey</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Map">
+                        <mimName>Epg_Pgw_RS_MonitoringKey</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>4095</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="RuleSpace_to_MonitoringKey">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="MonitoringKey">
+                        <mimName>Epg_Pgw_RS_MonitoringKey</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

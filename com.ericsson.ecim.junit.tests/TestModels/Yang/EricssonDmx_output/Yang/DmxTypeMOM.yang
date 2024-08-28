@@ -1,0 +1,3273 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Mar 10, 2014 1:46:12 PM using 
+    * com.ericsson.ecim.yang.m2m 2.9.1.qualifier
+*/
+module DmxTypeMOM {
+	namespace "urn:com:ericsson:ecim:DmxTypeMOM";
+	prefix DmxTypeMOM;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import ECIM_CommonLibrary {
+		prefix ECIM_CommonLibrary;
+	}
+
+	organization "Ericsson";
+	description "DMX type  mom";
+
+	revision "2014-03-10" {
+		ericsson:release 1;
+		ericsson:version 1;
+	}
+
+	typedef SwRepository {
+		type enumeration {
+			enum OPERATIVE {
+				value 0;
+				description "<p></p>";
+			}
+
+			enum IDLE {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum ALL {
+				value 2;
+			}
+
+		}
+
+		description "Software repository state";
+	}
+
+	typedef SoftwareUpgradeStatus {
+		type enumeration {
+			enum DOWNLOADING {
+				value 1;
+				description "DMX software download action in progress.";
+			}
+
+			enum IDLE {
+				value 0;
+				description "No software upgrade related action ongoing.";
+			}
+
+			enum PREPARED {
+				value 2;
+				description "DMX prepared for upgrade";
+			}
+
+			enum UPGRADING {
+				value 3;
+				description "DMX software upgrade action in progress.";
+			}
+
+			enum UPGRADED {
+				value 4;
+				description "DMX upgraded. Rollback may be started.";
+			}
+
+			enum ROLINGBACK {
+				value 5;
+				description "DMX software rollback action in progress.";
+			}
+
+		}
+
+		description "Status of DMX Software upgrade function";
+	}
+
+	typedef Opstate {
+		type enumeration {
+			enum ENABLED {
+				value 1;
+				description "Repository with currently executing software";
+			}
+
+			enum DISABLED {
+				value 0;
+				description "No configuration backup related action ongoing.";
+			}
+
+		}
+
+		description "Operative state.";
+	}
+
+	typedef LdapVerifyResult {
+		type enumeration {
+			enum OK {
+				value 0;
+				description "<p></p>";
+			}
+
+			enum FAILD {
+				value 1;
+				description "<p></p>";
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef LdapAuthMethod {
+		type enumeration {
+			enum SIMPLE {
+				value 0;
+				description "<p></p>";
+			}
+
+			enum SASL {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum STARTTLS {
+				value 3;
+				description "<p></p>";
+			}
+
+			enum SSL {
+				value 2;
+				description "<p></p>";
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef AvailStatus {
+		type enumeration {
+			enum POWEROFF {
+				value 2;
+				description "Collecting configuration data for the backup.";
+			}
+
+			enum NOSTATUS {
+				value 0;
+				description "No configuration backup related action ongoing.";
+			}
+
+			enum OFFLINE {
+				value 3;
+				description "Exporting backup configuration file.";
+			}
+
+			enum FAILED {
+				value 1;
+				description "Importing backup configuration file.";
+			}
+
+			enum OFFDUTY {
+				value 4;
+				description "Restoring configuration from backup.";
+			}
+
+			enum DEGRADED {
+				value 5;
+			}
+
+			enum NOTINSTALLED {
+				value 6;
+			}
+
+			enum LOGFULL {
+				value 7;
+			}
+
+			enum DEPENDENCY {
+				value 8;
+			}
+
+		}
+
+		description "Availability status.";
+	}
+
+	typedef SwRepositoryState {
+		type enumeration {
+			enum OPERATIVE {
+				value 0;
+				description "<p>Repository with currently executing software.</p>";
+			}
+
+			enum IDLE {
+				value 1;
+				description "<p>Repository with currently not executing software.</p>";
+			}
+
+		}
+
+		description "<p>Software repository state.</p>";
+	}
+
+	typedef ConfigurationBackupStatus {
+		type enumeration {
+			enum COLLOECTING {
+				value 1;
+				description "Collecting configuration data for the backup.";
+			}
+
+			enum IDLE {
+				value 0;
+				description "No configuration backup related action ongoing.";
+			}
+
+			enum EXPORTING {
+				value 2;
+				description "Exporting backup configuration file.";
+			}
+
+			enum IMPORTING {
+				value 3;
+				description "Importing backup configuration file.";
+			}
+
+			enum RESTORING {
+				value 4;
+				description "Restoring configuration from backup.";
+			}
+
+		}
+
+		description "Status of DMX configuration backup function.";
+	}
+
+	typedef AdmState {
+		type enumeration {
+			enum LOCKED {
+				value 0;
+				description "No configuration backup related action ongoing.";
+			}
+
+			enum UNLOCKED {
+				value 1;
+			}
+
+		}
+
+		description "<p>Administrative state.</p>";
+	}
+
+	typedef RackType {
+		type enumeration {
+			enum STANDARD19INCH {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum UNKNOWN {
+				value 0;
+				description "<p></p>";
+			}
+
+			enum EQUIPMENTSHELF {
+				value 3;
+				description "<p></p>";
+			}
+
+			enum TELCO {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum NONSTANDARD {
+				value 4;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef ShelfType {
+		type enumeration {
+			enum EGEM {
+				value 0;
+				description "<p></p>";
+			}
+
+			enum UNKNOWN {
+				value 111;
+				description "<p></p>";
+			}
+
+			enum EGEM2_40 {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum EGEM2_10 {
+				value 1;
+				description "<p></p>";
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef LinkType {
+		type enumeration {
+			enum INTERSHELFLINKBASE {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum INTERSHELFLINKDATA {
+				value 0;
+				description "<p></p>";
+			}
+
+			enum CROSSSHELFLINKBASE {
+				value 3;
+				description "<p></p>";
+			}
+
+			enum CROSSSHELFLINKDATA {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum TRANSITIONSHELFLINK {
+				value 4;
+			}
+
+			enum EXTERNALNORTHBOUNDLINK {
+				value 5;
+			}
+
+			enum EXTERNALLINK {
+				value 6;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef BusType {
+		type enumeration {
+			enum MBUS {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum IPMI {
+				value 0;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef AutoConfigMode {
+		type enumeration {
+			enum MANUAL_ONLY {
+				value 0;
+				description "<p></p>";
+			}
+
+			enum MANUAL_AND_AUTOMATIC {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum AUTOMATIC_ONLY {
+				value 2;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef LedColor {
+		type enumeration {
+			enum YELLOW {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum GREEN {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum RED {
+				value 0;
+			}
+
+			enum BLUE {
+				value 3;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef LedStatus {
+		type enumeration {
+			enum SLOW_BLINK {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum FAST_BLINK {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum OFF {
+				value 0;
+			}
+
+			enum ON {
+				value 3;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef TopologyType {
+		type enumeration {
+			enum PLANE_SEPARATEDLE {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum COLLAPSED {
+				value 1;
+			}
+
+		}
+
+		description "Software repository state";
+	}
+
+	typedef PfmPosition {
+		type enumeration {
+			enum UPPER {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum LOWER {
+				value 0;
+			}
+
+		}
+
+		description "<p>Position of a PFM module in a shelf</p>";
+	}
+
+	typedef PfmModuleType {
+		type enumeration {
+			enum FAN {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum POWER {
+				value 0;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef IpmiFirmwareType {
+		type enumeration {
+			enum FB {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum NON_UPG {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum UPG {
+				value 0;
+			}
+
+			enum RUNNING {
+				value 3;
+			}
+
+			enum ALL {
+				value 4;
+			}
+
+		}
+
+		description "<p>Type of IPMI firmware.</p>";
+	}
+
+	typedef HwInstallStatus {
+		type enumeration {
+			enum NOT_INSTALLED {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum INSTALLED_ANA_NOT_ACCEPTABLE {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum INSTALLED_ANA_ACCEPTABLE {
+				value 0;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef CableGender {
+		type enumeration {
+			enum MALE {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum NOT_APPLICABLE {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum UNKNOWN {
+				value 0;
+			}
+
+			enum FEMALE {
+				value 3;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef SlotPurpose {
+		type enumeration {
+			enum SYSTEM {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum NETWORKING {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum UNKNOWN {
+				value 0;
+			}
+
+			enum PORT_ADAPTER {
+				value 3;
+			}
+
+			enum HARDWARE_ASSIST {
+				value 4;
+			}
+
+			enum VIDEO {
+				value 5;
+			}
+
+			enum TRACE {
+				value 6;
+			}
+
+			enum GENERAL_COMPUTING {
+				value 7;
+			}
+
+			enum GENERAL_PURPOSE {
+				value 8;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef UpgradeStatus {
+		type enumeration {
+			enum ABORTING {
+				value 3;
+				description "<p></p>";
+			}
+
+			enum FAILED {
+				value 2;
+			}
+
+			enum ONGOING {
+				value 0;
+			}
+
+			enum SUCCEEDED {
+				value 1;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef AlarmSeverity {
+		type enumeration {
+			enum MINOR {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum WARNING {
+				value 3;
+			}
+
+			enum CRITICAL {
+				value 0;
+			}
+
+			enum MAJOR {
+				value 1;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef AlertTreatment {
+		type enumeration {
+			enum DISCARD {
+				value 3;
+				description "<p></p>";
+			}
+
+			enum TRAP {
+				value 2;
+			}
+
+			enum LOG {
+				value 0;
+			}
+
+			enum LOG_TRAP {
+				value 1;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef EriProbableCause {
+		type enumeration {
+			enum M3100_LOSS_OF_SIGNAL {
+				value 8;
+				description "<p></p>";
+			}
+
+			enum M3100_CALL_SETUP_FAILURE {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum M3100_LOSS_OF_FRAME {
+				value 6;
+			}
+
+			enum M3100_FRAMING_ERROR {
+				value 5;
+			}
+
+			enum M3100_FAR_END_RECEIVER_FAILURE {
+				value 4;
+			}
+
+			enum M3100_PAYLOAD_TYPE_MISMATCH {
+				value 9;
+			}
+
+			enum M3100_LOSS_OF_POINTER {
+				value 7;
+			}
+
+			enum M3100_ALARM_INDICATION_SIGNAL {
+				value 1;
+			}
+
+			enum M3100_DEGRADED_SIGNAL {
+				value 3;
+			}
+
+			enum M3100_INDETERMINATE {
+				value 0;
+			}
+
+			enum M3100_TRANSMISSON_ERROR {
+				value 10;
+			}
+
+			enum M3100_REMOTE_ALARM_INTERFAVE {
+				value 11;
+			}
+
+			enum M3100_EXCESSIVE_BIT_ERROR_RATE {
+				value 12;
+			}
+
+			enum M3100_PATH_TTACE_MISMATH {
+				value 13;
+			}
+
+			enum M3100_UNAVAILABLE {
+				value 14;
+			}
+
+			enum M3100_SIGNAL_LABLE_MISMATCH {
+				value 15;
+			}
+
+			enum M3100_LOSS_OF_MULTI_FRAME {
+				value 16;
+			}
+
+			enum RECEIVE_FAILURE {
+				value 17;
+			}
+
+			enum TRANSMIT_FAILURE {
+				value 18;
+			}
+
+			enum MODULATION_FAILURE {
+				value 19;
+			}
+
+			enum DEMODULATION_FAILURE {
+				value 20;
+			}
+
+			enum BROADCAST_CHANNEL_FAILURE {
+				value 21;
+			}
+
+			enum ONNECTION_ESTABLISHMENT_ERROR {
+				value 22;
+			}
+
+			enum INVALID_MESSAGE_RECEIVED {
+				value 23;
+			}
+
+			enum LOCAL_NODE_TRANSMISSION_ERROR {
+				value 24;
+			}
+
+			enum REMOTE_NODE_TRANSMISSION_ERROR {
+				value 25;
+			}
+
+			enum ROUTING_FAILURE {
+				value 26;
+			}
+
+			enum LOSS_OF_REDUNDANCY {
+				value 77;
+				description "<p></p>";
+			}
+
+			enum M3100_MULTIPLEXER_PROBLEM {
+				value 56;
+				description "<p></p>";
+			}
+
+			enum I_ODEVICE_ERROR {
+				value 75;
+			}
+
+			enum BATTERY_CHARGING_FAILURE {
+				value 72;
+			}
+
+			enum ANTENNA_FAILURE {
+				value 71;
+			}
+
+			enum M3100_PROCESSOR_PROBLEM {
+				value 59;
+			}
+
+			enum LOSS_OF_SYNCHRONISATION {
+				value 76;
+			}
+
+			enum M3100_LINE_CARD_PROBLEM {
+				value 55;
+			}
+
+			enum M3100_NE_IDENTIFIER_DUPLICATION {
+				value 57;
+			}
+
+			enum DISK_FAILURE {
+				value 73;
+			}
+
+			enum M3100_PROTECTION_PATH_FAILURE {
+				value 60;
+			}
+
+			enum M3100_REPLACEABLE_UNIT_PROBLEM {
+				value 69;
+			}
+
+			enum M3100_POWER_PROBLEM {
+				value 58;
+			}
+
+			enum REAL_TIME_CLOCK_FAILURE {
+				value 70;
+			}
+
+			enum M3100_TRANSMITTER_FAILURE {
+				value 67;
+			}
+
+			enum M3100_TRUNK_CARD_PROBLEM {
+				value 68;
+			}
+
+			enum FREQUENCY_HOPPING_FAILURE {
+				value 74;
+			}
+
+			enum M3100_SYNCHRONISATION_SOURCE_MISMATCH {
+				value 64;
+			}
+
+			enum M3100_RECEIVER_FAILURE {
+				value 61;
+			}
+
+			enum M3100_TIMING_PROBLEM {
+				value 66;
+			}
+
+			enum M3100_DATA_SET_PROBLEM {
+				value 52;
+			}
+
+			enum M3100_BACK_PLANE_FAILURE {
+				value 51;
+			}
+
+			enum M3100_TERMINAL_PROBLEM {
+				value 65;
+			}
+
+			enum M3100_EQUIPMENT_IDENTIFIER_DUPLICATION {
+				value 53;
+			}
+
+			enum M3100_EXTERNAL_IF_DEVICE_PROBLEM {
+				value 54;
+			}
+
+			enum M3100_REPLACEABLE_UNIT_TYPE_MISMATCH {
+				value 63;
+			}
+
+			enum M3100_REPLACEABLE_UNIT_MISSING {
+				value 62;
+			}
+
+			enum M3100_FUSE_FAILURE {
+				value 110;
+				description "<p></p>";
+			}
+
+			enum TRANCEIVER_FAILURE {
+				value 80;
+				description "<p></p>";
+			}
+
+			enum M3100_FIRE_DETECTOR_FAILURE {
+				value 109;
+			}
+
+			enum SIGNAL_QUALITY_EVALUATION_FAILURE {
+				value 79;
+			}
+
+			enum M3100_ENCLOSURE_DOOR_OPEN {
+				value 118;
+			}
+
+			enum M3100_EXPLOSIVE_GAS {
+				value 119;
+			}
+
+			enum M3100_GENERATOR_FAILURE {
+				value 111;
+			}
+
+			enum M3100_COMMERCIAL_POWER_FAILURE {
+				value 106;
+			}
+
+			enum M3100_LOW_BATTERY_THRESHOLD {
+				value 112;
+			}
+
+			enum M3100_COOLING_FAN_FAILURE {
+				value 107;
+			}
+
+			enum M3100_HIGH_HUMIDITY {
+				value 122;
+			}
+
+			enum M3100_RECTIFIER_HIGH_VOLTAGE {
+				value 115;
+			}
+
+			enum M3100_PUMP_FAILURE {
+				value 113;
+			}
+
+			enum M3100_FIRE {
+				value 120;
+			}
+
+			enum PROTECTING_RESOURCE_FAILURE {
+				value 82;
+			}
+
+			enum M3100_HIGH_TEMPERATURE {
+				value 123;
+			}
+
+			enum M3100_ENGINE_FAILURE {
+				value 108;
+			}
+
+			enum M3100_RECTIFIER_LOW_VOLTAGE {
+				value 116;
+			}
+
+			enum PROTECTION_MECHANISM_FAILURE {
+				value 81;
+			}
+
+			enum M3100_FLOOD {
+				value 121;
+			}
+
+			enum M3100_AIR_DRYER_FAILURE {
+				value 103;
+			}
+
+			enum M3100_BATTERY_FAILURE {
+				value 105;
+			}
+
+			enum M3100_VENTILATION_SYSTEM_FAILURE {
+				value 117;
+			}
+
+			enum M3100_BATTERY_DISCHARGING {
+				value 104;
+			}
+
+			enum M3100_AIR_CONDITIONING_FAILURE {
+				value 102;
+			}
+
+			enum M3100_AIR_COMPRESSOR_FAILURE {
+				value 101;
+			}
+
+			enum M3100_RECTIFIER_FAILURE {
+				value 114;
+			}
+
+			enum M3100_LOW_TEMPERATURE {
+				value 130;
+			}
+
+			enum M3100_SMOKE {
+				value 132;
+			}
+
+			enum M3100_LOW_HUMIDITY {
+				value 128;
+			}
+
+			enum M3100_LOW_CABLE_PRESSURE {
+				value 129;
+			}
+
+			enum M3100_LOW_WATER {
+				value 131;
+			}
+
+			enum M3100_HIGH_WIND {
+				value 124;
+			}
+
+			enum M3100_LOW_FUEL {
+				value 127;
+			}
+
+			enum M3100_ICE_BUILD_UP {
+				value 125;
+			}
+
+			enum M3100_COOLING_SYSTEM_FAILURE {
+				value 134;
+			}
+
+			enum M3100_TOXIC_GAS {
+				value 133;
+			}
+
+			enum M3100_EXTERNAL_POINT_FAILURE {
+				value 136;
+			}
+
+			enum M3100_EXTERNAL_EQUIPMENT_FAILURE {
+				value 135;
+			}
+
+			enum M3100_LOSS_OF_REAL_TIMEL {
+				value 157;
+			}
+
+			enum CONFIGURATION_OR_CUSTOMISATION_ERROR {
+				value 159;
+			}
+
+			enum M3100_SOFTWARE_DOWNLOAD_FAILURE {
+				value 156;
+			}
+
+			enum M3100_OUT_OF_CPUCYCLES {
+				value 154;
+			}
+
+			enum APPLICATION_SUBSYSTEM_FAILURE {
+				value 158;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum M3100_MEMORY_MISMATCH {
+				value 152;
+			}
+
+			enum M3100_SOFTWARE_ENVIRONMENT_PROBLEM {
+				value 155;
+			}
+
+			enum M3100_CORRUPT_DATA {
+				value 153;
+			}
+
+			enum M3100_STORAGE_CAPACITY_PROBLEM {
+				value 151;
+			}
+
+			enum DATABASE_INCONSISTENCY {
+				value 160;
+			}
+
+			enum UNDERLAYING_RESOURCE_UNAVAILABLE {
+				value 165;
+			}
+
+			enum OUT_OF_MEMORY {
+				value 162;
+			}
+
+			enum BANDWIDTH_REDUCED {
+				value 201;
+			}
+
+			enum TIMEOUT_EXPIRED {
+				value 164;
+			}
+
+			enum FILE_ERROR {
+				value 161;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum VERSION_MISMATCH {
+				value 166;
+			}
+
+			enum CONGESTION {
+				value 202;
+			}
+
+			enum SOFTWARE_ERROR {
+				value 163;
+			}
+
+			enum EXCESSIVE_RESPONSE_TIME {
+				value 204;
+			}
+
+			enum EXCESSIVE_ERROR_RATE {
+				value 203;
+			}
+
+			enum REDUCED_LOGGING_CAPABILITY {
+				value 206;
+			}
+
+			enum X733_COMMUNICATIONS_PROTOCOL_ERROR {
+				value 305;
+			}
+
+			enum EXCESSIVE_RETRANSMISSION_RATE {
+				value 205;
+			}
+
+			enum X733_CONFIGURATION_OR_CUSTOMIZATION_ERROR {
+				value 307;
+			}
+
+			enum X733_BANDWIDTH_REDUCED {
+				value 303;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum X733_CONGESTION {
+				value 308;
+			}
+
+			enum SYSTEM_RESOURCES_OVERLOAD {
+				value 207;
+			}
+
+			enum X733_COMMUNICATIONS_SUBSYSTEM_FAILURE {
+				value 306;
+			}
+
+			enum X733_APPLICATION_SUBSYSTEM_FAILURE {
+				value 302;
+			}
+
+			enum X733_ADAPTER_ERROR {
+				value 301;
+			}
+
+			enum X733_DATA_SET_OR_MODEM_ERROR {
+				value 311;
+			}
+
+			enum X733_HEATING_OR_VENTILATION_OR_COOLING_SYSTEM_PROBLEM {
+				value 321;
+			}
+
+			enum X733_CPU_CYCLES_LIMIT_EXCEEDED {
+				value 310;
+			}
+
+			enum X733_INPUT_OUTPUT_DEVICE_ERROR {
+				value 323;
+			}
+
+			enum X733_FILE_ERROR {
+				value 317;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum X733_INPUT_DEVICE_ERROR {
+				value 324;
+			}
+
+			enum X733_DTEDCEINTERFACE_ERROR {
+				value 313;
+			}
+
+			enum X733_HUMIDITY_UNACCEPTABLE {
+				value 322;
+			}
+
+			enum X733_EXCESSIVE_VIBRATION {
+				value 316;
+			}
+
+			enum X733_EQUIPMENT_MALFUNCTION {
+				value 315;
+			}
+
+			enum X733_LEAK_DETECTED {
+				value 326;
+			}
+
+			enum X733_PERFORMANCE_DEGRADED {
+				value 334;
+			}
+
+			enum X733_LANERROR {
+				value 325;
+			}
+
+			enum X733_RECEIVE_FAILURE {
+				value 340;
+			}
+
+			enum X733_OUPUT_DEVICE_ERROR {
+				value 333;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum X733_QUEUE_SIZE_EXCEEDED {
+				value 339;
+			}
+
+			enum X733_LOCAL_NODE_TRANSMISSION_ERROR {
+				value 327;
+			}
+
+			enum X733_PRESSURE_UNACCEPTABLE {
+				value 336;
+			}
+
+			enum X733_OUT_OF_MEMORY {
+				value 332;
+			}
+
+			enum X733_MATERIAL_SUPPLY_EXHAUSTED {
+				value 330;
+			}
+
+			enum X733_RESOURCE_AT_OR_NEARING_CAPACITY {
+				value 343;
+			}
+
+			enum X733_SOFTWARE_PROGRAM_ERROR {
+				value 348;
+			}
+
+			enum X733_REMOTE_NODE_TRANSMISSION_ERROR {
+				value 342;
+			}
+
+			enum X733_TOXIC_LEAK_DETECTED {
+				value 353;
+			}
+
+			enum X733_SOFTWARE_ERROR {
+				value 346;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum X733_THRESHOLD_CROSSED {
+				value 351;
+			}
+
+			enum X733_RESPONSE_TIME_EXCESSIVE {
+				value 344;
+			}
+
+			enum X733_TEMPERATURE_UNACCEPTABLE {
+				value 350;
+			}
+
+			enum X733_SOFTWARE_PROGRAM_ABNORMALLY_TERMINATED {
+				value 347;
+			}
+
+			enum X733_RETRANSMISSION_RATE_EXCESSIVE {
+				value 345;
+			}
+
+			enum X733_UNDERLYING_RESOURCE_UNAVAILABLE {
+				value 356;
+			}
+
+			enum X736_DELAYED_INFORMATION {
+				value 404;
+			}
+
+			enum X733_TRANSMIT_FAILURE {
+				value 354;
+			}
+
+			enum X736_INFORMATION_MISSING {
+				value 407;
+			}
+
+			enum X736_BREACH_OF_CONFIDENTIALITY {
+				value 402;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum X736_DUPLICATE_INFORMATION {
+				value 406;
+			}
+
+			enum X733_VERSION_MISMATCH {
+				value 357;
+			}
+
+			enum X736_DENIAL_OF_SERVICE {
+				value 405;
+			}
+
+			enum X736_CABLE_TAMPER {
+				value 403;
+			}
+
+			enum X736_AUTHENTICATION_FAILURE {
+				value 401;
+			}
+
+			enum X736_INFORMATION_OUT_OF_SEQUENCE {
+				value 409;
+			}
+
+			enum X736_OUT_OF_SERVICE {
+				value 414;
+			}
+
+			enum X736_INFORMATION_MODIFICATION_DETECTED {
+				value 408;
+			}
+
+			enum X736_UNEXPECTED_INFORMATION {
+				value 417;
+			}
+
+			enum X736_UNSPECIFIED_REASON {
+				value 418;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum X736_UNAUTHORIZED_ACCESS_ATTEMPT {
+				value 416;
+			}
+
+			enum X736_INTRUSION_DETECTION {
+				value 410;
+			}
+
+			enum X736_PROCEDURAL_ERROR {
+				value 415;
+			}
+
+			enum X736_OUT_OF_HOURS_ACTIVITY {
+				value 413;
+			}
+
+			enum X736_KEY_EXPIRED {
+				value 411;
+			}
+
+			enum GSM1211_ABIS_TO_TRXINTERFACE_FAILURE {
+				value 502;
+			}
+
+			enum GSM1211_CLOCK_SYNCHRONISATION_PROBLEM {
+				value 506;
+			}
+
+			enum GSM1211_ABIS_TO_BTSINTERFACE_FAILURE {
+				value 501;
+			}
+
+			enum GSM1211_EXCESSIVE_RECEIVER_TEMPERATURE {
+				value 510;
+			}
+
+			enum GSM1211_EXCESSIVE_TRANSMITTER_OUTPUT_POWER {
+				value 511;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum GSM1211_DISK_PROBLEM {
+				value 508;
+			}
+
+			enum GSM1211_ANTENNA_PROBLEM {
+				value 503;
+			}
+
+			enum GSM1211_COMBINER_PROBLEM {
+				value 507;
+			}
+
+			enum GSM1211_BATTERY_CHARGING_FAULT {
+				value 505;
+			}
+
+			enum GSM1211_BATTERY_BREAKDOWN {
+				value 504;
+			}
+
+			enum GSM1211_FREQUENCY_HOPPING_FAILURE {
+				value 514;
+			}
+
+			enum GSM1211_LINK_FAILURE {
+				value 517;
+			}
+
+			enum GSM1211_EXCESSIVE_TRANSMITTER_TEMPERATURE {
+				value 512;
+			}
+
+			enum GSM1211_MAINS_BREAKDOWN_WITH_BATTERY_BACK_UP {
+				value 520;
+			}
+
+			enum GSM1211_MAINS_BREAKDOWN_WITHOUT_BATTERY_BACK_UP {
+				value 521;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum GSM1211_LOST_REDUNDANCY {
+				value 519;
+			}
+
+			enum GSM1211_FREQUENCY_HOPPING_DEGRADED {
+				value 513;
+			}
+
+			enum GSM1211_LOSS_OF_SYNCHRONISATION {
+				value 518;
+			}
+
+			enum GSM1211_LINE_INTERFACE_FAILURE {
+				value 516;
+			}
+
+			enum GSM1211_FREQUENCY_REDEFINITION_FAILED {
+				value 515;
+			}
+
+			enum GSM1211_RECEIVER_MULTICOUPLER_FAILURE {
+				value 525;
+			}
+
+			enum GSM1211_TIMESLOT_HARDWARE_FAILURE {
+				value 528;
+			}
+
+			enum GSM1211_POWER_SUPPLY_FAILURE {
+				value 522;
+			}
+
+			enum GSM1211_TRANSCODER_OR_RATE_ADAPTER_PROBLEM {
+				value 531;
+			}
+
+			enum GSM1211_TRANSMITTER_ANTENNA_FAILURE {
+				value 532;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum GSM1211_TRANSCODER_PROBLEM {
+				value 530;
+			}
+
+			enum GSM1211_RECEIVER_ANTENNA_FAULT {
+				value 523;
+			}
+
+			enum GSM1211_TRANSCEIVER_PROBLEM {
+				value 529;
+			}
+
+			enum GSM1211_SIGNAL_QUALITY_EVALUATION_FAULT {
+				value 527;
+			}
+
+			enum GSM1211_REDUCED_TRANSMITTER_OUTPUT_POWER {
+				value 526;
+			}
+
+			enum GSM1211_TRANSMITTER_OFF_FREQUENCY {
+				value 536;
+			}
+
+			enum GSM1211_INPUT_PARAMETER_OUT_OF_RANGE {
+				value 539;
+			}
+
+			enum GSM1211_TRANSMITTER_ANTENNA_NOT_ADJUSTED {
+				value 533;
+			}
+
+			enum GSM1211_INVALID_POINTER {
+				value 541;
+			}
+
+			enum GSM1211_MESSAGE_NOT_INITIALISED {
+				value 543;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum GSM1211_MESSAGE_NOT_EXPECTED {
+				value 542;
+			}
+
+			enum GSM1211_TRANSMITTER_LOW_VOLTAGE_OR_CURRENT {
+				value 535;
+			}
+
+			enum GSM1211_INVALID_PARAMETER {
+				value 540;
+			}
+
+			enum GSM1211_FILE_SYSTEM_CALL_UNSUCCESSFUL {
+				value 538;
+			}
+
+			enum GSM1211_DATABASE_INCONSISTENCY {
+				value 537;
+			}
+
+			enum GSM1211_REDUCED_ALARM_REPORTING {
+				value 561;
+			}
+
+			enum GSM1211_SYSTEM_CALL_UNSUCCESSFUL {
+				value 545;
+			}
+
+			enum GSM1211_EXTERNAL_POWER_SUPPLY_FAILURE {
+				value 551;
+			}
+
+			enum GSM1211_WATCH_DOG_TIMER_EXPIRED {
+				value 548;
+			}
+
+			enum GSM1211_EXTERNAL_EQUIPMENT_FAILURE {
+				value 550;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum GSM1211_COOLING_SYSTEM_FAILURE {
+				value 549;
+			}
+
+			enum GSM1211_MESSAGE_OUT_OF_SEQUENCE {
+				value 544;
+			}
+
+			enum GSM1211_VARIABLE_OUT_OF_RANGE {
+				value 547;
+			}
+
+			enum GSM1211_TIMEOUT_EXPIRED {
+				value 546;
+			}
+
+			enum GSM1211_EXTERNAL_TRANSMISSION_DEVICE_FAILURE {
+				value 552;
+			}
+
+			enum GSM1211_INVALID_MESSAGE_RECEIVED {
+				value 567;
+			}
+
+			enum GSM1211_INVALID_MSURECEIVED {
+				value 568;
+			}
+
+			enum GSM1211_SYSTEM_RESOURCES_OVERLOAD {
+				value 564;
+			}
+
+			enum GSM1211_REMOTE_ALARM_INDICATION {
+				value 571;
+			}
+
+			enum GSM1211_REDUCED_LOGGING_CAPABILITY {
+				value 563;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum GSM1211_REDUCED_EVENT_REPORTING {
+				value 562;
+			}
+
+			enum GSM1211_CONNECTION_ESTABLISHMENT_ERROR {
+				value 566;
+			}
+
+			enum GSM1211_LOCAL_ALARM_INDICATION {
+				value 570;
+			}
+
+			enum GSM1211_LAPDLINK_PROTOCOL_FAILURE {
+				value 569;
+			}
+
+			enum GSM1211_BROADCAST_CHANNEL_FAILURE {
+				value 565;
+			}
+
+			enum I610_RDI_END_TO_END {
+				value 602;
+			}
+
+			enum I610_AIS_END_TO_END {
+				value 601;
+			}
+
+			enum I610_AIS_SEGMENT_CORE_SIDE {
+				value 606;
+			}
+
+			enum I610_AIS_SEGMENT_LINK_SIDE {
+				value 605;
+			}
+
+			enum GSM1211_SS7_PROTOCOL_FAILURE {
+				value 573;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum GSM1211_ROUTING_FAILURE {
+				value 572;
+			}
+
+			enum I610_LOC_END_TO_END {
+				value 600;
+			}
+
+			enum I610_LOC_SEGMENT_CORE_SIDE {
+				value 604;
+			}
+
+			enum I610_LOC_SEGMENT_LINK_SIDE {
+				value 603;
+			}
+
+			enum GSM1211_TRANSMISSION_ERROR {
+				value 574;
+			}
+
+			enum INFORMATION_MODIFICATION_DETECTED {
+				value 1607;
+			}
+
+			enum BREACH_OF_CONFIDENTIALITY {
+				value 1601;
+			}
+
+			enum CABLE_TAMPER {
+				value 1602;
+			}
+
+			enum DELAYED_INFORMATION {
+				value 1603;
+			}
+
+			enum I610_RDI_SEGMENT_CORE_SIDE {
+				value 608;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum I610_RDI_SEGMENT_LINK_SIDE {
+				value 607;
+			}
+
+			enum DENIAL_OF_SERVICE {
+				value 1604;
+			}
+
+			enum DUPLICATE_INFORMATION {
+				value 1605;
+			}
+
+			enum INFORMATION_MISSING {
+				value 1606;
+			}
+
+			enum AUTHENTICATION_FAILURE {
+				value 1600;
+			}
+
+			enum APPLICATION_SUBSYSTEM_FAILTURE {
+				value 100501;
+			}
+
+			enum KEY_EXPIRED {
+				value 1609;
+			}
+
+			enum NON_REPUDIATION_FAILURE {
+				value 1610;
+			}
+
+			enum OUT_OF_HOURS_ACTIVITY {
+				value 1611;
+			}
+
+			enum UNAUTHORIZED_ACCESS_ATTEMPT {
+				value 1614;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum UNEXPECTED_INFORMATION {
+				value 1615;
+			}
+
+			enum OUT_OF_SERVICE {
+				value 1612;
+			}
+
+			enum PROCEDURAL_ERROR {
+				value 1613;
+			}
+
+			enum ADAPTER_ERROR {
+				value 100500;
+			}
+
+			enum INFORMATION_OUT_OF_SEQUENCE {
+				value 1608;
+			}
+
+			enum CALL_ESTABLISHMENT_ERROR {
+				value 100503;
+			}
+
+			enum COMMUNICATIONS_SUBSYSTEM_FAILURE {
+				value 100505;
+			}
+
+			enum CONFIGURATION_OR_CUSTOMIZATION_ERROR {
+				value 100506;
+			}
+
+			enum CONGESTION_X733 {
+				value 100507;
+			}
+
+			enum DATA_SET_OR_MODEM_ERROR {
+				value 100510;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum DEGRADED_SIGNAL_X733 {
+				value 100511;
+			}
+
+			enum CORUPT_DATA {
+				value 100508;
+			}
+
+			enum CPU_CYCLES_LIMIT_EXCEEDED {
+				value 100509;
+			}
+
+			enum BANDWIDTH_REDUCED_X733 {
+				value 100502;
+			}
+
+			enum COMMUNICATIONS_PROTOCOL_ERROR {
+				value 100504;
+			}
+
+			enum EXCESSIVE_VIBRATION {
+				value 100515;
+			}
+
+			enum FIRE_DETECTED {
+				value 100517;
+			}
+
+			enum FRAMING_ERROR_X733 {
+				value 100518;
+			}
+
+			enum HEATING_VENT_COOLING_SYSTEM_PROBLEM {
+				value 100519;
+			}
+
+			enum ENCLOSURE_DOOR_OPEN_X733 {
+				value 100513;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum DTE_DCE_INTERFACE_ERROR {
+				value 100512;
+			}
+
+			enum HUMIDITY_UNACCEPTABLE {
+				value 100520;
+			}
+
+			enum INPUT_OUTPUT_DEVICE_ERROR {
+				value 100521;
+			}
+
+			enum EQUIPMENT_MALFUNCTION {
+				value 100514;
+			}
+
+			enum FILE_ERROR_X733 {
+				value 100516;
+			}
+
+			enum LOSS_OF_FRAME_X733 {
+				value 100526;
+			}
+
+			enum MATERIAL_SUPPLY_EXHAUSTED {
+				value 100528;
+			}
+
+			enum MULTIPLEXER_PROBLEM_X733 {
+				value 100529;
+			}
+
+			enum OUT_OF_MEMORY_X733 {
+				value 100530;
+			}
+
+			enum LEAK_DETECTED {
+				value 100524;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum INPUT_DEVICE_ERROR {
+				value 100522;
+			}
+
+			enum OUPUT_DEVICE_ERROR {
+				value 100531;
+			}
+
+			enum LAN_ERROR {
+				value 100523;
+			}
+
+			enum LOCAL_NODE_TRANSMISSION_ERROR_X733 {
+				value 100525;
+			}
+
+			enum LOSS_OF_SIGNAL_X733 {
+				value 100527;
+			}
+
+			enum PUMP_FAILURE_X733 {
+				value 100536;
+			}
+
+			enum RECEIVE_FAILURE_X733 {
+				value 100538;
+			}
+
+			enum RECEIVER_FAILURE_X733 {
+				value 100539;
+			}
+
+			enum RESOURCE_AT_OR_NEARING_CAPACITY {
+				value 100541;
+			}
+
+			enum PRESSURE_UNACCEPTABLE {
+				value 100534;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum PERFORMANCE_DEGRADED {
+				value 100532;
+			}
+
+			enum REMOTE_NODE_TRANSMISSION_ERROR_X733 {
+				value 100540;
+			}
+
+			enum POWER_PROBLEMS {
+				value 100533;
+			}
+
+			enum PROCESSOR_PROBLEMS {
+				value 100535;
+			}
+
+			enum QUEUE_SIZE_EXCEEDED {
+				value 100537;
+			}
+
+			enum SOFTWARE_PROGRAM_ERROR {
+				value 100546;
+			}
+
+			enum TEMPERATURE_UNACCEPTABLE {
+				value 100548;
+			}
+
+			enum THRESHOLD_CROSSED {
+				value 100549;
+			}
+
+			enum TOXIC_LEAK_DETECTED {
+				value 100551;
+			}
+
+			enum SOFTWARE_ERROR_X733 {
+				value 100544;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum RESPONSE_TIME_EXECESSIVE {
+				value 100542;
+			}
+
+			enum TIMING_PROBLEM_X733 {
+				value 100550;
+			}
+
+			enum RETRANSMISSION_RATE_EXCESSIVE {
+				value 100543;
+			}
+
+			enum SOFTWARE_PROGRAM_ABNORMALLY_TERMINATED {
+				value 100545;
+			}
+
+			enum STORAGE_CAPACITY_PROBLEM_X733 {
+				value 100547;
+			}
+
+			enum UNDERLYING_RESOURCE_UNAVAILABLE {
+				value 100554;
+				description
+				"<p>158 through 207 are taken directly from IANAItuProbableCause in RFC3877</p>";
+			}
+
+			enum TRANSMIT_FAILURE_X733 {
+				value 100552;
+			}
+
+			enum TRANSMITER_FAILURE {
+				value 100553;
+			}
+
+			enum VERSION_MISMATCH_X733 {
+				value 100555;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef SftpConnectionData {
+		type enumeration {
+			enum SYSTEM {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum NETWORKING {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum UNKNOWN {
+				value 0;
+			}
+
+			enum PORT_ADAPTER {
+				value 3;
+			}
+
+			enum HARDWARE_ASSIST {
+				value 4;
+			}
+
+			enum VIDEO {
+				value 5;
+			}
+
+			enum TRACE {
+				value 6;
+			}
+
+			enum GENERAL_COMPUTING {
+				value 7;
+			}
+
+			enum GENERAL_PURPOSE {
+				value 8;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef TransferLogStatus {
+		type enumeration {
+			enum ONGOING {
+				value 0;
+			}
+
+			enum IDLE {
+				value 1;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef IANAItuEventType {
+		type enumeration {
+			enum SYSTEM {
+				value 1;
+				description "<p></p>";
+			}
+
+			enum NETWORKING {
+				value 2;
+				description "<p></p>";
+			}
+
+			enum UNKNOWN {
+				value 0;
+			}
+
+			enum PORT_ADAPTER {
+				value 3;
+			}
+
+			enum HARDWARE_ASSIST {
+				value 4;
+			}
+
+			enum VIDEO {
+				value 5;
+			}
+
+			enum TRACE {
+				value 6;
+			}
+
+			enum GENERAL_COMPUTING {
+				value 7;
+			}
+
+			enum GENERAL_PURPOSE {
+				value 8;
+			}
+
+		}
+
+		description "<p></p>";
+	}
+
+	typedef SingletonKey {
+		type enumeration {
+			enum "1" {
+				value 1;
+			}
+
+		}
+
+		description "The key of a singleton elements can use this type.";
+	}
+
+	typedef UserResponse {
+		type enumeration {
+			enum YES {
+				value 1;
+				description "<p>yes</p>";
+			}
+
+			enum NO {
+				value 2;
+			}
+
+		}
+
+		description "<p>User Response.</p>";
+	}
+
+	typedef GroupAdmState {
+		type enumeration {
+			enum ENABLED {
+				value 1;
+				description "No configuration backup related action ongoing.";
+			}
+
+			enum DISABLED {
+				value 2;
+			}
+
+		}
+
+		description "<p>The intended state of the port.</p>";
+	}
+
+	typedef SwitchSide {
+		type enumeration {
+			enum LEFT {
+				value 0;
+			}
+
+			enum RIGHT {
+				value 1;
+			}
+
+			enum COLLAPSED {
+				value 2;
+			}
+
+		}
+
+		description "Switch Side";
+	}
+
+	typedef CableType {
+		type enumeration {
+			enum IS1 {
+				value 0;
+			}
+
+			enum CROSS {
+				value 1;
+			}
+
+			enum TRANSITION {
+				value 2;
+			}
+
+		}
+
+		description "Cable Type";
+	}
+
+	typedef VlanType {
+		type enumeration {
+			enum PRIVATE {
+				value 0;
+			}
+
+			enum PUBLIC {
+				value 1;
+			}
+
+			enum DEFAULT {
+				value 2;
+			}
+
+		}
+
+		description "Vlan Type";
+	}
+
+	typedef MemberPortAssignment {
+		type enumeration {
+			enum ALL_PORTS {
+				value 1;
+			}
+
+			enum ALL_BASE_PORTS {
+				value 2;
+			}
+
+			enum ALL_DATA_PORTS {
+				value 3;
+			}
+
+			enum ALL_PORTS_LEFT {
+				value 4;
+			}
+
+			enum ALL_PORTS_ROGHT {
+				value 5;
+			}
+
+			enum ALL_BASE_PORTS_LEFT {
+				value 6;
+			}
+
+			enum ALL_BASE_PORTS_RIGHT {
+				value 7;
+			}
+
+			enum ALL_DATA_PORTS_LEFT {
+				value 8;
+			}
+
+			enum ALL_DATA_PORTS_RIGHT {
+				value 9;
+			}
+
+			enum NO_PORTS {
+				value 10;
+			}
+
+		}
+
+		description "member Port Assignment ";
+	}
+
+	typedef AdminStpPriority {
+		type enumeration {
+			enum "0" {
+				value 0;
+			}
+
+			enum "4096" {
+				value 4096;
+			}
+
+			enum "8192" {
+				value 8192;
+			}
+
+			enum "12288" {
+				value 12288;
+			}
+
+			enum "16384" {
+				value 16384;
+			}
+
+			enum "20480" {
+				value 20480;
+			}
+
+			enum "24576" {
+				value 24576;
+			}
+
+			enum "28672" {
+				value 28672;
+			}
+
+			enum "32768" {
+				value 32768;
+			}
+
+			enum "36864" {
+				value 36864;
+			}
+
+			enum "40960" {
+				value 40960;
+			}
+
+			enum "45056" {
+				value 45056;
+			}
+
+			enum "49152" {
+				value 49152;
+			}
+
+			enum "53248" {
+				value 53248;
+			}
+
+			enum "57344" {
+				value 57344;
+			}
+
+			enum "61440" {
+				value 61440;
+			}
+
+		}
+
+		description "Spanning tree priority.";
+	}
+
+	typedef AdminStpVersion {
+		type enumeration {
+			enum STP {
+				value 1;
+			}
+
+			enum RSTP {
+				value 2;
+			}
+
+		}
+
+		description "Spanning tree or Rapid Spanning tree.";
+	}
+
+	typedef AdminState {
+		type enumeration {
+			enum ENABLED {
+				value 1;
+			}
+
+			enum DISABLED {
+				value 2;
+			}
+
+		}
+
+		description "The intended state of the port";
+	}
+
+	typedef IngressFiltering {
+		type enumeration {
+			enum ENABLED {
+				value 1;
+			}
+
+			enum DISABLED {
+				value 2;
+			}
+
+		}
+
+		description "The intended state of the port";
+	}
+
+	typedef AcceptableFrameTypes {
+		type enumeration {
+			enum ONLY_VLAN_TAGGED {
+				value 1;
+			}
+
+			enum ALL {
+				value 2;
+			}
+
+		}
+
+		description
+		"When set to onlyVlanTagged, untagged and priority tagged frames will be discarded.";
+	}
+
+	typedef PortAdminStpPriority {
+		type enumeration {
+			enum "0" {
+				value 0;
+			}
+
+			enum "128" {
+				value 128;
+			}
+
+			enum "240" {
+				value 240;
+			}
+
+			enum "16" {
+				value 16;
+			}
+
+			enum "32" {
+				value 32;
+			}
+
+			enum "48" {
+				value 48;
+			}
+
+			enum "64" {
+				value 64;
+			}
+
+			enum "80" {
+				value 80;
+			}
+
+			enum "96" {
+				value 96;
+			}
+
+			enum "112" {
+				value 112;
+			}
+
+			enum "144" {
+				value 144;
+			}
+
+			enum "160" {
+				value 160;
+			}
+
+			enum "176" {
+				value 176;
+			}
+
+			enum "192" {
+				value 192;
+			}
+
+			enum "208" {
+				value 208;
+			}
+
+			enum "224" {
+				value 224;
+			}
+
+		}
+
+		description "Spanning tree priority.";
+	}
+
+	typedef AdminStpEdgePort {
+		type enumeration {
+			enum TRUE {
+				value 1;
+			}
+
+			enum FALSE {
+				value 2;
+			}
+
+		}
+
+		description "If set to true, this port will be assumed to be an edge port.";
+	}
+
+	typedef AdminStpPointToPoint {
+		type enumeration {
+			enum TRUE {
+				value 1;
+			}
+
+			enum FALSE {
+				value 2;
+			}
+
+			enum AUTO {
+				value 3;
+			}
+
+		}
+
+		description
+		"<p>If set to true, this port will be treated as connected to a point-to-point link.</p>";
+	}
+
+	typedef AdminStpProtocolMigration {
+		type enumeration {
+			enum TRUE {
+				value 1;
+			}
+
+			enum FALSE {
+				value 2;
+			}
+
+		}
+
+		description
+		"<p>When operating in rapid spanning tree (RSTP) mode, writing true to this object forces this port  to transmit RSTP Bridge Protocol Data Units (BPDUs).</p>";
+	}
+
+	typedef AggregatorModeOfOperation {
+		type enumeration {
+			enum DISABLED {
+				value 1;
+			}
+
+			enum MANUAL {
+				value 2;
+			}
+
+			enum IEEELACP {
+				value 3;
+			}
+
+		}
+
+		description " ";
+	}
+
+	typedef AggregateOrIndividual {
+		type enumeration {
+			enum AGGREGATE {
+				value 1;
+			}
+
+			enum INDIVIDUA {
+				value 2;
+			}
+
+		}
+
+		description " ";
+	}
+
+	typedef MirroringDirection {
+		type enumeration {
+			enum INGRESS {
+				value 1;
+			}
+
+			enum EGRESS {
+				value 2;
+			}
+
+			enum BOTH {
+				value 3;
+			}
+
+		}
+
+		description " Type of mirroring.;";
+	}
+
+	typedef BridgeId {
+		type string {
+			pattern "\"([0-9][0-9]*)-(0|25|26|28)\"";
+		}
+
+		description "bridgeId ";
+	}
+
+	typedef PortId {
+		type string {
+			pattern
+			"\"(LOCALHOST|REMOTEHOST|BP1|BP2|BP3|BP4|BP5|BP6|BP7|BP8|BP9|BP10|BP11|BP12|BP13|BP14|BP15|BP16|BP17|BP18|BP19|BP20|BP21|BP22|BP23|BP24|BP26|BP28|GE1|GE2|GE3|E1|E2|E3|E4)\"";
+		}
+
+		description "port Id";
+	}
+
+	typedef VlanId {
+		type uint32 {
+			range "1..4094";
+		}
+
+		description "<p>Vlan Id</p>";
+	}
+
+	typedef SubnetVlanId {
+		type string;
+		description "Subnet Vlan Id";
+	}
+
+	typedef RackId {
+		type uint32;
+		description "int rack id";
+	}
+
+	typedef ShelfId {
+		type uint32;
+		description "Int Shelf Id";
+	}
+
+	typedef SlotId {
+		type uint32 {
+			range "0..28";
+		}
+
+		description "Int Slot Id";
+	}
+
+	typedef BladeId {
+		type uint32 {
+			range "1";
+		}
+
+		description "Int blade Id";
+	}
+
+	typedef PhysicalConnectorId {
+		type uint32;
+		description "physical Connector Id";
+	}
+
+	typedef AggregatorId {
+		type string {
+			pattern "\"(LA1|LA2|LA3|LA4|LA5|LA6|LA7|LA8)\"";
+		}
+
+		description "bridgeId ";
+	}
+
+	typedef ProtocolVlanId {
+		type string {
+			pattern "\"(ethernet|rfc1042|llcOther):[0-9a-fA-F]{4}\"";
+		}
+
+		description "Protocol Vlan Id ";
+	}
+
+	typedef MoRef {
+		type string {
+			pattern
+			"([A-Z][0-9a-zA-Z]*=[-_0-9a-zA-Z]*)(,[A-Z][0-9a-zA-Z]*=[-_0-9a-zA-Z]*)*";
+		}
+
+		description
+		"This type is used for pointing to a managed object in the data model. It shall be a distinguished name according to 3PP, e.g. Class1Name=keyvalue,Class2Name=4.";
+	}
+
+	typedef Decimal64 {
+		type decimal64 {
+			fraction-digits 1;
+		}
+
+		description "Float with 2 digits fracton.";
+	}
+
+	typedef AginTime {
+		type uint32 {
+			range "10..1000000";
+		}
+
+		description
+		"The timeout period in seconds for aging out dynamically learnt forwarding information.";
+	}
+
+	typedef AdminStpMaxAge {
+		type uint32 {
+			range "6..40";
+		}
+
+		description "The maximum age in seconds, used when the bridge is root.";
+	}
+
+	typedef StpPort {
+		type string {
+			pattern
+			"\"(LOCALHOST|REMOTEHOST|BP1|BP2|BP3|BP4|BP5|BP6|BP7|BP8|BP9|BP10|BP11|BP12|BP13|BP14|BP15|BP16|BP17|BP18|BP19|BP20|BP21|BP22|BP23|BP24|BP26|BP28|GE1|GE2|GE3|E1|E2|E3|E4|NONE)\"";
+		}
+
+		description "port Id";
+	}
+
+	typedef AdminStpHelloTime {
+		type uint32 {
+			range "1..2";
+		}
+
+		description
+		"The value that all bridges use for HelloTime when this bridge is acting as the root.";
+	}
+
+	typedef AdminStpForwardDelay {
+		type uint32 {
+			range "4..30";
+		}
+
+		description
+		"The value that all bridges use for ForwardDelay when this bridge is acting as the root.";
+	}
+
+	typedef DefaultUserPriority {
+		type uint32 {
+			range "0..7";
+		}
+
+		description "The default ingress user uriority of this port.";
+	}
+
+	typedef NumberOfEgressTrafficClasses {
+		type uint32 {
+			range "0..8";
+		}
+
+		description
+		"<p>The number of egress traffic classes supported on this port.</p>";
+	}
+
+	typedef TrafficClassPcp {
+		type uint32 {
+			range "0..7";
+		}
+
+		description "The default ingress user uriority of this port.";
+	}
+
+	typedef AdminStpPathCost {
+		type uint32 {
+			range "0..200000000";
+		}
+
+		description "This port\'s path cost towards the spanning tree root.";
+	}
+
+	grouping SftpConnectionData {
+		description "Sftp Connection Data";
+		leaf port {
+			type uint32;
+			mandatory true;
+			description
+			"The port number of the SFTP server. If not specified, this defaults to 22.";
+		}
+
+		leaf ipAddress {
+			type "ECIM_CommonLibrary:IpDNSAddress";
+			mandatory true;
+			description "Ipv4UnicastAddressStr";
+		}
+
+		leaf username {
+			type string;
+			mandatory true;
+			description "The user name on the SFTP server";
+		}
+
+		leaf password {
+			type string;
+			mandatory true;
+			description
+			"The password of the user on the SFTP server. In the CLI, the operator will be prompted for the password if it is not specified. In Netconf, the password is mandatory.";
+		}
+
+	}
+
+	grouping EquipmentUnitData {
+		description "equipment_unit_data.";
+		leaf userLabel {
+			type string;
+			mandatory true;
+			description "Label for free use.";
+		}
+
+		leaf acceptableHWTypes {
+			type string;
+			mandatory true;
+			description "Types of equipment objects that can be supported.";
+		}
+
+		leaf-list hwInstallStatus {
+			type "DmxTypeMOM:HwInstallStatus";
+			min-elements 1;
+			description "Install status. ";
+		}
+
+		leaf typeOfHw {
+			type string;
+			mandatory true;
+			description "Hardware type.";
+		}
+
+		leaf name {
+			type string;
+			mandatory true;
+			description "<p>Label for the position.</p>";
+		}
+
+		leaf physicalPosition {
+			type "DmxTypeMOM:HwInstallStatus";
+			mandatory true;
+			description "<p>Placement of the rack.</p>";
+		}
+
+	}
+
+	grouping Position {
+		description "<p></p>";
+		leaf name {
+			type string;
+			mandatory true;
+			description "<p>Label for the position.</p>";
+		}
+
+		leaf physicalPosition {
+			type "DmxTypeMOM:HwInstallStatus";
+			mandatory true;
+			description "<p>Placement of the rack.</p>";
+		}
+
+	}
+
+	grouping ReplaceableUnitData {
+		description "equipment_unit_data.";
+		leaf operationalState {
+			type "DmxTypeMOM:Opstate";
+			mandatory true;
+			description "<p>Operational state of the blade as seen by DMX.</p>";
+		}
+
+		leaf softwareVersion {
+			type string;
+			mandatory true;
+			description "<p>The software version used on the replaceable unit.</p>";
+		}
+
+		leaf secondarySoftwareVersion {
+			type "DmxTypeMOM:HwInstallStatus";
+			mandatory true;
+			description
+			"<p>The previous software version used on the replaceable unit.</p>";
+		}
+
+		leaf administrativeState {
+			type "DmxTypeMOM:AdmState";
+			mandatory true;
+			description "<p>Administrative state of the blade.</p>";
+		}
+
+		leaf availabilityStatus {
+			type "DmxTypeMOM:AvailStatus";
+			mandatory true;
+			description "Availability status of the blade as seen by DMX.";
+		}
+
+		leaf isConfigurablePhysically {
+			type boolean;
+			mandatory true;
+			description "Indicates whether the blade can be physically configured.";
+		}
+
+		leaf slotLayout {
+			type string;
+			mandatory true;
+			description "Describes how the unit is to be positioned in the slot.";
+		}
+
+		leaf slotRequired {
+			type uint32;
+			mandatory true;
+			description "The number of slots that the unit covers.";
+		}
+
+		leaf uniqueRequirementPhysical {
+			type string;
+			mandatory true;
+			description "Physically unique reuirements for the unit.";
+		}
+
+		leaf hotSwappable {
+			type boolean;
+			mandatory true;
+			description
+			"Indicates whether the unit can be replaced without putting it out of service.";
+		}
+
+		leaf name {
+			type string;
+			mandatory true;
+			description "<p>Label for the position.</p>";
+		}
+
+		leaf physicalPosition {
+			type "DmxTypeMOM:HwInstallStatus";
+			mandatory true;
+			description "<p>Placement of the rack.</p>";
+		}
+
+		leaf color {
+			type "DmxTypeMOM:LedColor";
+			mandatory true;
+			description "<p>Color of the operational LED.</p>";
+		}
+
+		leaf ledStatus {
+			type "DmxTypeMOM:LedStatus";
+			mandatory true;
+			description "<p>The current status of the operational LED.</p>";
+		}
+
+		leaf supported {
+			type boolean;
+			mandatory true;
+			description "Whether the unit has an operational LED.";
+		}
+
+	}
+
+	grouping OperationalLed {
+		description "<p></p>";
+		leaf color {
+			type "DmxTypeMOM:LedColor";
+			mandatory true;
+			description "<p>Color of the operational LED.</p>";
+		}
+
+		leaf ledStatus {
+			type "DmxTypeMOM:LedStatus";
+			mandatory true;
+			description "<p>The current status of the operational LED.</p>";
+		}
+
+		leaf supported {
+			type boolean;
+			mandatory true;
+			description "Whether the unit has an operational LED.";
+		}
+
+	}
+
+	grouping FaultLed {
+		description "<p></p>";
+		leaf color {
+			type "DmxTypeMOM:LedColor";
+			mandatory true;
+			description "<p>Color of the status LED.</p>";
+		}
+
+		leaf ledStatus {
+			type "DmxTypeMOM:LedStatus";
+			mandatory true;
+			description "<p>The current status of the status LED.</p>";
+		}
+
+		leaf supported {
+			type boolean;
+			mandatory true;
+			description "<p>Whether the unit has an status LED.</p>";
+		}
+
+	}
+
+	grouping StatusLed {
+		description "<p></p>";
+		leaf color {
+			type "DmxTypeMOM:LedColor";
+			mandatory true;
+			description "<p>Color of the operational LED.</p>";
+		}
+
+		leaf ledStatus {
+			type "DmxTypeMOM:LedStatus";
+			mandatory true;
+			description "<p>The current status of the operational LED.</p>";
+		}
+
+		leaf supported {
+			type boolean;
+			mandatory true;
+			description "Whether the unit has an operational LED.";
+		}
+
+	}
+
+	grouping MaintenanceLed {
+		description "<p></p>";
+		leaf color {
+			type "DmxTypeMOM:LedColor";
+			mandatory true;
+			description "<p>Color of the maintenance LED.</p>";
+		}
+
+		leaf ledStatus {
+			type "DmxTypeMOM:LedStatus";
+			mandatory true;
+			description "<p>The current status of the maintenance LED.</p>";
+		}
+
+		leaf supported {
+			type boolean;
+			mandatory true;
+			description "<p>Whether the unit has an maintenance LED.</p>";
+		}
+
+	}
+
+	grouping SlotData {
+		description "slot_data ";
+		leaf userLabel {
+			type string;
+			mandatory true;
+			description "Label for free use.";
+		}
+
+		leaf coveredBy {
+			type string;
+			mandatory true;
+			description "Identity of slot holding a blade that covers this slot.";
+		}
+
+		leaf autoConfigEnabled {
+			type "DmxTypeMOM:AutoConfigMode";
+			mandatory true;
+			description "Configuration mode for a blade in this slot.";
+		}
+
+		leaf-list holdingHwExpected {
+			type string;
+			min-elements 1;
+			description
+			"Allowed hw type(s), that is ROJ number(s). Empty list means all hw types are OK. The value \\empty\\ means that no board should be inserted in the slot.";
+		}
+
+		leaf holdingFwExpected {
+			type string;
+			mandatory true;
+			description
+			"Expected firmware, that is CXC number. If not set, no check of IPMI software will be done.";
+		}
+
+		leaf holdingFwMinRevision {
+			type string;
+			mandatory true;
+			description
+			"Minimum revision of firmware required on a board in the slot. Only valid if holdingFwExpected is set.";
+		}
+
+		leaf position {
+			type string;
+			mandatory true;
+			description
+			"The horizontal physical position for the slot. It is defined as the number of 5 mm steps from the inner left side of the shelf to the right side of a plug-in unit printed board inserted in the slot.";
+		}
+
+		leaf bladeGroup {
+			type string;
+			mandatory true;
+			description "Name of Blade Group this slot is allocated to, if any.";
+		}
+
+	}
+
+	grouping BladeData {
+		description "blade data.";
+		leaf bladeId {
+			type "DmxTypeMOM:BladeId";
+			mandatory true;
+			description "Blade identifier, always 1.";
+		}
+
+		leaf userLabel {
+			type string;
+			mandatory true;
+			description "Label for free use.";
+		}
+
+		leaf administrativeState {
+			type "DmxTypeMOM:AdmState";
+			mandatory true;
+			description "Administrative state of the blade.";
+		}
+
+		leaf operationalState {
+			type "DmxTypeMOM:Opstate";
+			mandatory true;
+			description "Operational state of the blade as seen by DMX.";
+		}
+
+		leaf availabilityStatus {
+			type "DmxTypeMOM:AvailStatus";
+			mandatory true;
+			description "Availability status of the blade as seen by DMX.";
+		}
+
+		leaf productNumber {
+			type string;
+			mandatory true;
+			description "Product number.";
+		}
+
+		leaf productRevisionState {
+			type string;
+			mandatory true;
+			description "Product revision state.";
+		}
+
+		leaf productName {
+			type string;
+			mandatory true;
+			description "Product name.";
+		}
+
+		leaf serialNumber {
+			type string;
+			mandatory true;
+			description "Serial number.";
+		}
+
+		leaf manufacturingDate {
+			type "ECIM_CommonLibrary:DateTime";
+			mandatory true;
+			description "Manufacturing date.";
+		}
+
+		leaf vendorName {
+			type string;
+			mandatory true;
+			description "Vendor name.";
+		}
+
+		leaf changeDate {
+			type "ECIM_CommonLibrary:DateTime";
+			mandatory true;
+			description "Date and time this blade was first detected.";
+		}
+
+		leaf busType {
+			type "DmxTypeMOM:BusType";
+			mandatory true;
+			description "Type of management bus the blade connects to.";
+		}
+
+		leaf firstMacAddress {
+			type string;
+			mandatory true;
+			description "Blade base MAC address.";
+		}
+
+		leaf consecutiveMacAddresses {
+			type uint32;
+			mandatory true;
+			description "Number of consecutive MAC address of the blade.";
+		}
+
+		leaf mbusMacAddressB {
+			type string;
+			mandatory true;
+			description "MAC address of second physical interface (MBUS blades only).";
+		}
+
+		leaf width {
+			type int8;
+			mandatory true;
+			description "The number of slots the blade occupies.";
+		}
+
+		leaf ipmiOffset {
+			type uint8;
+			mandatory true;
+			description
+			"Offset in number of slots (from left) for the backplane connection to the I2C-bus.";
+		}
+
+		leaf-list baseOffset {
+			type uint8;
+			min-elements 1;
+			description
+			"Offset(s) in number of slots (from left) for the backplane connection(s) to the base (1 GE) network  star.\r\n";
+		}
+
+		leaf-list dataOffset {
+			type uint8;
+			min-elements 1;
+			description
+			"Offset(s) in number of slots (from left) for the backplane connection(s) to the data (10 GE or more) network star.";
+		}
+
+		leaf mbusMacAddressA {
+			type string;
+			mandatory true;
+			description "MAC address of second physical interface (MBUS blades only).";
+		}
+
+	}
+
+	grouping ConnectorData {
+		description "<p>Connector Data.</p>";
+		leaf physicalConnectorId {
+			type string;
+			mandatory true;
+			description "Connector identifier.";
+		}
+
+		leaf userLabel {
+			type string;
+			mandatory true;
+			description
+			"Label for free use. Initialized to the text printed on the board front plate at the connector.";
+		}
+
+		leaf position {
+			type string;
+			mandatory true;
+			description
+			"The physical position for the connector. It is given as a pair of x and y coordinates. These are given relative to the horizontal and vertical rulers present on the shelf. These rulers are marked in 5 mm steps. The coordinate indicates a position which is clearly within the connector boundary.";
+		}
+
+	}
+
+	grouping GroupTransportPortData {
+		description "<p>group transport port data</p>";
+		leaf adminState {
+			type "DmxTypeMOM:GroupAdmState";
+			mandatory true;
+			description "<p>The intended state of the port.</p>";
+		}
+
+		leaf operState {
+			type string;
+			mandatory true;
+			description "The current operative state of the port.";
+		}
+
+		leaf portAddress {
+			type string;
+			mandatory true;
+			description "The port\'s MAC-address.";
+		}
+
+		leaf defaultVlan {
+			type "DmxTypeMOM:VlanId";
+			mandatory true;
+			description "The VLAN that untagged packets will be assigned to.";
+		}
+
+	}
+
+	grouping GroupEquipmentBladeData {
+		description "group_equipment_blade_data ";
+		leaf administrativeState {
+			type "DmxTypeMOM:GroupAdmState";
+			mandatory true;
+			description "Administrative state of the blade.";
+		}
+
+		leaf operationalState {
+			type "DmxTypeMOM:Opstate";
+			mandatory true;
+			description "Operational state of the blade as seen by DMX.";
+		}
+
+		leaf availabilityStatus {
+			type "DmxTypeMOM:AvailStatus";
+			mandatory true;
+			description "Availability status of the blade as seen by DMX.";
+		}
+
+	}
+
+}

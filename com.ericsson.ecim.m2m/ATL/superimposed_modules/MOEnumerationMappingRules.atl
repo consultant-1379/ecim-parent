@@ -1,0 +1,100 @@
+-- /**
+-- * Map an EcimEnumeration to an MP EnumType
+-- *
+-- * Note: It would have been nice to have these rules layered as they are in the ECIM Profile but this is not possible as
+-- * ATL does not support multiple inheritance, making this impossible. We do have one layer of inheritance though.
+-- *
+-- * superimposition-dependencies: ECIMtoMP 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 03/02/2010
+-- */
+
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module MOEnumerationMappingRules;
+create OUT : MP from IN : UML;
+
+--Map an EcimEnumeration to an MP EnumType
+lazy rule EnumerationToEnumType
+{
+	from enum : UML!Enumeration
+	using 
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(enum);	
+	}
+	to t: MP!EnumType
+	(
+		name <- enum.name, 
+		description <- thisModule.hasDescription(enum),
+		enumMember <- enum.ownedLiteral->collect(e|thisModule.CreateLiteralType(e)),
+		domainExtension <- thisModule.getDomainExtensionForOriginatingMomInfoPlusFilter(enum, enum.getCurrentPackage(), enum.getNearestPackage())
+		
+		--CPP properties that are not supported	
+		--applicationTag <-	
+		--domainExtension <-		
+	)
+	do
+	{
+		--generate domainExtensions if there are any
+		if (domainExtensions->size() > 0)
+		{
+			--before creating the extensions we group them by domain so that they can be outputted together
+			t.domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,enum));
+		}
+	}	
+}
+
+--This rules creates an EnumMemberType for every literal passed in
+rule CreateLiteralType(literal : UML!EnumerationLiteral)
+{
+	using 
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(literal);	
+	}
+	to 	t : MP!EnumMemberType
+	(
+		name <- literal.name,
+		description <- thisModule.hasDescription(literal),
+		 
+		--Support the ECIMGeneralProperties
+		deprecated <- thisModule.isDeprecated(literal),
+		obsolete <- thisModule.isObsolete(literal),
+		filter <- thisModule.hasFilter(literal),
+		specification <- thisModule.hasSpecification(literal),	
+		preliminary <- thisModule.isPreliminary(literal),
+		statusInformation <- thisModule.hasStatusInformation(literal),
+		decisionPoint <- thisModule.hasDecisionPoint(literal),
+		
+		value <- thisModule.hasLiteralValue(literal),
+		
+		--Support the ECIMCpiBehaviourProperties
+		dependencies <- thisModule.hasDependencies(literal),
+		disturbances <- thisModule.hasDisturbances(literal),
+		takesEffect  <- thisModule.hasTakesEffect(literal),
+		precondition <- thisModule.hasPrecondition(literal),
+		sideEffects <- thisModule.hasSideEffects(literal)
+		
+		--CPP properties that are not supported	
+		--applicationTag <-
+		--visibility <-
+		--feature <-	
+		--interfaceOnly <-
+		--dependenciesScript <- *A literal cannot own a constraint in UML*
+	)	
+	do
+	{
+		--generate domainExtensions if there are any
+		if (domainExtensions->size() > 0)
+		{
+			--before creating the extensions we group them by domain so that they can be outputted together
+			t.domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,literal));
+
+		}
+		t;
+	}
+}

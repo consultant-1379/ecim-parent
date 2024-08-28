@@ -1,0 +1,670 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:33:31 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ECIM_HCM" {
+	namespace "urn:com:ericsson:ecim:ECIM_HCM";
+	prefix "ECIM_HCM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	description "Health Check Management function MOM.";
+
+	revision "2015-12-07" {
+		ericsson:release "0";
+		ericsson:version "1";
+		ericsson:author "Alessio Cascone (XCASALE)";
+		ericsson:contact "alessio.cascone@itslab.it";
+		ericsson:correction "0";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:SystemFunctions" {
+		list "HealthCheckM" {
+			key "healthCheckMId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "HcJob" {
+				key "hcJobId";
+				list "HcJobScheduler" {
+					key "hcJobSchedulerId";
+					max-elements 1;
+					list "HcSingleEvent" {
+						key "hcSingleEventId";
+						uses ECIM_HCM:HcSingleEvent;
+					}
+
+					list "HcPeriodicEvent" {
+						key "hcPeriodicEventId";
+						uses ECIM_HCM:HcPeriodicEvent;
+					}
+
+					list "HcCalendarBasedPeriodicEvent" {
+						key "hcCalendarBasedPeriodicEventId";
+						uses ECIM_HCM:HcCalendarBasedPeriodicEvent;
+					}
+
+					uses ECIM_HCM:HcJobScheduler;
+				}
+
+				uses ECIM_HCM:HcJob;
+			}
+
+			list "HcRule" {
+				key "hcRuleId";
+				uses ECIM_HCM:HcRule;
+			}
+
+			uses ECIM_HCM:HealthCheckM;
+		}
+
+	}
+
+	typedef "HealthStatus" {
+		type enumeration {
+			enum "HEALTHY" {
+				value 0;
+				description
+				"Indicates that the NE status is healthy.
+The result of all executed rules is as expected.";
+			}
+
+			enum "NOT_HEALTHY" {
+				value 1;
+				description
+				"Indicates that the NE status is not healthy.
+The result of at least one rule, which severity is CRITICAL, is not as expected.";
+			}
+
+			enum "WARNING" {
+				value 2;
+				description
+				"Indicates that the NE status is warning.    
+The result of at least one rule, which severity is WARNING, is not as expected and the result of all CRITICAL ones is as expected.";
+			}
+
+			enum "NOT_AVAILABLE" {
+				value 3;
+				description
+				"Indicates that the NE status is not available.
+The result of all executed rules is still not available or the execution never started.";
+			}
+
+		}
+
+		description
+		"Lists the possible health statuses, based on result of all executed rules.";
+	}
+
+	typedef "RuleSeverity" {
+		type enumeration {
+			enum "CRITICAL" {
+				value 0;
+				description
+				"Indicates a rule which failure is critical for ME healthness.
+In that case, the ME requires immediate actions.";
+			}
+
+			enum "WARNING" {
+				value 1;
+				description
+				"Indicates a rule which failure is a warning for ME healthness.
+In that case, the ME requires user attention. ";
+			}
+
+		}
+
+		description
+		"Lists the possible severity values of a rule.
+Each value describes how the node healthiness status is affected when the rule result is not the expected one.";
+	}
+
+	typedef "HcCategory" {
+		type enumeration {
+			enum "BACKOFFICE" {
+				value 0;
+				description
+				"Indicates that the rule should be executed for backoffice operation tests.";
+			}
+
+			enum "DAILY" {
+				value 1;
+				description "Indicates that the rule should be executed daily.";
+			}
+
+			enum "MANDATORY" {
+				value 2;
+				description "Indicates that the rule should always be executed.";
+			}
+
+			enum "POSTUPDATE" {
+				value 3;
+				description "Indicates that the rule should be executed after an update.";
+			}
+
+			enum "POSTUPGRADE" {
+				value 4;
+				description
+				"Indicates that the rule should be executed after an upgrade.";
+			}
+
+			enum "PREINSTALL" {
+				value 5;
+				description "Indicates that the rule be executed before an installation.";
+			}
+
+			enum "PREUPDATE" {
+				value 6;
+				description
+				"Indicates that the rule should be executed before an update.";
+			}
+
+			enum "PREUPGRADE" {
+				value 7;
+				description
+				"Indicates that the rule should be executed before an upgrade.";
+			}
+
+			enum "SHORT" {
+				value 8;
+				description
+				"Indicates that the rule should be executed for quick checks.";
+			}
+
+			enum "TROUBLESHOOT" {
+				value 9;
+				description
+				"Indicates that the rule should be executed for troubleshooting.";
+			}
+
+			enum "OTHER" {
+				value 10;
+				description
+				"Indicates that the rule is not included in any of other categories.";
+			}
+
+		}
+
+		description
+		"Lists the possible categories to which a health check rule can belong to.
+A category aims to facilitate the execution of rules to help customers the planning of their execution according to specific O&M activity.";
+	}
+
+	typedef "EcimPasswordString" {
+		type string;
+		description "Holds the password string.";
+	}
+
+	grouping "HealthCheckM" {
+		description
+		"Represents the root MOC for Health Check Management function.
+The Health Check Management function reports summary views of the managed element current state highlighting any deviations from a normal behavior. It can be used to attend upgrades and to support preventive maintenance and problem resolution.
+The healthiness status is obtained by verifying a set of rules according to their severity, grouped in predefined categories. For instance, if the result of at least one critical rule is not as expected, node status is evaluated as not healthy requiring an immediate action.
+The categories of rules which the Health Check Management function is acting upon are system installed.
+A health check job can be created selecting one or more categories of rules on which the ME healthiness is evaluated.
+A report file is generated for each executed health check job and stored in the predefined folder with a compressed archive file containing logs used for the rules evaluation to be used for further investigation.";
+		leaf "healthCheckMId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "lastUpdateTime" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description
+			"Specifies the date and time of the last time the health of the system has been updated.";
+		}
+
+		leaf "lastExecutedJob" {
+			type string {
+				pattern "(.*=.*,)*HcJob=.*";
+			}
+
+			config true;
+			description
+			"Specifies the DN of the last job executed to check the ME healthiness.";
+		}
+
+		leaf "lastStatus" {
+			type ECIM_HCM:HealthStatus;
+			mandatory true;
+			config true;
+			description
+			"Specifies the ME healthiness status according to the last executed job.";
+		}
+
+		leaf "maxNoOfReportFiles" {
+			type uint16;
+			mandatory true;
+			description
+			"Specifies the maximum number of report files with related log files archive maintained in the ME.
+If a new file is created and the limit is exceeded, the oldest file is deleted.";
+		}
+
+	}
+
+	grouping "HcJob" {
+		description
+		"Represents a health check job which can be executed on a ME.
+This class facilitates in executing one or more categories of health check rules.
+After each job execution the attributes 'lastUpdateTime' and 'lastStatus' in HealthCheckM MOC are updated accordingly.
+It is possible to execute the job on demand or by a scheduler.
+A report file is generated for each executed health check job and stored in the predefined folder with a compressed archive file containing logs used for the rules evaluation to be used for further investigation.";
+		leaf "hcJobId" {
+			type string;
+			mandatory true;
+			description
+			"Holds the name used when identifying the MO.
+Specifies the name of the health check job.";
+			ericsson:restricted;
+		}
+
+		list "progressReport" {
+			key "actionId";
+			max-elements 1;
+			config true;
+			description
+			"Specifies the execution status and result of the health check job.";
+			uses ECIM_CommonLibrary:AsyncActionProgress;
+		}
+
+		leaf "lastReportFileName" {
+			type string;
+			config true;
+			description
+			"Specifies the name of the report file which is generated from the latest execution of the job.
+All the report files are placed in a predefined folder, as indicated by the 'localFileStorePath' attribute value. An archive containing some log files is generated as well.
+The name format of the report file generated is <MEId>_<JobName>_<Timestamp>. Timestamp is in the format YYYYMMDDTHHmmSS, where 4 digits for the year, 2 digits for the month, 2 digits for the date, 2 digits for the hours, 2 digits for the minutes and 2 digits for the seconds are specified. 'T' acts as a delimiter between date and time in the above timestamp format. If the job is executed by the action, the suffix _man is added at the end of the file name.";
+		}
+
+		leaf "status" {
+			type ECIM_HCM:HealthStatus;
+			mandatory true;
+			config true;
+			description
+			"Specifies the health status based on result of all executed rules. ";
+		}
+
+		leaf-list "rulesCategories" {
+			type ECIM_HCM:HcCategory;
+			min-elements 1;
+			description
+			"Specifies the list of categories of health check rules to be executed.";
+		}
+
+		leaf "lastRunTime" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description
+			"Specifies the date and time of the last time the job has been executed.";
+		}
+
+		leaf "jobToTrigger" {
+			type string {
+				pattern "(.*=.*,)*HcJob=.*";
+			}
+
+			description
+			"Specifies the DN of another job to be executed when the current job reports ME is not healthy.
+The execution of another job, for instance to execute rules associated to different categories, might give more detailed information about NE status.";
+		}
+
+		list "failedRules" {
+			config true;
+			description
+			"Provides a condensed status for the last job execution.
+Provides the list of the rules for which the result was not the expected one. 
+It is empty when job status is healthy or not available.";
+			uses ECIM_HCM:FailedHcRule;
+		}
+
+		leaf "localFileStorePath" {
+			type string;
+			config true;
+			description
+			"Specifies the filesystem path where the ouput report files can be fetched.
+It is empty if FileM is not installed/configured.";
+		}
+
+		list "inputParameters" {
+			config true;
+			description
+			"Specifies customizable input parameters for rules evaluation.
+Each item in the list is a triple <hcRule, parameter_name, parameter_value> for which a user-defined attribute can be provided. Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses ECIM_HCM:inputParameters;
+		}
+
+	}
+
+	grouping "HcRule" {
+		description
+		"Represents a health check rule.
+This class facilitates in providing detailed information about an individual health check rule.
+Each rule belongs to one or more health check categories.
+Each rule is also associated with a severity value, warning or critical, that affects the evaluation of the overall NE healthiness. For instance, if the result of at least one critical rule is not as expected, node status is evaluated as not healthy requiring an immediate action.
+Some health check rules can accept optional parameters as input for the evaluation, if no values are provided system default input parameters are used.";
+		leaf "hcRuleId" {
+			type string;
+			mandatory true;
+			description
+			"Holds the name used when identifying the MO.
+Its value is divided into two parts. The first one is an unique identifier for the rule provider while the second one is a numeric identifier (a progressive number for example).";
+			ericsson:restricted;
+		}
+
+		leaf "description" {
+			type string;
+			mandatory true;
+			config true;
+			description "Specifies health check rule description.";
+		}
+
+		leaf "name" {
+			type string;
+			mandatory true;
+			config true;
+			description "Specifies the name of a health check rule.";
+		}
+
+		leaf "recommendedAction" {
+			type string;
+			mandatory true;
+			config true;
+			description
+			"Specifies the step that needs to be performed when the health check rule execution fails.";
+		}
+
+		leaf "severity" {
+			type ECIM_HCM:RuleSeverity;
+			mandatory true;
+			config true;
+			description
+			"Specify the severity of the rule for the evaluation of the overall NE healthiness.";
+		}
+
+		list "inputParameters" {
+			config true;
+			description
+			"Specifies the list of input parameters accepted by the rule with related default values.
+It is empty in case the rule does not accept any parameters change.";
+			uses ECIM_HCM:HcRuleInputParameter;
+		}
+
+		leaf "administrativeState" {
+			type ECIM_CommonLibrary:BasicAdmState;
+			mandatory true;
+			description "Specifies the administrative state of the rule. ";
+		}
+
+		leaf-list "categories" {
+			type ECIM_HCM:HcCategory;
+			config true;
+			min-elements 1;
+			description "Specifies the list of categories which the rule belongs to.";
+		}
+
+	}
+
+	grouping "HcRuleInputParameter" {
+		description
+		"Indicates a parameter into a rule that can be changed before a health check evaluation.
+The name, a brief description and the default value are indicated.
+The default value is used in case no user-defined value is provided into attribute inputParameters under MOC HcJob.";
+		leaf "name" {
+			type string;
+			mandatory true;
+			description "Specifies the parameter name.";
+		}
+
+		leaf "value" {
+			type string;
+			mandatory true;
+			description "Specifies the parameter value.";
+		}
+
+		leaf "description" {
+			type string;
+			mandatory true;
+			description "Specifies a brief description of the rule parameter.";
+		}
+
+	}
+
+	grouping "HcJobScheduler" {
+		description
+		"Represents the health check job scheduler to start a job automatically at a specified time.
+Three scheduling policies are supported:
+1. Single event: Executes a health check job once at a specified date and time.
+2. Periodic event: Executes a health check job regularly at a specified time interval.
+3. Calendar based periodic event: Executes a health check job regularly at a desired interval using calendar.
+
+Once the MO HcJobScheduler is created, MOs HcSingleEvent, HcPeriodicEvent and HcCalendarPeriodicEvent can be created for each of such events.
+Scheduler requires to be unlocked to start job execution setting the attribute 'administrativeState'.";
+		leaf "hcJobSchedulerId" {
+			type string;
+			mandatory true;
+			description
+			"Holds the name used when identifying the MO.
+Specifies the name of the health check job scheduler.";
+			ericsson:restricted;
+		}
+
+		leaf "nextScheduledTime" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description
+			"Specifies the date and time when the next scheduled event is triggered.
+This is the earliest scheduled event from among the set of configured events (single, periodic and calendar-based periodic events).";
+		}
+
+		leaf "administrativeState" {
+			type ECIM_CommonLibrary:BasicAdmState;
+			mandatory true;
+			description "Specifies the administrative state of the scheduler.";
+		}
+
+	}
+
+	grouping "HcSingleEvent" {
+		description
+		"Represents a date/time based event for executing a health check job once.
+A single (one-shot) scheduled health check job is executed at the date and time specified by 'scheduledTime' attribute.";
+		leaf "hcSingleEventId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "scheduledTime" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			description "Scheduled time.";
+		}
+
+	}
+
+	grouping "HcPeriodicEvent" {
+		description
+		"Represents a time interval based event for executing one health check job periodically.
+This construct can be used to execute periodically a health check job by specifying the number of months, weeks, days, hours, or minutes. For instance, in order to trigger a health check job execution every 12 hours, the following setup must be done:
+hours=12
+
+The start time for calculating scheduled events is assumed to be the current system time by default, unless explicitly set using the 'startTime' attribute. Furthermore, if the configured event is to stop at a specific date, 'stopTime' attribute must be set accordingly. Note that the default value of 'stopTime' is the end of century.";
+		leaf "hcPeriodicEventId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "months" {
+			type uint16;
+			mandatory true;
+			status deprecated;
+			description "Deprecated, The number of months.
+Replaced by CalendarBasedPeriodicEvent.month.";
+		}
+
+		leaf "weeks" {
+			type uint16;
+			mandatory true;
+			description "The number of weeks.";
+		}
+
+		leaf "days" {
+			type uint16;
+			mandatory true;
+			description "The number of days.";
+		}
+
+		leaf "hours" {
+			type uint16;
+			mandatory true;
+			description "The number of hours.";
+		}
+
+		leaf "minutes" {
+			type uint16;
+			mandatory true;
+			description "The number of minutes.";
+		}
+
+		leaf "startTime" {
+			type ECIM_CommonLibrary:DateTime;
+			description "Start time. It is an optional attribute.
+If not specified, the implementation uses the current system time as the default value.";
+		}
+
+		leaf "stopTime" {
+			type ECIM_CommonLibrary:DateTime;
+			default "2099-12-31T23:59:59";
+			description
+			"Stop time. It is an optional attribute. The default value is the end of the century.";
+		}
+
+	}
+
+	grouping "HcCalendarBasedPeriodicEvent" {
+		description
+		"Represents a calendar based event for executing one health check job periodically.
+This construct can be used to execute periodically a health check job by specifying the desired interval using calendar. For instance, in order to trigger a health check job execution every night at 2:00 am, the following setup must be done:
+time=02:00:00
+
+The start time for calculating scheduled events is assumed to be the current system time by default, unless explicitly set using the 'startTime' attribute. Furthermore, if the configured event is to stop at a specific date, 'stopTime' attribute must be set accordingly. Note that the default value of 'stopTime' is the end of century.
+A scheduled event of this type is triggered only if ALL the conditions with regard to attribute values are satisfied. For example, if dayOfWeek is set to Monday and dayOfMonth is set to 1, the event will be triggered only if the first day of month is Monday.
+Daylight saving adjustments in Spring and Fall are addressed such that the affected scheduled events are triggered exactly once.";
+		leaf "hcCalendarBasedPeriodicEventId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "month" {
+			type ECIM_CommonLibrary:Month;
+			mandatory true;
+			description "Month.";
+		}
+
+		leaf "dayOfWeek" {
+			type ECIM_CommonLibrary:DayOfWeek;
+			mandatory true;
+			description "Day of week.";
+		}
+
+		leaf "dayOfMonth" {
+			type ECIM_CommonLibrary:DayOfMonth;
+			mandatory true;
+			description "Day of month.";
+		}
+
+		leaf "time" {
+			type ECIM_CommonLibrary:Time;
+			mandatory true;
+			description "This is the time when the scheduled event must occur.";
+		}
+
+		leaf "dayOfWeekOccurrence" {
+			type ECIM_CommonLibrary:DayOfWeekOccurrence;
+			mandatory true;
+			description
+			"The occurrence of the day of week specified by dayOfWeek attribute in the month.";
+		}
+
+		leaf "startTime" {
+			type ECIM_CommonLibrary:DateTime;
+			description "Start time. It is an optional attribute. 
+If not specified, the implementation uses the current system time as the default value.";
+		}
+
+		leaf "stopTime" {
+			type ECIM_CommonLibrary:DateTime;
+			default "2099-12-31T23:59:59";
+			description
+			"Stop time. It is an optional attribute. The default value is the end of the century.";
+		}
+
+	}
+
+	grouping "FailedHcRule" {
+		description "Indicates some information about a failed health check rule.";
+		leaf "hcRule" {
+			type string;
+			mandatory true;
+			description "Specifies the RDN of the failed health check rule.";
+		}
+
+		leaf "reason" {
+			type string;
+			mandatory true;
+			description "Specifies a description of the health check rule failure.";
+		}
+
+		leaf "severity" {
+			type ECIM_HCM:RuleSeverity;
+			mandatory true;
+			description "Specifies the severity of the failed health check rule.";
+		}
+
+	}
+
+	grouping "HcRuleParameter" {
+		description
+		"Specifies an optional parameter that could be provided for rule evaluation.";
+		leaf "name" {
+			type string;
+			mandatory true;
+			description "Specifies the parameter name.";
+		}
+
+		leaf "value" {
+			type string;
+			mandatory true;
+			description "Specifies the parameter value.";
+		}
+
+		leaf "hcRule" {
+			type string;
+			mandatory true;
+			description
+			"Specifies the RDN of the HcRule object for which the parameter must be used.
+It must be a string having the format HcRule=<RULE_ID>.";
+		}
+
+	}
+
+}

@@ -1,0 +1,74 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 14, 2015 9:52:19 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RtnDnsClient" {
+	namespace "urn:com:ericsson:ecim:RtnDnsClient";
+	prefix "RtnDnsClient";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RtnL3Router {
+		prefix "RtnL3Router";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	description "Domain Name Service Client.";
+
+	revision "2015-10-14" {
+		ericsson:correction "0";
+		ericsson:release "1";
+		ericsson:author "EAB/FJP/TA UABERPE";
+		ericsson:contact "EAB/FJP/TA UABERPE";
+		ericsson:version "2";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport/RtnL3Router:Router" {
+		list "DnsClient" {
+			key "dnsClientId";
+			max-elements 1;
+			uses RtnDnsClient:DnsClient;
+		}
+
+	}
+
+	grouping "DnsClient" {
+		description "Domain Name Service Client.";
+		leaf "dnsClientId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf-list "serverAddress" {
+			type ECIM_CommonLibrary:IpDNSAddress;
+			max-elements 3;
+			description "Specifies a list of addresses of DNS servers.";
+		}
+
+		leaf "dscp" {
+			type uint8 {
+				range "0..63";
+			}
+
+			mandatory true;
+			description
+			"The Differentiated Services Code Point (DSCP) value for DNS related IP packets. 
+Only IP packets originated from the node are tagged with the DSCP value.
+";
+		}
+
+	}
+
+}

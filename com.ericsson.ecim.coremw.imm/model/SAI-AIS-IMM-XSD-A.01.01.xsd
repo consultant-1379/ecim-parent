@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by Frederic Herrmann (Sun Microsystems) -->
+<xs:schema xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.saforum.org/IMMSchema" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+  <!-- PART I - DEFINITION OF AN IMM OBJECT CLASS -->
+  <!--
+       Various types of IMM object attributes (SaImmValueTypeT)
+    -->
+  <xs:simpleType name="attr-value-type">
+    <xs:annotation>
+      <xs:documentation>Types of attribute's values</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SA_INT32_T"/>
+      <xs:enumeration value="SA_UINT32_T"/>
+      <xs:enumeration value="SA_INT64_T"/>
+      <xs:enumeration value="SA_UINT64_T"/>
+      <xs:enumeration value="SA_NAME_T"/>
+      <xs:enumeration value="SA_TIME_T"/>
+      <xs:enumeration value="SA_FLOAT_T"/>
+      <xs:enumeration value="SA_DOUBLE_T"/>
+      <xs:enumeration value="SA_STRING_T"/>
+      <xs:enumeration value="SA_ANY_T"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--
+       Two categories of IMM classes & attributes)
+    -->
+  <xs:simpleType name="category">
+    <xs:annotation>
+      <xs:documentation>Class or attribute category</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SA_CONFIG"/>
+      <xs:enumeration value="SA_RUNTIME"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--
+       Flags for object attributes (SaImmAttrFlagsT)
+    -->
+  <xs:simpleType name="attr-flags">
+    <xs:annotation>
+      <xs:documentation>Attribute flags</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SA_MULTI_VALUE"/>
+      <xs:enumeration value="SA_WRITABLE"/>
+      <xs:enumeration value="SA_INITIALIZED"/>
+      <xs:enumeration value="SA_PERSISTENT"/>
+      <xs:enumeration value="SA_CACHED"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- 
+      Group of XML elements common to RDN and other object attributes
+    -->
+  <xs:group name="attr-elements">
+    <xs:annotation>
+      <xs:documentation>Common elements to RDN and other attributes</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="type" type="imm:attr-value-type"/>
+      <xs:element name="category" type="imm:category"/>
+      <xs:element name="flag" type="imm:attr-flags" minOccurs="0" maxOccurs="3"/>
+      <xs:element name="ntfid" type="xs:unsignedInt" default="0" minOccurs="0"/>
+    </xs:sequence>
+  </xs:group>
+  <!-- 
+      Definition of an object's RDN attribute 
+    -->
+  <xs:complexType name="rdn-def">
+    <xs:annotation>
+      <xs:documentation>RDN attribute definition</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="imm:attr-elements"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- 
+      Definition of an object's attribute (other than RDN)
+      In addition to an RDN attribute, other attributes can be multi-value and can have a default value.
+    -->
+  <xs:complexType name="attr-def">
+    <xs:annotation>
+      <xs:documentation>Attribute definition</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="imm:attr-elements"/>
+      <xs:element name="default-value" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- 
+      Definition of an object class
+    -->
+  <xs:complexType name="class-def">
+    <xs:annotation>
+      <xs:documentation>Object class definition</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="category" type="imm:category"/>
+      <xs:element name="rdn" type="imm:rdn-def"/>
+      <xs:element name="attr" type="imm:attr-def" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name"  type="xs:string"/>
+  </xs:complexType>
+  <!-- PART II - DEFINITION OF AN IMMS OBJECT INSTANCE -->
+  <!-- 
+      The object is defined by:
+          - its object class
+          - its DN (XML attribute)
+          - all its attributes (name/values)
+    -->
+  <xs:complexType name="object-def">
+    <xs:annotation>
+      <xs:documentation>Object instance definition</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="dn" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Object Distinguished Name</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="attr" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Object's attributes</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="value" type="xs:string" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="class" type="xs:string"/>
+  </xs:complexType>
+  <!-- PART III- DEFINITION OF IMM Service CONTENTS-->
+  <!-- 
+        The IMM Service contents is defined as a list of class definitions followed by a list of objects
+     -->
+  <xs:element name="IMM-contents">
+    <xs:annotation>
+      <xs:documentation>IMM Service contents</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="class" type="imm:class-def" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="object" type="imm:object-def" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,189 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 12, 2015 5:01:15 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RootMom" {
+	namespace "urn:com:ericsson:ecim:RootMom";
+	prefix "RootMom";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import DukeNukemLibrary {
+		prefix "DukeNukemLibrary";
+	}
+
+	description "This is the root mom.";
+
+	revision "2015-10-12" {
+		ericsson:version "1";
+		ericsson:release "0";
+		ericsson:author "erajaik";
+	}
+
+	list "Root" {
+		key "rootMocId";
+		list "Foo" {
+			key "fooId";
+			uses RootMom:Foo;
+		}
+
+		list "Foo2" {
+			key "foo2Id";
+			max-elements 10;
+			uses RootMom:Foo2;
+		}
+
+		uses RootMom:Root;
+	}
+
+	typedef "AdmState" {
+		type enumeration {
+			enum "LOCKED" {
+				value 0;
+				description "The function is locked.";
+			}
+
+			enum "UNLOCKED" {
+				value 1;
+				description "The function is unlocked.";
+			}
+
+		}
+
+		description "An enumeration for administrative state.";
+	}
+
+	typedef "AbcType" {
+		type string {
+			length "0..5";
+			pattern "[ABC]+";
+		}
+
+		description
+		"A derived string type. Note that the length (here 5) and pattern/validaValues (here [ABC]*)properties must be part of CPI output!";
+	}
+
+	typedef "RangeType" {
+		type int16 {
+			range "5..10";
+		}
+
+		description
+		"Derived numeric type. Note that the range (here 5..10) property must be part of the CPI output.";
+	}
+
+	grouping "Root" {
+		description "This is the root MO class.";
+		leaf "rootMocId" {
+			type string;
+			mandatory true;
+			description "The key attribute.";
+			ericsson:restricted;
+		}
+
+		leaf "attrX" {
+			type DukeNukemLibrary:OneToThree;
+			default "2";
+			description "Bla bla.";
+		}
+
+		container "attrY" {
+			presence "This Container points to a Struct which has no key.";
+			description "Struct attribute.";
+			uses DukeNukemLibrary:StructFromLibrary;
+		}
+
+		leaf "roIntAttr" {
+			type int16;
+			default "14";
+			config true;
+		}
+
+	}
+
+	grouping "Foo" {
+		description "This is class Foo in RootMom.";
+		leaf "fooId" {
+			type string;
+			mandatory true;
+			description "qwerty";
+			ericsson:restricted;
+		}
+
+		container "person" {
+			presence "This Container points to a Struct which has no key.";
+			description "Holds person info.";
+			uses RootMom:PersonData;
+		}
+
+		leaf "myAbc" {
+			type RootMom:AbcType;
+			description "An attribute of a derived string type.";
+		}
+
+		leaf "administrativeState" {
+			type RootMom:AdmState;
+			description "The adm state.";
+		}
+
+		leaf "range" {
+			type RootMom:RangeType;
+			default "7";
+			description "Holds a range.";
+		}
+
+		leaf "foo2Ref" {
+			type string {
+				pattern "(.*=.*,)*Foo2=.*";
+			}
+
+			description "Reference to a Foo2 instance.";
+		}
+
+	}
+
+	grouping "PersonData" {
+		description "A person struct.";
+		leaf "name" {
+			type string {
+				length "0..30";
+			}
+
+			mandatory true;
+			description "Persons name.";
+		}
+
+		leaf "age" {
+			type uint8 {
+				range "0..120";
+			}
+
+			mandatory true;
+			description "The persons age.";
+		}
+
+	}
+
+	grouping "Foo2" {
+		description
+		"This is a read-only class. The read-only property should show in CPI output!";
+		leaf "foo2Id" {
+			type string;
+			mandatory true;
+			description "The key attribute";
+			ericsson:restricted;
+		}
+
+		leaf "aNumber" {
+			type int32 {
+				range "-100..200|500..1000";
+			}
+
+		}
+
+	}
+
+}

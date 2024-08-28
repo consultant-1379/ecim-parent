@@ -1,0 +1,598 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:32:17 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ECIM_SubEquipTraceM" {
+	namespace "urn:com:ericsson:ecim:ECIM_SubEquipTraceM";
+	prefix "ECIM_SubEquipTraceM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	organization "LMI";
+	description "This fragment is used to manage the trace sessions on the managed element.
+Once the trace is activated the trace data can be collected. 
+The trace data can be sent via streaming or file transfer depending on the trace capabilities specified.";
+
+	revision "2014-05-20" {
+		ericsson:contact "ESHUMER";
+		ericsson:author "ESHUMER";
+		ericsson:correction "0";
+		ericsson:version "1";
+		ericsson:release "1";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:SystemFunctions" {
+		list "SubEquipTraceM" {
+			key "subEquipTraceMId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "TraceJob" {
+				key "traceJobId";
+				list "TraceProfile" {
+					key "traceProfileId";
+					max-elements 1;
+					uses ECIM_SubEquipTraceM:TraceProfile;
+				}
+
+				uses ECIM_SubEquipTraceM:TraceJob;
+			}
+
+			list "StreamingCapabilities" {
+				key "streamingCapabilitiesId";
+				max-elements 1;
+				uses ECIM_SubEquipTraceM:StreamingCapabilities;
+			}
+
+			list "FilePullCapabilities" {
+				key "filePullCapabilitiesId";
+				max-elements 1;
+				uses ECIM_SubEquipTraceM:FilePullCapabilities;
+			}
+
+			list "TraceCapabilities" {
+				key "traceCapabilitiesId";
+				min-elements 1;
+				max-elements 1;
+				uses ECIM_SubEquipTraceM:TraceCapabilities;
+			}
+
+			list "TraceParameterGroup" {
+				key "traceParameterGroupId";
+				min-elements 1;
+				list "TraceParameterType" {
+					key "traceParameterTypeId";
+					min-elements 1;
+					uses ECIM_SubEquipTraceM:TraceParameterType;
+				}
+
+				uses ECIM_SubEquipTraceM:TraceParameterGroup;
+			}
+
+			uses ECIM_SubEquipTraceM:SubEquipTraceM;
+		}
+
+	}
+
+	typedef "ActivationType" {
+		type enumeration {
+			enum "MANAGEMENT" {
+				value 0;
+				description "In Management, the activation is done directly on the Network Elements.
+Management activation/deactivation is where a trace session is activated/deactivated in different Network Elements directly using the management interfaces of those Network Elements.
+";
+			}
+
+			enum "SIGNALING" {
+				value 1;
+				description "In Signaling, the activation can be done via another Network Element.
+Signaling activation/deactivation is where a trace session is activated/deactivated in different Network Elements using the signaling interfaces between those elements, so that the Network Elements may forward the activation/deactivation.";
+			}
+
+		}
+
+		description
+		"There are two activation types, management-based activation and signaling-based activation.";
+	}
+
+	typedef "JobType" {
+		type enumeration {
+			enum "TRACE" {
+				value 0;
+				description "Trace Only.";
+			}
+
+		}
+
+		description "This defines the possible job types.";
+	}
+
+	typedef "TargetType" {
+		type enumeration {
+			enum "IMSI" {
+				value 0;
+			}
+
+			enum "IMEI" {
+				value 1;
+			}
+
+			enum "IMEISV" {
+				value 2;
+			}
+
+			enum "PUBLIC_USER_ID" {
+				value 3;
+				description "Public user identity.";
+			}
+
+		}
+
+		description "Trace target type.";
+	}
+
+	typedef "JobState" {
+		type enumeration {
+			enum "ACTIVE" {
+				value 1;
+			}
+
+			enum "STOPPED" {
+				value 2;
+			}
+
+		}
+
+		description "Indicates the job state.";
+	}
+
+	typedef "SessionState" {
+		type enumeration {
+			enum "ACTIVATING" {
+				value 0;
+			}
+
+			enum "ACTIVE" {
+				value 1;
+			}
+
+			enum "DEACTIVATING" {
+				value 3;
+			}
+
+			enum "STOPPED" {
+				value 2;
+			}
+
+			enum "FAILED" {
+				value 4;
+			}
+
+		}
+
+		description "Defines trace-recording session states.";
+	}
+
+	typedef "FilterMethod" {
+		type enumeration {
+			enum "SINGLE_SELECT" {
+				value 0;
+				description "Only one value can be given to the attribute.";
+			}
+
+			enum "MULTI_SELECT" {
+				value 1;
+				description "More than one value can be assigned to the attribute.";
+			}
+
+		}
+
+		description
+		"Filter method defines whether single or multiple values can be selected for a filter attribute.";
+	}
+
+	typedef "TimePeriod" {
+		type enumeration {
+			enum "TEN_SECONDS" {
+				value 0;
+				description "10 SEC.";
+			}
+
+			enum "THIRTY_SECONDS" {
+				value 1;
+				description "30 SEC.";
+			}
+
+			enum "ONE_MIN" {
+				value 2;
+				description "1 MIN.";
+			}
+
+			enum "FIVE_MIN" {
+				value 3;
+				description "5 MIN.";
+			}
+
+			enum "FIFTEEN_MIN" {
+				value 4;
+				description "15 MIN.";
+			}
+
+			enum "THIRTY_MIN" {
+				value 5;
+				description "30 MIN.";
+			}
+
+			enum "ONE_HOUR" {
+				value 6;
+				description "1 HOUR.";
+			}
+
+			enum "TWELVE_HOUR" {
+				value 7;
+				description "12 HOURS.";
+			}
+
+			enum "ONE_DAY" {
+				value 8;
+				description "1 DAY.";
+			}
+
+		}
+
+		description "Defines the periodic duration of the log file recording.";
+	}
+
+	grouping "SubEquipTraceM" {
+		description "This fragment is used to manage the trace sessions on the managed element.
+When the trace is activated, the trace data can be collected. The trace data can be sent via streaming or file transfer depending on the specified trace capabilities.";
+		leaf "subEquipTraceMId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "TraceJob" {
+		description "The trace job defines all the trace information.
+This information is used to activate and configure a trace session on the Managed Element.";
+		leaf "traceJobId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "description" {
+			type string;
+			mandatory true;
+			description "Describes the content and purpose of the job.";
+		}
+
+		leaf "activationType" {
+			type ECIM_SubEquipTraceM:ActivationType;
+			mandatory true;
+			description "Specifies the trace-activation type to be used.
+There are two types of activation: 
+Management activation and deactivation is a trace session that is activated or deactivated in different NEs directly by using the management interfaces of those NEs. 
+Signaling activation and deactivation is a trace session that is activated or deactivated in different NEs that use the signaling interfaces between those elements to enable the NEs to forward the activation or deactivation.";
+		}
+
+		leaf "jobType" {
+			type ECIM_SubEquipTraceM:JobType;
+			mandatory true;
+			description "The Job type parameter defines the trace job type.
+The Job type parameter is an enumerated type with the following values:
+-	Trace only (0)
+
+";
+		}
+
+		list "traceTarget" {
+			min-elements 1;
+			config true;
+			description "Specifies the target object of the Trace.
+It is used to define one or multiple UEs depending on the trace requirement. Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses ECIM_SubEquipTraceM:traceTarget;
+		}
+
+		leaf "requestedJobState" {
+			type ECIM_SubEquipTraceM:JobState;
+			description "This is the requested state of the trace job.
+It represents the state that the job has been ordered to reach. Possible values: ACTIVE, STOPPED";
+		}
+
+		leaf "currentJobState" {
+			type ECIM_SubEquipTraceM:SessionState;
+			mandatory true;
+			config true;
+			description "This is the current state of the trace job.
+Possible values: ACTIVATING, ACTIVE, DEACTIVATING, STOPPED, FAILED";
+		}
+
+		leaf "reportingPeriod" {
+			type ECIM_SubEquipTraceM:TimePeriod;
+			mandatory true;
+			description "Specifies how often trace data is made available.
+The value must be valid according to the supportedReportingPeriods set by the Managed Element.";
+		}
+
+		leaf "streamingURI" {
+			type string;
+			description "Specifies the location (URI) where the trace data is to be streamed.
+Only valid if streamOutputEnabled is set to true.
+";
+		}
+
+		leaf "streamOutputEnabled" {
+			type boolean;
+			description "StreamOutputEnabled when set to true means that only Streaming will be done.
+And if set to false, means only file Pull will be done. For a single trace job either file Pull or Streaming can be selected.";
+		}
+
+		leaf "fileCompressionType" {
+			type ECIM_CommonLibrary:CompressionTypes;
+			description "Compression Type to be applied to file output.
+Only valid when streamOutputEnabled = false.
+If this attribute is not set, no compression will be applied to the file output.
+Can only be assigned a value according to the capability supportedCompressionTypes in the FilePullCapabilities MOC.";
+		}
+
+		leaf "streamCompressionType" {
+			type ECIM_CommonLibrary:CompressionTypes;
+			description "Compression Type to be applied to stream output.
+Only valid when streamOutputEnabled = true.
+If this attribute is not set, no compression will be applied to the stream output.
+Can only be assigned a value according to the capability supportedCompressionTypes in the StreamingCapabilities MOC.";
+		}
+
+	}
+
+	grouping "TraceTarget" {
+		description "Trace target includes the target type and the identity.";
+		leaf "targetType" {
+			type ECIM_SubEquipTraceM:TargetType;
+			mandatory true;
+			description "This defines the Trace target type.";
+		}
+
+		leaf "targetIdentity" {
+			type string;
+			mandatory true;
+			description
+			"This is the Trace target identity for first UE (Originating UE). This field is mandatory.";
+		}
+
+		leaf "terminatingTargetIdentity" {
+			type string;
+			description "This is the Trace target identity for the second UE (Terminating UE).
+This field is optional and valid when attribute betweenUsersEnabled = true, in TraceCapabilities MOC.";
+		}
+
+		leaf "traceReference" {
+			type string;
+			mandatory true;
+			description "The TraceReference is a unique ID.
+It identifies the trace session that has been created by the activation of the trace Job on the Managed Element.
+The Trace Reference parameter shall be globally unique and composed as follows:
+MCC+MNC+Trace ID, where the MCC and MNC are coming with the trace activation request from the EM/NM to identify one PLMN containing the EM/NM, and Trace ID is a 3 byte Octet String.
+
+";
+		}
+
+	}
+
+	grouping "StreamingCapabilities" {
+		description "Trace capabilities related to data streaming.";
+		leaf "streamingCapabilitiesId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "supportedCompressionTypes" {
+			type ECIM_CommonLibrary:CompressionTypes;
+			config true;
+			description "Defines the compression type for data streaming.";
+		}
+
+	}
+
+	grouping "TraceProfile" {
+		description "Defines the trace information to be used to activate and configure a trace profile.
+This profile must only be used if the job type is configured for Trace on the Managed Element.";
+		leaf "traceProfileId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		list "traceParameter" {
+			config true;
+			description
+			"This defines the attributes and their values depending on which filter would be applied. Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses ECIM_SubEquipTraceM:traceParameter;
+		}
+
+	}
+
+	grouping "TraceParameter" {
+		description "It defines the parameter name and its corresponding value.";
+		leaf "parameterName" {
+			type string;
+			mandatory true;
+			description
+			"Parameter name is the attribute, based on which filter is applied.";
+		}
+
+		leaf-list "parameterValue" {
+			type string;
+			min-elements 1;
+			description
+			"This is actual value of the parameter selected by the parameterName.";
+			ericsson:non-unique-leaf-list;
+		}
+
+	}
+
+	grouping "FilePullCapabilities" {
+		description "Defines the file capabilities when file transfer is PULL.";
+		leaf "filePullCapabilitiesId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "outputDirectory" {
+			type string;
+			config true;
+			description "This is the location where trace data will be placed for file Pull.
+This is the directory location on the Managed Element.";
+		}
+
+		leaf "allignedReportingPeriod" {
+			type boolean;
+			mandatory true;
+			config true;
+			description "The Managed Element will align its reporting periods to the hour if set to TRUE.  
+";
+		}
+
+		leaf "supportedCompressionTypes" {
+			type ECIM_CommonLibrary:CompressionTypes;
+			mandatory true;
+			config true;
+			description "File compression type.
+This property is only valid for FILE transfer type.";
+		}
+
+		leaf-list "supportedReportingPeriods" {
+			type ECIM_SubEquipTraceM:TimePeriod;
+			config true;
+			min-elements 1;
+			description
+			"Specifies the list of reporting periods supported by the Managed Element.";
+		}
+
+	}
+
+	grouping "TraceCapabilities" {
+		description "Defines the Trace Job related capabilities.";
+		leaf "traceCapabilitiesId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "maxNoOfJobs" {
+			type int16;
+			config true;
+			description
+			"Defines the maximum number of trace jobs that can run in parallel on the Managed Element.";
+		}
+
+		leaf "betweenUsersEnabled" {
+			type boolean;
+			config true;
+			description "Defines whether Managed Element supports the trace between two UEs.
+When set to true, it means that the trace job can be between two UEs, orignating and terminating.";
+		}
+
+		leaf "maxNoOfUEs" {
+			type int16;
+			config true;
+			description
+			"Defines the permitted maximum number of UEs that can be traced.";
+		}
+
+	}
+
+	grouping "TraceParameterType" {
+		description "This defines the Trace parameters, which are possible for the particular Network Element.
+All the attributes and their possible values and restrictions.
+TraceParamaterType MOs are created at design time as Instance models and installed on a system at initial configuration or Upgrade.";
+		leaf "traceParameterTypeId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "isMandatory" {
+			type boolean;
+			config true;
+			description
+			"This defines if the attribute value is mandatory to be entered or not.";
+		}
+
+		leaf "selectionMethod" {
+			type ECIM_SubEquipTraceM:FilterMethod;
+			config true;
+			description
+			"This defines whether single or multiple values can be entered for the seleceted attribute.";
+		}
+
+		leaf "validValues" {
+			type string;
+			config true;
+			description "It contains the possible valid values, which can be entered.";
+		}
+
+		leaf "defaultValue" {
+			type string;
+			config true;
+			description
+			"This is the value which is selected if no value is given for an attribute.";
+		}
+
+		leaf "description" {
+			type string;
+			config true;
+			description "Describes a brief detail for the selected parameter.";
+		}
+
+	}
+
+	grouping "TraceParameterGroup" {
+		description "Describes the name, version and description of the group.
+This helps in identifying the interfaces, messages and other parameters valid for this group.";
+		leaf "traceParameterGroupId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "groupVersion" {
+			type string;
+			config true;
+			description "Defines the version of this particular group.";
+		}
+
+		leaf "description" {
+			type string;
+			config true;
+			description "Contains the details relating to this group.";
+		}
+
+	}
+
+}

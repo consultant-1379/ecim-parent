@@ -1,0 +1,213 @@
+/*
+  Copyright (c) 2013 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Sep 17, 2013 2:47:13 PM using 
+    * com.ericsson.ecim.yang.m2m 2.7.0.qualifier
+*/
+module AppX {
+	namespace "urn:com:ericsson:ecim:AppX";
+	prefix AppX;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import ComTop {
+		prefix ComTop;
+	}
+
+	import MyEcimLibrary {
+		prefix MyEcimLibrary;
+	}
+
+	organization "Ericsson";
+	description "This MOM uses stuff from MyEcimLibrary";
+
+	revision "2013-09-17" {
+		ericsson:release 1;
+		ericsson:version 1;
+	}
+
+	augment "/ComTop:ManagedElement" {
+		list RX {
+			key rXId;
+			uses "AppX:RX";
+		}
+
+	}
+
+	typedef LocalEnum {
+		type enumeration {
+			enum A {
+				value 1;
+			}
+
+		}
+
+		description "123";
+	}
+
+	grouping RX {
+		description "qwe";
+		leaf rXId {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf a1 {
+			type "MyEcimLibrary:DerivedBoolean1";
+			description "doc";
+		}
+
+		leaf a2 {
+			type "MyEcimLibrary:DerivedNumeric1";
+			description "qwe";
+		}
+
+		leaf a3 {
+			type "MyEcimLibrary:DerivedString1";
+			description "qwe";
+		}
+
+		leaf a4 {
+			type "MyEcimLibrary:EnumPlenum2";
+		}
+
+		container a5 {
+			presence "This Container points to a Struct which has no key.";
+			description "qwe";
+			uses "MyEcimLibrary:StructenFrukten";
+		}
+
+		list s1 {
+			config false;
+			description "qwe Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses "MyEcimLibrary:StructenFrukten";
+		}
+
+		leaf f1 {
+			type "MyEcimLibrary:DerivedFloat1";
+		}
+
+		leaf-list reservedBy {
+			type string {
+				pattern "(.*=.*,)*RY=.*";
+			}
+
+			config false;
+			max-elements 200;
+		}
+
+		leaf e1 {
+			type "MyEcimLibrary:EnumPlenum";
+			description "qwe";
+		}
+
+		container remoteStructUsingOtherTypes {
+			presence "This Container points to a Struct which has no key.";
+			description "qwe";
+			uses "MyEcimLibrary:ANewStruct";
+		}
+
+		list roStructAttribute {
+			max-elements 1;
+			config false;
+			description "qwe";
+			uses "AppX:AROStruct";
+		}
+
+		leaf-list morefAttr {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			max-elements 17;
+			description "wer";
+		}
+
+		leaf dn {
+			type string;
+			mandatory true;
+			config false;
+			description "The MO\'s DN.";
+		}
+
+		ericsson:action action1 {
+			description "qwe";
+			input {
+				leaf p1 {
+					type "MyEcimLibrary:EnumPlenum3";
+					mandatory true;
+					description "qwe";
+				}
+
+				leaf p2 {
+					type "MyEcimLibrary:EnumPlenum3";
+					mandatory true;
+					description "qwe";
+				}
+
+				leaf p3 {
+					type "MyEcimLibrary:EnumPlenum2";
+				}
+
+			}
+
+			output {
+				leaf returnType {
+					type "MyEcimLibrary:EnumPlenum2";
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action ping {
+			output {
+				container returnType {
+					presence "This Container points to a Struct which has no key.";
+					description "qwe";
+					uses "MyEcimLibrary:PingResult";
+				}
+
+			}
+
+		}
+
+		ericsson:action actionThatReturnsAbstractMO {
+			output {
+				leaf returnType {
+					type string {
+						pattern "(.*=.*,)*.*=.*";
+					}
+
+					mandatory true;
+					description "qwe";
+				}
+
+			}
+
+		}
+
+	}
+
+	grouping AROStruct {
+		description "qwe";
+		leaf roSm1 {
+			type int16;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf roSm2 {
+			type string;
+			mandatory true;
+			description "qwe";
+		}
+
+	}
+
+}

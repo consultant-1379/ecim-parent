@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <xs:schema targetNamespace="http://tail-f.com/ns/netconf/actions/1.0"
+             xmlns="http://tail-f.com/ns/netconf/actions/1.0"
+             xmlns:xs="http://www.w3.org/2001/XMLSchema"
+             xmlns:netconf="urn:ietf:params:xml:ns:netconf:base:1.0"
+             elementFormDefault="qualified"
+             attributeFormDefault="unqualified"
+             xml:lang="en">
+			 
+	<xs:import namespace="urn:ietf:params:xml:ns:netconf:base:1.0" schemaLocation="netconf_rfc4741.xsd"/> 
+
+    <!--  <action> operation -->
+    <xs:complexType name="ActionType">
+      <xs:complexContent>
+        <xs:extension base="netconf:rpcOperationType">
+          <xs:sequence>
+            <xs:element name="data" type="netconf:dataInlineType" />
+          </xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="action" type="ActionType"
+                substitutionGroup="netconf:rpcOperation"/>
+
+  </xs:schema>

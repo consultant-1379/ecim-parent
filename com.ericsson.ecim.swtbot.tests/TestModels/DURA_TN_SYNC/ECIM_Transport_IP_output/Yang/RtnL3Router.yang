@@ -1,0 +1,88 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 14, 2015 9:51:02 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RtnL3Router" {
+	namespace "urn:com:ericsson:ecim:RtnL3Router";
+	prefix "RtnL3Router";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	description "Base routing fragment.";
+
+	revision "2015-10-14" {
+		ericsson:version "1";
+		ericsson:contact "EAB/FJP/TA UABERPE";
+		ericsson:release "14";
+		ericsson:correction "2";
+		ericsson:author "EAB/FJP/TA UABERPE";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport" {
+		list "Router" {
+			key "routerId";
+			max-elements 8;
+			uses RtnL3Router:Router;
+		}
+
+	}
+
+	grouping "Router" {
+		description "Represents an IP routing domain instance.
+
+It provides data plane isolation of routed traffic and control plane isolation of routing entities from other routing instances.
+
+It allows for further fragmentation of the routing domain.
+
+Dependencies: The maximum number of InterfaceIPv4 MO configured as loopback is 64.";
+		leaf "routerId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN. 
+";
+			ericsson:restricted;
+		}
+
+		leaf "ttl" {
+			type int32 {
+				range "1..255";
+			}
+
+			mandatory true;
+			description
+			"Default value of Time-To-Live (TTL).
+
+The default value inserted into the TTL field of the IPv4 header of datagrams, originated from this instance, whenever a TTL value is not supplied by the transport layer protocol.";
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use. 
+";
+		}
+
+		leaf "hopLimit" {
+			type int32 {
+				range "0..255";
+			}
+
+			mandatory true;
+			description "IPv6 default hop limit. 
+
+The default value is inserted into the Hop Limit field of the IPv6 header of datagrams originated at this entity whenever a Hop Limit value is not supplied by the transport layer protocol.
+";
+		}
+
+	}
+
+}

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Apr 21, 2015 2:21:18 PM using:
+	* com.ericsson.ecim.m2m 3.0.0.qualifier
+	* com.ericsson.ecim.dsl 3.0.0.qualifier
+	* com.ericsson.ecim.edm 3.0.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="" contact="" date="" docNo="" name="CmwApplXMom" namespace="urn:com:ericsson:ecim:CmwApplXMom" namespacePrefix="cmwapplxmom" organization="" release="1" revision="" version="1">
+        <description>qwe</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <struct name="StructWithPrelMember">
+            <description>qwe</description>
+            <structMember name="sm1">
+                <string/>
+            </structMember>
+            <structMember name="prelSm">
+                <string/>
+                <preliminary/>
+            </structMember>
+        </struct>
+        <enum name="EnumWithPrelEnumLiteral">
+            <description>qwe</description>
+            <enumMember name="ONE">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="TWO">
+                <value>2</value>
+                <preliminary/>
+            </enumMember>
+        </enum>
+        <class name="CmwApplXRoot">
+            <description>123</description>
+            <root/>
+            <action name="prelAction">
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="123"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <preliminary/>
+            </action>
+            <action name="actionWithPrelParam">
+                <description>123</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="44"/>
+                </domainExtension>
+                <returnType>
+                    <int64/>
+                </returnType>
+                <parameter name="prelParam">
+                    <in/>
+                    <dataType>
+                        <int32/>
+                    </dataType>
+                </parameter>
+                <parameter name="qq">
+                    <in/>
+                    <dataType>
+                        <double/>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="cmwApplXRootId">
+                <description>qwe</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="prelAttr1">
+                <isNillable/>
+                <dataType>
+                    <int16/>
+                </dataType>
+                <preliminary/>
+            </attribute>
+            <attribute name="attrWithPrelEnumLiteral">
+                <description>qwe</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="EnumWithPrelEnumLiteral">
+                        <mimName>CmwApplXMom</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="attrWithStructwithPrelSm">
+                <isNillable/>
+                <dataType>
+                    <structRef name="StructWithPrelMember">
+                        <mimName>CmwApplXMom</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FunctionX">
+            <description>qwe</description>
+            <attribute name="functionXId">
+                <description>qwe</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="a1">
+                <description>qwe</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpDNSAddress">
+                        <mimName>ECIM_Top</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="prodId">
+                <description>qwe</description>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="ProductIdentity">
+                        <mimName>ECIM_Top</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="PrelClass">
+            <preliminary/>
+            <attribute name="prelClassId">
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="CmwApplXRoot_to_FunctionX">
+            <containment>
+                <parent>
+                    <hasClass name="CmwApplXRoot">
+                        <mimName>CmwApplXMom</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FunctionX">
+                        <mimName>CmwApplXMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>5</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="FunctionX_to_PrelClass">
+            <preliminary/>
+            <containment>
+                <parent>
+                    <hasClass name="FunctionX">
+                        <mimName>CmwApplXMom</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="PrelClass">
+                        <mimName>CmwApplXMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="ManagedElement_to_CmwApplXRoot">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>ECIM_Top</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CmwApplXRoot">
+                        <mimName>CmwApplXMom</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+    <mib name="CmwApplXMomInstances" release="1" version="1">
+        <object parentDn="Fm=1">
+            <hasClass name="FmAlarmModel">
+                <mimName>ECIM_FM</mimName>
+            </hasClass>
+            <slot name="fmAlarmModelId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="CmwApplXRoot=1">
+            <hasClass name="FunctionX">
+                <mimName>CmwApplXMom</mimName>
+            </hasClass>
+            <slot name="functionXId">
+                <value>1</value>
+            </slot>
+            <slot name="a1">
+                <value>192.12.3.12</value>
+            </slot>
+            <slot name="prodId">
+                <complexValue>
+                    <slot name="productNumber">
+                        <value>111</value>
+                    </slot>
+                    <slot name="productRevision">
+                        <value>A</value>
+                    </slot>
+                    <slot name="productDesignation">
+                        <value>Tonga</value>
+                    </slot>
+                </complexValue>
+            </slot>
+        </object>
+        <object parentDn="">
+            <hasClass name="Fm">
+                <mimName>ECIM_FM</mimName>
+            </hasClass>
+            <slot name="fmId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="">
+            <hasClass name="CmwApplXRoot">
+                <mimName>CmwApplXMom</mimName>
+            </hasClass>
+            <slot name="cmwApplXRootId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="Fm=1">
+            <hasClass name="FmAlarm">
+                <mimName>ECIM_FM</mimName>
+            </hasClass>
+            <slot name="fmAlarmId">
+                <value>1</value>
+            </slot>
+            <slot name="lastEventTime">
+                <value>2012-05-28T15:23:55.333Z</value>
+            </slot>
+            <slot name="source">
+                <value>X</value>
+            </slot>
+            <slot name="activeSeverity">
+                <value>MAJOR</value>
+            </slot>
+            <slot name="additionalText">
+                <value>qwert</value>
+            </slot>
+            <slot name="majorType">
+                <value>1111</value>
+            </slot>
+            <slot name="minorType">
+                <value>2222</value>
+            </slot>
+            <slot name="specificProblem">
+                <value>OhNo</value>
+            </slot>
+            <slot name="eventType">
+                <value>EQUIPMENTALARM</value>
+            </slot>
+            <slot name="probableCause">
+                <value>418</value>
+            </slot>
+            <slot name="additionalInfo">
+                <value>aaa</value>
+            </slot>
+        </object>
+    </mib>
+</models>

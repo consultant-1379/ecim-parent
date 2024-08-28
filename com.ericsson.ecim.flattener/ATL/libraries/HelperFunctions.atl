@@ -1,0 +1,109 @@
+-- /**
+-- * These functions help in the inheritance flatning process
+-- * 
+-- * Author: Ronan Barrett
+-- * Date: 23/06/2010
+-- */
+
+library HelperFunctions;
+
+--This helper checks to see if an association has an end which is abstract
+helper context UML!Association def : hasAbstractEndType() : Boolean = 
+	if(self.endType->select(e|e.isAbstract)->size() > 0)
+	then
+		true
+	else
+		false
+	endif;
+
+--Filter out properties that should be dropped as part of the flattening process
+helper context UML!Property def : isRegularProperty() : Boolean = 
+	if(self.oclIsTypeOf(UML!Property))
+	then
+		if(not self.class.oclIsUndefined() and not self.class.isAbstract)
+		then				
+			if(not self.association.oclIsUndefined())
+			then
+				if(self.type.oclIsTypeOf(UML!Class))
+				then
+					if(self.type.isAbstract)
+					then
+						false--do not let properties through that are an end of an association and have an abstract type
+					else
+						true--let non abstract association ends through
+					endif
+				else
+					true--let properties which are association ends but don't have a class type through. does this ever happen?
+				endif			
+			else
+				true--let non association ends through
+			endif
+		else
+			false--do not let properties through that do not belong to a class or whose class is abstract
+		endif
+	else
+		false
+	endif;
+
+--returns true if the element to which the function is called has the specified stereotype applied
+helper context UML!Element def: hasStereotype(name : String) : Boolean =
+	not self.getAppliedStereotype(name).oclIsUndefined();
+
+--This helper checks to see if a default value was specified. if it was we copy the value to child class properties
+--UML/ATL behaviour is normally to only copy once from a bag. We need to perform a shallow copy.
+helper def : hasDefaultValue(vs : UML!ValueSpecification) : UML!ValueSpecification = 
+	if(vs <> OclUndefined)
+	then
+		thisModule.CopyDefaultValueSpecification(vs)
+	else
+		OclUndefined
+	endif;
+
+--Check to see if both ends of an association are concrete
+helper def : hasConcreteEnds(ass : UML!Association) : Boolean = 
+	if(ass.getEndTypes()->forAll(e|not e.isAbstract))
+	then
+		true
+	else
+		false
+	endif;
+
+--Check to see if an association already exists for a given source and target. if it does then return false
+helper context UML!Association def : isAssociationUnique(a : UML!Class, b : UML!Class) : Boolean = 
+	--if (self.owner.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association)).debug('qq')->select(e|e.getEndTypes()->collect(e|e.name)->asSet()->includesAll(Set{a,b}->collect(e|e.name)))->size().debug('a') > 0)
+--	--if (UML!Association.allInstances()->select(e|e.owner.name=self.owner.name).debug('qq')->select(e|e.getEndTypes()->collect(e|e.name)->asSet()->includesAll(Set{a,b}->collect(e|e.name)))->size().debug('a') > 0)
+	--if (UML!Association.allInstances()->select(e|e.package=self.package).debug('qq')->select(e|e.getEndTypes()->collect(e|e.allParents()->asSet()->union(Set{e}))->flatten()->collect(e|e.name)->asSet().debug('****')->includesAll(Set{a,b}->collect(e|e.name).debug('####')))->size().debug('a') > 0)
+	if (UML!Association.allInstances()->select(e|e.package.name=self.package.name)->select(e|e.getEndTypes()->collect(e|e.name)->asSet()->includesAll(Set{a,b}->collect(e|e.name)))->size().debug('a') > 0)
+	then
+		false
+	else
+		true
+	endif;
+
+--Get the type of the none composise/aggregation end (owning) of the association
+helper  context UML!Association def : getSourceEndType : UML!Class = 
+	self.memberEnd->select(e|e.aggregation=#none)->first().type;
+
+--Get the type of the composite end (non-owning) of the association
+helper  context UML!Association def : getTargetEndType : UML!Class = 
+	self.memberEnd->select(e|e.aggregation=#composite)->first().type;
+
+--Packages are only valid if they come from a package in the first model, have been imported, or are a child of an import
+--This check stops packages which have not been explicitly imported slipping into the output. It should be used on all matched rules
+helper def: isPackageValid(p : UML!Package) : Boolean =
+	if UML!Package.allInstancesFrom('IN')->contains(p) --All packages from the first model are valid
+	then 
+		true
+	else
+		if UML!PackageImport.allInstances()->collect(e|e.importedPackage)->select(e|e.oclIsTypeOf(UML!Package))->contains(p)--All packages specified by a packageImport are ok
+		then
+			true
+		else
+			if UML!PackageImport.allInstances()->collect(e|e.importedPackage)->select(e|e.oclIsTypeOf(UML!Package))->collect(e|e.nestedPackage)->flatten()->contains(p)--All nested packages within a PackageImport are ok
+			then
+				true
+			else
+				false
+			endif
+		endif
+	endif;

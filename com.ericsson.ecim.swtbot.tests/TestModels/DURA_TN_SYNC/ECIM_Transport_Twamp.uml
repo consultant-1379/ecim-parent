@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/" xmlns:Documentation="http://www.eclipse.org/papyrus/documentation" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CoreMWProfile/ pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw http:///schemas/ECIMBaseProfile/ pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ">
+  <uml:Model xmi:id="_NRAMoAwOEdmFcaeZXPdWAQ" name="RtnTwamp">
+    <ownedComment xmi:id="_guZ7wFsoEeSW6vapvQTVuQ">
+      <body>ECIM-T TWAMP Model.&#xD;
+&#xD;
+Copyright (c) 2011-2014 Ericsson AB.&#xD;
+All rights reserved.</body>
+    </ownedComment>
+    <packageImport xmi:id="_uWHKUIXbEd-Id79DLfNphQ">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_iT7qACCSEd-Egr3-YAWs7Q"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_EvFUsFspEeSW6vapvQTVuQ" name="RtnTwamp">
+      <ownedComment xmi:id="_UeSYgFspEeSW6vapvQTVuQ">
+        <body>ECIM Transport TWAMP MOM.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_NrMeoFsqEeSW6vapvQTVuQ" name="TwampLightResponder">
+        <ownedComment xmi:id="_NreygVsqEeSW6vapvQTVuQ">
+          <body>Two Way Active Measurement Protocol Responder.&#xD;
+&#xD;
+This MO represents the session responder functionality (according to RFC 5357) in a TWAMP light architecture.&#xD;
+When created, the node reflects TWAMP packets received on the specified UDP port.</body>
+        </ownedComment>
+        <ownedRule xmi:id="_E7g6QF2yEeSqI-bxNxeI6g" name="FeatureModelling_TwampLightResponderAdministrativeState" constrainedElement="_CRwkkFtTEeSW6vapvQTVuQ">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_E7g6QV2yEeSqI-bxNxeI6g">
+            <language>Optionality</language>
+            <body>if-feature TwampLightResponderAdministrativeState</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_cJzT4F20EeSqI-bxNxeI6g" name="FeatureModelling_TwampLightResponderAvailabilityStatus" constrainedElement="_xpCz8FtUEeSW6vapvQTVuQ">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_cJzT4V20EeSqI-bxNxeI6g">
+            <language>Optionality</language>
+            <body>if-feature TwampLightResponderAvailabilityStatus</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_7Btp8F25EeSqI-bxNxeI6g" name="FeatureModelling_TwampLightResponderOperationalState" constrainedElement="_X0Dy8FtUEeSW6vapvQTVuQ">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_7Btp8V25EeSqI-bxNxeI6g">
+            <language>Optionality</language>
+            <body>if-feature TwampLightResponderOperationalState</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_wUv0IC-zEeWdFYZbB90Ojw" name="Interface" constrainedElement="_NrMeoFsqEeSW6vapvQTVuQ">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_wUwbMC-zEeWdFYZbB90Ojw">
+            <language>Schematron</language>
+            <body>&lt;schema xmlns=&quot;http://purl.oclc.org/dsdl/schematron&quot;>
+   &lt;pattern>
+      &lt;rule>
+         &lt;assert test='every $udpPort in @udpPort satisfies (every $ipAddress in @ipAddress satisfies (count(../TwampLightResponder[($udpPort eq @udpPort) and ($ipAddress eq @ipAddress)]) eq 1))'>&lt;value-of select=&quot;.&quot;/> The combination of udpPort and ipAddress for TwampLightResponder must be unique in the same router.&lt;/assert>
+         &lt;assert test='contains(@ipAddress, concat(&quot;Router=&quot;, ../@routerId, &quot;,&quot;))'>&lt;value-of select=&quot;.&quot;/>TwampLightResponder can refer only to an ipAddress in the same router.&lt;/assert>
+      &lt;/rule>
+   &lt;/pattern>
+&lt;/schema></body>
+          </specification>
+        </ownedRule>
+        <ownedAttribute xmi:id="_NrxGYVsqEeSW6vapvQTVuQ" name="twampLightResponderId" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_hmnrQFsqEeSW6vapvQTVuQ">
+            <body>Value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_NsDaQVsqEeSW6vapvQTVuQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_NsDaQlsqEeSW6vapvQTVuQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_cT7X4FtREeSW6vapvQTVuQ" name="responderType" visibility="public" type="_6hq-UFtQEeSW6vapvQTVuQ" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_RgExUF5SEeSu96BO5N5yew">
+            <body>Type of the responder.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iSW8MGMHEeSTH8bxXQuGWQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_OJ038GCnEeSOAIMcd5eL-Q" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_CRwkkFtTEeSW6vapvQTVuQ" name="administrativeState" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_MZqc8F2pEeSqI-bxNxeI6g">
+            <body>The administrative state.&#xD;
+&#xD;
+When LOCKED, the TWAMP responder does not respond to incoming probe packets.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#__jC9IJdbEeC11vgiYYrb4A"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rbkq0GMEEeSTH8bxXQuGWQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_CSC4cltTEeSW6vapvQTVuQ" value="1"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_uc0e8PiZEeSWPYS38fL79w" name="LOCKED">
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_CommonLibrary.uml#__jC9IpdbEeC11vgiYYrb4A"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="__ub2wFtTEeSW6vapvQTVuQ" name="ipAddress" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_qAkvEF23EeSqI-bxNxeI6g">
+            <body>Responder assigned IP address.&#xD;
+&#xD;
+Valid reference is an AddressIpv4 or an AddressIpv6 MO in the L3 infra fragment.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_NlVdgF23EeSqI-bxNxeI6g" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="__uuKoltTEeSW6vapvQTVuQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_X0Dy8FtUEeSW6vapvQTVuQ" name="operationalState" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_Hwdp8F25EeSqI-bxNxeI6g">
+            <body>The operational state.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#__lAE8JdbEeC11vgiYYrb4A"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_er06YGMHEeSTH8bxXQuGWQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_X0cNcFtUEeSW6vapvQTVuQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_xpCz8FtUEeSW6vapvQTVuQ" name="availabilityStatus" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_x2QOsF2zEeSqI-bxNxeI6g">
+            <body>The availability status contains details about the operational state.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#_k2VdcDrxEeOzd4qf6-nnMQ"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KBKmYF5rEeSu96BO5N5yew"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_xx3EgF9AEeSFL-vqrK4urg" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_bkPDgFtVEeSW6vapvQTVuQ" name="udpPort" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_V5unQF5UEeSu96BO5N5yew">
+            <body>Specify a UDP port to send and receive TWAMP test packets.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxWcACCTEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_SICeUF5UEeSu96BO5N5yew" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bkhXYltVEeSW6vapvQTVuQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ffWF8GiBEeSJCsfUw_j5Ag" name="userLabel" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_ffWF8WiBEeSJCsfUw_j5Ag">
+            <body>Label for free use.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ffWF82iBEeSJCsfUw_j5Ag"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ffWF8miBEeSJCsfUw_j5Ag" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_6hq-UFtQEeSW6vapvQTVuQ" name="ResponderType">
+        <ownedComment xmi:id="_dgidEF5TEeSu96BO5N5yew">
+          <body>Responder type.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_6iPmEFtQEeSW6vapvQTVuQ" name="LIGHT">
+          <ownedComment xmi:id="_iFhrMF5TEeSu96BO5N5yew">
+            <body>TWAMP light stateful.&#xD;
+&#xD;
+Light (stateful) : the sequence number in the reflected packet is generated by the responder, which enables measurement of packet loss in forward and reverse direction.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_LNDWgFtREeSW6vapvQTVuQ" value="1"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_NGFUsFtREeSW6vapvQTVuQ" name="LIGHT_SL">
+          <ownedComment xmi:id="_m6jgcF5TEeSu96BO5N5yew">
+            <body>TWAMP light stateless.&#xD;
+&#xD;
+Light-SL (stateless) : the sequence number is copied from the sender's test packet to the reflected packet, thus it is only possible to measure round trip packet loss.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_NGXokVtREeSW6vapvQTVuQ" value="2"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_IeeesGWJEeS5tuRODme4sw" name="Router_to_TwampLightResponder" memberEnd="_Ieqr8GWJEeS5tuRODme4sw _IewykmWJEeS5tuRODme4sw">
+        <ownedEnd xmi:id="_Ieqr8GWJEeS5tuRODme4sw" name="router" visibility="public" association="_IeeesGWJEeS5tuRODme4sw">
+          <type xmi:type="uml:Class" href="ECIM_Transport_IP.uml#_PjdYQADEEeGYdIzUhx57qA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Ie25MWWJEeS5tuRODme4sw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Ie25MGWJEeS5tuRODme4sw" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_IewykmWJEeS5tuRODme4sw" name="twampLightResponder" visibility="public" type="_NrMeoFsqEeSW6vapvQTVuQ" aggregation="composite" association="_IeeesGWJEeS5tuRODme4sw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_IfPTsWWJEeS5tuRODme4sw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_IfPTsGWJEeS5tuRODme4sw" value="8"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_G9Hr8P0vEeSWPYS38fL79w" name="TwampLightResponder_ipAddress_to_AddressIPv4_reservedBy" memberEnd="_G9Hr8f0vEeSWPYS38fL79w _G9ITAf0vEeSWPYS38fL79w">
+        <ownedEnd xmi:id="_G9Hr8f0vEeSWPYS38fL79w" name="ipAddress" visibility="public" association="_G9Hr8P0vEeSWPYS38fL79w">
+          <type xmi:type="uml:Class" href="ECIM_Transport_IP.uml#_7MG50HRnEeSSBcEazp-x2w"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_G9NLgP0vEeSWPYS38fL79w"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_G9Mkcf0vEeSWPYS38fL79w" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_G9ITAf0vEeSWPYS38fL79w" name="reservedBy" visibility="public" type="_NrMeoFsqEeSW6vapvQTVuQ" association="_G9Hr8P0vEeSWPYS38fL79w">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_G9T5Mv0vEeSWPYS38fL79w"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_G9T5Mf0vEeSWPYS38fL79w" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_NQCbgP0vEeSWPYS38fL79w" name="TwampLightResponder_ipAddress_to_AddressIPv6_reservedBy" memberEnd="_NQDCkP0vEeSWPYS38fL79w _NQEQsP0vEeSWPYS38fL79w">
+        <ownedEnd xmi:id="_NQDCkP0vEeSWPYS38fL79w" name="ipAddress" visibility="public" association="_NQCbgP0vEeSWPYS38fL79w">
+          <type xmi:type="uml:Class" href="ECIM_Transport_IP.uml#_F4zbIHRqEeSSBcEazp-x2w"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_NQNaof0vEeSWPYS38fL79w"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_NQNaoP0vEeSWPYS38fL79w" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_NQEQsP0vEeSWPYS38fL79w" name="reservedBy" visibility="public" type="_NrMeoFsqEeSW6vapvQTVuQ" association="_NQCbgP0vEeSWPYS38fL79w">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_NQaO8P0vEeSWPYS38fL79w"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_NQZn4f0vEeSWPYS38fL79w" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_tXDeoPh2EeSWPYS38fL79w" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.uml#_5vlRYnhQEd-OM9oMWC6jJQ"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_S9FEwPh3EeSWPYS38fL79w" name="RtnTwamp_">
+      <ownedComment xmi:id="_S9FEwfh3EeSWPYS38fL79w">
+        <body>Decision MOM for RtnTwamp.
+
+Shall not be visible.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_S9FEwvh3EeSWPYS38fL79w" name="Root" isAbstract="true">
+        <ownedComment xmi:id="_S9FEw_h3EeSWPYS38fL79w">
+          <body>Decision MO for RtnTwamp.
+
+Shall not be visible.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_S9FExPh3EeSWPYS38fL79w" name="DURA">
+        <packagedElement xmi:type="uml:Class" xmi:id="_293ycPh3EeSWPYS38fL79w" name="Model"/>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_UeIAINCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAIdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAItCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAI9CzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/documentation#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://PAPYRUS_DOCUMENTATION/Papyrus.profile.uml#_H9068AEYEeCIz8iAxBJnfA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_kXRVUFsnEeSW6vapvQTVuQ">
+      <eAnnotations xmi:id="_vC6WEp0SEeW4ma0yeKsZYQ" source="PapyrusVersion">
+        <details xmi:id="_vC6WE50SEeW4ma0yeKsZYQ" key="Version" value="1.0.6"/>
+        <details xmi:id="_vC6WFJ0SEeW4ma0yeKsZYQ" key="Comment" value=""/>
+        <details xmi:id="_vC6WFZ0SEeW4ma0yeKsZYQ" key="Copyright" value=""/>
+        <details xmi:id="_vC6WFp0SEeW4ma0yeKsZYQ" key="Date" value="2015-12-07"/>
+        <details xmi:id="_vC6WF50SEeW4ma0yeKsZYQ" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_tMLnEHGmEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_tMLnEXGmEeWKa6xc8cMmlg" key="Version" value="1.0.5"/>
+        <details xmi:id="_tMLnEnGmEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_tMLnE3GmEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_tMLnFHGmEeWKa6xc8cMmlg" key="Date" value="2015-08-24"/>
+        <details xmi:id="_tMLnFXGmEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_k_5bkFsnEeSW6vapvQTVuQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_cUcakNQkEd63X4o72aQidQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_tSPQEPh2EeSWPYS38fL79w">
+      <eAnnotations xmi:id="_tMZCcHGmEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_tMZCcXGmEeWKa6xc8cMmlg" key="Version" value="1.0.2"/>
+        <details xmi:id="_tMZCcnGmEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_tMZCc3GmEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_tMZCdHGmEeWKa6xc8cMmlg" key="Date" value="2015-09-04"/>
+        <details xmi:id="_tMZCdXGmEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_tSP3IPh2EeSWPYS38fL79w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_Br2_QBSXEd-ZjqYFUyJzOw"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_Ff_pQmW_EeWG3arGTiu4Mw" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ" createdBy="EAB/FJP/TA UABJOCL" approvedBy="EAB/FJP/TA UABJOCL" docDate=""/>
+  <ECIMBaseProfile:EcimMom xmi:id="_Ff_pRGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Package="_EvFUsFspEeSW6vapvQTVuQ" author="EAB/FJP/TA UABJOCL" contact="EAB/FJP/TA UABJOCL" date="" docNo="" revision="" version="1" release="2" organization="" ecimMomName="ECIM_Transport_Twamp" ecimMomVersion="1" ecimMomRelease="0" ecimMomCorrection="0" correction="0"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_Ff_pRWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Class="_NrMeoFsqEeSW6vapvQTVuQ"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_Ff_pRmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_NrxGYVsqEeSW6vapvQTVuQ"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_Ff_pSGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Enumeration="_6hq-UFtQEeSW6vapvQTVuQ"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_Ff_pSWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_EnumerationLiteral="_6iPmEFtQEeSW6vapvQTVuQ"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_Ff_pSmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_EnumerationLiteral="_NGFUsFtREeSW6vapvQTVuQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_Ff_pS2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_cT7X4FtREeSW6vapvQTVuQ"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_Ff_pTGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_CRwkkFtTEeSW6vapvQTVuQ"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_FgIzMGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="The combination of udpPort and ipAddress for TwampLightResponder must be unique in the same router.&#xA;TwampLightResponder can refer only to an ipAddress in the same router." disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" isAssociationEnd="true" base_Property="__ub2wFtTEeSW6vapvQTVuQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_FgIzMmW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_X0Dy8FtUEeSW6vapvQTVuQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_FgIzM2W_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_xpCz8FtUEeSW6vapvQTVuQ"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_FgIzNGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="The combination of udpPort and ipAddress for TwampLightResponder must be unique in the same router." disturbances="" precondition="" sideEffects="" takesEffect="" range="4000..4007" isNotifiable="true" base_Property="_bkPDgFtVEeSW6vapvQTVuQ"/>
+  <ECIMBaseProfile:EcimContribution xmi:id="_FgIzNWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_IeeesGWJEeS5tuRODme4sw" isNotifiable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_FgIzNmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" length="1..128" isNotifiable="true" base_Property="_ffWF8GiBEeSJCsfUw_j5Ag"/>
+  <CoreMWProfile:CmwModel xmi:id="_FdJwoGW_EeWG3arGTiu4Mw" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <CoreMWProfile:CmwMom xmi:id="_FdJwoWW_EeWG3arGTiu4Mw" base_Package="_EvFUsFspEeSW6vapvQTVuQ"/>
+  <CoreMWProfile:CmwClass xmi:id="_FdJwomW_EeWG3arGTiu4Mw" base_Class="_NrMeoFsqEeSW6vapvQTVuQ"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_FdJwo2W_EeWG3arGTiu4Mw" base_Property="_cT7X4FtREeSW6vapvQTVuQ" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_FdJwpGW_EeWG3arGTiu4Mw" base_Property="_CRwkkFtTEeSW6vapvQTVuQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_FdJwpWW_EeWG3arGTiu4Mw" base_Property="__ub2wFtTEeSW6vapvQTVuQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_FdJwpmW_EeWG3arGTiu4Mw" base_Property="_X0Dy8FtUEeSW6vapvQTVuQ"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_FdJwp2W_EeWG3arGTiu4Mw" base_Property="_xpCz8FtUEeSW6vapvQTVuQ"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_FdJwqGW_EeWG3arGTiu4Mw" base_Property="_bkPDgFtVEeSW6vapvQTVuQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_FdJwqWW_EeWG3arGTiu4Mw" base_Property="_ffWF8GiBEeSJCsfUw_j5Ag" isConfigurable="true"/>
+  <CoreMWProfile:CmwContribution xmi:id="_FdJwqmW_EeWG3arGTiu4Mw" base_Association="_IeeesGWJEeS5tuRODme4sw"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_FgIzN2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Package="_S9FEwPh3EeSWPYS38fL79w" author="EAB/FJP/TA UABJOCL" contact="EAB/FJP/TA UABJOCL" date="" docNo="" revision="" version="0" release="0" organization="" correction="0"/>
+  <ECIMBaseProfile:EcimDecisions xmi:id="_FgIzOGW_EeWG3arGTiu4Mw" base_Package="_S9FExPh3EeSWPYS38fL79w"/>
+  <CoreMWProfile:CmwMom xmi:id="_FdJwq2W_EeWG3arGTiu4Mw" base_Package="_S9FEwPh3EeSWPYS38fL79w" immNamespace="MOM_NAME"/>
+  <ECIMBaseProfile:EcimAbstractMoClass xmi:id="_FgIzOmW_EeWG3arGTiu4Mw" base_Class="_S9FEwvh3EeSWPYS38fL79w" hideGroupName="" specification="" status="OBSOLETE" statusInformation=""/>
+  <ECIMBaseProfile:EcimDecision xmi:id="_FgIzO2W_EeWG3arGTiu4Mw" base_Class="_293ycPh3EeSWPYS38fL79w"/>
+  <ECIMBaseProfile:EcimClientAssociationEnd xmi:id="_FgIzPGW_EeWG3arGTiu4Mw" base_Property="_G9Hr8f0vEeSWPYS38fL79w" isReserving="true"/>
+  <ECIMBaseProfile:EcimBiDirAssociation_CS xmi:id="_FgIzPWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_G9Hr8P0vEeSWPYS38fL79w"/>
+  <ECIMBaseProfile:EcimServerAssociationEnd xmi:id="_FgIzPmW_EeWG3arGTiu4Mw" base_Property="_G9ITAf0vEeSWPYS38fL79w"/>
+  <ECIMBaseProfile:EcimClientAssociationEnd xmi:id="_FgIzQGW_EeWG3arGTiu4Mw" base_Property="_NQDCkP0vEeSWPYS38fL79w" isReserving="true"/>
+  <ECIMBaseProfile:EcimBiDirAssociation_CS xmi:id="_FgIzQWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_NQCbgP0vEeSWPYS38fL79w"/>
+  <ECIMBaseProfile:EcimServerAssociationEnd xmi:id="_FgIzQmW_EeWG3arGTiu4Mw" base_Property="_NQEQsP0vEeSWPYS38fL79w"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_FdJwrGW_EeWG3arGTiu4Mw" base_Property="_NrxGYVsqEeSW6vapvQTVuQ" isPersistent="true"/>
+  <ECIMBaseProfile:EcimSchematronConstraint xmi:id="_FgIzQ2W_EeWG3arGTiu4Mw" interfaceVersion="1.0" interfaceName="ECIM_Schematron" base_Constraint="_wUv0IC-zEeWdFYZbB90Ojw"/>
+  <Documentation:Documentation xmi:id="_BfhdcGW_EeWG3arGTiu4Mw" base_Comment="_guZ7wFsoEeSW6vapvQTVuQ"/>
+  <Documentation:Documentation xmi:id="_BfhdcWW_EeWG3arGTiu4Mw" base_Comment="_UeSYgFspEeSW6vapvQTVuQ"/>
+  <Documentation:Documentation xmi:id="_BfhdcmW_EeWG3arGTiu4Mw" base_Comment="_NreygVsqEeSW6vapvQTVuQ"/>
+  <Documentation:Documentation xmi:id="_Bfhdc2W_EeWG3arGTiu4Mw" base_Comment="_hmnrQFsqEeSW6vapvQTVuQ"/>
+  <Documentation:Documentation xmi:id="_BfhddGW_EeWG3arGTiu4Mw" base_Comment="_MZqc8F2pEeSqI-bxNxeI6g"/>
+  <Documentation:Documentation xmi:id="_BfhddWW_EeWG3arGTiu4Mw" base_Comment="_x2QOsF2zEeSqI-bxNxeI6g"/>
+  <Documentation:Documentation xmi:id="_Bfhdd2W_EeWG3arGTiu4Mw" base_Comment="_qAkvEF23EeSqI-bxNxeI6g"/>
+  <Documentation:Documentation xmi:id="_BfhdeGW_EeWG3arGTiu4Mw" base_Comment="_Hwdp8F25EeSqI-bxNxeI6g"/>
+  <Documentation:Documentation xmi:id="_BfhdemW_EeWG3arGTiu4Mw" base_Comment="_RgExUF5SEeSu96BO5N5yew"/>
+  <Documentation:Documentation xmi:id="_Bfhde2W_EeWG3arGTiu4Mw" base_Comment="_dgidEF5TEeSu96BO5N5yew"/>
+  <Documentation:Documentation xmi:id="_BfhdfGW_EeWG3arGTiu4Mw" base_Comment="_iFhrMF5TEeSu96BO5N5yew"/>
+  <Documentation:Documentation xmi:id="_BfhdfWW_EeWG3arGTiu4Mw" base_Comment="_m6jgcF5TEeSu96BO5N5yew"/>
+  <Documentation:Documentation xmi:id="_BfhdfmW_EeWG3arGTiu4Mw" base_Comment="_V5unQF5UEeSu96BO5N5yew"/>
+  <Documentation:Documentation xmi:id="_Bfhdf2W_EeWG3arGTiu4Mw" base_Comment="_ffWF8WiBEeSJCsfUw_j5Ag"/>
+  <Documentation:Documentation xmi:id="_BfhdgGW_EeWG3arGTiu4Mw" base_Comment="_S9FEwfh3EeSWPYS38fL79w"/>
+  <Documentation:Documentation xmi:id="_BfhdgWW_EeWG3arGTiu4Mw" base_Comment="_S9FEw_h3EeSWPYS38fL79w"/>
+</xmi:XMI>

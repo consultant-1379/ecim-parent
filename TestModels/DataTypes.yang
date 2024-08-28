@@ -1,0 +1,526 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-sep-04 14:47:38 using 
+    * com.ericsson.ecim.yang.m2m 2.11.2.qualifier
+*/
+module DataTypes {
+	namespace "urn:com:ericsson:ecim:DataTypes";
+	prefix DataTypes;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	organization "Ericsson";
+	description "asdf";
+
+	revision "2014-09-04" {
+		ericsson:correction 1;
+		ericsson:release 1;
+		ericsson:version 1;
+	}
+	
+	identity a {
+		description "Identity A";
+	}	
+	
+	typedef TypeDefString
+	{
+		type string;
+	}
+	
+	typedef TypeDefInt8
+	{
+		type int8;
+	}	
+	
+	typedef TypeDefInt16
+	{
+		type int16;
+	}	
+	
+	typedef TypeDefInt32
+	{
+		type int32;
+	}	
+	
+	typedef TypeDefInt64
+	{
+		type int64;
+	}	
+	
+	typedef TypeDefUInt8
+	{
+		type uint8;
+	}	
+	
+	typedef TypeDefUInt16
+	{
+		type uint16;
+	}	
+	
+	typedef TypeDefUInt32
+	{
+		type uint32;
+	}	
+	
+	typedef TypeDefUInt64
+	{
+		type uint64;
+	}		
+	
+	typedef TypeDefBoolean
+	{
+		type boolean;
+	}	
+	
+	typedef TypeDefDecimal64
+	{
+		type decimal64
+		{
+			fraction-digits 5;
+		}
+	}	
+	
+	typedef TypeDefBits
+	{
+		type bits {
+			bit bit1 {
+				position 0;
+			}
+			bit bit2 {
+				//no position but should result in 1
+			}
+			bit bit3 {
+				position 5;
+			}
+			bit bit4 {
+				//no position but should result in 6
+			}
+			bit bit5 {
+				//no position but should result in 7
+			}				
+			bit bit6 {
+				position 10;
+			}
+			bit bit7 {
+				//no position but should result in 11
+			}
+			bit bit8 {
+				//no position but should result in 12
+			}
+			bit bit9 {
+				//no position but should result in 13
+			}	
+			bit bit10 {
+				position 3147483647;//very large value!
+			}									
+			bit bit11 {}//no position but should result in 3147483648
+			bit bit12
+			{
+				position 4294967295;//max position
+			}
+		}
+	}		
+	
+	typedef TypeDefBinary
+	{
+		type binary;
+	}		
+		
+	typedef TypeDefIdentityref
+	{
+		type identityref 
+		{
+			base a;
+		}
+	}		
+	
+	typedef TypeDefLeafref1
+	{
+		type leafref  
+		{
+			path "/directA/usesString";//not prefixed local absolute path
+		}
+	}		
+	
+	typedef TypeDefLeafref2
+	{
+		type leafref  
+		{
+			path "/DataTypes:directA/DataTypes:usesString";//prefixed absolute path to local
+		}
+	}			
+	
+	typedef TypeDefInstanceIdentifier
+	{
+		type instance-identifier
+		{
+			require-instance true;
+		}
+	}
+	
+	typedef TypeDefUnion {
+		type union
+		{
+			//note empty/leaf-ref may not appear in a union
+			 type int8;
+			 type int16;
+			 type int32;
+			 type int64;
+			 type uint8;
+			 type uint16;
+			 type uint32;
+			 type uint64;
+			 type boolean;
+			 type decimal64
+			 {			 	
+				fraction-digits 5;
+			 }      
+			type bits {				
+				bit bit1 {					
+					position 0;
+				}
+				bit bit2 {
+					position 1;
+				}
+				bit bit3 {
+					position 2;
+				}
+			}
+			 type binary;
+			 type identityref
+			 {
+				base a;
+			 }	
+
+			 type enumeration{
+				 enum zero
+				 {
+				 	value 0;
+				 }
+				 enum one
+				 {
+				 	//value "1";TODO:String values don't work yet.
+				 	value 1;
+				 }
+			 }
+			 
+			 type TypeDefString;
+			 
+			 //union inside union is not supported yet by the MM. but maybe we could collapse the struct into its members in-place						 		 	 	 
+		}             
+	}
+ 	
+	typedef TypeDefEmpty
+	{
+		type empty;
+	}	
+	
+	typedef TypeDefEnumeration
+	{
+		type enumeration{
+			 enum zero;
+			 enum one;
+		}
+	} 
+	
+	typedef TypedefHierarchyEndingInInt8_L1{
+		type TypedefHierarchyEndingInInt8_L2;
+	}
+	
+	typedef TypedefHierarchyEndingInInt8_L2{
+		type TypedefHierarchyEndingInInt8_L3;
+	}	
+	 
+	typedef TypedefHierarchyEndingInInt8_L3{
+		type int8;
+	}	
+	
+	 typedef TypedefHierarchyEndingInString_L1{
+		type TypedefHierarchyEndingInString_L2;
+	}
+	
+	typedef TypedefHierarchyEndingInString_L2{
+		type TypedefHierarchyEndingInString_L3;
+	}	
+	 
+	typedef TypedefHierarchyEndingInString_L3{
+		type string;
+	}	
+	 
+	//use all the types indirectly
+    list directA
+	{
+		key usesString;
+		leaf usesString {
+         	type string;
+ 		}
+		leaf-list usesStringSeq {
+         	type string;
+ 		}
+ 		
+		leaf usesInt8 {
+         	type int8;
+ 		}
+		leaf-list usesInt8Seq {
+         	type int8;
+ 		}
+ 		
+		leaf usesInt16 {
+         	type int16;
+ 		}     		
+		leaf-list usesInt16Seq {
+         	type int16;
+ 		}     		
+ 		
+		leaf usesInt32 {
+         	type int32;
+ 		}     
+ 		leaf-list usesInt32Seq {
+         	type int32;
+ 		}     
+ 		
+		leaf usesInt64 {
+         	type int64;
+ 		}     
+		leaf-list usesInt64Seq {
+         	type int64;
+ 		}     
+ 		
+ 		leaf usesUInt8 {
+         	type uint8;
+ 		}     
+ 		leaf-list usesUInt8Seq {
+         	type uint8;
+ 		}     
+ 		
+ 		leaf usesUInt16 {
+         	type uint16;
+ 		}     
+ 		leaf-list usesUInt16Seq {
+         	type uint16;
+ 		}     
+ 		
+ 		leaf usesUInt32 {
+         	type uint32;
+ 		}     
+		leaf-list usesUInt32Seq {
+         	type uint32;
+ 		}     
+ 		
+ 		leaf usesUInt64 {
+         	type uint64;
+ 		}      		 
+  		leaf-list usesUInt64Seq {
+         	type uint64;
+ 		}      		 
+ 		
+ 		leaf usesBoolean {
+         	type boolean;
+ 		}
+ 		
+ 		leaf usesDecimal64 {
+         	type decimal64{fraction-digits 9;}
+ 		}    
+ 		
+ 		leaf usesBits {
+  			type bits {
+  				
+				bit bit1 {
+					position 0;
+				}
+				bit bit2 {
+					position 1;
+				}
+ 				bit bit3 {
+					position 2;
+				}
+			}
+ 		} 
+ 		
+		leaf usesBitsWithNoPosition {
+  			type bits {				
+				bit bit1;
+				bit bit2;
+ 				bit bit3;
+			}
+ 		} 
+ 		 		
+ 		leaf usesIdentityref {
+         	type identityref 
+			{
+				base a;
+			}
+ 		}  
+ 		
+ 		leaf usesLeafref1 {
+         	type leafref
+			{
+				path "/directA/usesString";//not prefixed absolute local path
+			}
+ 		}
+
+ 		leaf usesLeafref2 {
+         	type leafref
+			{
+				path "/DataTypes:directA/DataTypes:usesString";//prefixed absolute local path
+			}
+ 		} 
+ 		
+ 		leaf usesLeafref3 {
+         	type leafref
+			{
+				path "../usesString";//not prefixed relative local path
+			}
+ 		} 
+ 		
+ 		leaf usesLeafref4 {
+         	type leafref
+			{
+				path "../DataTypes:usesString";//prefixed relative local path
+			}
+ 		} 		
+ 		
+ 		leaf usesLeafref5 {
+         	type leafref
+			{
+				path "../DataTypes:usesUInt8";//prefixed relative local path
+			}
+ 		} 	
+ 		
+ 		leaf usesLeafref6 {
+         	type leafref
+			{
+				path "/directA/usesLeafref5";//chained leafref
+			}
+ 		} 	
+ 		
+ 		leaf usesInstanceIdentifier
+		{
+			type instance-identifier{
+				require-instance false;
+			}
+		}
+ 		
+ 		leaf usesUnion {
+	 		type union
+			{
+	             type uint64;
+	             type int64;
+			}   
+ 		}  		
+ 		
+ 		leaf usesEmpty {
+         	type empty;
+ 		} 	
+ 		
+ 		leaf usesBinary {
+         	type binary;
+ 		}  		
+ 		
+ 		leaf usesEnumeration {
+         	type enumeration{
+				 enum zero;
+				 enum one;
+			}
+ 		}
+ 		
+	}
+	 
+	//use all the types indirectly
+    list indirectA
+	{
+		key usesTypeDefString;
+
+		leaf usesTypeDefString {
+         	type TypeDefString;
+ 		}
+
+		leaf usesTypeDefInt8 {
+         	type TypeDefInt8;
+ 		}
+ 		
+		leaf usesTypeDefInt16 {
+         	type TypeDefInt16;
+ 		}     		
+ 		
+		leaf usesTypeDefInt32 {
+         	type TypeDefInt32;
+ 		}     
+ 		
+		leaf usesTypeDefInt64 {
+         	type TypeDefInt64;
+ 		}     
+ 		
+ 		leaf usesTypeDefUInt8 {
+         	type TypeDefUInt8;
+ 		}     
+ 		
+ 		leaf usesTypeDefUInt16 {
+         	type TypeDefUInt16;
+ 		}     
+ 		
+ 		leaf usesTypeDefUInt32 {
+         	type TypeDefUInt32;
+ 		}     
+ 		
+ 		leaf usesTypeDefUInt64 {
+         	type TypeDefUInt64;
+ 		}      		 
+ 		
+ 		leaf usesTypeDefBoolean {
+         	type TypeDefBoolean;
+ 		}
+ 		
+ 		leaf usesTypeDefDecimal64 {
+         	type TypeDefDecimal64;
+ 		}    
+ 		
+ 		leaf usesTypeDefBits {
+         	type TypeDefBits;
+ 		} 
+
+		leaf usesTypeDefLeafref1 {
+        	type TypeDefLeafref1;
+		}  
+
+		leaf usesTypeDefLeafref2 {
+        	type TypeDefLeafref2;
+		} 
+ 		
+ 		leaf usesTypeDefUnion {
+         	type TypeDefUnion;
+ 		}
+ 		
+ 		leaf usesIdentityref {
+         	type TypeDefIdentityref;
+ 		} 		
+ 		
+ 		leaf usesTypeDefEmpty {
+         	type TypeDefEmpty;
+ 		} 	
+ 		
+ 		leaf usesTypeDefBinary {
+         	type TypeDefBinary;
+ 		} 		
+ 		
+ 		leaf usesTypeDefEnumeration {
+         	type TypeDefEnumeration;
+ 		}
+ 		
+ 		leaf usesTypeDefInstanceIdentifier {
+         	type TypeDefInstanceIdentifier;
+ 		} 
+ 		
+ 		//TODO:Not supported yet
+ 		leaf typedefHierarchyEndingInInt8{
+ 			type TypedefHierarchyEndingInInt8_L1;
+ 		}
+ 		
+ 		//TODO:Not supported yet	 		
+ 		leaf typedefHierarchyEndingInString{
+ 			type TypedefHierarchyEndingInString_L1;
+ 		}
+	}
+}

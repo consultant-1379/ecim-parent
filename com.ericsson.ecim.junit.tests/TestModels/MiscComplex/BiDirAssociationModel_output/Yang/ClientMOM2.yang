@@ -1,0 +1,62 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 17, 2015 4:48:24 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "ClientMOM2" {
+	namespace "urn:com:ericsson:ecim:ClientMOM2";
+	prefix "ClientMOM2";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	description "qwe";
+
+	revision "2015-04-17" {
+		ericsson:release "1";
+		ericsson:version "1";
+	}
+
+	list "ClientMOM2Root" {
+		key "clientMOM2RootId";
+		list "Aal5TpVccTp" {
+			key "aal5TpVccTpId";
+			uses ClientMOM2:Aal5TpVccTp;
+		}
+
+		uses ClientMOM2:ClientMOM2Root;
+	}
+
+	grouping "ClientMOM2Root" {
+		description "qwe";
+		leaf "clientMOM2RootId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "Aal5TpVccTp" {
+		description "qwe";
+		leaf "aal5TpVccTpId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf-list "spmProcessorId" {
+			type string {
+				pattern "(.*=.*,)*Spm=.*";
+			}
+
+			max-elements 2;
+			description "qwe";
+		}
+
+	}
+
+}

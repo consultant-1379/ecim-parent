@@ -1,0 +1,265 @@
+{
+		"name" : "MoLoadControl" ,
+		"ss7" : "false" ,
+		"visible" : "true" ,
+		"desc" : "\nConfiguration attributes for the Load \nControl functions in the MGC Application.\n    " ,
+		"filename" : "MoLoadControlPOT.json" ,
+		"max_entries" : "1" ,
+		"modid" : "1234" ,
+		"attrs" : {
+				"loadControlId" : {
+						"name" : "loadControlId" ,
+						"keytype" : "ECIM_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "The MoClass key of the loadControl" ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "false"
+				} ,
+				"lcCapacityRequestDecrease" : {
+						"name" : "lcCapacityRequestDecrease" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nDecrease factor for load control algorithm.\n                \nIf the Moving Total Processor Load is above \nthe maximum value \n(lcMinMovingTotalProcessorLoad + 2), then \nthe number of processor capacity requests \nallowed to be processed during a one second \ninterval (CAL) is decreased using this \nvalue.\n      "
+						,
+						"types" : "derived90_99" ,
+						"default" : "98" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"lcCapacityRequestRejectLimit" : {
+						"name" : "lcCapacityRequestRejectLimit" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nNumber of rejected capacity requests \nrequired during the supervision time \n'Capacity Reject Supervising Time' for alarm \nto be generated.\n      " ,
+						"types" : "derived10_1000" ,
+						"default" : "10" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"lcCapacityRequestRejectSupTime" : {
+						"name" : "lcCapacityRequestRejectSupTime" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nTime duration in minutes for supervising\nnumber of rejected processor capacity\nrequests.\nSee: 'Capacity Reject Limit'.\n      " ,
+						"types" : "derived1_60" ,
+						"default" : "10" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"lcLoadability" : {
+						"name" : "lcLoadability" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nMinimum Moving Total Processor Load.\n\nAt beginning of each one second interval\nLoad Control calculates 'Moving Total \nProcessor Load', based on the weighted \nmean value of processor load during the\n5 previous one second intervals.\n\nLoadControl tries to keep processor load\nbetween the values: \n\nlcMinMovingTotalProcessorLoad (equal or\nhigher than), and \nlcMinMovingTotalProcessorLoad + 2 (equal\nor lower than).\n      "
+						,
+						"types" : "derived40_95" ,
+						"default" : "80" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"lcMaxCapacityRequestsPerBuffer" : {
+						"name" : "lcMaxCapacityRequestsPerBuffer" ,
+						"keytype" : "MGC_KEY" ,
+						"keyorder" : "2" ,
+						"desc" :
+						"\nMaximum number of stored processor capacity \nrequests per Load Control priority buffer.\n                 \nLoadControl stores capacity requests into 16 \nbuffers (one per the priority of the \ncapacity request).\n\nNumber of capacity requests in each buffer \nis limited by the 'Max Capacity Requests per \nbuffer' for those capacity requests that can \nbe rejected (e.g. calls from ISUP, calls \nfrom SIP, and etc).\n      "
+						,
+						"types" : "derived10_1500" ,
+						"default" : "1000" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"lcMaxAcceptedCapacityRequests" : {
+						"name" : "lcMaxAcceptedCapacityRequests" ,
+						"keytype" : "MGC_KEY" ,
+						"keyorder" : "1" ,
+						"desc" :
+						"\nMaximum value of Capacity Request Acceptance \nLimit (CAL).                                \n                 \nValue range: 10..1000 (in number of Accepted \nProcessor Capacity Requests per a one second \ninterval).                                  \n                 \nCAL is the number of processor capacity \nrequests allowed to be accepted during a one \nsecond interval.\n      "
+						,
+						"types" : "derived10_3000" ,
+						"default" : "2400" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"lcMinAcceptedCapacityRequests" : {
+						"name" : "lcMinAcceptedCapacityRequests" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nMinimum value of Capacity Request \nAcceptance Limit (CAL). \n                 \nValue range: 1..30 (in number of Accepted \nProcessor Capacity Requests per a one second \ninterval).\n                                  \nCAL is the number of processor capacity\nrequests allowed to be accepted during \na one second interval.\n      "
+						,
+						"types" : "derived1_30" ,
+						"default" : "10" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"lcReleasesAllowedFactor" : {
+						"name" : "lcReleasesAllowedFactor" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nRelation between number of Processor \nCapacity Requests allowed to be processed \nduring one 'sub interval' and number of     \ndisconnections allowed to be processed \nduring one 'sub interval'.\n                 \nValue range: 2..10 (multiplication \nfactor).\n                 \nDuring each sub interval (see the \n'Sub Interval Length') SubCAL Processor \nCapacity Requests are allowed to be \nprocessed.\n\n'Releases Allowed Factor' * SubCAL = The \nnumber of disconnections allowed during\none sub interval.\n                 \nDefault value: 2\n      "
+						,
+						"types" : "derived2_10" ,
+						"default" : "5" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"lcSubIntervalLength" : {
+						"name" : "lcSubIntervalLength" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nLength of Load Control subinterval.\n\nAt beginning of each one second interval\nthe number of processor capacity \nrequests to be processed during the next\n1 second interval (CAL) is calculated.\n      " ,
+						"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"default" : "" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"lcSDPStorageThreshold" : {
+						"name" : "lcSDPStorageThreshold" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nDefine the threshold of SDP storage. The threshold is defined as the percentage of max SDP SDR size. \nIf the number of SDP SDR exceed the threshold, MGC will reject the incoming call setup request.\n      " ,
+						"types" : "derived50_100" ,
+						"default" : "90" ,
+						"category" : "OperatorConfigurable" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				}
+		} ,
+		"actions" : {
+		} ,
+		"codecs" : {
+		} ,
+		"brs" : {
+		} ,
+		"enums" : {
+				"enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" : {
+						"name" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>, IN6!<unnamed>}" ,
+						"attrs" : {
+								"eLow" : {
+										"default" : "2" ,
+										"name" : "eLow"
+								} ,
+								"eMedium" : {
+										"default" : "3" ,
+										"name" : "eMedium"
+								} ,
+								"eHigh" : {
+										"default" : "1" ,
+										"name" : "eHigh"
+								}
+						}
+				}
+		} ,
+		"deriveds" : {
+				"derived10_1500" : {
+						"name" : "derived10_1500" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "10..1500" ,
+						"pattern" : ""
+				} ,
+				"derived90_99" : {
+						"name" : "derived90_99" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "90..99" ,
+						"pattern" : ""
+				} ,
+				"derived10_1000" : {
+						"name" : "derived10_1000" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "10..1000" ,
+						"pattern" : ""
+				} ,
+				"derived50_100" : {
+						"name" : "derived50_100" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "50..100" ,
+						"pattern" : ""
+				} ,
+				"derived2_10" : {
+						"name" : "derived2_10" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "2..10" ,
+						"pattern" : ""
+				} ,
+				"derived1_60" : {
+						"name" : "derived1_60" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "1..60" ,
+						"pattern" : ""
+				} ,
+				"derived40_95" : {
+						"name" : "derived40_95" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "40..95" ,
+						"pattern" : ""
+				} ,
+				"derived10_3000" : {
+						"name" : "derived10_3000" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "10..3000" ,
+						"pattern" : ""
+				} ,
+				"derived1_30" : {
+						"name" : "derived1_30" ,
+						"stereotypes" : "EcimDerivedInteger" ,
+						"basetype" : "EcimUInt64" ,
+						"length" : "" ,
+						"range" : "1..30" ,
+						"pattern" : ""
+				}
+		}
+}

@@ -1,0 +1,1805 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Nov 20, 2015 3:37:09 PM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "CSCF_DataTypes_mim" {
+	namespace "urn:com:ericsson:ecim:CSCF_DataTypes_mim";
+	prefix "CSCF_DataTypes_mim";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	description "Common datatypes that are specific for the CSCF domain.";
+
+	revision "2015-11-20" {
+		ericsson:release "0";
+		ericsson:version "1";
+	}
+
+	typedef "RestorationProcedureTypeDT" {
+		type enumeration {
+			enum "DISABLED" {
+				value 0;
+			}
+
+			enum "ENABLED_WITH_NO_SUBSCRIPTION_DATA" {
+				value 1;
+			}
+
+		}
+
+		description
+		"Numeric Enumeration: 0-1 (0=DISABLED, 1=ENABLED_WITH_NO_SUBSCRIPTION_DATA)";
+	}
+
+	typedef "MaxContactsBehaviorDT" {
+		type enumeration {
+			enum "DISABLED" {
+				value 0;
+			}
+
+			enum "REJECT" {
+				value 1;
+			}
+
+			enum "OVERWRITE" {
+				value 2;
+			}
+
+		}
+
+		description "Numeric Enumeration: 0-2 (0=DISABLED, 1=REJECT, 2=OVERWRITE)";
+	}
+
+	typedef "SoapBehaviorDT" {
+		type enumeration {
+			enum "LOCATION_BASED_SOAP1_1" {
+				value 1;
+			}
+
+			enum "IP_ADDRESS_BASED_SOAP1_2" {
+				value 2;
+			}
+
+		}
+
+		description
+		"Numeric Enumeration: 1-2 (1=LOCATION_BASED_SOAP1_1, 2=IP_ADDRESS_BASED_SOAP1_2)";
+	}
+
+	typedef "ChargingRoamingStatusDT" {
+		type enumeration {
+			enum "HOME" {
+				value 0;
+			}
+
+			enum "VISITED" {
+				value 1;
+			}
+
+		}
+
+		description "Numeric Enumeration: 0-1 (0=HOME, 1=VISITED)";
+	}
+
+	typedef "UsageStateDT" {
+		type enumeration {
+			enum "IDLE" {
+				value 0;
+			}
+
+			enum "ACTIVE" {
+				value 1;
+			}
+
+		}
+
+		description "Numeric Enumeration: 0-1 (0=IDLE, 1=ACTIVE)";
+	}
+
+	typedef "ImmuneContactsBehaviorDT" {
+		type enumeration {
+			enum "LOWEST_PRIORITY" {
+				value 0;
+			}
+
+			enum "HIGHEST_PRIORITY" {
+				value 1;
+			}
+
+			enum "NO_MATCHING_RULE" {
+				value 2;
+			}
+
+		}
+
+		description
+		"Numeric Enumeration: 0-2 (0=LOWEST_PRIORITY, 1=HIGHEST_PRIORITY, 2=NO_MATCHING_RULE)";
+	}
+
+	typedef "CscfBehaviorDT" {
+		type enumeration {
+			enum "NONE" {
+				value 0;
+			}
+
+			enum "I_CSCF" {
+				value 1;
+			}
+
+			enum "S_CSCF" {
+				value 2;
+			}
+
+			enum "P_CSCF" {
+				value 3;
+			}
+
+			enum "ISP" {
+				value 4;
+			}
+
+			enum "IS" {
+				value 5;
+			}
+
+		}
+
+		description
+		"Numeric Enumeration: 0-5 (0=NONE, 1=I_CSCF, 2=S_CSCF, 3=P_CSCF, 4=ISP, 5=IS)";
+	}
+
+	typedef "NetworkInterfaceStatusDT" {
+		type enumeration {
+			enum "OK" {
+				value 0;
+			}
+
+			enum "NO_TRAFFIC_DIRECTION_SET" {
+				value 1;
+			}
+
+			enum "PORT_ALREADY_IN_USE" {
+				value 2;
+			}
+
+			enum "PORT_OPEN_FAILED" {
+				value 3;
+			}
+
+			enum "PARTIAL_FAILURE" {
+				value 4;
+			}
+
+		}
+
+		description
+		"Numeric Enumeration: 0-4 (0=OK, 1=NO_TRAFFIC_DIRECTION_SET, 2=PORT_ALREADY_IN_USE, 3=PORT_OPEN_FAILED, 4=PARTIAL_FAILURE)";
+	}
+
+	typedef "ChargingSessionCaseDT" {
+		type enumeration {
+			enum "ORIGINATING" {
+				value 0;
+			}
+
+			enum "TERMINATING" {
+				value 1;
+			}
+
+		}
+
+		description "Numeric Enumeration: 0-1 (0=ORIGINATING, 1=TERMINATING)";
+	}
+
+	typedef "PhoneContextHandlingDT" {
+		type enumeration {
+			enum "NO_MODIFICATION_OF_REQUEST_URI" {
+				value 0;
+			}
+
+			enum "ADD_PHONE_CONTEXT_IN_REQUEST_URI" {
+				value 1;
+			}
+
+			enum "ADD_OR_OVERWRITE_PHONE_CONTEXT_IN_REQUEST_URI" {
+				value 2;
+			}
+
+		}
+
+		description
+		"Numeric Enumeration: 0-2 (0=NO_MODIFICATION_OF_REQUEST_URI, 1=ADD_PHONE_CONTEXT_IN_REQUEST_URI, 2=ADD_OR_OVERWRITE_PHONE_CONTEXT_IN_REQUEST_URI)";
+	}
+
+	typedef "ChargingCancelCauseDT" {
+		type enumeration {
+			enum "SUCCESSFUL_TRANSACTION" {
+				value -1;
+			}
+
+			enum "UNSUCCESSFUL_SESSION_SETUP" {
+				value 2;
+			}
+
+		}
+
+		description
+		"Numeric Enumeration: -1, 2 (-1=SUCCESSFUL_TRANSACTION, 2=UNSUCCESSFUL_SESSION_SETUP)";
+	}
+
+	typedef "NetworkInterfaceTrafficDirDT" {
+		type enumeration {
+			enum "UNPROTECTED_GM" {
+				value 1;
+			}
+
+			enum "UNPROTECTED_MW" {
+				value 2;
+			}
+
+			enum "BIDIR_PROTECTED_TRAFFIC" {
+				value 4;
+			}
+
+		}
+
+		description
+		"Numeric Enumeration: 1-2, 4 (1=UNPROTECTED_GM, 2=UNPROTECTED_MW, 4=BIDIR_PROTECTED_TRAFFIC)";
+	}
+
+	typedef "ChargingSessionTimerExpiresDT" {
+		type enumeration {
+			enum "UNSPECIFIED_ERROR" {
+				value 1;
+			}
+
+			enum "UNSUCCESSFUL_SETUP" {
+				value 2;
+			}
+
+		}
+
+		description
+		"Numeric Enumeration: 1-2 (1=UNSPECIFIED_ERROR, 2=UNSUCCESSFUL_SETUP)";
+	}
+
+	typedef "ExtNetSelPoolModeDT" {
+		type enumeration {
+			enum "ALLOCATED_NUMBER" {
+				value 0;
+			}
+
+			enum "UNALLOCATED_NUMBER" {
+				value 1;
+			}
+
+		}
+
+		description
+		"Numeric Enumeration: 0-1 (0=ALLOCATED_NUMBER, 1=UNALLOCATED_NUMBER)";
+	}
+
+	typedef "String0to00010DT" {
+		type string {
+			length "0..10";
+		}
+
+		description "EcimDerivedString with length (0..10) constraint.";
+	}
+
+	typedef "MaxMediaTypeDT" {
+		type int32 {
+			range "0..100";
+		}
+
+		description
+		"EcimDerivedInteger with range (0..100). It defines the maximum number of media type {application, audio, control, data, image, message, model, multipart, text, video} allowed for an IMS subscriber. ";
+	}
+
+	typedef "Integer0to00100DT" {
+		type uint8 {
+			range "0..100";
+		}
+
+		description "EcimDerivedInteger with range (0..100) constraint.";
+	}
+
+	typedef "String0to00100DT" {
+		type string {
+			length "0..100";
+		}
+
+		description "EcimDerivedString with length (0..100) constraint.";
+	}
+
+	typedef "CxDestinationHostDT" {
+		type string {
+			length "0..100";
+			pattern "(|[a-zA-Z]{1}[a-zA-Z0-9.-]*[a-zA-Z0-9]|NotConfigured)";
+		}
+
+		description
+		"Empty string, FQDN to a HSS or 'NotConfigured'. 'NotConfigured' if SLF or HSS redundant cluster is used. Length (0..100) constraint.";
+	}
+
+	typedef "Fqdn0to100DT" {
+		type string {
+			length "0..100";
+			pattern "[a-zA-Z]{1}[a-zA-Z0-9-.]*[a-zA-Z0-9]";
+		}
+
+		description "EcimDerivedString with length (0..100) constraint.";
+	}
+
+	typedef "MaxBandwidthDT" {
+		type uint32 {
+			range "0..1000000";
+		}
+
+		description
+		"EcimDerivedInteger with range (0..1000000) and unit (kbit/s) constraint.";
+	}
+
+	typedef "AkaStalenessTimerDT" {
+		type int32 {
+			range "0..10080";
+		}
+
+		description
+		"EcimDerivedInteger with range (0..10080) and unit (Minutes) constraint. ";
+	}
+
+	typedef "String0to01024DT" {
+		type string {
+			length "0..1024";
+		}
+
+		description "EcimDerivedString with length (0..1024) constraint.";
+	}
+
+	typedef "Integer0to01024DT" {
+		type uint16 {
+			range "0..1024";
+		}
+
+		description "EcimDerivedInteger with range (0..1024) constraint.";
+	}
+
+	typedef "LRFAddressDT" {
+		type string {
+			length "0..1024";
+		}
+
+		description "For HTTP-based MI interface configured (EcscfMlInterface=http), the possible values are Empty string, FQDN or IPv4 dotted decimal address. When configuring an IPv4 address for a single LRF node, it can be configured as address:port, where the port number is optional; If the port is not specified, the standard HTTP port number 80 is used. For SIP-based MI interface configured (EcscfMlInterface=sip), the possible values are Empty string, FQDN or IPv4 dotted decimal address or IPv6 address. When configuring an IPv4 address for a single LRF node, it can be configured as address:port, where the port number is optional; If the port is not specified, the default port number 5060 will be used.   When configuring an IPv6 address for a single LRF node,
+it can be configured as [address]:port (regardless if a port is configured, the [] is always required for IPv6 address configured), where the port number is optional;  If the port is not specified, the default port number 5060 will be used.
+
+EcimDerivedString with the following pattern restriction: ^(|((((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]).){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]))|(\[((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|:)))\])):(102[4-9]|10[3-9][0-9]|1[1-9][0-9][0-9]|[2-9][0-9][0-9][0-9]|[1-4][0-9][0-1][0-4][0-9]|4915[01]))$ (representing an empty string, FQDN or IPv4 dotted decimal address).";
+	}
+
+	typedef "ShortenUserRegistrationTimeDT" {
+		type string {
+			length "0..1024";
+			pattern
+			"(.+\s*:\s*time\s*=\s*(1440|143[0-9]|14[0-2][0-9]|1[0-3][0-9]{2}|[0-9]{2,3}|[1-9]))?";
+		}
+
+		description "EcimDerivedString with pattern restriction: privateId: time=n, where n is between 1-1440.
+Example: john.doe@example.com: time=4.
+When this example is entered to the S-CSCF, the attribute will be modified to Executed: john.doe@example.com:time=4.";
+	}
+
+	typedef "EcscfAddressDT" {
+		type string {
+			length "0..1024";
+			pattern
+			"(|((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]).){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9])|([a-zA-Z]{1}[a-zA-Z0-9.-]*[a-zA-Z0-9]))";
+		}
+
+		description
+		"EcimDerivedString with the following pattern restriction: empty string, FQDN or IP4v dotted decimal address .ipaddress:port;ipaddress;domainName.";
+	}
+
+	typedef "AllocatedNumberRangeDT" {
+		type string {
+			length "0..1024";
+			pattern "(|\+[0-9]*)";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..1024) and pattern restriction: +[0..9]";
+	}
+
+	typedef "EmergencyPhoneContextDT" {
+		type string {
+			length "0..1024";
+			pattern "|(\+[0-9]*)|([a-zA-Z]{1}[a-zA-Z0-9.-]*[a-zA-Z0-9])";
+		}
+
+		description
+		"EcimDerivedString with length (0..1024) constraint and pattern restriction (|(\+[0-9]*)|([a-zA-Z]{1}[a-zA-Z0-9.-]*[a-zA-Z0-9])), representing an empty string, a telephone number with + sign in the beginning, or an FQDN.";
+	}
+
+	typedef "TelNoOrEmptyDT" {
+		type string {
+			length "0..1024";
+			pattern "|\+[0-9]*";
+		}
+
+		description "For HTTP based Ml interface configured (EcscfMlInterface=HTTP), the value can be Empty string, or Telephone number with or without + sign in the beginning.
+
+For SIP based Ml interface configured (EcscfMlInterface=SIP), the value can be Empty string, or Telephone number with + sign in the beginning.
+
+When EcscfMlInterface is set to “SIP”, the value can be empty or international telephone number. The enforcing check on this restriction will be performed in following two scenarios:
+a) If EcscfMlInterface is set to “SIP”, any new configured number in EcscfDefaultPSAPNumber will be checked, if it is not empty or international telephone number, the new configured number will be rejected;
+b) If EcscfMlInterface setting is changed from “HTTP” to “SIP”, the existing value in EcscfDefaultPSAPNumber will be checked against empty or international telephone number, if there is non-compliance, the setting change on EcscfMlInterface will be rejected.
+
+";
+	}
+
+	typedef "Media0to120DT" {
+		type int32 {
+			range "0..120";
+		}
+
+		description
+		"EcimDerivedInteger with range (0..120) and unit (byte) constraint.";
+	}
+
+	typedef "String0to00128DT" {
+		type string {
+			length "0..128";
+		}
+
+		description "EcimDerivedString with length (0..128) constraint.";
+	}
+
+	typedef "ChargingSipMethodEcscfDT" {
+		type string {
+			length "0..128";
+			pattern "|INVITE";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..128) and pattern restriction. Allowed values are INVITE or empty string.";
+	}
+
+	typedef "ChargingSipMethodScscfDT" {
+		type string {
+			length "0..128";
+			pattern "|INVITE|SUBSCRIBE|REGISTER|MESSAGE|NOTIFY|REFER|PUBLISH";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..128) and pattern restriction. Allowed values are INVITE, SUBSCRIBE, REGISTER, MESSAGE, NOTIFY, REFER, PUBLISH or empty string.";
+	}
+
+	typedef "SmpAuthorizationDT" {
+		type string {
+			length "0..16";
+			pattern "Inactive|Active";
+		}
+
+		description
+		"EcimDerivedString with pattern restriction. Allowed values are Inactive (disabled) or Active (enabled).";
+	}
+
+	typedef "ServedUserIdSelectionDT" {
+		type string {
+			length "0..16";
+			pattern "PPreferredId|alwaysUseDefault";
+		}
+
+		description
+		"<p><span>EcimDerviedString with pattern restrictions. Allowed values are:</span></p><p><span>PPreferredId - Served identity is the same as received in P-Preferred-Identity header. If that header is not present, the identity is fetched from the From header. </span></p><p><span>alwaysUseDefault - Served identity is the default identity in the Implicit Registration Set pointed out by P-Preferred-Identity header, or if that header is not present. The identity is fetched from the header.</span></p>";
+	}
+
+	typedef "String0to00020DT" {
+		type string {
+			length "0..20";
+		}
+
+		description "EcimDerivedString with length (0..20) constraint.";
+	}
+
+	typedef "AuthProcedureDT" {
+		type string {
+			length "0..20";
+			pattern "digest|optimized";
+		}
+
+		description "EcimDerivedString with length constraint (0..20) and pattern restriction. Allowed values are digest or optimized.
+
+digest - S-CSCF will always verify the stored authentication challenge response against the received one, and if the verification fails, a new challenge will be sent.
+optimized - S-CSCF keeps knowledge of the IP address of the registered contact after a successful authentication (at initial registration) and compares received IP address with the stored IP address to authenticate subsequent SIP requests. Only if that check fails, for is a new challenge sent.
+";
+	}
+
+	typedef "MediaFrameDurationDT" {
+		type uint32 {
+			range "0..20";
+		}
+
+		description
+		"EcimDerivedInteger with range (0..20) and unit (ms) constraint.";
+	}
+
+	typedef "CodecDefFramesPerPacketDT" {
+		type uint32 {
+			range "0..20";
+		}
+
+		description
+		"EcimDerivedInteger with range (0..20) and unit (byte) constraint.";
+	}
+
+	typedef "CreditControlFailureHandlingDT" {
+		type string {
+			length "0..20";
+			pattern "Continue|Terminate";
+		}
+
+		description "EcimDerivedString with length constraint (0..20) and pattern restriction. Allowed values are Continue or Terminate.
+
+Continue - The S-CSCF sees the service as granted and will continue without further request.
+Terminate - The Credit Control Request is regarded failed and the SIP dialog or transaction is terminated.
+";
+	}
+
+	typedef "PcscfNwIfProtectionDT" {
+		type string {
+			length "0..20";
+			pattern "None|IPSec";
+		}
+
+		description "EcimDerivedString with length (0..20) constraint and pattern restriction. Allowed values are None and IPSec.
+
+None - No protection. 
+IPSec - IPSec based protection";
+	}
+
+	typedef "UserContactIn3rdPartyRegDT" {
+		type string {
+			length "0..20";
+			pattern "scscfDomain|userContact";
+		}
+
+		description "EcimDerivedString with length (0..20) constraint and pattern restriction. Allowed values are scscfDomain or userContact.
+";
+	}
+
+	typedef "ResourceBrokerEntryDT" {
+		type string {
+			length "0..2000";
+			pattern "[0-9]{1,10}:[1-9][0-9]{0,9}(,[1-9][0-9]{0,9})*:.*";
+		}
+
+		description "EcimDerivedString at minimum 0 and maximum 2000 characters, in the following regexp format: [0-9]{1,10}:[1-9][0-9]{0,9}(,[1-9][0-9]{0,9})*:.*  (&lt;Priority-nr&gt;:&lt;Capabilities&gt;:&lt;SIP-URI&gt;)
+
+The Priority-nr can take the values of an unsigned integer. The higher the Priority-nr the lower the priority (0 = max priority, 2^32-1 = min priority).Capabilities is a comma separated list of maximum 16 positive numbers. Each number can only exist ones per entry. Zero is not considered as a valid value.SIP-URI is a standard sip-uri that contains an S-CSCF name but no lr-parameter. For example 3:5:sip:scscf.network.com or 1:1,2,3: sip:[1234::1234:1234].
+";
+	}
+
+	typedef "TimerMSec0to2000000000DT" {
+		type uint32 {
+			range "0..2000000000";
+		}
+
+		description
+		"EcimDerivedInteger with range (0..2000000000) and unit (Milliseconds) constraint.";
+	}
+
+	typedef "String0to02048DT" {
+		type string {
+			length "0..2048";
+		}
+
+		description "EcimDerivedString with length (0..2048) constraint.";
+	}
+
+	typedef "IfcPriorityDT" {
+		type uint32 {
+			range "0..2147483647";
+		}
+
+		description "EcimDerivedInteger with range (0..2147483647) constraint.";
+	}
+
+	typedef "PriorityMappingDT" {
+		type string {
+			length "0..255";
+		}
+
+		description "EcimDerivedString with length (0..255) constraint.
+
+Must be in the format p0:&lt;val_0&gt; ; p1:&lt;val_1&gt; ;...; p4:&lt;val_4&gt; ; ec:&lt;val_5&gt; ; nc:&lt;val_6&gt; 
+px is the Priority Level of the call (where x is in the range of 0 (highest) - 4 (lowest), defined by the wps value in the RPH header).
+ec is used to define a TSP priority level to Emergency Calls
+nc is used to define a TSP priority level to Normal Calls (without priority indication in the RPH header).
+val_0 - val_6 are TSP priority level values (where TSP priority level values are in the range of 19 (highest) - 0 (lowest)).
+Identical values may be entered for val_0 - val_6.";
+	}
+
+	typedef "CicRoutingDT" {
+		type string {
+			length "0..255";
+			pattern "DISABLED|ENUM|ENABLED";
+		}
+
+		description "EcimDerivedString with length (0..255) constraint and pattern restriction (DISABLED|ENUM|ENABLED).
+
+DISABLED - CIC is not sent to BGCF and is not used in the routing analysis in the BGCF. 
+ENUM - The CIC is sent to BGCF for routing analysis only if it is received from an ENUM server. 
+ENABLED - The CIC is sent to BGCF for routing analysis if it comes from either an ENUM server or if it comes in the SIP request (which can be from the AS or from the client).
+";
+	}
+
+	typedef "OnEnumPstnDT" {
+		type string {
+			length "0..255";
+			pattern "All|Tel";
+		}
+
+		description "EcimDerivedString with length (0..255) constraint and pattern restriction (All|Tel) where:
+All - The call is routed to BGCF (ENS) for all pstn ENUM sub-services, i.e. both E2U+pstn:tel and E2U+pstn:sip.
+Tel - A E2U+pstn:tel call is routed to BGCF (ENS). A E2U+pstn:sip call will be routed to BGCF (ENS) if the domain is known and user portion in the request URI includes a telephone number. Other E2U+pstn:sip calls will be routed on domain.";
+	}
+
+	typedef "AkaAlgorithmDT" {
+		type string {
+			length "0..255";
+			pattern
+			"[0-9]{1,10}:[a-zA-Z0-9+,-]+:(enabled|disabled)(,[0-9]{1,10}:[a-zA-Z0-9+,-]+:(enabled|disabled))*";
+		}
+
+		description "EcimDerivedString at minimum 0 and maximum 2000 characters, in the following regexp format:  [0-9]{1,10}:[a-zA-Z0-9+,-]+:(enabled|disabled)(,[0-9]{1,10}:[a-zA-Z0-9+,-]+:(enabled|disabled))*
+
+Every entry in the list follows the syntax &lt;priority-nr&gt;:&lt;algorithm&gt;,&lt;encryption-algorithm&gt;:&lt;enabled | disabled&gt;";
+	}
+
+	typedef "ChargingCaseEcscfDT" {
+		type string {
+			length "0..256";
+			pattern "NoCharging|OfflineChargingOnly";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..256) and pattern restriction. Allowed values are NoCharging or OfflineChargingOnly";
+	}
+
+	typedef "ChargingCaseScscfDT" {
+		type string {
+			length "0..256";
+			pattern
+			"NoCharging|OfflineChargingOnly|OfflineAndOnlineCharging|OnlineChargingPrecedence|OnlineChargingOnly";
+		}
+
+		description "EcimDerivedString with length constraint (0..256) and pattern restriction. Allowed values are:
+ - NoCharging - No charging will be generated.
+ - OfflineChargingOnly - Offline Charging only.
+ - OfflineAndOnlineCharging - Offline Charging and online charging. Both are running in parallell if the OCS address is available, otherwise only offline charging is performed.
+ - OnlineChargingPrecedence - Online charging has precedence. Online charging if the OCS address is available, otherwise offline charging.
+ - OnlineChargingOnly - Online charging only.";
+	}
+
+	typedef "CompoundSipHeaderDT" {
+		type string {
+			length "0..256";
+			pattern "P-Associated-URI:default|P-Associated-URI:single-line";
+		}
+
+		description "EcimDerivedString with length constraint (0..256) and pattern restriction. Allowed values are P-Associated-URI:default or P-Associated-URI:single-line.
+Every entry follows the syntax &lt;header-name&gt;:&lt;default | single-line&gt; 
+header-name can only be set to P-Associated-URI";
+	}
+
+	typedef "AltServiceIndicationContentTypeDT" {
+		type string {
+			length "0..256";
+			pattern ".+/.+";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..256) and pattern restriction in the format &lt;mediaType&gt;/&lt;mediaSubType&gt;";
+	}
+
+	typedef "String0to00256DT" {
+		type string {
+			length "0..256";
+		}
+
+		description "EcimDerivedString with length (0..256) constraint.";
+	}
+
+	typedef "PsPortStatusDT" {
+		type string {
+			length "0..3";
+			pattern "0|1|2|3|4|5|NA";
+		}
+
+		description "EcimDerivedString with length (0..3) constraint and pattern restriction (0|1|2|3|4|5|NA) where
+0 - okay
+1 - no traffic direction set
+2 - port already in use
+3 - port open failed
+4 - partial failure
+5 - policy error
+NA - only when PcscfNetworkInterfaceProtection attribute is None.";
+	}
+
+	typedef "TimerMSec0to30000DT" {
+		type uint16 {
+			range "0..30000";
+		}
+
+		description
+		"EcimDerivedInteger with range (0..30000) and unit (Milliseconds) constraint.";
+	}
+
+	typedef "GatingPolicyDT" {
+		type string {
+			length "0..30";
+			pattern
+			"NoOpenGates|OpenDownLinkGates|OpenUpLinkGates|OpenUpAndDownLinkGates";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..30) and pattern restriction (NoOpenGates|OpenDownLinkGates|OpenUpLinkGates|OpenUpAndDownLinkGates).";
+	}
+
+	typedef "MediaOnHoldBehaviorDT" {
+		type string {
+			length "0..30";
+			pattern "NoFlowStatusChange|FlowStatusChange";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..30) and pattern restriction (NoFlowStatusChange|FlowStatusChange).";
+	}
+
+	typedef "MediaAuthorizationPolicyDT" {
+		type string {
+			length "0..30";
+			pattern
+			"Inactive|MediaAuthOnly|MediaAndBearerAuth|MediaAndBearerAuthXprivaddr";
+		}
+
+		description "EcimDerivedString with length constraint (0..30) and pattern restriction (Inactive|MediaAuthOnly|MediaAndBearerAuth|MediaAndBearerAuthXprivaddr), where
+Inactive - Disabled.
+MediaAuthOnly - Only the media in the SDP negotiation is authenticated.
+MediaAndBearerAuth - Media and Bearer, by invoking the PCRF, are authenticated.
+MediaAndBearerAuthXprivaddr - Private Address handling is supported.";
+	}
+
+	typedef "TimerSec0to30DT" {
+		type uint8 {
+			range "0..30";
+		}
+
+		description
+		"EcimDerivedInteger with range (0..30) and unit (Seconds) constraint.";
+	}
+
+	typedef "TimerSec0to32DT" {
+		type uint8 {
+			range "0..32";
+		}
+
+		description
+		"EcimDerivedInteger with range (0..32) and unit (Seconds) constraint.";
+	}
+
+	typedef "ReplaceRequestUriDT" {
+		type string {
+			length "0..32";
+			pattern
+			"Inactive|AlwaysUseDefault|ReplaceTelOnly|UseDefaultAsServedUser|ReplaceTelAsServedUser";
+		}
+
+		description "EcimDerivedString with length constraint (0..32) and pattern restriction. Allowed values are: 
+
+Inactive - Feature inactive.
+
+AlwaysUseDefault - Terminating S-CSCF always replaces the request-URI with the default IMPU before invoking an Application Server on the ISC-interface. The served user is however not changed. 
+
+ReplaceTelOnly - Terminating S-CSCF replaces the request-URI with the default IMPU if the received request-URI contains a TEL-URI before invoking an Application Server on the ISC-interface. The served user is however not changed.
+
+UseDefaultAsServedUser - Terminating S-CSCF always replaces the request-URI with the default IMPU and uses the default IMPU as served user. Terminating S-CSCF will invoke the service profile of the default IMPU and include the default IMPU in the P-Server-User header and in the ODI.
+
+ReplaceTelAsServedUser - Terminating S-CSCF replaces the request-URI with the default IMPU if the received request-URI contains a TEL-URI. Terminating S-CSCF will invoke the service profile of the default IMPU and include the default IMPU in the P-Server-User header and in the ODI if the request-URI was replaced.
+
+";
+	}
+
+	typedef "RegistrationContactRestrictionDT" {
+		type string {
+			length "0..32768";
+		}
+
+		description "disabled: There are no restrictions.
+ untrustedGW: If the Register message is received from an untrusted gateway (not configured in CscfTrustedGateway), any attempt to register a contact using the format userinfo@FQDN is rejected.
+ enabled: All registrations with contact headers on format userinfo@FQDN are rejected.";
+	}
+
+	typedef "SipPmKeyDT" {
+		type string {
+			length "0..39";
+			pattern
+			"|(((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]))|((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|:)))";
+		}
+
+		description
+		"EcimDerivedString with length (0..39) constraint and pattern restriction representing IPv4 dotted decimal addresses or IPv6 addresses. The list may include 0-18 IP addresses.";
+	}
+
+	typedef "PriorityPrefixDT" {
+		type string {
+			length "0..4";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..4) and the following pattern restriction: (^$|[\*][0-9][0-9][0-9])";
+	}
+
+	typedef "Integer0to00005DT" {
+		type uint8 {
+			range "0..5";
+		}
+
+		description "EcimDerivedInteger with range (0..5) constraint.";
+	}
+
+	typedef "String0to00005DT" {
+		type string {
+			length "0..5";
+		}
+
+		description "EcimDerivedString with length (0..5) constraint.";
+	}
+
+	typedef "Integer0to65535DT" {
+		type uint16 {
+			range "0..65535";
+		}
+
+		description "EcimDerivedInteger with range (0..65535) constraint.";
+	}
+
+	typedef "NetworkInterfaceDT" {
+		type string {
+			length "0..65535";
+			pattern
+			"^(UDP|TCP):((((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]).){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]))|(\[((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|:)))\])):(102[4-9]|10[3-9][0-9]|1[1-9][0-9][0-9]|[2-9][0-9][0-9][0-9]|[1-4][0-9][0-1][0-4][0-9]|4915[01])$";
+		}
+
+		description "EcimDerivedString with length constraint (0..65535) and the following pattern restriction: ^(UDP|TCP):((((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]).){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]))|(\[((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|:)))\])):(102[4-9]|10[3-9][0-9]|1[1-9][0-9][0-9]|[2-9][0-9][0-9][0-9]|[1-4][0-9][0-1][0-4][0-9]|4915[01])$
+
+The value is in the form: protocol:address:port
+protocol: UDP or TCP
+address: an IPv4 dotted decimal address or IPv6 address,
+port: 1024 - 49151";
+	}
+
+	typedef "BcfNetworkInterfaceDT" {
+		type string {
+			length "0..65535";
+			pattern
+			"|(UDP|TCP):((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]):(10(2[4-9]|[3-9][0-])|[2-9][0-9]{3}|[1-4][0-9](0[0-9]{2}|1([0-4][0-9]|50|51)))";
+		}
+
+		description "EcimDerivedString with length constraint (0..65535) and the following pattern restriction: |(UDP|TCP):((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]):(10(2[4-9]|[3-9][0-])|[2-9][0-9]{3}|[1-4][0-9](0[0-9]{2}|1([0-4][0-9]|50|51)))
+
+String representing a 3 part key in the form: protocol:address:port
+protocol = UDP or TCP
+address = an IPv4 dotted decimal address 
+port = 1024 - 49151";
+	}
+
+	typedef "String0to65535DT" {
+		type string {
+			length "0..65535";
+		}
+
+		description "EcimDerivedString with length (0..65535) constraint.";
+	}
+
+	typedef "QuotaRoundingMechanismDT" {
+		type string {
+			length "0..70";
+			pattern "Nearest|Down|Up";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..70) and pattern restriction (Nearest|Down|Up).";
+	}
+
+	typedef "QuotaDecrementStartDT" {
+		type string {
+			length "0..70";
+			pattern "Invite|180|200";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..70) and pattern restriction (Invite|180|200).";
+	}
+
+	typedef "String0to00070DT" {
+		type string {
+			length "0..70";
+		}
+
+		description "EcimDerivedString with length (0..70) constraint.";
+	}
+
+	typedef "DestinationUnavailabilityTimerDT" {
+		type uint32 {
+			range "0..86400";
+		}
+
+		description "EcimDerivedInteger with range (0..86400) constraint.";
+	}
+
+	typedef "CallingPartyCallFwdDT" {
+		type string {
+			length "1..10";
+			pattern "A_Party|B_Party";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..10) and pattern restriction. Allowed values are A_Party or B_Party.";
+	}
+
+	typedef "AuthPolicyEnabledDT" {
+		type string {
+			length "1..10";
+			pattern "disabled|enabled";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..10) and pattern restriction. Allowed values are disabled or enabled.";
+	}
+
+	typedef "SptTriggertypeDT" {
+		type string {
+			length "1..1024";
+			pattern "REQUEST_URI|METHOD|HEADER|SESSION_CASE";
+		}
+
+		description
+		"EcimDerivedString with length constraint (1..1024) and pattern restriction {REQUEST_URI|METHOD|HEADER|SESSION_CASE}.";
+	}
+
+	typedef "RegEventEnabledDT" {
+		type string {
+			length "1..22";
+			pattern "disabled|PCSCF|SCSCF|combined";
+		}
+
+		description "EcimDerivedString with length constraint (1..22) and pattern restriction. Allowed values are:
+
+disabled - Reg Event functionality is not enabled
+PCSCF - Reg Event functionality is enabled, but only in the PCSCF mode.
+SCSCF - Reg Event functionality is enabled, but only in the SCSCF mode.
+combined - Reg Event is enabled in both P-CSCF and S-CSCF mode.
+
+Note: In the case of PCSCF, SCSCF and combined, the Reg Event functionality is enabled, but functions in a different mode. A set of configuration rules needs to be respected when setting the CscfRegEventEnabled to PCSCF, SCSCF, or combined values.
+
+                                ";
+	}
+
+	typedef "EmergencyCallBehaviorDT" {
+		type string {
+			length "1..48";
+			pattern "redirectECCall|prioritizeECCall";
+		}
+
+		description "EcimDerivedString with length constraint (1..48) and pattern restriction. Allowed values are:
+
+redirectECCall - If an emergency call is detected, a 380 non-compressed negative response will be sent back in order to redirect the call, therefore indicating that the IMS network will not handle it. In addition a text specified by the parameter cscfAltServiceIndication will be added in the body of such 380 message.
+prioritizeECCall - Emergency call detection is performed. Emergency calls will be prioritized and calls detected as normal ones will not be prioritized.
+                                ";
+	}
+
+	typedef "MaxContactsPerUserDT" {
+		type uint16 {
+			range "1..1000";
+		}
+
+		description "EcimDerivedInteger with range (1..1000) constraint.";
+	}
+
+	typedef "String1to00100DT" {
+		type string {
+			length "1..100";
+		}
+
+		description "EcimDerivedString with length (1..100) constraint.";
+	}
+
+	typedef "MediaCodecDataDT" {
+		type string {
+			length "1..36";
+		}
+
+		description
+		"EcimDerivedString with length (1..36) constraint. Format = media:codec:modeset. ModeSet is only applicable to AMR MediaSubtype.";
+	}
+
+	typedef "MaxNonSupervisedSessionDurationDT" {
+		type uint32 {
+			range "1..525600";
+		}
+
+		description "EcimDerivedInteger with range (1..525600) constraint.";
+	}
+
+	typedef "RegistrationRefreshTimerDT" {
+		type uint16 {
+			range "1..32000";
+		}
+
+		description "EcimDerivedInteger with range (1..3200) and unit (Minutes) constraint
+";
+	}
+
+	typedef "ForkingTimerDT" {
+		type uint8 {
+			range "4..180";
+		}
+
+		description
+		"EcimDerivedInteger with range (4..180) and unit (Seconds) constraint.";
+	}
+
+	typedef "MaxSipMessageSizeDT" {
+		type uint16 {
+			range "548..61440";
+		}
+
+		description "EcimDerivedInteger with range (548..61440) constraint.";
+	}
+
+	typedef "RegEventMaxNotificationRateDT" {
+		type uint16 {
+			range "5..3600";
+		}
+
+		description "EcimDerivedInteger with range (5..3600) constraint.";
+	}
+
+	typedef "TimerMSec32000to300000DT" {
+		type uint32 {
+			range "32000..300000";
+		}
+
+		description
+		"EcimDerivedInteger with range (32000..300000) and unit (Milliseconds) constraint.";
+	}
+
+	typedef "PcPortEntryDT" {
+		type uint16 {
+			range "1024..49151";
+		}
+
+		description
+		"EcimDerivedInteger with range (1024..49151) constraint, representing port numbers between 1024-49151.";
+	}
+
+	typedef "TimerMSec1to180000DT" {
+		type uint32 {
+			range "1..180000";
+		}
+
+		description
+		"EcimDerivedInteger with range (1..180000) and unit (Milliseconds) constraint.";
+	}
+
+	typedef "TimerMSec180000to600000DT" {
+		type uint32 {
+			range "180000..600000";
+		}
+
+		description
+		"EcimDerivedInteger with range (180000..600000) and unit (Milliseconds) constraint.";
+	}
+
+	typedef "TimerMSec100to1000DT" {
+		type uint16 {
+			range "100..1000";
+		}
+
+		description
+		"EcimDerivedInteger with range (100..1000) and unit (Milliseconds) constraint.";
+	}
+
+	typedef "ChargingBackupRetryIntervalDT" {
+		type uint16 {
+			range "100..300";
+		}
+
+		description
+		"EcimDerivedInteger with range (100..300) and unit (Seconds) constraint.";
+	}
+
+	typedef "BlacklistMaxAuthAttemptsDT" {
+		type uint8 {
+			range "1..15";
+		}
+
+		description
+		"EcimDerivedInteger with range (1..15) and unit (attempts) constraint. ";
+	}
+
+	typedef "MaxNumBackupPerDestDT" {
+		type uint8 {
+			range "1..5";
+		}
+
+		description
+		"EcimDerivedInteger with range (1..5) representing the max amount of concurrent files per destination realm/host.";
+	}
+
+	typedef "HttpRequestTimerDT" {
+		type uint16 {
+			range "1..5000";
+		}
+
+		description
+		"EcimDerivedInteger with range (1..5000) and unit (Milliseconds) constraint. ";
+	}
+
+	typedef "MonitorFallbackTimerDT" {
+		type uint16 {
+			range "1..3600";
+		}
+
+		description
+		"EcimDerivedInteger with range (1..3600) and unit (Seconds) constraint. ";
+	}
+
+	typedef "SessionRefreshTimerDT" {
+		type uint16 {
+			range "1..1440";
+		}
+
+		description
+		"EcimDerivedInteger with range (1..1440) and unit (Minutes) constraint.";
+	}
+
+	typedef "Integer1to65535DT" {
+		type uint16 {
+			range "1..65535";
+		}
+
+		description "EcimDerivedInteger with range (0..65535) constraint.";
+	}
+
+	typedef "TrustedPaniGwDT" {
+		type string {
+			length "9..18";
+		}
+
+		description "EcimDerivedString at minimum 9 and maximum 18 characters";
+	}
+
+	typedef "AccessTypeValidationDT" {
+		type string {
+			length "9..1024";
+		}
+
+		description
+		"EcimDerivedString at minimum 9 and maximum 1024 characters, in the following format: &lt;subnet&gt;:&lt;allowed access types&gt;:&lt;default access type&gt;.";
+	}
+
+	typedef "ChargingOfflineDiscDirectionDT" {
+		type string {
+			length "9..10";
+		}
+
+		description "EcimDerivedString with length constraint (9..10).
+
+Stop=true
+Each possible ACR record type must have the value True or False.";
+	}
+
+	typedef "ChargingServiceContextIdDT" {
+		type string {
+			length "8..128";
+		}
+
+		description "EcimDerivedString with length constraint (8..128).";
+	}
+
+	typedef "PcscfIpAddressDT" {
+		type string {
+			length "7..18";
+			pattern
+			"^(((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]).){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9])/([0-2]?[0-9]|3[0-2])|((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|:)))/(12[0-8]|1[0-1][0-9]|0?[0-9]?[0-9]))$";
+		}
+
+		description
+		"EcimDerivedString with length constraint (7..18) representing IPv4 dotted decimal addresses/Prefix length or IPv6 addresses/Prefix length; the prefix length is a number between 0 – 32 for IPv4 and between 0 – 128 for IPv6, and this is the amount of bits of the IP address that are the subnet.";
+	}
+
+	typedef "UserAgentWhiteListDT" {
+		type string {
+			length "5..256";
+		}
+
+		description
+		"EcimDerivedString with length constraint (5..256) in the format: &lt;priority-nr&gt;:/&lt;regex&gt;/[i]";
+	}
+
+	typedef "IfcAsNameDT" {
+		type string {
+			length "5..1024";
+		}
+
+		description "EcimDerivedString with length constraint (5..1024).";
+	}
+
+	typedef "IfcDefaultHandlingDT" {
+		type string {
+			length "17..18";
+			pattern "SESSION_CONTINUED|SESSION_TERMINATED";
+		}
+
+		description "EcimDerivedString with length constraint (17..18) and pattern restriction (SESSION_CONTINUED|SESSION_TERMINATED).
+";
+	}
+
+	typedef "EcNumberListDT" {
+		type string {
+			length "2..32";
+		}
+
+		description "EcimDerivedString at minimum 2 and maximum 32 characters.";
+	}
+
+	typedef "ChargingOnlineDiscDirectionDT" {
+		type string {
+			length "14..15";
+		}
+
+		description "EcimDerivedString with length constraint (14..15).
+
+Terminate=true
+Each CCR record type must have the value True or False.";
+	}
+
+	typedef "String1to00064DT" {
+		type string {
+			length "1..64";
+		}
+
+		description "EcimDerivedString with length (1..64) constraint.";
+	}
+
+	typedef "AuthPolicyDT" {
+		type string {
+			length "1..1024";
+			pattern "[a-zA-Z0-9 -]+:(enabled|disabled)";
+		}
+
+		description "EcimDerivedString at minimum 0 and maximum 1024 characters, in the following regexp format:  [a-zA-Z0-9 -]+:(enabled|disabled)
+
+This value is in the form of: method:policy or registration_type:policy 
+method = string defining SIP method type such as INVITE 
+policy = enabled or disabled 
+registration_type = Re-registration, User Initiated De-registration";
+	}
+
+	typedef "DbSweeperTimeDT" {
+		type string {
+			length "5";
+			pattern "[0-2][0-9]:[0-5][0-9]";
+		}
+
+		description
+		"EcimDerivedString of length 5, in the following regexp format:  [0-2][0-9]:[0-5][0-9] (Format: hh:mm where hh=two digits of hour (00 through 23), mm=two digits of minute (00 through 59)).";
+	}
+
+	typedef "DomainNameDT" {
+		type string {
+			length "1..1024";
+			pattern "[a-zA-Z][a-zA-Z0-9.-]*";
+		}
+
+		description
+		"EcimDerivedString at minimum 1 and maximum 1024 characters, in the following regexp format:  [a-zA-Z][a-zA-Z0-9.-]* (Format: FQDN).";
+	}
+
+	typedef "TrustedGwDT" {
+		type string {
+			length "1..1024";
+		}
+
+		description "EcimDerivedString at minimum 1 and maximum 1024 characters, in the following regexp format: (((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]).){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9])/([0-2]?[0-9]|3[0-2])|((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|:)))/(12[0-8]|1[0-1][0-9]|0?[0-9]?[0-9]))
+
+It represents an IPv4 dotted decimal addresses/prefix length or IPv6 addresses/prefix length.";
+	}
+
+	typedef "TrustedAsDT" {
+		type string {
+			length "1..1024";
+		}
+
+		description "EcimDerivedString at minimum 1 and maximum 1024 characters, in the following regexp format: ^(((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]).){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9])/([0-2]?[0-9]|3[0-2])|((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|:)))/(12[0-8]|1[0-1][0-9]|0?[0-9]?[0-9]))$
+
+It representing IPv4 dotted decimal addresses/Prefix length or IPv6 addresses/Prefix length; the prefix length is a number between 0 – 32 for IPv4 and between 0 – 128 for IPv6, and this is the amount of bits of the IP address that are the subnet.";
+	}
+
+	typedef "String1to00256DT" {
+		type string {
+			length "1..256";
+		}
+
+		description "EcimDerivedString with length (1..256) constraint.";
+	}
+
+	typedef "String1to01024DT" {
+		type string {
+			length "1..1024";
+		}
+
+		description "EcimDerivedString with length (1..1024) constraint.";
+	}
+
+	typedef "Integer0to00010DT" {
+		type uint8 {
+			range "0..10";
+		}
+
+		description "EcimDerivedInteger with range (0..10) constraint.";
+	}
+
+	typedef "EOSRouteUriDT" {
+		type string {
+			length "1..128";
+		}
+
+		description "EcimDerivedString with length (1..128) constraint, defining a SIP URI for a specific routing alternative.
+";
+	}
+
+	typedef "EOSMatchSipResponseDT" {
+		type string {
+			length "0..256";
+			pattern "^((\d+|\d+-\d+)(\s*,\s*|$))*$";
+		}
+
+		description "EcimDerivedString with length (0..256) constraint and pattern restriction (^((\d+|\d+-\d+)(\s*,\s*|$))*$ ), defining a comma separated list of SIP final response codes and response code ranges. All response codes should be in the range between 300 and 699.  If the parameter is not configured all SIP response codes are considered as a match.
+Example: 480, 500-599
+                                   
+                                ";
+	}
+
+	typedef "EOSMatchSipReasonDT" {
+		type string {
+			length "0..512";
+			pattern "^(([Qq]\.850|[Ss][Ii][Pp]);\d+\s*(,\s*|$))*$";
+		}
+
+		description "EcimDerivedString with length (0..512) constraint and pattern restriction (^(([Qq]\.850|[Ss][Ii][Pp]);\d+\s*(,\s*|$))*$), defining a comma separated list of SIP reason header content. The format is protocol followed by a semicolon and the cause code. Example: Q.850;58,SIP;480.
+                            ";
+	}
+
+	typedef "EOSTableNameDT" {
+		type string {
+			length "1..100";
+			pattern ".*";
+		}
+
+		description "EcimDerivedString with length (1..100) constraint and pattern restriction (.*), defining the cscfEosCaseTableEntryId for the next EOS case. The keyword &quot;exit&quot; means that no further EOS analysis will be triggered if there is no match or the following routing attempt fails.
+                                ";
+	}
+
+	typedef "EOSTableIdDT" {
+		type string {
+			length "1";
+			pattern "0";
+		}
+
+		description
+		"EcimDerivedString with length (1..1) constraint and 0 as only allowed value.";
+	}
+
+	typedef "ExtNetSelEOSCaseDT" {
+		type string {
+			length "0..128";
+			pattern
+			"[^eE].*$|^[eE][^xX].*$|^[eE][xX][^iI].*$|^[eE][xX][iI][^tT]$|^[eE][xX][iI][tT].+$|^[eE]$|^[eE][xX]$|^[eE][xX][iI]$|^";
+		}
+
+		description "EcimDerivedString with length (0..128) constraint and pattern restriction ([^eE].*$|^[eE][^xX].*$|^[eE][xX][^iI].*$|^[eE][xX][iI][^tT]$|^[eE][xX][iI][tT].+$|^[eE]$|^[eE][xX]$|^[eE][xX][iI]$|^ ).
+";
+	}
+
+	typedef "EOSTableEntryIdDT" {
+		type string {
+			length "1..100";
+			pattern
+			"[^eE].*$|^[eE][^xX].*$|^[eE][xX][^iI].*$|^[eE][xX][iI][^tT]$|^[eE][xX][iI][tT].+$|^[eE]$|^[eE][xX]$|^[eE][xX][iI]$|^";
+		}
+
+		description "EcimDerivedString with length (1..100) constraint and pattern restriction ([^eE].*$|^[eE][^xX].*$|^[eE][xX][^iI].*$|^[eE][xX][iI][^tT]$|^[eE][xX][iI][tT].+$|^[eE]$|^[eE][xX]$|^[eE][xX][iI]$|^).
+";
+	}
+
+	typedef "String1to00010DT" {
+		type string {
+			length "1..10";
+		}
+
+		description "EcimDerivedString with length (1..10) constraint.";
+	}
+
+	typedef "String1to00128DT" {
+		type string {
+			length "1..128";
+		}
+
+		description "EcimDerivedString with length (1..128) constraint.";
+	}
+
+	typedef "String1to00032DT" {
+		type string {
+			length "1..32";
+		}
+
+		description "EcimDerivedString with length (1..32) constraint.";
+	}
+
+	typedef "ExtNetSelUnallocatedResponseCodeDT" {
+		type uint16 {
+			range "300..699";
+		}
+
+		description
+		"EcimDerivedInteger with range (300..699) constraint, representing a SIP response code.";
+	}
+
+	typedef "ExtNetSelNextTableNameDT" {
+		type string {
+			length "0..128";
+			pattern
+			"((calling|called|RN|CIC|P-Asserted-Identity|sdp-media|Request-URI):.+)?";
+		}
+
+		description "EcimDerivedString with length (0..128) constraint and pattern restriction (((calling|called|RN|CIC|P-Asserted-Identity|sdp-media|Request-URI):.+)?).
+";
+	}
+
+	typedef "ExtNetSelPoolTimeoutDT" {
+		type uint32 {
+			range "0..4294967295";
+		}
+
+		description
+		"EcimDerivedInteger with range (0..4294967295) and unit (milliseconds) constraint.";
+	}
+
+	typedef "ExtNetSelActiveConfigDT" {
+		type string {
+			length "15..16";
+			pattern "ExtNetSelection|ExtNetSelection2";
+		}
+
+		description
+		"EcimDerivedString with pattern restriction (ExtNetSelection|ExtNetSelection2).";
+	}
+
+	typedef "ExtNetSelSynchStateDT" {
+		type string {
+			length "0..128";
+			pattern "synchronized|not_synchronized|synchronization_failed";
+		}
+
+		description "EcimDerivedString with length (0..128) constraint and pattern restriction (synchronized|not_synchronized|synchronization_failed).
+
+The value synchronized indicates that the ENS configuration data has been successfully read and that it is prepared for traffic handling.
+The value not_synchronized indicates that the ENS configuration data has been updated without a consecutive synchronization. 
+The value synchronization_failed indicates that a synchronization attempt of the ENS configuration data has failed.";
+	}
+
+	typedef "ExtNetSelTableResultDT" {
+		type string {
+			length "4..128";
+			pattern
+			"(pool|calling|called|RN|CIC|P-Asserted-Identity|sdp-media|Request-URI):.+";
+		}
+
+		description
+		"EcimDerivedString with length (4..128) constraint and pattern restriction ((pool|calling|called|RN|CIC|P-Asserted-Identity|sdp-media|Request-URI):.+).";
+	}
+
+	typedef "ExtNetSelInitialTableNameDT" {
+		type string {
+			length "0..128";
+		}
+
+		description "EcimDerivedString with length (0..128) constraint and pattern restriction (^$|(((calling|called|RN|CIC|P-Asserted-Identity|sdp-media|Request-URI):.+)|not_configured)).
+";
+	}
+
+	typedef "ExtNetSelTableNameDT" {
+		type string {
+			length "0..128";
+			pattern ".*";
+		}
+
+		description
+		"EcimDerivedString with length (0..128) constraint and pattern restriction (.*).";
+	}
+
+	typedef "PreferredPartyAddressDT" {
+		type string {
+			length "1..10";
+			pattern "noPrefer|preferSIP|preferTEL|both";
+		}
+
+		description
+		"EcimDerivedString with length constraint (0..10) and pattern restriction. Allowed values are noPrefer, preferSIP, preferTEL, or both.";
+	}
+
+	typedef "Integer1to32000DT" {
+		type uint16 {
+			range "1..32000";
+		}
+
+		description "EcimDerivedInteger with range (0..32000) constraint.";
+	}
+
+	typedef "SipErrorConfigurationTableDT" {
+		type string {
+			length "1..30";
+			pattern ".+";
+		}
+
+		description "EcimDerivedString with length (1..30) constraint and pattern restriction (.+).
+
+root: first rule table to be evaluated.
+Any other value: subsequent tables.
+";
+	}
+
+	typedef "SipErrorFilteringCriteriaDT" {
+		type string {
+			length "1..22";
+		}
+
+		description "EcimDerivedString with length (1..22) constraint. Possible values:
+
+sip.errorcode               SIP error code is considered as filter matching criteria
+sip.reason.protocol    Protocol entry for reason header is considered as filter matching criteria
+sip.reason.cause         Cause value from reason header is considered as filter matching criteria
+diameter.message      Diameter message type is considered as filter matching criteria
+diameter.resultcode   Diameter response code is considered as filter matching criteria
+
+";
+	}
+
+	typedef "SipErrorConfigurationEntryDT" {
+		type string {
+			length "1..300";
+			pattern "[^:]+(:[^:]+)+";
+		}
+
+		description "EcimDerivedString with length (1..300) constraint and pattern restriction ([^:]+(:[^:]+)+).
+
+";
+	}
+
+	typedef "SipErrorCodeDT" {
+		type string {
+			length "0..3";
+			pattern "(|[3456][0-9][0-9])";
+		}
+
+		description
+		"<p>EcimDerivedString with length (0..3) constraint and pattern restriction (|[3456][0-9][0-9]). Possible values: </p><ul><li><p>&lt;empty&gt; - SIP response error code is not modified </p></li><li><p>300..699 - SIP error code is replaced with the provided value<br><br><br></p></li></ul><p></p>";
+	}
+
+	typedef "SipErrorSloganDT" {
+		type string {
+			length "0..300";
+			pattern "(|remove|.+)";
+		}
+
+		description
+		"<p>EcimDerivedString with length (0..300) constraint and pattern restriction <span style=font-size:8pt;font-family:Tahoma;>(|remove|.+</span>). Possible values:</p><ul><li><p><span style=font-size:8pt;font-family:Tahoma;>&lt;empty&gt; - SIP Error slogan is not changed </span></p></li><li><p><span style=font-size:8pt;font-family:Tahoma;>‘remove’ - SIP Error slogan is stripped from the response </span></p></li><li><p><span style=font-size:8pt;font-family:Tahoma;>any other value - SIP Error slogan is replaced with the provided value</span></p><span style=font-size:8pt;font-family:Tahoma;></span></li></ul><p><span style=font-size:8pt;font-family:Tahoma;></span><br><br><br></p>";
+	}
+
+	typedef "SipErrorRetryAfterDT" {
+		type string {
+			length "0..6";
+			pattern "(|remove|[0-9]+)";
+		}
+
+		description
+		"<p>EcimDerivedString with length (0..6) constraint and pattern restriction <span style=font-size:8pt;font-family:Tahoma;></span><span style=font-size:8pt;font-family:Tahoma;>(|remove|[0-9]+)</span><span style=font-size:8pt;font-family:Tahoma;></span>. Possible values:</p><ul><li><p><span style=font-size:8pt;font-family:Tahoma;>&lt;empty&gt; - Value of Retry-after header is not modified </span></p></li><li><p><span style=font-size:8pt;font-family:Tahoma;>‘remove’ - Retry-after header is stripped from the SIP response </span></p></li><li><p><span style=font-size:8pt;font-family:Tahoma;>Positive integer value - Value of Retry-after header is set to the provided value</span></p></li></ul><p><br><br><br></p>";
+	}
+
+	typedef "SipErrorNextTableDT" {
+		type string {
+			length "0..30";
+		}
+
+		description
+		"<p>EcimDerivedString with length (0..30) constraint. The value can be &amp;lt;empty&amp;gt; or the name of the next table to proceed to.<br><br></p>";
+	}
+
+	typedef "LdapServerVersionDT" {
+		type string {
+			length "2";
+			pattern "v2|v3";
+		}
+
+		description
+		"EcimDerivedString with length constraint (2..2) and pattern restriction. Allowed values are v2 or v3.";
+	}
+
+	typedef "LdapServerUnavailableTimeDT" {
+		type uint32 {
+			range "0..86400";
+		}
+
+		description "EcimDerivedInteger with range (0..86400) constraint.";
+	}
+
+	typedef "LdapServerEntryIdDT" {
+		type string {
+			length "0..65535";
+			pattern
+			"((((25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]).){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]))|(\[((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|:)))\])):([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-5][0-9][0-9][0-9][0-9]|6[0-4][0-9][0-9][0-9]|65[0-4][0-9][0-9]|655[0-2][0-9]|6553[0-5])$";
+		}
+
+		description "EcimDerivedString with regular expression pattern restriction.  String representing a 2 part key.
+This value is in form: Address:port
+Address is an IPv4 dotted decimal address or IPv6 address, Port: 1 - 65535.";
+	}
+
+	typedef "LdapServerResponseTimeDT" {
+		type uint16 {
+			range "100..32000";
+		}
+
+		description "EcimDerivedInteger with range (100..32000) constraint. ";
+	}
+
+	typedef "String1to65535DT" {
+		type string {
+			length "1..65535";
+		}
+
+		description "EcimDerivedString with length (1..65535) constraint.";
+	}
+
+	typedef "Integer1to00100DT" {
+		type uint8 {
+			range "1..100";
+		}
+
+		description "EcimDerivedInteger with range (1..100) constraint.";
+	}
+
+	typedef "GetsAnEntryDT" {
+		type string {
+			length "3..11";
+			pattern "[0-9]*";
+		}
+
+		description "EcimDerivedString with length constraint (3..11) and pattern restriction ([0-9]*).
+
+Each entry must contain 3 to 11 decimal digits. 18006274387 is an example of a GETS-AN number.";
+	}
+
+	typedef "MlInterfaceDT" {
+		type string {
+			length "1..48";
+			pattern "http|sip";
+		}
+
+		description "EcimDerivedString with length constraint (1..48) and pattern restriction. Allowed values are http or sip.
+
+http - HTTP based Ml interface.
+sip - SIP based Ml Interface.
+Note:
+1) When EcscfMlInterface setting is changed from “http” to “sip”, the existing value in EcscfDefaultPSAPNumber is checked against empty or international telephone number, if there is non-compliance, the setting change on EcscfMlInterface will be rejected.
+2) Before configuring EcscfMlInterface=http, the value of EcscfDialogEventEnabled must be set to “false”.
+
+";
+	}
+
+	typedef "EOSAdditionalRouteDT" {
+		type string {
+			length "0..128";
+			pattern "[1-9]+:[sS][iI][pP]:.*";
+		}
+
+		description "EcimDerivedString with length (0..128) constraint and pattern restriction ([1-9]+:[sS][iI][pP]:.*)
+
+The format is a SIP URI prefixed with none-zero one digit priority number and including an lr; parameter. 
+Example: 1:sip:pool.x.com:5060;lr
+";
+	}
+
+	typedef "ExtNetSelPoolUriDT" {
+		type string {
+			length "1..128";
+			pattern "[0-9]+:[sS][iI][pP]:.*";
+		}
+
+		description
+		"EcimDerivedString with length (1..128) constraint and pattern restriction ([0-9]+:[sS][iI][pP]:.*).";
+	}
+
+	typedef "UnregisteredProfileTimerDT" {
+		type uint16 {
+			range "1..1440";
+		}
+
+		description
+		"EcimDerivedInteger with range (1..1440) and unit (Minutes) constraint. ";
+	}
+
+	typedef "RegistrationEventRefreshTimerDT" {
+		type uint16 {
+			range "1..1440";
+		}
+
+		description
+		"EcimDerivedInteger with range (1..1440) and unit (Minutes) constraint.";
+	}
+
+	typedef "PcscfRedirectBehaviorDT" {
+		type uint32 {
+			range "0..1";
+		}
+
+		description "When the value is set to 0, the terminating P-CSCF maps all 3xx responses to 500 Internal Server Error before forwarding it upstream.
+
+When set to 1, the terminating P-CSCF forwards all 3xx responses transparently.";
+	}
+
+	typedef "Fqdn0to1024orEmptyDT" {
+		type string {
+			length "0..1024";
+			pattern "(|[a-zA-Z]{1}[a-zA-Z0-9.-]*[a-zA-Z0-9])";
+		}
+
+		description "EcimDerivedString with length (0..1024) constraint and pattern restriction (|[a-zA-Z]{1}[a-zA-Z0-9.-]*[a-zA-Z0-9]). 
+
+If unset an empty string, or when set representing an FQDN.
+";
+	}
+
+	typedef "DialogRefreshTimerDT" {
+		type uint16 {
+			range "1..71582788";
+		}
+
+		description
+		"Dialog event session length in minutes allowed. This value can be between 1 and 71582788 minutes";
+	}
+
+	typedef "String0to00032DT" {
+		type string {
+			length "0..32";
+		}
+
+		description "EcimDerivedString with length (0..32) constraint.";
+	}
+
+	typedef "Media0to160DT" {
+		type int32 {
+			range "0..160";
+		}
+
+		description
+		"EcimDerivedInteger with range (0..160) and unit (byte) constraint.";
+	}
+
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.0"?><plugin>
+
+   <!--extension
+         id="ECIM Base Profile UMLProfiles"
+         name="ECIM Base Profile UMLProfiles"
+         point="org.eclipse.gmf.runtime.emf.core.Pathmaps">
+      <pathmap
+            name="ECIM_BASE_PROFILE"
+            plugin="com.ericsson.ecim.dsl"
+            path="profiles">
+      </pathmap>
+   </extension-->
+
+   <extension point="org.eclipse.emf.ecore.uri_mapping">
+      <mapping source="pathmap://ECIM_BASE_PROFILE/" target="platform:/plugin/com.ericsson.ecim.dsl/profiles/">
+      </mapping>
+   </extension>
+   
+      <extension point="org.eclipse.uml2.uml.dynamic_package">
+     <profile location="platform:/plugin/com.ericsson.ecim.dsl/profiles/ECIM_Base_Profile.profile.uml" uri="http:///schemas/ECIMBaseProfile/"/>
+  </extension>
+  
+      <extension id="ECIM_BASE_PROFILE" name="ECIM_BASE_PROFILE" point="org.eclipse.papyrus.uml.extensionpoints.UMLProfile">
+         <profile name="ECIM Base Profile" path="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml">
+         </profile>
+      </extension>
+      <extension point="org.eclipse.papyrus.uml.diagram.wizards.templates">
+         <template di_file="templates/ECIM_Base_ProfileModel.di" file="templates/ECIM_Base_ProfileModel.uml" id="com.ericsson.ecim.dsl.template.ModelWithBasicProfile" language="ecim" name="An ECIM model with ECIM Base Profile." notation_file="templates/ECIM_Base_ProfileModel.notation">
+         </template>
+      </extension>
+</plugin>

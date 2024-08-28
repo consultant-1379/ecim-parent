@@ -1,0 +1,91 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-sep-04 14:47:38 using 
+    * com.ericsson.ecim.yang.m2m 2.11.2.qualifier
+*/
+module AugmentItself {
+	namespace "urn:com:ericsson:ecim:AugmentItself";
+	prefix AugmentItself;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import simple {
+		prefix "simple";
+	}
+
+	organization "Ericsson";
+	description "asdf";
+
+	revision "2014-09-04" {
+		ericsson:correction 1;
+		ericsson:release 1;
+		ericsson:version 1;
+	}
+
+ 	list simpleList {
+		key leafA;
+		leaf leafA {
+             type uint32;
+		}
+		list insideSimpleList
+		{
+			key leafA;
+			leaf leafA {
+				type uint32;
+		}
+	}     
+  }
+        
+    //test for a quoted and prefixed augment
+	augment "/AugmentItself:simpleList" {
+        list augmentedList{
+        	key augmentedLeaf;
+	        leaf augmentedLeaf {
+	             type string;
+	         }	
+        }
+     }
+     
+  	//test for an augment with no prefix
+	augment "/simpleList" {
+        list augmentedListNoPrefix{
+        	key augmentedLeaf;
+	        leaf augmentedLeaf {
+	             type string;
+	         }	
+        }
+     }
+     
+    //test for mix of no prefix and usage of prefix
+	augment "/simpleList/AugmentItself:insideSimpleList" {
+        list augmentedListMixOfPrefixAndNoPrefix{
+        	key augmentedLeaf;
+	        leaf augmentedLeaf {
+	             type string;
+	         }	
+        }
+     }     
+    
+    //test for mix of no prefix and usage of prefix but with prefixing switched
+	augment "/AugmentItself:simpleList/insideSimpleList" {
+        list augmentedListMixOfPrefixAndNoPrefixSwitch{
+        	key augmentedLeaf;
+	        leaf augmentedLeaf {
+	             type string;
+	         }	
+        }
+     }      
+    
+    //test for augment with no quotes 
+	augment /AugmentItself:simpleList {
+        list augmentedListNoQuotes{
+        	key augmentedLeaf;
+	        leaf augmentedLeaf {
+	             type string;
+	         }	
+        }
+     }
+      
+}

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Nov 20, 2015 2:35:23 PM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="" contact="" date="" docNo="" name="AppZ" namespace="urn:com:ericsson:ecim:AppZ" namespacePrefix="appz" organization="" release="1" revision="" version="1">
+        <description>This MOM uses stuff from MyEcimLibrary</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <struct name="StructenFrukten">
+            <description>123</description>
+            <structMember name="banana">
+                <description>qwe</description>
+                <boolean>
+                    <defaultValue>true</defaultValue>
+                </boolean>
+            </structMember>
+            <structMember name="apple">
+                <description>123</description>
+                <boolean>
+                    <defaultValue>false</defaultValue>
+                </boolean>
+            </structMember>
+            <structMember name="peach">
+                <string/>
+            </structMember>
+            <structMember name="watermelon">
+                <string/>
+            </structMember>
+        </struct>
+        <class name="RZ">
+            <description>qwe</description>
+            <root/>
+            <attribute name="rZId">
+                <description>qwe</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="a5">
+                <description>qwe</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="StructenFrukten">
+                        <mimName>AppZ</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="dn">
+                <description>The MO's DN.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="ManagedElement_to_RZ">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>ComTopMom</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RZ">
+                        <mimName>AppZ</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

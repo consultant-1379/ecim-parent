@@ -1,0 +1,111 @@
+module Refine {
+	namespace "urn:com:ericsson:ecim:RefineX";
+	prefix Refine;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+  import Grouping {
+    prefix "groupingx";
+  }
+  
+  //revision "2014-09-04" {
+		//ericsson:correction 1;
+		//ericsson:release 1;
+		//ericsson:version 1;
+	//}
+/*
+  container myContainer1
+  {
+  	//note: grouping does not use an absolute path as it assumes the groupings are all at the root
+  	
+  	//test with quotes
+  	uses "groupingx:myGrouping";
+  }
+
+  container myContainer2
+  {
+  	//test with empty refine
+  	uses "groupingx:myGrouping"
+  	{
+  		refine a{}
+  	}
+  }
+*/
+  container myContainer3
+  {
+  	//test with no quotes
+  	uses groupingx:myGrouping
+  	{
+  		
+  		//refine a leaf
+	  	refine a
+	  	{
+	  		description "refined";
+	  		//default 33;//TODO
+	  		config false;
+	  		mandatory true;
+	  		reference "refined";//TODO
+	  		//must "";//TODO
+	  		
+	  	}  	
+	  	
+	  	//refine a leaf-list
+	  	refine b
+	  	{
+	  		description "refined";
+	  		//default 33;//not supported by Yang
+	  		config false;
+	  		min-elements 5;
+	  		max-elements 99;
+	  		reference "refined";//TODO
+	  		//must "";//TODO
+	  		
+	  	} 
+	  	
+	  	//refine a list//TODO
+	  	refine listInGrouping
+	  	{
+	  		//config false;//TODO
+		  	//must "";//TODO
+		  	description "refined";//TODO
+		  	reference "refined";//TODO
+		  	//min-elements 5;
+		  	//max-elements 99;
+	  	}
+	  	
+	  	//refine a container
+	  	refine containerC
+	  	{
+	  		//config false;//TODO
+		  	//presence;//TODO
+		  	//must "";//TODO
+		  	description "refined";//TODO
+		  	reference "refined";//TODO
+	  	}
+	  	
+	  	//need to support prefixing and nested elements in a grouping
+	  	//TODO:This doesn't work yet
+	  	refine Refine:listInGrouping/Refine:firstListInListInGrouping
+	  	{
+			description "refined";//TODO
+		  	reference "refined";//TODO
+	  	}
+	  	
+	  	//refine a choice//TODO
+	  	//config false;//TODO
+	  	//default 33;//TODO
+	  	//description "refined";//TODO
+	  	//reference "cc";//TODO
+	  	//mandatory true;//TODO
+	  	
+	  	//refine an anyxml is not supported
+	  	//config false;
+	  	//description "refined";
+	  	//reference "cc";
+	  	//mandatory true;
+	  	//must ""; 
+  	}
+  }  
+
+}

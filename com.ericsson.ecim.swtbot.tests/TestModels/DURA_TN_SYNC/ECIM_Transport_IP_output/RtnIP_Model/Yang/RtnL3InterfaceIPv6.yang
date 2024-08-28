@@ -1,0 +1,251 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 14, 2015 9:52:18 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RtnL3InterfaceIPv6" {
+	namespace "urn:com:ericsson:ecim:RtnL3InterfaceIPv6";
+	prefix "RtnL3InterfaceIPv6";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RtnL3Router {
+		prefix "RtnL3Router";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RtnCommonLibrary {
+		prefix "RtnCommonLibrary";
+	}
+
+	description
+	"IPv6-addressed termination point; interface on an IPv6 routing domain.";
+
+	revision "2015-10-14" {
+		ericsson:correction "0";
+		ericsson:version "4";
+		ericsson:contact "EAB/FJP/TA UABERPE";
+		ericsson:author "EAB/FJP/TA UABERPE";
+		ericsson:release "5";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport/RtnL3Router:Router" {
+		list "InterfaceIPv6" {
+			key "interfaceIPv6Id";
+			max-elements 256;
+			list "AddressIPv6" {
+				key "addressIPv6Id";
+				max-elements 1;
+				uses RtnL3InterfaceIPv6:AddressIPv6;
+			}
+
+			uses RtnL3InterfaceIPv6:InterfaceIPv6;
+		}
+
+	}
+
+	grouping "InterfaceIPv6" {
+		description "IPv6-addressed termination point; interface on an IPv6 Routing Function. 
+
+";
+		leaf "mtu" {
+			type uint32 {
+				range "1280..9000";
+			}
+
+			mandatory true;
+			description "The maximum transmission unit (MTU) for IPv6.";
+		}
+
+		leaf "interfaceIPv6Id" {
+			type string;
+			mandatory true;
+			description "Value component of the RDN. 
+";
+			ericsson:restricted;
+		}
+
+		leaf "neighborDiscoveryTimeout" {
+			type uint32 {
+				range "0..3600000";
+			}
+
+			default "30000";
+			description "Timeout value for the neighbor entry. 
+
+Configures how long the remote IPv6 node is considered reachable after the reachability confirmation event has occurred. 
+A value of zero means that entries are never cleared from the cache.";
+		}
+
+		leaf "neighborSolicitationInterval" {
+			type uint32 {
+				range "1..3600000";
+			}
+
+			default "1000";
+			description
+			"Interval between the retransmitted neighbor solicitation messages on an interface. ";
+		}
+
+		leaf-list "reservedBy" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description
+			"Contains a list of MO instances that reserve this MO instance.";
+		}
+
+		leaf "routesHoldDownTimer" {
+			type uint16 {
+				range "1..300";
+			}
+
+			description
+			"Specifies the holddown timer used for static routes that use this interface.
+ 
+When this attribute is set, a holddown timer is started when the conditions for a static route to become available have been fulfilled. When the holddown timer expires, the route becomes available.
+ 
+When not set, there is no hold-down timer for routes.
+ 
+This attribute does NOT affect the operational state of the interface.";
+		}
+
+		leaf "egressQosMarking" {
+			type string {
+				pattern "(.*=.*,)*DscpPcpMap=.*";
+			}
+
+			description
+			"The DSCP to PCP map used for marking DSCP tagged packets with a PCP value. The packets marked are either host originated or routed into the QoS domain.
+
+If empty, the DSCP values are mapped to PCP values according to the following:
+
+pcp0 = 0
+pcp1   (empty)
+pcp2 = 10,12,14
+pcp3 = 18,20,22
+pcp4 = 8,16,26,28
+pcp5 = 34,36,38,46
+pcp6 = 32,40,48
+pcp7 = 51,54";
+		}
+
+		leaf "dscpNdp" {
+			type uint8 {
+				range "0..63";
+			}
+
+			mandatory true;
+			description
+			"The Differentiated Services Code Point (DSCP) value for Neighbor Discovery Protocol (NDP). 
+";
+		}
+
+		leaf "aclEgress" {
+			type string {
+				pattern "(.*=.*,)*AclIpv6=.*";
+			}
+
+			description
+			"A reference to an ACL MO applied in the egress direction. 
+If this attribute is empty, no ACL MO filtering will take place in the egress direction.";
+		}
+
+		leaf "aclIngress" {
+			type string {
+				pattern "(.*=.*,)*AclIpv6=.*";
+			}
+
+			description
+			"A reference to an ACL MO applied in the ingress direction. 
+If this attribute is empty, no ACL MO filtering will take place in the ingress direction.";
+		}
+
+		leaf "encapsulation" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			description
+			"Reference to the underlying encapsulation, which can be an EthernetPort MO or a VlanPort MO. 
+For InterfaceIPv4, this attribute can also refer to a Bridge MO or an IpsecTunnel MO.";
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use. 
+";
+		}
+
+		leaf "operationalState" {
+			type ECIM_CommonLibrary:OperState;
+			mandatory true;
+			config true;
+			description "The operational state. ";
+		}
+
+		leaf-list "availabilityStatus" {
+			type ECIM_CommonLibrary:AvailStatus;
+			config true;
+			description
+			"The availability status.
+It contains details about operationalState. ";
+		}
+
+	}
+
+	grouping "AddressIPv6" {
+		description "Assigned IPv6 address including information about the subnet it resides on.
+";
+		leaf "addressIPv6Id" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN. 
+";
+			ericsson:restricted;
+		}
+
+		leaf "address" {
+			type RtnCommonLibrary:Ipv6AddressAndPrefixLengthStr;
+			mandatory true;
+			description "IPv6 address + / + prefix length<0-128>. 
+
+ ";
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use. 
+";
+		}
+
+		leaf-list "reservedBy" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description
+			"Contains a list of MO instances that reserve this MO instance.";
+		}
+
+	}
+
+}

@@ -1,0 +1,1326 @@
+-- /**
+-- * This transform takes an ECIM complaint model (UML) as input and flattens inherited classes. 
+-- * Flattening means to copy UML Propertties and Operations from an abstract parent class to its child classes.
+-- * This transform does not support the following:
+-- * - Multiple levels of inheritance i.e. abstract class that generalises an abstract class
+-- * - Abstract MOCs that reside in a composition/contribution hierarchy
+-- * - Resolving references to an abstarct class from another MOC
+-- * 
+-- * Note: We don't use ATL refining mode as it is quite buggy and rarely does the required job correctly
+-- * 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 23/06/2010
+-- */
+
+-- @atlcompiler atl2006
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+
+--TODO: there is an RSA 8.0 issue, where the UML2 Stereotypes ownedTemplateSignature and templateBinding has disappeared from a few Types
+module ECIMtoECIMFlat;
+create OUT : UML from IN : UML;
+
+uses HelperFunctions;
+
+--Copy all UML Model Elements
+rule CopyModel {
+	from
+		s : UML!Model(s.oclIsTypeOf(UML!Model) and UML!Model.allInstancesFrom('IN')->contains(s))--Assume the first model is the master
+	to
+		t : UML!Model
+		(	
+			packagedElement <- s.packagedElement,
+			packagedElement <- s.packageImport->collect(e|e.importedPackage)->select(e|e.oclIsTypeOf(UML!Package)),
+			name <- s.name,
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			elementImport <- s.elementImport,
+			nameExpression <- s.nameExpression,
+			nestingPackage <- s.nestingPackage,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			ownedRule <- s.ownedRule,
+			--ownedTemplateSignature <- s.ownedTemplateSignature,
+			ownedType <- s.ownedType,
+			owningTemplateParameter <- s.owningTemplateParameter,
+			
+			--We need to explicitly exclude imported packages as we will convert them from imports to local packages
+			--packageImport <- s.packageImport->reject(e|e.importedPackage.oclIsTypeOf(UML!Package)),
+
+			packageMerge <- s.packageMerge,
+			profileApplication <- s.profileApplication,
+			--templateBinding <- s.templateBinding,
+			templateParameter <- s.templateParameter,
+			viewpoint <- s.viewpoint,
+			visibility <- s.visibility			
+		)
+		do
+		{	
+			--apply all the profiles to the target model
+	    	for (p in s.getAppliedProfiles())
+	    	{
+				t.applyProfile(p);
+	    	}
+			
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(true,s,t);
+    	}	
+}
+
+
+--Copy all UML Package Elements
+rule CopyPackage
+{
+	from s : UML!Package(s.oclIsTypeOf(UML!Package) and thisModule.isPackageValid(s))
+	to t : UML!Package
+	(
+		clientDependency <- s.clientDependency,
+		--eAnnotations <- s.eAnnotations,
+		elementImport <- s.elementImport,
+		name <- s.name,
+		nameExpression <- s.nameExpression,
+		nestedPackage <- s.nestedPackage,
+--		nestingPackage <- s.nestingPackage,
+		ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+		ownedRule <- s.ownedRule,
+		--ownedTemplateSignature <- s.ownedTemplateSignature,
+			
+		ownedType <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|not e.isAbstract),
+		--ownedType <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|not e.isAbstract),
+		--ownedType <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->select(e|not e.hasAbstractEndType())->collect(e|thisModule.CopyAssociation(e)).debug('2'),
+		--ownedType <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->select(e|not e.hasAbstractEndType()),
+		
+		--TODO:Modify the following for concrete inheritance
+		
+		--first copy associations where both ends are concrete. associations to abstract classes will be dropped but recreated properly later
+		ownedType <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->select(e|thisModule.hasConcreteEnds(e)),
+		
+		ownedType <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Enumeration)),
+		ownedType <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!DataType)),
+		owningTemplateParameter <- s.owningTemplateParameter,
+		packageImport <- s.packageImport,
+		packageMerge <- s.packageMerge,
+		
+		--we must do some snazzy set manipulation below to drop the abstract classes out of the packaged elements
+		packagedElement <- s.packagedElement->asSet()
+			->symetricDifference(s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.isAbstract)->asSet())--drop all abstract classes
+			->symetricDifference(s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->select(e|not thisModule.hasConcreteEnds(e))->asSet()),--drop all relationships to abstract classes
+	
+		--TODO:We may use the following code if abstract MOCs are needed
+		--packagedElement <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|not e.isAbstract),
+		--packagedElement <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->select(e|not e.hasAbstractEndType())->collect(e|thisModule.CopyAssociation(e)),
+		
+		profileApplication <- s.profileApplication,
+		--templateBinding <- s.templateBinding,
+		templateParameter <- s.templateParameter,
+		visibility <- s.visibility
+	)
+	do
+	{	
+				
+		--now create associations where only one end is conrete
+		--t.ownedType <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->select(e|not thisModule.hasConcreteEnds(e))->collect(e|thisModule.CreateAssociation(e)),
+		--t.ownedType <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|not e.isAbstract)->collect(e|e.getGenerals())->collect(e|e.getAssociations())
+		--s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->select(e|not thisModule.hasConcreteEnds(e))->collect(e|thisModule.CreateAssociation(e)),
+	
+		--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+		thisModule.applyStereoTypesValue(false,s,t);
+	}	
+}
+
+
+--Copy all UML Generalization Elements
+--lazy rule CopyGeneralization
+--{
+--	from s : UML!Generalization(s.oclIsTypeOf(UML!Generalization))
+--	to t : UML!Generalization
+--	(
+--		general <- s.general,
+--		specific <- s.specific,
+--		isSubstitutable <- s.isSubstitutable,
+--		ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined))
+--		--generalizationSet <- t.generalizationSet	
+--		
+--	)
+--	do
+--	{	
+--		thisModule.applyStereoTypesValue(false,s,t);
+--	}	
+--}
+
+
+
+--Copy all UML Class Elements that are not abstract
+rule CopyClass {
+	from
+		s : UML!Class(s.oclIsTypeOf(UML!Class) and not s.isAbstract and thisModule.isPackageValid(s.getNearestPackage()))
+	using
+	{
+		--We must cache the public association set as we will add some new associations as we don't want these new ones to be manipulated in the running of this rule
+		--note: We only do this for EcimContainment
+		associations : Set(UML!Association) = s.allParents()->collect(e|e.getAssociations())->flatten()->select(e|e.visibility=#public and e.hasStereotype('ECIM Base Profile::EcimContainment'));
+		dummy : Set(OclAny) = OclUndefined;--This is a stack eater variable used to avoid stack overflows
+	}
+	to
+		t : UML!Class
+		(
+			name <- s.name,
+			ownedAttribute <- s.ownedAttribute->select(e|e.isRegularProperty())->collect(e|thisModule.CopyRegularProperty(e)),	
+			ownedOperation <- s.ownedOperation->select(e|e.oclIsTypeOf(UML!Operation))->collect(e|thisModule.CopyOperation(e)),			
+			classifierBehavior <- s.classifierBehavior,
+			clientDependency <- s.clientDependency,
+			collaborationUse <- s.collaborationUse,
+			--eAnnotations <- s.eAnnotations,
+			elementImport <- s.elementImport,
+			interfaceRealization <- s.interfaceRealization,
+			isAbstract <- s.isAbstract,
+			isActive <- s.isActive,
+			isLeaf <- s.isLeaf,
+			nameExpression <- s.nameExpression,
+			nestedClassifier <- s.nestedClassifier,
+			ownedBehavior <- s.ownedBehavior,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			ownedConnector <- s.ownedConnector,
+			ownedPort <- s.ownedPort,
+			ownedReception <- s.ownedReception,
+			ownedRule <- s.ownedRule,
+			--ownedTemplateSignature <- s.ownedTemplateSignature,
+			--ownedTrigger <- s.ownedTrigger,
+			ownedUseCase <- s.ownedUseCase,
+			owningTemplateParameter <- s.owningTemplateParameter,
+			package <- s.package,
+			packageImport <- s.packageImport,
+			powertypeExtent <- s.powertypeExtent,
+			redefinedClassifier <- s.redefinedClassifier,
+			representation <- s.representation,
+			substitution <- s.substitution,
+			--templateBinding <- s.templateBinding,
+			templateParameter <- s.templateParameter,
+			useCase <- s.useCase,
+			visibility <- s.visibility
+			--generalization <- s.generalization->collect(e|thisModule.CopyGeneralization(e))
+			--inheritance is flattened so drop all generalisation relationships
+			--general <- s.general,
+			--generalization <- s.generalization
+			--superClass <- s.superClass
+			
+		)
+		do
+		{	
+			--copy public UML Properties from parent classes but don't copy the association properties. these will be recreated later
+			--Use the asOrderedSet() to drop duplicates and keep order.			
+			t.ownedAttribute <- s.general->collect(e|e.getAllAttributes())->flatten()->select(e|e.visibility=#public)
+			->select(e|e.aggregation=#none)->asOrderedSet()->collect(e|thisModule.CreateProperty(e));
+			
+			--copy public UML Operations from parent classes. Use the asOrderedSet() to drop duplicates and keep order.
+			t.ownedOperation <- s.general->collect(e|e.getAllOperations())->flatten()->select(e|e.visibility=#public)->asOrderedSet()
+			->collect(e|thisModule.CreateOperation(e));		
+			
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(false,s,t);			
+			
+			--only build associations if there are some to be created
+			--NOTE: We assign the results below to dummy as outerwise ATL leaves them on the stack. The stack only allows
+			--100 entries so this will cause a failure later. We basically eat the stack here.
+			if(associations->size() > 0)
+			{
+				--Navigate to all the parents classes of this class and inherit the associations to which they are the source
+				dummy <- associations->select(e|s.allParents()->includes(e.getSourceEndType))->collect(e|thisModule.CreateAssociation(t,e.getTargetEndType,e));
+	
+				--Navigate to all the parents classes of this class and inherit the associations to which they are the target
+				dummy <- associations->select(e|s.allParents()->includes(e.getTargetEndType))->collect(e|thisModule.CreateAssociation(e.getSourceEndType,t,e));
+			}
+		}	
+}
+
+--Copy all UML Class Elements that are abstract
+--rule CopyAbstractClass {
+--	from
+--		s : UML!Class(s.oclIsTypeOf(UML!Class) and s.isAbstract and thisModule.isPackageValid(s.getNearestPackage()))
+--	using
+--	{
+--		--We must cache the public association set as we will add some new associations as we don't want these new ones to be manipulated in the running of this rule
+--		--note: We only do this for EcimContainment
+--		--associations : Set(UML!Association) = s.allParents()->collect(e|e.getAssociations())->flatten()->select(e|e.visibility=#public and e.hasStereotype('ECIM Base Profile::EcimContainment'));
+--		--dummy : Set(OclAny) = OclUndefined;--This is a stack eater variable used to avoid stack overflows
+--	}
+--	to
+--		t : UML!Class
+--		(
+--			name <- s.name,
+----			ownedAttribute <- s.ownedAttribute->select(e|e.oclIsTypeOf(UML!Property))->collect(e|thisModule.CopyRegularProperty(e)),	
+----			ownedOperation <- s.ownedOperation->select(e|e.oclIsTypeOf(UML!Operation))->collect(e|thisModule.CopyOperation(e)),			
+--			classifierBehavior <- s.classifierBehavior,
+--			clientDependency <- s.clientDependency,
+--			collaborationUse <- s.collaborationUse,
+--			--eAnnotations <- s.eAnnotations,
+--			elementImport <- s.elementImport,
+--			interfaceRealization <- s.interfaceRealization,
+--			isAbstract <- s.isAbstract,
+--			isActive <- s.isActive,
+--			isLeaf <- s.isLeaf,
+--			nameExpression <- s.nameExpression,
+--			nestedClassifier <- s.nestedClassifier,
+--			ownedBehavior <- s.ownedBehavior,
+--			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+--			ownedConnector <- s.ownedConnector,
+--			ownedPort <- s.ownedPort,
+--			ownedReception <- s.ownedReception,
+--			ownedRule <- s.ownedRule,
+--			--ownedTemplateSignature <- s.ownedTemplateSignature,
+--			ownedTrigger <- s.ownedTrigger,
+--			ownedUseCase <- s.ownedUseCase,
+--			owningTemplateParameter <- s.owningTemplateParameter,
+--			package <- s.package,
+--			packageImport <- s.packageImport,
+--			powertypeExtent <- s.powertypeExtent,
+--			redefinedClassifier <- s.redefinedClassifier,
+--			representation <- s.representation,
+--			substitution <- s.substitution,
+--			--templateBinding <- s.templateBinding,
+--			templateParameter <- s.templateParameter,
+--			useCase <- s.useCase,
+--			visibility <- s.visibility
+--			--inheritance is flattened so drop all generalisation relationships
+--			--generalization <- s.generalization->collect(e|thisModule.CopyGeneralization(e))
+--			--general <- s.general, 
+--			--generalization <- s.generalization
+--			--superClass <- s.superClass			
+--		)
+--		do
+--		{		
+--			--copy public UML Properties from parent classes but don't copy the association properties. these will be recreated later
+--			--t.ownedAttribute <- s.general->collect(e|e.getAllAttributes())->flatten()->select(e|e.visibility=#public)
+--			--->select(e|e.aggregation=#none)->collect(e|thisModule.CreateProperty(e));
+--			
+--			--copy public UML Operations from parent classes
+--			--t.ownedOperation <- s.general->collect(e|e.getAllOperations())->flatten()->select(e|e.visibility=#public)
+--			--->collect(e|thisModule.CreateOperation(e));			
+--			
+--			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+--			thisModule.applyStereoTypesValue(false,s,t);			
+--			
+--			--only build associations if there are some to be created
+--			--NOTE: We assign the results below to dummy as outerwise ATL leaves them on the stack. The stack only allows
+--			--100 entries so this will cause a failure later. We basically eat the stack here.
+----			if(associations->size() > 0)
+----			{
+----				--Navigate to all the parents classes of this class and inherit the associations to which they are the source
+----				dummy <- associations->select(e|s.allParents()->includes(e.getSourceEndType))->collect(e|thisModule.CreateAssociation(t,e.getTargetEndType,e));
+----	
+----				--Navigate to all the parents classes of this class and inherit the associations to which they are the target
+----				--we must use resolveTemp as we want to refer to classes in the output model
+----				dummy <- associations->select(e|s.allParents()->includes(e.getTargetEndType))->collect(e|thisModule.CreateAssociation(thisModule.resolveTemp(e.getSourceEndType,'t'),t,e));
+----			}
+--		}	
+--}
+
+-- *** UML Association Element rules start here ***
+
+--Copy all UML Association Elements with both concrete ends
+rule CopyAssociation {
+	from
+		s : UML!Association(s.oclIsTypeOf(UML!Association) and thisModule.hasConcreteEnds(s) and thisModule.isPackageValid(s.getNearestPackage()))
+		--s : UML!Association(s.oclIsTypeOf(UML!Association) and not s.hasAbstractEndType())
+	to
+		t : UML!Association
+		(
+			clientDependency <- s.clientDependency,
+			collaborationUse <- s.collaborationUse,	
+			--eAnnotations <- s.eAnnotations,	
+			elementImport <- s.elementImport,	
+			--general <- s.general,				
+			--generalization <- s.generalization,	
+			isAbstract <- s.isAbstract,	
+			isDerived <- s.isDerived,	
+			isLeaf <- s.isLeaf,			
+			memberEnd <- s.ownedEnd->collect(e|thisModule.CopyAssociationProperty(e)),--only create an association property for the end that this association owns
+			name <- s.name,				
+			nameExpression <- s.nameExpression,	
+			navigableOwnedEnd <- s.navigableOwnedEnd,	
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),	
+			--ownedEnd <- s.ownedEnd,--TODO:This seems to cause a warning in ATL 3.1.1	
+			ownedRule <- s.ownedRule,	
+			--ownedTemplateSignature <- s.ownedTemplateSignature,	
+			ownedUseCase <- s.ownedUseCase,	
+			owningTemplateParameter <- s.owningTemplateParameter,	
+			package <- s.package,	
+			packageImport <- s.packageImport,	
+			powertypeExtent <- s.powertypeExtent,	
+			redefinedClassifier <- s.redefinedClassifier,	
+			representation <- s.representation,	
+			substitution <- s.substitution,	
+			--templateBinding <- s.templateBinding,	
+			templateParameter <- s.templateParameter,	
+			useCase <- s.useCase,	
+			visibility <- s.visibility
+			 
+		)
+		do
+		{
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(false,s,t);
+		}			
+}
+
+--Build a new association based on two classes and the original asociation
+rule CreateAssociation(sourceClass : UML!Class, targetClass : UML!Class, association : UML!Association)
+{
+	to
+		t : UML!Association
+		(
+			name <- (sourceClass.name+'_to_'+targetClass.name),
+			memberEnd <- Sequence{sourceProperty,targetProperty},
+			ownedEnd <- sourceProperty,
+			package <- sourceClass.package
+		),
+		--sourceProperty should sit under (be owned by) the association with a type of the source class
+		sourceProperty : UML!Property
+		(
+			name <- sourceClass.name.toLower() + 'ref',
+			--use the original association cardinalities
+			lower <- association.memberEnd->select(e|e.aggregation=#none)->first().lower,
+			upper <- association.memberEnd->select(e|e.aggregation=#none)->first().upper,			
+			aggregation <- #none,
+			association <- t,
+			type <- sourceClass	
+		),
+		--targetProperty should sit under (be owned by) the source class but have a type of the target class
+		targetProperty : UML!Property
+		(
+			name <- targetClass.name.toLower() + 'ref',
+			--use the original association cardinalities
+			lower <- association.memberEnd->select(e|e.aggregation=#composite)->first().lower,
+			upper <- association.memberEnd->select(e|e.aggregation=#composite)->first().upper,
+			aggregation <- #composite,			
+			association <- t,
+			type <- targetClass	
+		)		
+	do
+	{	
+		--the targetProperty must be owned by the appropriate class
+		if(not thisModule.resolveTemp(sourceClass,'t').oclIsUndefined())
+		{
+			--resolves to an output model element
+			thisModule.resolveTemp(sourceClass,'t').ownedAttribute <- targetProperty;
+		}
+		else
+		{
+			--there is no match in the output model so use a regular link
+			sourceClass.ownedAttribute <- sourceClass.ownedAttribute->append(targetProperty);
+		}
+		
+		--apply the appropriate stereotype from the template association passed in
+		thisModule.applyStereoTypesValue(false,association,t);
+
+		t;
+	}
+}
+
+-- *** UML Property Element rules start here ***
+
+--Copy all UML Property Elements that belong to a class that is not abstract
+lazy rule CopyRegularProperty {
+	from
+		s : UML!Property(s.isRegularProperty())
+	to
+		t : UML!Property
+		(
+			name <- s.name,
+			aggregation <- s.aggregation,
+			association<- s.association,
+			associationEnd<- s.associationEnd,
+			clientDependency<- s.clientDependency,
+			datatype<- s.datatype,
+			default<- s.default,
+			defaultValue<- thisModule.hasDefaultValue(s.defaultValue),
+			deployment<- s.deployment,
+			--eAnnotations<- s.eAnnotations,
+			end<- s.end,
+			isComposite<- s.isComposite,
+			isDerived<- s.isDerived,
+			isDerivedUnion<- s.isDerivedUnion,
+			isLeaf<- s.isLeaf,
+			isOrdered<- s.isOrdered,
+			isReadOnly<- s.isReadOnly,
+			isStatic<- s.isStatic,
+			isUnique<- s.isUnique,
+			lower<- s.lower,
+			lowerValue<- if not s.lowerValue.oclIsUndefined() then thisModule.CopyDefaultValueSpecification(s.lowerValue) else OclUndefined endif,
+			nameExpression<- s.nameExpression,
+			--opposite<- s.opposite,
+			ownedComment<- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningAssociation<- s.owningAssociation,
+			owningTemplateParameter<- s.owningTemplateParameter,
+			qualifier<- s.qualifier,
+			redefinedProperty<- s.redefinedProperty,
+			subsettedProperty<- s.subsettedProperty,
+			templateParameter<- s.templateParameter,
+			type<- s.type,
+			upper<- s.upper,
+			upperValue<- if not s.upperValue.oclIsUndefined() then thisModule.CopyDefaultValueSpecification(s.upperValue) else OclUndefined endif,
+			visibility<- s.visibility
+			--ownedTemplateSignature <- s.ownedTemplateSignature,
+			--templateBinding <- s.templateBinding
+		)
+		do
+		{
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(false,s,t);
+		}
+}
+
+--Copy all UML Property Elements that belong to a UML Association Element
+lazy rule CopyAssociationProperty {
+	from
+		s : UML!Property(s.oclIsTypeOf(UML!Property))
+	to
+		t : UML!Property
+		(
+			name <- s.name,
+			aggregation <- s.aggregation,
+			association<- s.association,
+			associationEnd<- s.associationEnd,
+			clientDependency<- s.clientDependency,
+			datatype<- s.datatype,
+			default<- s.default,
+			defaultValue <- s.defaultValue,
+			deployment<- s.deployment,
+			--eAnnotations<- s.eAnnotations,
+			end<- s.end,
+			isComposite<- s.isComposite,
+			isDerived<- s.isDerived,
+			isDerivedUnion<- s.isDerivedUnion,
+			isLeaf<- s.isLeaf,
+			isOrdered<- s.isOrdered,
+			isReadOnly<- s.isReadOnly,
+			isStatic<- s.isStatic,
+			isUnique<- s.isUnique,
+			lower<- s.lower,
+			lowerValue<- if not s.lowerValue.oclIsUndefined() then thisModule.CopyDefaultValueSpecification(s.lowerValue) else OclUndefined endif,
+			nameExpression<- s.nameExpression,
+			opposite<- s.opposite,
+			ownedComment<- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningAssociation<- s.owningAssociation,
+			owningTemplateParameter<- s.owningTemplateParameter,
+			qualifier<- s.qualifier,
+			redefinedProperty<- s.redefinedProperty,
+			subsettedProperty<- s.subsettedProperty,
+			templateParameter<- s.templateParameter,
+			type<- s.type,
+			upper<- s.upper,
+			upperValue<- if not s.upperValue.oclIsUndefined() then thisModule.CopyDefaultValueSpecification(s.upperValue) else OclUndefined endif,
+			visibility<- s.visibility
+			--ownedTemplateSignature <- s.ownedTemplateSignature,
+			--templateBinding <- s.templateBinding
+		)
+		do
+		{
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(false,s,t);
+		}		
+}
+
+--Create a UML Property Element in the base Class of a Class that inherits properties from a parent
+lazy rule CreateProperty {
+	from
+		s : UML!Property(s.oclIsTypeOf(UML!Property))
+	to
+		t : UML!Property
+		(
+			name <- s.name,
+			aggregation <- s.aggregation,
+			association<- s.association,
+			associationEnd<- s.associationEnd,
+			clientDependency<- s.clientDependency,
+			datatype<- s.datatype,
+			default<- s.default,
+			defaultValue <- thisModule.hasDefaultValue(s.defaultValue),
+			deployment<- s.deployment,
+			--eAnnotations<- s.eAnnotations,
+			end<- s.end,
+			isComposite<- s.isComposite,
+			isDerived<- s.isDerived,
+			isDerivedUnion<- s.isDerivedUnion,
+			isLeaf<- s.isLeaf,
+			isOrdered<- s.isOrdered,
+			isReadOnly<- s.isReadOnly,
+			isStatic<- s.isStatic,
+			isUnique<- s.isUnique,
+			lower<- s.lower,
+			lowerValue<- if not s.lowerValue.oclIsUndefined() then thisModule.CopyDefaultValueSpecification(s.lowerValue) else OclUndefined endif,
+			nameExpression<- s.nameExpression,
+			opposite<- s.opposite,
+			ownedComment<- s.ownedComment->collect(e|thisModule.CopyComment(e,t)),
+			owningAssociation<- s.owningAssociation,
+			owningTemplateParameter<- s.owningTemplateParameter,
+			qualifier<- s.qualifier,
+			redefinedProperty<- s.redefinedProperty,
+			subsettedProperty<- s.subsettedProperty,
+			templateParameter<- s.templateParameter,
+			type<- s.type,
+			upper<- s.upper,
+			upperValue<- if not s.upperValue.oclIsUndefined() then thisModule.CopyDefaultValueSpecification(s.upperValue) else OclUndefined endif,
+			visibility<- s.visibility
+			--ownedTemplateSignature <- s.ownedTemplateSignature,
+			--templateBinding <- s.templateBinding
+		)
+		do
+		{
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(false,s,t);		
+		}		
+}
+
+-- *** UML Operation Element rules start here ***
+
+--Copy all UML Operation Elements that belong to a class that is not abstract
+lazy rule CopyOperation {
+	from
+		s : UML!Operation(s.oclIsTypeOf(UML!Operation) and not s.class.oclIsUndefined() and not s.class.isAbstract)
+	to
+		t : UML!Operation
+		(
+			name <- s.name,
+			bodyCondition <- s.bodyCondition,
+			class <- s.class,
+			clientDependency <- s.clientDependency,
+			concurrency <- s.concurrency,
+			datatype <- s.datatype,
+			--eAnnotations <- s.eAnnotations,
+			elementImport <- s.elementImport,
+			interface <- s.interface,
+			isAbstract <- s.isAbstract,
+			isLeaf <- s.isLeaf,
+			isQuery <- s.isQuery,		
+			isStatic <- s.isStatic,	
+			method <- s.method,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			ownedParameter <- s.ownedParameter->collect(e|thisModule.CreateParameter(e)),
+			ownedParameterSet <- s.ownedParameterSet,
+			ownedRule <- s.ownedRule,
+			--ownedTemplateSignature <- s.ownedTemplateSignature,
+			owningTemplateParameter <- s.owningTemplateParameter,
+			packageImport <- s.packageImport,
+			postcondition <- s.postcondition,
+			precondition <- s.precondition,
+			raisedException <- s.raisedException,
+			redefinedOperation <- s.redefinedOperation,
+			--templateBinding <- s.templateBinding,
+			templateParameter <- s.templateParameter,
+			visibility <- s.visibility	
+			--the following properties must be left out as they cause the creation of an extra return parameter
+			--isOrdered <- s.isOrdered,
+			--isUnique <- s.isUnique,
+			--lower <- s.lower,			
+			--type <- s.type,
+			--upper <- s.upper,			
+		)
+		do
+		{
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(false,s,t);
+		}		
+}
+
+--Create a UML Operation Element in the base Class of a Class that inherits operations from an abstract parent
+lazy rule CreateOperation {
+	from
+		s : UML!Operation(s.oclIsTypeOf(UML!Operation) and s.class.isAbstract)
+	to
+		t : UML!Operation
+		(
+			name <- s.name,
+			bodyCondition <- s.bodyCondition,
+			class <- s.class,
+			clientDependency <- s.clientDependency,
+			concurrency <- s.concurrency,
+			datatype <- s.datatype,
+			--eAnnotations <- s.eAnnotations,
+			elementImport <- s.elementImport,
+			interface <- s.interface,
+			isAbstract <- s.isAbstract,
+			isLeaf <- s.isLeaf,
+			isQuery <- s.isQuery,		
+			isStatic <- s.isStatic,	
+			method <- s.method,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,t)),
+			ownedParameter <- s.ownedParameter->collect(e|thisModule.CreateParameter(e)),
+			ownedParameterSet <- s.ownedParameterSet,
+			ownedRule <- s.ownedRule,
+			--ownedTemplateSignature <- s.ownedTemplateSignature,
+			owningTemplateParameter <- s.owningTemplateParameter,
+			packageImport <- s.packageImport,
+			postcondition <- s.postcondition,
+			precondition <- s.precondition,
+			raisedException <- s.raisedException,
+			redefinedOperation <- s.redefinedOperation,
+			--templateBinding <- s.templateBinding,
+			templateParameter <- s.templateParameter,
+			visibility <- s.visibility	
+			--the following properties must be left out as they cause the creation of an extra return parameter
+			--isOrdered <- s.isOrdered,
+			--isUnique <- s.isUnique,
+			--lower <- s.lower,			
+			--type <- s.type,
+			--upper <- s.upper,		
+		)
+		do
+		{
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(false,s,t);
+		}		
+}
+
+--Copy all UML Parameter Elements from source to target without any manipulation
+lazy rule CreateParameter {
+	from
+		s : UML!Parameter(s.oclIsTypeOf(UML!Parameter))
+	to
+		t : UML!Parameter
+		(
+			clientDependency <- s.clientDependency,
+			default <- s.default,
+			defaultValue <- thisModule.hasDefaultValue(s.defaultValue),
+			direction <- s.direction,
+			--eAnnotations <- s.eAnnotations,
+			effect <- s.effect,
+			end <- s.end,
+			isException <- s.isException,
+			isOrdered <- s.isOrdered,
+			isStream <- s.isStream,
+			isUnique <- s.isUnique,
+			lower <- s.lower,
+			lowerValue <- s.lowerValue,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,t)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			parameterSet <- s.parameterSet,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			upper <- s.upper,
+			upperValue <- s.upperValue,
+			visibility <- s.visibility
+		)
+		do
+		{
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(false,s,t);
+		}		
+}
+
+--Copy all UML EnumerationLiteral Elements from source to target without any manipulation
+rule CopyEnumerationLiteral
+{
+	from s : UML!EnumerationLiteral(s.oclIsTypeOf(UML!EnumerationLiteral) and thisModule.isPackageValid(s.getNearestPackage()))
+
+	to t : UML!EnumerationLiteral
+	(
+		classifier <- s.classifier,
+		clientDependency <- s.clientDependency ,
+		deployment <- s.deployment ,
+		--eAnnotations <- s.eAnnotations ,
+		enumeration <- s.enumeration,
+		name <- s.name,
+		nameExpression <- s.nameExpression ,
+		ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+		owningTemplateParameter <- s.owningTemplateParameter ,
+		templateParameter <- s.templateParameter ,
+		slot <- s.slot,		
+		specification <- s.specification,
+		visibility  <- s.visibility
+	)
+	do
+	{
+		--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+		thisModule.applyStereoTypesValue(false,s,t);
+	}	
+}
+
+--Create all UML EnumerationLiteral Elements inherited by an Enumeration
+rule CreateEnumerationLiteral(lit : UML!EnumerationLiteral, enum : UML!Enumeration)
+{
+	to t : UML!EnumerationLiteral
+	(
+		classifier <- enum,
+		clientDependency <- lit.clientDependency ,
+		deployment <- lit.deployment ,
+		--eAnnotations <- s.eAnnotations ,
+		enumeration <- enum,
+		name <- lit.name,
+		nameExpression <- lit.nameExpression ,
+		ownedComment <- lit.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+		owningTemplateParameter <- lit.owningTemplateParameter ,
+		templateParameter <- lit.templateParameter ,
+		slot <- lit.slot,		
+		specification <- thisModule.CopyDefaultValueSpecification(lit.specification),
+		visibility  <- lit.visibility
+	)
+	do
+	{
+		--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+		thisModule.applyStereoTypesValue(false,lit,t);
+		t;
+	}	
+}
+
+--Copy all UML Enumeration Elements from source to target
+rule CopyEnumeration
+{
+	from s : UML!Enumeration(s.oclIsTypeOf(UML!Enumeration) and thisModule.isPackageValid(s.getNearestPackage()))
+
+	to t : UML!Enumeration
+	(
+		clientDependency <- s.clientDependency ,
+		collaborationUse <- s.collaborationUse ,
+		--eAnnotations <- s.eAnnotations ,
+		elementImport <- s.elementImport ,
+		--we don't need to keep enumeration generalizations so we drop them
+		--general <- s.general ,
+		--generalization <- s.generalization ,
+		isAbstract <- s.isAbstract ,
+		isLeaf <- s.isLeaf ,
+		name <- s.name,
+		nameExpression <- s.nameExpression ,
+		ownedAttribute <- s.ownedAttribute ,
+		ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+		ownedLiteral <- s.ownedLiteral,
+		
+		--also create any inherited liternal		
+		ownedLiteral <- s.inheritedMember->select(e|e.visibility=#public)->collect(e|thisModule.CreateEnumerationLiteral(e,s)),
+
+		ownedOperation <- s.ownedOperation ,
+		ownedRule <- s.ownedRule ,
+		--ownedTemplateSignature <- s.ownedTemplateSignature ,
+		ownedUseCase <- s.ownedUseCase ,
+		owningTemplateParameter <- s.owningTemplateParameter ,
+		package <- s.package,
+		packageImport <- s.packageImport ,
+		powertypeExtent <- s.powertypeExtent ,
+		redefinedClassifier <- s.redefinedClassifier ,
+		representation <- s.representation ,
+		substitution <- s.substitution ,
+		--templateBinding <- s.templateBinding ,
+		templateParameter <- s.templateParameter ,
+		useCase <- s.useCase ,
+		visibility  <- s.visibility
+	)
+	do
+	{
+		--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+		thisModule.applyStereoTypesValue(false,s,t);
+	}	
+}
+
+--When called copy all UML Comment Elements from source to target without any manipulation. this must be a called rule
+--as we want to avoid outputing comments from abstract classes which get removed.
+rule CopyComment(s : UML!Comment, element : UML!Element)
+{
+	to t : UML!Comment
+	(
+		--annotated elements should be reset if the rule calling CopyComment is creating a new element
+		--like CreateProperty. We do not want cross model references here.
+		annotatedElement <- if element.oclIsUndefined() then s.annotatedElement else element endif,
+		body <- s.body,
+		--eAnnotations <- s.eAnnotations,
+		ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined))
+	)	
+	do
+	{
+		--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+		thisModule.applyStereoTypesValue(false,s,t);
+		t;
+	}	
+}
+
+--Copy all UML DataType Elements from source to target without any manipulation
+rule CopyDataType
+{
+	from s : UML!DataType (s.oclIsTypeOf(UML!DataType) and thisModule.isPackageValid(s.getNearestPackage()))
+    to t : UML!DataType 
+	(	
+		clientDependency <- s.clientDependency,
+		collaborationUse <- s.collaborationUse,
+		--eAnnotations <- s.eAnnotations,
+		elementImport <- s.elementImport,
+		general <- s.general,
+		--generalization <- s.generalization,--This is a copy of the general class itself. we don't need this
+		isAbstract <- s.isAbstract,
+		isLeaf <- s.isLeaf,
+		name <- s.name,
+		nameExpression <- s.nameExpression,
+		ownedAttribute <- s.ownedAttribute,
+		ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+		ownedOperation <- s.ownedOperation,
+		ownedRule <- s.ownedRule,
+		--ownedTemplateSignature <- s.ownedTemplateSignature,
+		ownedUseCase <- s.ownedUseCase,
+		owningTemplateParameter <- s.owningTemplateParameter,
+		package <- s.package,
+		packageImport <- s.packageImport,
+		powertypeExtent <- s.powertypeExtent,
+		redefinedClassifier <- s.redefinedClassifier,
+		representation <- s.representation,
+		substitution <- s.substitution,
+		--templateBinding <- s.templateBinding,
+		templateParameter <- s.templateParameter,
+		useCase <- s.useCase,
+		visibility <- s.visibility
+	)
+	do
+	{
+		--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+		thisModule.applyStereoTypesValue(false,s,t);
+	}		
+}
+
+--*** Profile modelling rules start here ***
+--Copy all UML PackageImport Elements from source to target without any manipulation
+--rule CopyPackageImport {
+--	from
+--		s : UML!PackageImport(s.oclIsTypeOf(UML!PackageImport) and thisModule.isPackageValid(s.getNearestPackage()))
+--	to
+--		t : UML!PackageImport
+--		(
+--			--eAnnotations <- s.eAnnotations,
+--			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+--			importedPackage <- s.importedPackage,
+--			importingNamespace <- s.importingNamespace,
+--			visibility <- s.visibility
+--		)
+--}
+--Copy all UML ProfileApplication Elements from source to target without any manipulation
+rule CopyProfileApplication {
+	from
+		s : UML!ProfileApplication(s.oclIsTypeOf(UML!ProfileApplication) and thisModule.isPackageValid(s.getNearestPackage()))
+	to
+		t : UML!ProfileApplication
+		(
+			appliedProfile <- s.appliedProfile,
+			--eAnnotations <- s.eAnnotations,--TODO:This causes warnigns in ATL 3.1.1
+			isStrict <- s.isStrict,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			applyingPackage <- s.applyingPackage
+			
+		)
+}
+
+--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+rule applyStereoTypesValue(required : Boolean, s : UML!Element, t : UML!Element)
+{
+	do
+	{
+		--loop over all the stereotypes on an element
+		for (stereotype in s.getAppliedStereotypes())
+		{	
+			--if the UML!Element does not get its stereotype automically applied (i.e. UML not required) then we must apply it manually
+			--note:surprisingly the "required" property doesn't seem to be exposed by UML2. maybe look intot his more
+			if (not required)
+			{
+				t.applyStereotype(stereotype);
+			}
+			 
+			--loop over all the stereotype's properties
+			for (property in stereotype.getAllAttributes())
+	    	{
+				--apply the value if there is one. don't apply the base type property as ATL cannot handle this. also don't touch read-only properties.
+				if(s.hasValue(stereotype,property.name) and (not property.name.startsWith('base_')) and not property.isReadOnly())
+				{
+					t.setValue(stereotype,property.name,s.getValue(stereotype,property.name));
+				}					
+	    	}
+		}			
+	}
+}
+
+
+--**Start of CopyDefaultValueSpecification coping rules**
+--**These rules are needed as abstract properties which are copied to child classes must also
+--have their default values copied. UML/ATL behaviour is normally to only copy once from a bag.
+lazy abstract rule CopyDefaultValueSpecification{
+	from
+		s : UML!ValueSpecification(s.oclIsKindOf(UML!ValueSpecification))
+	to
+		t : UML!ValueSpecification()
+}
+
+--Copy all UML LiteralString Elements from source to target without any manipulation
+lazy rule CopyDefaultLiteralString extends CopyDefaultValueSpecification {
+	from
+		s : UML!LiteralString(s.oclIsTypeOf(UML!LiteralString))
+	to
+		t : UML!LiteralString
+		(
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			visibility <- s.visibility,
+			value <- s.value
+		)
+}
+
+--Copy all UML OpaqueExpression Elements from source to target without any manipulation
+lazy rule CopyDefaultOpaqueExpression extends CopyDefaultValueSpecification{
+	from
+		s : UML!ValueSpecification(s.oclIsTypeOf(UML!OpaqueExpression))
+	to
+		t : UML!OpaqueExpression
+		(
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			visibility <- s.visibility,
+			behavior <- s.behavior,
+			body <- s.body,
+			language <- s.language
+			
+		)
+}
+
+--Copy all UML LiteralInteger Elements from source to target without any manipulation
+lazy rule CopyDefaultLiteralInteger extends CopyDefaultValueSpecification {
+	from
+		s : UML!LiteralInteger(s.oclIsTypeOf(UML!LiteralInteger))
+	to
+		t : UML!LiteralInteger
+		(
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			visibility <- s.visibility,
+			value <- s.value
+		)
+}
+
+--Copy all UML LiteralUnlimitedNatural Elements from source to target without any manipulation
+lazy rule CopyDefaultLiteralUnlimitedNatural extends CopyDefaultValueSpecification {
+	from
+		s : UML!LiteralUnlimitedNatural(s.oclIsTypeOf(UML!LiteralUnlimitedNatural))
+	to
+		t : UML!LiteralUnlimitedNatural
+		(
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			visibility <- s.visibility,
+			value <- s.value
+		)
+}
+
+--Copy all UML LiteralBoolean Elements from source to target without any manipulation
+lazy rule CopyDefaultLiteralBoolean  extends CopyDefaultValueSpecification{
+	from
+		s : UML!LiteralBoolean(s.oclIsTypeOf(UML!LiteralBoolean))
+	to
+		t : UML!LiteralBoolean
+		(
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			visibility <- s.visibility,
+			value <- s.value
+		)
+}
+
+--Copy all UML InstanceValue Elements from source to target without any manipulation
+lazy rule CopyDefaultInstanceValue  extends CopyDefaultValueSpecification{
+	from
+		s : UML!InstanceValue(s.oclIsTypeOf(UML!InstanceValue))
+	to
+		t : UML!InstanceValue
+		(
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			visibility <- s.visibility,
+			instance <- s.instance
+		)
+}
+--**End of CopyDefaultValueSpecification coping rules**
+
+
+--*** Instance modelling rules start here ***
+
+--Copy all UML InstanceSpecification Elements from source to target without any manipulation
+rule CopyInstanceSpecification {
+	from
+		s : UML!InstanceSpecification(s.oclIsTypeOf(UML!InstanceSpecification) and thisModule.isPackageValid(s.getNearestPackage()))
+	to
+		t : UML!InstanceSpecification
+		(
+			classifier <- s.classifier,
+			clientDependency <- s.clientDependency,
+			deployment <- s.deployment,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			slot <- s.slot,
+			specification <- s.specification,
+			templateParameter <- s.templateParameter,
+			visibility <- s.visibility
+		)
+		do
+		{
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(false,s,t);
+		}		
+}
+
+--Copy all UML Dependency Elements from source to target without any manipulation
+rule CopyDependency {
+	from
+		s : UML!Dependency(s.oclIsTypeOf(UML!Dependency) and thisModule.isPackageValid(s.getNearestPackage()))
+	to
+		t : UML!Dependency
+		(
+			client <- s.client,
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			supplier <- s.supplier,
+			templateParameter <- s.templateParameter,
+			visibility <- s.visibility
+		)
+		do
+		{
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(false,s,t);
+		}		
+}
+
+--Copy all UML Slot Elements from source to target without any manipulation
+rule CopySlot {
+	from
+		s : UML!Slot(s.oclIsTypeOf(UML!Slot) and thisModule.isPackageValid(s.getNearestPackage()))
+	to
+		t : UML!Slot
+		(
+			definingFeature <- s.definingFeature,
+ 			--eAnnotations <- s.eAnnotations,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningInstance <- s.owningInstance,
+			value <- s.value
+		)
+		do
+		{
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(false,s,t);
+		}		
+}
+
+--Copy all UML LiteralString Elements from source to target without any manipulation
+rule CopyLiteralString {
+	from
+		s : UML!LiteralString(s.oclIsTypeOf(UML!LiteralString) and not s.owner.oclIsTypeOf(UML!Property) and not s.owner.oclIsUndefined() and thisModule.isPackageValid(s.getNearestPackage()))
+	to
+		t : UML!LiteralString
+		(
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			visibility <- s.visibility,
+			value <- s.value
+		)
+}
+
+--Copy all UML OpaqueExpression Elements from source to target without any manipulation
+rule CopyOpaqueExpression {
+	from
+		s : UML!OpaqueExpression(s.oclIsTypeOf(UML!OpaqueExpression) and not s.owner.oclIsTypeOf(UML!Property) and not s.owner.oclIsUndefined() and thisModule.isPackageValid(s.getNearestPackage()))
+	to
+		t : UML!OpaqueExpression
+		(
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			visibility <- s.visibility,
+			behavior <- s.behavior,
+			body <- s.body,
+			language <- s.language
+			
+		)
+}
+
+--Copy all UML LiteralInteger Elements from source to target without any manipulation
+rule CopyLiteralInteger {
+	from
+		s : UML!LiteralInteger(s.oclIsTypeOf(UML!LiteralInteger) and not s.owner.oclIsTypeOf(UML!Property) and not s.owner.oclIsUndefined() and thisModule.isPackageValid(s.getNearestPackage()))
+	to
+		t : UML!LiteralInteger
+		(
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			visibility <- s.visibility,
+			value <- s.value
+		)
+}
+
+--Copy all UML LiteralBoolean Elements from source to target without any manipulation
+rule CopyLiteralBoolean {
+	from
+		s : UML!LiteralBoolean(s.oclIsTypeOf(UML!LiteralBoolean) and not s.owner.oclIsTypeOf(UML!Property) and not s.owner.oclIsUndefined() and thisModule.isPackageValid(s.getNearestPackage()))
+	to
+		t : UML!LiteralBoolean
+		(
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			visibility <- s.visibility,
+			value <- s.value
+		)
+}
+
+--Copy all UML LiteralNull Elements from source to target without any manipulation
+rule CopyLiteralNull {
+	from
+		s : UML!LiteralNull(s.oclIsTypeOf(UML!LiteralNull) and not s.owner.oclIsTypeOf(UML!Property) and not s.owner.oclIsUndefined() and thisModule.isPackageValid(s.getNearestPackage()))
+	to
+		t : UML!LiteralNull
+		(
+			
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			visibility <- s.visibility
+		)
+}
+
+--Copy all UML InstanceValue Elements from source to target without any manipulation
+rule CopyInstanceValue {
+	from
+		s : UML!InstanceValue(s.oclIsTypeOf(UML!InstanceValue) and not s.owner.oclIsTypeOf(UML!Property) and not s.owner.oclIsUndefined() and thisModule.isPackageValid(s.getNearestPackage()))
+	to
+		t : UML!InstanceValue
+		(
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			type <- s.type,
+			visibility <- s.visibility,
+			instance <- s.instance
+		)
+}
+
+--Copy all UML Constraint Elements from source to target without any manipulation
+rule CopyConstraint {
+	from
+		s : UML!Constraint(s.oclIsTypeOf(UML!Constraint) and thisModule.isPackageValid(s.getNearestPackage()))
+	to
+		t : UML!Constraint
+		(
+			clientDependency <- s.clientDependency,
+			--eAnnotations <- s.eAnnotations,
+			constrainedElement <- s.constrainedElement,
+			--"context" <- s."context",--we must leave this line out as when in it causes the rule to not fire on UML Operations
+			name <- s.name,
+			nameExpression <- s.nameExpression,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			owningTemplateParameter <- s.owningTemplateParameter,
+			templateParameter <- s.templateParameter,
+			visibility <- s.visibility,
+			specification <- s.specification
+		)
+		do
+		{
+			--apply all the profile's stereotype values to the target model. they don't get copied by ATL automatically
+			thisModule.applyStereoTypesValue(false,s,t);
+		}		
+}
+
+--Copy all UML PackageMerge Elements from source to target without any manipulation
+rule CopyPackageMerge{
+	from s : UML!PackageMerge(s.oclIsTypeOf(UML!PackageMerge))	
+	to
+		t : UML!PackageMerge
+		(
+			eAnnotations <- s.eAnnotations,
+			mergedPackage <- s.mergedPackage,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			receivingPackage <- s.receivingPackage
+		)
+}
+
+--Copy all UML Usage Elements from source to target without any manipulation
+rule CopyUsage{
+	from s : UML!Usage(s.oclIsTypeOf(UML!Usage))	
+	to
+		t : UML!Usage
+		(
+			client <- s.client,
+			clientDependency <- s.clientDependency,
+			eAnnotations <- s.eAnnotations,
+			name <- s.name,
+			ownedComment <- s.ownedComment->collect(e|thisModule.CopyComment(e,OclUndefined)),
+			supplier <- s.supplier,
+			visibility <- s.visibility
+		)
+}

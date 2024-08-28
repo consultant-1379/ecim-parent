@@ -1,0 +1,155 @@
+-- /**
+-- * This transform maps the different EcimMoClass types (EcimMoClass, EcimStruct) to MP.ecore ClassType
+-- * 
+-- * Note: The inheritance structure of these rules is exactly as defined in the ECIM Profile. This is possible as there is no
+-- * multiple inheritance hierarchies in the ECIM Profile for MOCs.
+-- *
+-- * superimposition-dependencies: ECIMtoMP 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 03/02/2010
+-- */
+
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module MOClassMappingRules;
+create OUT : MP from IN : UML;
+
+--This rule captures all the common mappings that all MOC types have
+abstract rule EcimGeneralMoClassToClassType
+{
+	from s: UML!Class(not s.isAbstract and (s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimMom')))	
+	to t: MP!ClassType
+	(	
+		description <- thisModule.hasDescription(s),
+		name <- thisModule.setCurrentPackage(s.getNearestPackage()),-- we wrap/store the current mim package to be reused for structs members and exception parameters	
+		name <- s.name,
+		dependenciesScript <- thisModule.hasConstraint(s),
+	
+		--Support the ECIMGeneralProperties
+		deprecated <- thisModule.isDeprecated(s),
+		obsolete <- thisModule.isObsolete(s),
+		filter <- thisModule.hasFilter(s),
+		specification <- thisModule.hasSpecification(s),
+		preliminary <- thisModule.isPreliminary(s),
+		statusInformation <- thisModule.hasStatusInformation(s),
+		decisionPoint <- thisModule.hasDecisionPoint(s),
+		
+		--Supported CPP specific properties
+		transactionConstraints <- if thisModule.isCPP() then thisModule.hasTransactionConstraints(s) else OclUndefined endif,
+		transactionRequired <- if thisModule.isCPP() then thisModule.isTransactionRequired(s) else OclUndefined endif,
+		lockBeforeDelete <- if thisModule.isCPP() then thisModule.isLockBeforeDelete(s) else OclUndefined endif,
+		
+		validationRules <- if (s.ownedRule->select(e|e.hasStereotype('ECIM Base Profile::EcimSchematronConstraint'))->size()>=1) 
+						   then 
+							   thisModule.SchematronConstraintToValidationRules(s.ownedRule->select(e|e.hasStereotype('ECIM Base Profile::EcimSchematronConstraint'))->first())
+						   else
+						   		OclUndefined
+						   endif,
+		
+		--CPP properties that are not supported	
+		--applicationTag <-
+		--dependencies <-
+		--notificationTypes <-
+		--feature <-
+		--interfaceOnly <-
+		--nonPersistent <-
+		--precondition <-
+		--visibility <-
+		
+		--get all the UML properties on a Class and union them with all the UML properties on parents of the Class i.e. support inheritance
+		--attribute <- s.ownedAttribute->union(s.parents()->collect(e|e.ownedAttribute)->flatten())
+		attribute <- s.ownedAttribute->select(e|not (e.hasStereotype('CppProfile::CppAttribute') and e.name.startsWith('pm')))
+		--ignore properties with no stereotypes as these are association properties
+		->select(e|e.hasStereotypeApplied())->collect(e|thisModule.EcimGeneralAttributeToAttributeType(e)),	
+
+		--get all the UML operations on a Class and union them with all the UML operations on parents of the Class i.e. support inheritance
+		--action <- s.ownedOperation->union(s.parents()->collect(e|e.ownedOperation)->flatten())
+		action <- s.ownedOperation
+		--ignore actions with no stereotypes
+		->select(e|e.hasStereotypeApplied())->collect(e|thisModule.OperationToActionType(e))
+	)		
+}
+
+rule SchematronConstraintToValidationRules(s: UML!Constraint)
+{
+	using {seq : OrderedSet(UML!Constraint) = OrderedSet{s}; }
+	to t: MP!ValidationRulesType
+	(
+		rule <- seq->collect(e|thisModule.SchematronConstraintToRule(e))
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule SchematronConstraintToRule(s: UML!Constraint)
+{
+	using {
+		interfaceName : OclAny = s.getValue(s.getEcimAppliedStereotype(),'interfaceName');
+		interfaceVersion : OclAny = s.getValue(s.getEcimAppliedStereotype(),'interfaceVersion');
+		format : String =   if (not interfaceName.oclIsUndefined())	
+							then 
+								interfaceName.toString() + '_' + interfaceVersion.toString() 
+							else 
+								s.getSpecification().getLanguages().first() 
+							endif;	
+	}
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- s.specification.stringValue()
+	),	
+	ruleType: MP!RuleType
+	(
+		mixed <- xmltype.mixed,	
+		name <- s.name,
+		format <- format,
+		exceptionText <- ''
+	)
+	do
+	{
+		ruleType;
+	}
+}
+
+--This concrete rule fires for any UML classes with EcimMoClass applied.
+rule EcimReadWriteMoClassToClassType extends EcimGeneralMoClassToClassType
+{
+	from s: UML!Class(not s.isAbstract and (s.hasStereotype('ECIM Base Profile::EcimMoClass')))
+	using 
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(s);	
+	}		
+	to t: MP!ClassType
+	(
+		root <- if thisModule.isClassRoot(s) then rootType else OclUndefined endif,
+--		yangRoot <- if thisModule.isYangRoot(s) then yangRootType else OclUndefined endif,
+		systemCreated <- thisModule.isSystemCreated(s),
+		--before creating the extensions we group them by domain so that they can be outputted together
+		domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,s))
+		
+	),
+	rootType : MP!RootType
+	(
+	)	
+--	,
+--	yangRootType : MP!YangRootType
+--	(
+--	)	
+}
+
+--This concrete rule fires for any abstract UML classes with EcimAbstractMoClass applied. 
+--It creates a InterfaceOnly in the output.
+--rule EcimAbstractMoClassToClassType extends EcimGeneralMoClassToClassType
+--{
+--	from s: UML!Class(s.isAbstract and s.hasStereotype('ECIM Base Profile::EcimAbstractMoClass'))
+--	to t: MP!ClassType
+--	(
+--		interfaceOnly <- thisModule.isAbstract(s)
+--	)
+--}

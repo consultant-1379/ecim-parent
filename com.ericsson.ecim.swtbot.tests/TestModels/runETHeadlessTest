@@ -1,0 +1,19 @@
+#!/bin/sh
+
+echo "Start to run headless test in case home $1"
+
+ESCAP=`echo $1 | eval sed -e 's/"\/"/#/g'`
+SED_ARG="-e 's/\$CASE_HOME/$ESCAP/g'"
+
+cat $1/DailyHeadlessRegression.xml | eval sed "$SED_ARG" > $1/DailyHeadlessTest.xml
+sed -i 's/#/\//g' $1/DailyHeadlessTest.xml
+
+#cat $1/DailyHeadlessTest.xml
+
+cd eclipse/
+
+sed -i s/ms40m/ms128m/g eclipse.ini
+sed -i s/mx512m/mx4G/g eclipse.ini
+sed -i s/mx1024m/mx4G/g eclipse.ini
+
+./eclipse -application com.ericsson.ecim.clitransform -consoleLog -noSplash -continueOnFailure -data ${1} -headlessConfiguration $1/DailyHeadlessTest.xml --launcher.suppressErrors

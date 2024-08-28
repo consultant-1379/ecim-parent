@@ -1,0 +1,210 @@
+module LeafrefPath {
+	yang-version 1;
+	namespace "urn:com:ericsson:yang:leafrefpath";
+	prefix nt;
+
+	import IetfInterfaces {
+		prefix ietfinterfaces;
+	}
+
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+	
+	import ComTop {
+		prefix "EcimComTop";
+		revision-date "2015-03-01";
+	}
+
+	description "This module defines a model for testing leafrefs.";
+
+	revision 2015-03-01 {
+		description "Initial revision.";
+		ericsson:correction 1;
+		ericsson:release 1;
+		ericsson:version 1;
+	}
+	
+	/**
+	 * Algorithm for translating from leafref paths to schematron xpaths:
+	 * 
+	 * 1) If absolute path, then use same path with namespace prefixes removed (?) 
+	 * 2) If relative path, remove initial "../", that is "../../a" => "../@a"
+	 * 3) If chained path, concatenate the paths. Then "A/b" + "../c" => "A/@c" and 
+	 *       "A/b" + "/C/d" => "/C/@d" (where "/C/d" is absolute), finally apply rules 1 and 2
+	 *
+	 * Examples:
+	 * A) lf1="../nc:a" =>
+	 *    xpath="@a"
+	 * B) lf1="/A/B/c" =>
+	 *    xpath="/A/B/@c" 
+	 * C) lf1="../lf2", lf2="../A/b" =>
+	 *    xpath="/A/@b" 
+	 * D) lf1="../lf3", lf3="/A/B/c" =>
+	 *    xpath="/A/B/@c" 
+	 * 
+	 * 
+	 */
+	 
+	augment "/EcimComTop:ManagedElement" {
+		ericsson:ecim-contribution;
+
+	container AContainer {
+		description
+		"This container acts as the top-level data element of this model.";
+		list B1List {
+			key "bListAttr";
+			leaf bListAttr {
+				type uint32;
+			}
+			
+			/**
+			 * <schema xmlns="http://purl.oclc.org/dsdl/schematron">
+			 * <pattern>
+			 * <rule>
+			 *   <assert test='every $ref in @c1listRef1 satisfies $ref = /ManagedElement/AContainer/B1List/C2List/D2List/@d2ListAttr'>data-missing instance-required</assert>
+			 *   <assert test='every $ref in @c1listRef2 satisfies $ref = /ManagedElement/AContainer/B1List/C2List/D2List/@d2ListAttr'>data-missing instance-required</assert>
+			 * </rule>
+			 * </pattern>
+			 * </schema>
+			 */
+			list C1List {
+				key "c1ListRef1";
+				
+				leaf c1ListRef1 {
+					type leafref {
+						path "/EcimComTop:ManagedElement/AContainer/B1List/C2List/D2List/d2ListAttr";
+					}
+				}
+				
+				leaf c1ListRef2 {
+					type leafref {
+						path "../c1ListRef1";
+					}
+				}
+			
+				list D1List {
+					key "d1ListAttr";
+					leaf d1ListAttr {
+						type uint8;
+					}
+				}
+
+			}
+
+			list C2List {
+				key "c2listAttr";
+				leaf c2listAttr {
+					type uint64;
+				}
+
+
+				/**
+				 * <schema xmlns="http://purl.oclc.org/dsdl/schematron">
+			     * <pattern>
+				 * <rule>
+				 *   <assert test='every $ref in @d2ListRef satisfies $ref = @d2ListAttr'>data-missing instance-required</assert>
+				 * </rule>
+				 * </pattern>
+				 * </schema>
+				 */
+				list D2List {
+					key "d2ListAttr";
+					leaf d2ListAttr {
+						type uint16;
+					}
+					
+					leaf d2ListRef {
+						type leafref {
+							path "../d2ListAttr";
+						}
+					}
+
+
+					/**
+					 * <schema xmlns="http://purl.oclc.org/dsdl/schematron">
+					 * <pattern>
+					 * <rule>
+					 *   <assert test='every $ref in @e2ListRef1 satisfies $ref = ../@d2ListAttr'>data-missing instance-required</assert>
+					 *   <assert test='every $ref in @e2ListRef2 satisfies $ref = /ManagedElement/AContainer/B1List/C2List/D2List/@d2ListAttr'>data-missing instance-required</assert>
+					 *   <assert test='every $ref in @e2ListRef3 satisfies $ref = ../../D3List/@d3ListAttr'>data-missing instance-required</assert>
+					 *   <assert test='every $ref in @e2ListRef4 satisfies $ref = /ManagedElement/AContainer/B1List/C2List/D3List/@d3ListAttr'> data-missing instance-required</assert>
+					 * </rule>
+					 * </pattern>
+					 * </schema>
+					 */
+					list E2List {
+						key "e2ListAttr";
+						leaf e2ListAttr {
+							type uint32;
+						}
+						
+						leaf e2ListRef1 {
+							type leafref {
+								path "../../d2ListRef";
+							}
+						}
+						
+						leaf e2ListRef2 {
+							type leafref {
+								path "/EcimComTop:ManagedElement/AContainer/B1List/C2List/D2List/d2ListAttr";
+							}
+						}
+						
+
+						leaf e2ListRef3 {
+							type leafref {
+								path "../../../D3List/d3ListAttr";
+							}
+						}
+
+						leaf e2ListRef4 {
+							type leafref {
+								path "/EcimComTop:ManagedElement/AContainer/B1List/C2List/D3List/d3ListAttr";
+							}
+						}
+					}
+					
+
+				}
+
+
+				/**
+				 * <schema xmlns="http://purl.oclc.org/dsdl/schematron">
+			     * <pattern>
+				 * <rule>
+				 *   <assert test='every $ref in @d3ListRef1 satisfies $ref = /ManagedElement/SystemFunctions/interfaces/interface/@name'>data-missing instance-required</assert>
+				 *   <assert test='every $ref in @d3ListRef2 satisfies $ref = ../../C1List/D1List/@d1ListAttr'>data-missing instance-required</assert>
+				 * </rule>
+				 * </pattern>
+				 * </schema>
+				 */
+				list D3List {
+					key "d3ListRef1";
+					
+					leaf d3ListRef1 {
+						type leafref {
+							path "/EcimComTop:ManagedElement/EcimComTop:SystemFunctions/ietfinterfaces:interfaces/ietfinterfaces:interface/ietfinterfaces:name";
+						}
+					}
+					
+					leaf d3ListRef2 {
+						type leafref {
+							path "../../../C1List/D1List/d1ListAttr";
+						}
+					}
+					
+					leaf-list d3ListAttr {		
+						type int32;				
+					}
+
+				}
+
+			}
+
+		}
+
+		} 
+	}
+}
+

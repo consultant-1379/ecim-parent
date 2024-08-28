@@ -1,0 +1,804 @@
+-- /**
+-- * This transform takes a YANG model as input and generates a ECIM compliant model (UML) as output.
+-- * NOTE: All restrictions should be noted here
+-- * 
+-- * superimposition-dependencies: 
+-- * library-dependencies: HelperFunctions.atl
+-- * Yang Model Dependencies: ericsson-yang-extensions.yang
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 22/08/2014
+-- */
+
+-- ECIMMM must be pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml in launcher
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI YANG=http://www.ericsson.com/2010/Yang
+
+module YangModuleToUmlPackage;
+
+--Note:IN2 is for the augments model. One must be present if we do it like this. We could alternatively write a HOT to allow many augment files in. We also need to
+--think about how this will be called via the GUI/CLI
+create OUT : UML from IN : YANG, ECIM_MM : UML, YANG_MM : UML, ECIM_DT : UML, ECIM : UML, YANG_GM : UML, IN2 : YANG,-- IN3 : YANG
+	IN3: YANG, IN4: YANG, IN5: YANG, IN6: YANG, IN7: YANG, IN8: YANG, IN9: YANG, IN10: YANG, 
+	IN11: YANG, IN12: YANG, IN13: YANG, IN14: YANG, IN15: YANG, IN16: YANG, IN17: YANG, IN18: YANG, IN19: YANG, IN20: YANG, 
+	IN21: YANG, IN22: YANG, IN23: YANG, IN24: YANG, IN25: YANG, IN26: YANG, IN27: YANG, IN28: YANG, IN29: YANG, IN30: YANG, 
+	IN31: YANG, IN32: YANG, IN33: YANG, IN34: YANG, IN35: YANG, IN36: YANG, IN37: YANG, IN38: YANG, IN39: YANG, IN40: YANG, 
+	IN41: YANG, IN42: YANG, IN43: YANG, IN44: YANG, IN45: YANG, IN46: YANG, IN47: YANG, IN48: YANG, IN49: YANG, IN50: YANG, 
+	IN51: YANG, IN52: YANG, IN53: YANG, IN54: YANG, IN55: YANG, IN56: YANG, IN57: YANG, IN58: YANG, IN59: YANG, IN60: YANG, 
+	IN61: YANG, IN62: YANG, IN63: YANG, IN64: YANG, IN65: YANG, IN66: YANG, IN67: YANG, IN68: YANG, IN69: YANG, IN70: YANG, 
+	IN71: YANG, IN72: YANG, IN73: YANG, IN74: YANG, IN75: YANG, IN76: YANG, IN77: YANG, IN78: YANG, IN79: YANG, IN80: YANG, 
+	IN81: YANG, IN82: YANG, IN83: YANG, IN84: YANG, IN85: YANG, IN86: YANG, IN87: YANG, IN88: YANG, IN89: YANG, IN90: YANG, 
+	IN91: YANG, IN92: YANG, IN93: YANG, IN94: YANG, IN95: YANG, IN96: YANG, IN97: YANG, IN98: YANG, IN99: YANG, IN100: YANG; 
+
+uses HelperFunctions;
+
+--check to see if a module contains a list/container etc
+helper context YANG!AbstractModule def : hasListOrContainer : Boolean =
+	(self.statements->exists(e|e.oclIsKindOf(YANG!List) or e.oclIsKindOf(YANG!Container)) or self.statements->select(e|e.oclIsKindOf(YANG!Augment))->collect(e|e.elements)->flatten()->exists(e|e.oclIsKindOf(YANG!List) or e.oclIsKindOf(YANG!Container)));
+	--self.statements->exists(e|e.oclIsKindOf(YANG!DataDefinition));
+
+--retrieve all module elements that are not in IN1 module
+helper def : allAbstractModuleInstancesNotInIN() : Set(YANG!AbstractModule) = 
+	YANG!AbstractModule.allInstances()->asSet() - YANG!AbstractModule.allInstancesFrom('IN')->asSet();
+	
+abstract rule AbstractModuletoPackage
+{
+	from s : YANG!AbstractModule
+	to package : UML!Package
+	(
+		name <- s.name,
+		packagedElement <- YANG!ListWithStatus.allInstances()->select(e|thisModule.getModule(e)=s)->reject(e|e.eContainer().oclIsTypeOf(YANG!Grouping)),--->union(thisModule.getReleventAugmentElements(s).debug('aug')),	
+		packagedElement <- YANG!Container.allInstances()->select(e|thisModule.getModule(e)=s)->reject(e|e.eContainer().oclIsTypeOf(YANG!Grouping)),--->union(thisModule.getReleventAugmentElements(s)),	
+		packagedElement <- s.statements->select(e|e.oclIsTypeOf(YANG!Augment))->select(e|thisModule.filterAugments(e,thisModule.getNsPrefix(s)))->collect(e|e.elements)->flatten()->select(e|e.oclIsTypeOf(YANG!ListWithStatus) or e.oclIsTypeOf(YANG!Container)),
+		ownedComment <- thisModule.hasDescription(s)--Issue:The description is used for both the EcimModel and EcimMom documentation as Yang has only a description on the Module	
+		--Issue: What should we do with the yang namespace and prefix?
+		--Issue: What should we do with the yang imports?
+	)	
+}
+
+--It is unavoidable having the 2 rules ModelWithNoElementsToModel and ModelWithElementsToModelAndPackage so similar. This is because the package element
+--for the main module is conditional. No abstraction feature in ATL can help. I've tried! So keep them in sync.
+rule ModuleWithNoElementsToModel
+{
+	from s : YANG!Module(YANG!Module.allInstancesFrom('IN')->contains(s) and not s.hasListOrContainer)		
+	to model : UML!Model
+	(
+		name <- s.name+'Model',
+		ownedComment <- thisModule.hasDescription(s),
+		packagedElement <- thisModule.allAbstractModuleInstancesNotInIN()->select(e|e.hasListOrContainer),
+		packagedElement <- cd,
+		packageImport <- pi
+	),
+	cd : UML!Dependency
+	(
+		--assign the YANG Guidelines as a dependency to the new model
+		name <- 'YANG Guidelines',
+		client <- model,
+		supplier <- UML!Model.allInstancesFrom('YANG_GM')->select(e|e.oclIsTypeOf(UML!Model))->first()
+	),
+	pi : UML!PackageImport
+	(
+		--assign the ECIM Datatypes as an import to the new model
+		importedPackage <- UML!Model.allInstancesFrom('ECIM_DT')->select(e|e.oclIsTypeOf(UML!Model))->first()
+	)		
+	do
+	{
+		--thisModule.getContribution(s).debug('contribs');
+		model.applyProfile(UML!Profile.allInstancesFrom('ECIM_MM')->first());
+		model.applyProfile(UML!Profile.allInstancesFrom('YANG_MM')->first());
+		--Issue:Yang has no values for the EcimModel meta-properties. What should we fill in?
+	}	
+}
+
+rule ModuleWithElementsToModelAndPackage extends AbstractModuletoPackage
+{
+	from s : YANG!Module(YANG!Module.allInstancesFrom('IN')->contains(s) and s.hasListOrContainer)
+	using
+	{
+		ecimPackageSt : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimMom')->first();
+		yangPackageSt : UML!Stereotype = UML!Stereotype.allInstancesFrom('YANG_MM')->select(e|e.name='YangPackage')->first();
+	}		
+	to model : UML!Model
+	(
+		name <- s.name+'Model',
+		ownedComment <- thisModule.hasDescription(s),		
+		packagedElement <- package,
+		packagedElement <- thisModule.allAbstractModuleInstancesNotInIN()->select(e|e.hasListOrContainer),
+		packagedElement <- cd,
+		packageImport <- pi
+	),
+	cd : UML!Dependency
+	(
+		--assign the YANG Guidelines as a dependency to the new model
+		name <- 'YANG Guidelines',
+		client <- model,
+		supplier <- UML!Model.allInstancesFrom('YANG_GM')->select(e|e.oclIsTypeOf(UML!Model))->first()
+	),
+	pi : UML!PackageImport
+	(
+		--assign the ECIM Datatypes as an import to the new model
+		importedPackage <- UML!Model.allInstancesFrom('ECIM_DT')->select(e|e.oclIsTypeOf(UML!Model))->first()
+	)
+	do
+	{
+		--thisModule.getContribution(s).debug('contribs');
+		model.applyProfile(UML!Profile.allInstancesFrom('ECIM_MM')->first());
+		model.applyProfile(UML!Profile.allInstancesFrom('YANG_MM')->first());
+		--Issue:Yang has no values for the EcimModel meta-properties. What should we fill in?
+				
+		thisModule.applyPackageStereotypes(package,ecimPackageSt,s);
+		thisModule.applyPackageSteretypesForYangProfile(package,yangPackageSt,s);
+	}	
+}
+
+
+rule ModuletoPackage extends AbstractModuletoPackage
+{
+	from s : YANG!AbstractModule(thisModule.allAbstractModuleInstancesNotInIN()->contains(s) and s.hasListOrContainer)
+	using
+	{
+		ecimPackageSt : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimMom')->first();
+		yangPackageSt : UML!Stereotype = UML!Stereotype.allInstancesFrom('YANG_MM')->select(e|e.name='YangPackage')->first();
+	}	
+	to package : UML!Package
+	(
+	)
+	do
+	{					
+		thisModule.applyPackageStereotypes(package,ecimPackageSt,s);
+		thisModule.applyPackageSteretypesForYangProfile(package,yangPackageSt,s);
+	}	
+}
+
+rule applyPackageSteretypesForYangProfile(package : UML!Package,st : UML!Stereotype, s:YANG!AbstractModule)
+{
+	do
+	{
+		package.applyStereotype(st);
+		
+		if(s.oclIsTypeOf(YANG!Module))
+		{
+			
+			package.setValue(st,'namespace',s.namespace);
+			package.setValue(st,'prefix',s.prefix.name);		
+		}
+		else if(s.oclIsTypeOf(YANG!SubModule))
+		{
+			--package.setValue(st,'namespace',s.namespace);TODO: A SubModule has no namespace but maybe we should reuse the one from the parent module?
+			package.setValue(st,'prefix',s.belongsTo.prefix.name);
+		}
+
+		package;	
+	}
+
+}
+
+--reusable code for applying package stereotype values
+rule applyPackageStereotypes(package : UML!Package,st : UML!Stereotype, s:YANG!AbstractModule)
+{
+	do
+	{
+		package.applyStereotype(st);
+		--Issue:Yang supports many revisions per module, we support just one
+		if(s.revisions->size() > 0)
+		{
+			package.setValue(st, 'author', thisModule.getStringValue(thisModule.getExtensionProperty(s.revisions->first(),thisModule.getPrefixForImport(s,'ericsson-yang-extensions')+':author')));
+			package.setValue(st, 'contact', thisModule.getStringValue(thisModule.getExtensionProperty(s.revisions->first(),thisModule.getPrefixForImport(s,'ericsson-yang-extensions')+':contact')));
+			package.setValue(st, 'correction', thisModule.getStringValue(thisModule.getExtensionProperty(s.revisions->first(),thisModule.getPrefixForImport(s,'ericsson-yang-extensions')+':correction')));
+			package.setValue(st, 'date', thisModule.getStringValue(thisModule.getExtensionProperty(s.revisions->first(),thisModule.getPrefixForImport(s,'ericsson-yang-extensions')+':date')));
+			package.setValue(st, 'docNo', thisModule.getStringValue(thisModule.getExtensionProperty(s.revisions->first(),thisModule.getPrefixForImport(s,'ericsson-yang-extensions')+':docNo')));
+			package.setValue(st, 'organization', thisModule.getStringValue(s.organization));
+			package.setValue(st, 'revision', thisModule.getStringValue(thisModule.getExtensionProperty(s.revisions->first(),thisModule.getPrefixForImport(s,'ericsson-yang-extensions')+':revision')));
+			package.setValue(st, 'release', thisModule.getStringValue(thisModule.getExtensionProperty(s.revisions->first(),thisModule.getPrefixForImport(s,'ericsson-yang-extensions')+':release')));
+			package.setValue(st, 'statusInformation', thisModule.getStringValue(thisModule.getExtensionProperty(s.revisions->first(),thisModule.getPrefixForImport(s,'ericsson-yang-extensions')+':statusInformation')));
+			package.setValue(st, 'specification', thisModule.getStringValue(thisModule.getExtensionProperty(s.revisions->first(),thisModule.getPrefixForImport(s,'ericsson-yang-extensions')+':specification')));
+			package.setValue(st, 'version', thisModule.getStringValue(thisModule.getExtensionProperty(s.revisions->first(),thisModule.getPrefixForImport(s,'ericsson-yang-extensions')+':version')));
+		}
+
+		--Issue:Yang has no support for ECIM specific properties like ecimMomVersion etc
+		
+		--Issue: We have two place on a module to specify the organization, which shold be used? Should we remove
+		--our special Ericsson extension from Yang?
+		--package.setValue(st, 'organization', thisModule.getStringValue(thisModule.getExtensionProperty(s.revisions->first(),thisModule.getPrefixForImport(s,'ericsson-yang-extensions')+':organization')));
+		
+		package;	
+	}
+
+}
+
+--Get the prefix of a imported module based on the module name
+helper def : getPrefixForImport(m : YANG!AbstractModule, moduleName : String) : String =
+	let imports : Set(Yang!Import) = m.imports->select(e|e.moduleName=moduleName) in
+	if imports->size() = 0
+	then
+		''
+	else
+		imports->first().prefix.name
+	endif;
+
+--retrieve an extension property value
+helper def : getExtensionProperty(element : OclAny, propertyName : String) : OclAny = 
+	let property : YANG!Property = element.properties->select(e|e.prefix.name+':'+e.name=propertyName)->first() in
+	if property.oclIsUndefined()
+	then
+		OclUndefined
+	else
+		if property.value.oclIsUndefined()
+		then
+			OclUndefined
+		else
+			property.value.value
+		endif
+	endif;
+	
+--only process container/lists that are in SubModule, are present in the primary module, or are part of an augments
+--helper def : processMapping(element : OclAny) : Boolean =
+--	let elementModule : YANG!AbstractModule = thisModule.getModule(element) in
+--	if elementModule.oclIsTypeOf(YANG!SubModule) or YANG!Module.allInstancesFrom('IN')->contains(elementModule) or thisModule.isInsideAugments(element)
+--	then
+--		true
+--	else
+--		false
+--	endif;
+
+
+--recurse over a chocie statement expanding all the elements and children inside it
+rule expandChoiceStatement(choice : YANG!Choice)
+{
+	do
+	{
+		choice.name.debug('choice');
+		if not choice.defaultValue.oclIsUndefined() then choice.defaultValue.value.debug('default') else OclUndefined endif;
+		choice.mandatory.debug('mandatory');		
+		choice.elements->select(e|e.oclIsTypeOf(YANG!Case))->collect(e|e.name.debug('case'));
+		choice.elements->select(e|e.oclIsTypeOf(YANG!Case))->collect(e|e.elements)->flatten().debug('elements')->collect(e|thisModule.recurseOverElements(e));
+	}
+}
+
+--recurse over a nesting of DataDefinitions
+helper def : recurseOverElements(dd : YANG!DataDefinition, children : Set(YANG!DataDefinition)) : Set(YANG!DataDefinition) =
+	if(dd.oclIsTypeOf(YANG!Leaf))
+	then
+		dd
+	else
+		if(dd.oclIsTypeOf(YANG!Choice))
+		then
+			thisModule.expandChoiceStatement(dd)
+		else
+			if(dd.children.oclIsUndefined())
+			then
+				children
+			else
+				thisModule.recurseOverElements(dd,dd.children)
+			endif
+		endif
+	endif;
+
+
+--TODO:Uncomment when choice/case compressor is fixed i.e. recurseOverElementsRemovingChoices
+--rule ChoiceToClass
+--{
+--	from s : YANG!Choice
+--	using
+--	{
+--		yangStereotype : UML!Stereotype = UML!Stereotype.allInstancesFrom('YANG_MM')->select(e|e.name='YangChoice')->first();
+--	}
+--	to class : UML!Class
+--	(
+--	)
+--	do
+--	{
+--		class.applyStereotype(yangStereotype);
+--	}
+--}
+
+
+helper def : isUnique(element : YANG!DataDefinitionSet, elements : Set(YANG!DataDefinition))  : YANG!DataDefinition =
+	if(elements.includes(element))
+	then
+		elements
+	else
+		elements.append(element)
+	endif;
+
+
+--recurse over a nesting of DataDefinitions but hop over any choice/cases
+helper def : recurseOverElementsRemovingChoices(dd : YANG!DataDefinition, recursed : Boolean) : Set(YANG!DataDefinition) =
+	if(dd.oclIsTypeOf(YANG!Choice) or dd.oclIsTypeOf(YANG!Case))
+	then
+		dd.elements->collect(e|thisModule.recurseOverElementsRemovingChoices(e,true))
+	else
+		if(dd.oclIsTypeOf(YANG!Leaf) or dd.oclIsTypeOf(YANG!LeafList))
+		then
+			Set{dd}
+		else
+			if(dd.children->select(e|e.oclIsTypeOf(YANG!Choice) or dd.oclIsTypeOf(YANG!Case))->size() > 0)
+			then
+				dd.children->select(e|e.oclIsTypeOf(YANG!Choice) or dd.oclIsTypeOf(YANG!Case))->collect(e|thisModule.recurseOverElementsRemovingChoices(e,true))->flatten()
+			else
+				if(dd.oclIsTypeOf(YANG!ListWithStatus) or dd.oclIsTypeOf(YANG!Container) and (dd.eContainer().oclIsTypeOf(YANG!Choice) or dd.eContainer().oclIsTypeOf(YANG!Case)))
+				then
+					--we check the recursed flag to see if we are running inside a recursion. we we are return the List/Container. if not return the children
+					if(recursed)
+					then
+						Set{dd}
+					else
+						dd.children
+					endif
+				else
+					dd.children
+				endif
+			endif		
+		endif
+	endif;
+
+--rule CreateKey(list : YANG!List)
+--{
+--	to key : UML!Property
+--	(
+--		name <- if not list.key.oclIsUndefined() then list.key else list.name+'Id' endif,
+--		type <- UML!DataType.allInstancesFrom('ECIM_DT')->select(e|e.name='EcimString')->first(),
+--		isReadOnly <- true
+--	)
+--	do
+--	{
+--		key.applyStereotype(UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimKeyAttribute')->first());	
+--		key;	
+--	}
+--}
+
+
+
+--see if the leaf is a key. if so apply the yang key stereotype
+rule applyYangKeyStereotype(s: YANG!Leaf, property : UML!Property)
+{
+	using
+	{
+		yangKeySt : UML!Stereotype = UML!Stereotype.allInstancesFrom('YANG_MM')->select(e|e.name='YangKey')->first();
+	}
+	do
+	{
+		if(s.eContainer().oclIsKindOf(YANG!List))
+		{
+			-- lists inside a config=false branch may not have a key
+			if (not s.eContainer().key.oclIsUndefined()) 
+			{
+				--keys are often surrounded by quotes so take them away before checking for a match
+				if(s.eContainer().key.regexReplaceAll('"','').split(' ')->contains(s.name))
+				{
+					property.setValue(yangKeySt,'position',s.eContainer().key.regexReplaceAll('"','').split(' ')->indexOf(s.name));
+					property.applyStereotype(yangKeySt);
+				}
+			}
+		}	
+	}
+}
+
+helper def : getReferencedType(s : YANG!Type) : YANG!Type = 
+	YANG!TypeDefinition.allInstances()->select(e|e.name=s.name)->first().type;
+
+--get the namespace prefix for a Yang type
+helper def : getNamespacePrefix(t : YANG!Type) : String =
+	if t.oclIsKindOf(YANG!DataType) then	
+		if not t.oclIsUndefined() then
+			if not t.prefix.oclIsUndefined() then
+				t.prefix.name
+			else
+				''		
+			endif
+		else
+			''		
+		endif
+	else
+		''	
+	endif;
+		
+--get module name that provides the types for a given namespace
+helper def : getImportModuleNameFromNamespace(ns : String) : String =
+	YANG!Import.allInstances()->select(e|e.prefix.name = ns)->collect(e|e.moduleName)->first();
+
+--find the UML type, often in another file, for a given Yang type
+--helper def : findType(type : YANG!Type) : UML!DataType =
+--	UML!DataType.allInstances()->select(e|e.getNearestPackage().getName()=thisModule.getImportModuleNameFromNamespace(thisModule.getNamespacePrefix(type)) and e.name=type.name)->first();
+	
+
+--check to see if the element is a key
+helper def : isKey(element : OclAny) : Boolean =
+	--Gather all the list elements which are at the module level. then filter out the element of interest based on its name. then finally get the key name!
+	if YANG!ListWithStatus.allInstances()->select(e|e.eContainer().oclIsKindOf(YANG!AbstractModule) or e.eContainer().oclIsTypeOf(YANG!ListWithStatus))->select(e|e.name=element.eContainer().name)->flatten()->select(e|e.key=element.name)->size() > 0
+	then
+		true
+	else
+		false
+	endif;
+
+--check to see if the element is a struct
+helper def : isStruct(element : OclAny) : Boolean =
+	--Gather all the list elements which are at the module level. if the element is not present then assume it is a struct
+	--Issue:We are quite reliant on names not clashing aren't we?
+	if YANG!ListWithStatus.allInstances()->select(e|e.eContainer().oclIsKindOf(YANG!AbstractModule) or e.eContainer().oclIsTypeOf(YANG!ListWithStatus))->select(e|e.name=element.name)->size() = 0
+	then
+		true
+	else
+		false
+	endif;
+
+--figure out what the appropriate stereotype is for an attribute	
+helper def : computePropertyStereotype(s : OclAny) : UML!Stereotype =
+	if(thisModule.isKey(s))
+	then
+		UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimKeyAttribute')->first()
+	else
+		--if(thisModule.isStruct(s.eContainer()))
+		--then
+			--UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimStructMember')->first()
+		--else
+			UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimAttribute_RW')->first()
+		--endif
+	endif;
+
+
+
+helper def : getLastLeafRefInChain(lr : YANG!LeafRef) : Yang!LeafRef = 
+	let leafPath : String = lr.getReferencedLeafPath(thisModule.getFQN(lr.eContainer(),'')) in
+	let leaf : YANG!Leaf = YANG!Leaf.allInstances()->union(YANG!LeafList.allInstances())->
+				select(e|e.comparePathIgnoringNs(thisModule.getFQN(e,''), leafPath))->first() in		
+	if (leaf.type.oclIsTypeOf(YANG!LeafRef)) then
+		thisModule.getLastLeafRefInChain(leaf.type)
+	else
+		lr
+	endif;
+
+
+--Load in all the leafs/leaflists and then try and match a leafref pointer. Return the leaf or leaflist.
+helper def : getTypeFromLeafRef(lr : YANG!LeafRef) : OclAny =
+	let lastLeafrefInChain : YANG!LeafRef = thisModule.getLastLeafRefInChain(lr) in
+	YANG!Leaf.allInstances()->union(YANG!LeafList.allInstances())->select(e|e.comparePathIgnoringNs(e.convertLocalPathToOriginalPath(thisModule.getFQN(e,'')),
+		                                                                                            e.convertLocalPathToOriginalPath(thisModule.getFQN(lastLeafrefInChain.eContainer(),''), thisModule.getLocalPrefixedPath(lastLeafrefInChain, lastLeafrefInChain.path))))->first().type;
+
+
+--Avoid duplciates of certain type mappings by returning the original instance if one is found
+helper def : typeExistsAlreadyInOutputModel(name : String) : Boolean =
+	UML!DataType.allInstancesFrom('OUT')->select(e|e.name = name)->first();
+
+--recursivly build up a closure identity set based upon the base property
+helper def : getIdentityBases(identity : YANG!Identity, matches : OrderedSet(YANG!Identity), sourceElement : OclAny) : Set(YANG!Identity) =
+	let IS : Set(YANG!Identity) = YANG!Identity.allInstances()->select(e|not e.base.oclIsUndefined())->select(e|sourceElement.convertLocalPathToOriginalPath(thisModule.getPrefixedName(e.base))=thisModule.getPrefixedName(identity)) in
+	if IS->size() = 0
+	then 
+		matches->flatten()
+	else
+		IS->collect(e|thisModule.getIdentityBases(e,matches->append(e),sourceElement)->flatten())->flatten()->asSet()--use a asSet to remove duplicates
+	endif;
+
+
+--get the name of an element based on its containment hierarchy up the Module/SubModuleLevel
+helper def : getFullPathNameOfElement(element : OclAny, elements : String) : String = 
+	if(element.eContainer().oclIsKindOf(YANG!AbstractModule))
+	then
+		--No need to recurse further up as we are at Module/SubModule level
+		element.name+elements
+	else
+		if(element.oclIsKindOf(YANG!NamedElement))--only add the name if one exists, if there is none use the type as the name
+		then
+			thisModule.getFullPathNameOfElement(element.eContainer(),element.name+elements)
+		else
+			thisModule.getFullPathNameOfElement(element.eContainer(),element.oclType().name+elements)
+		endif
+	endif;
+
+
+
+
+--Retrieve a direct or indirectly specified default value for a leaf
+helper def : getDefaultValue(leaf : YANG!Leaf) : YANG!Value =
+	let indirectDefault : YANG!Value = if leaf.type.oclIsTypeOf(YANG!IdentityRef) then leaf.defaultValue else if leaf.type.oclIsKindOf(YANG!NamedElement) then YANG!TypeDefinition.allInstances()->select(e|thisModule.getPrefixedName(e)=leaf.convertLocalPathToOriginalPath(thisModule.getPrefixedName(leaf.type)))->collect(e|e.defaultValue)->first() else OclUndefined endif endif in
+	if(leaf.defaultValue.oclIsUndefined())
+	then
+		if(indirectDefault.oclIsUndefined())
+		then
+			OclUndefined--no default was specified
+		else
+			indirectDefault
+		endif
+	else
+		leaf.defaultValue
+	endif;
+
+helper def : getTypeFromDataType(type : YANG!Type) : YANG!Type =
+	if(type.oclIsTypeOf(YANG!DataType))
+	then
+		if(YANG!TypeDefinition.allInstances()->select(e|e.name=type.name)->collect(e|e.type)->size() > 0)
+		then
+			thisModule.getTypeFromDataType(YANG!TypeDefinition.allInstances()->select(e|e.name=type.name)->collect(e|e.type)->first())
+		else
+			type
+		endif
+	else
+		type
+	endif;
+		
+--Retrieve a direct or indirectly specified type for a leaf
+helper def : getType(leaf : YANG!Leaf) : YANG!Type =
+	if(thisModule.typesMap.get(leaf.type.name).oclIsUndefined())
+	then
+		YANG!TypeDefinition.allInstances()->select(e|e.name=leaf.type.name)->collect(e|e.type)->first()--the type is a custom type so get the type it is based on
+	else
+		leaf.type--the type is a built in yang type
+	endif;
+
+helper context OclAny def : toBoolean() : Boolean =
+	if self.oclIsUndefined() then
+		OclUndefined
+	else 
+		if self = 'true' then
+			true
+		else
+			false
+		endif
+	endif;
+
+
+--Comments should only be created in UML if comments or augment statements were indeed provided
+helper def : hasDescription(element : OclAny) : UML!Comment =
+	let description : String = if element.description.oclIsUndefined() then '' else element.description endif in
+	let whenStatement : String = if thisModule.processWhenStatement(element).oclIsUndefined() then '' else thisModule.processWhenStatement(element) endif in
+	if(description = '' and whenStatement = '')
+	then
+		OclUndefined
+	else
+		thisModule.CreateComment(description + whenStatement)
+	endif;
+
+helper def : processWhenStatement(element : OclAny) : String =
+	if(element.oclIsTypeOf(YANG!Augment) or element.oclIsTypeOf(YANG!Uses) or element.oclIsTypeOf(YANG!Choice) or element.oclIsTypeOf(YANG!Case) or element.oclIsTypeOf(YANG!Container) or element.oclIsTypeOf(YANG!Leaf) or element.oclIsTypeOf(YANG!ListWithStatus)  or element.oclIsTypeOf(YANG!LeafList))
+	then
+		if(not element.when.oclIsUndefined())
+		then
+			'When Condition for this element : '+element.when.value
+		else
+			OclUndefined
+		endif
+	else
+		OclUndefined		
+	endif;
+
+
+rule CreateComment(description : String)
+{
+	to comment : UML!Comment
+	(
+		body <- description
+	)
+	do
+	{
+		comment;
+	}
+}
+
+--Create a Unique Constraint on a Class
+rule createUniqueConstraint(class : UML!Class, uniqueString : String)
+{
+	using
+	{
+		--remove the quotes and any prefixes (if any) and then build a set of unique elements
+		elements : Set(String) = uniqueString.regexReplaceAll('"','').regexReplaceAll('.\\s*:','').split(' ');
+	}
+	to uc :UML!Constraint
+	(
+		context <- class,
+		specification <- oe,
+		--build up the constraint list but be sure to keep the order!!!
+		constrainedElement <- elements->collect(e|class.attribute->select(f|f.name=e)->first())
+	),
+	oe : UML!OpaqueExpression
+	(
+		language <- 'Unique'	
+	)
+	do
+	{
+		uc;
+	}	
+}
+
+
+--This helper avoids setting stereotype values to OclUndefined by accident
+helper def: getStringValue(value : OclAny) : String =
+	if value.oclIsUndefined() then
+		''
+	else
+		value.toString()
+	endif;
+
+--If the lower bounds if 0 in yang then it is not stated at all. For ECIM we must put it back in
+helper def: parseLength(value : String) : String =
+	if not value.oclIsUndefined()
+	then
+		if value.indexOf('..') > 0 then
+			value
+		else
+			'0..' + value
+		endif
+	else
+		OclUndefined
+	endif;
+
+--TODO:The uses methods don't process correctly when there is a case/choice nested in the children. We need to make them just ignore the choice/case statements
+
+--helper def : getUsesLeafs(node : YANG!Node) : Set(YANG!DataDefinition) =
+--	YANG!Grouping.allInstances()->select(e|(thisModule.getPrefixedName(e))=node.convertLocalPathToOriginalPath(thisModule.getPrefixedName(node)))->flatten()->collect(e|e.children)->flatten()->select(e|e.oclIsTypeOf(YANG!Leaf));
+--YANG!Grouping.allInstances()->select(e|(thisModule.getPrefixedName(e))=node.convertLocalPathToOriginalPath(thisModule.getPrefixedName(node)))->flatten()->collect(e|thisModule.recurseOverUses(e))->flatten()->select(e|e.oclIsTypeOf(YANG!Leaf));
+
+--helper def : recurseOverUses(x : OclAny) : Set(OclAny) =
+--	x.children->union(x.children->select(e|e.oclIsTypeOf(YANG!Uses))->collect(e|e.children));
+
+--The following 3 helpers recursivly retrieve elements from a grouping structure with infinite numbers of levels.
+helper def : getUsesLeafs(u : YANG!Uses, dd : Set(YANG!DataDefinition)) : Set(YANG!DataDefinition) =
+	let grouping : YANG!Grouping = YANG!Grouping.allInstances()->select(e|(thisModule.getPrefixedName(e))=u.convertLocalPathToOriginalPath(thisModule.getPrefixedName(u)))->first() in
+	let children : Set(YANG!DataDefinition) = if grouping.oclIsUndefined() then Set{} else grouping.children->select(e|e.oclIsTypeOf(YANG!Leaf)) endif in
+	if children->size() > 0
+	then
+		children->union(grouping.children->select(e|e.oclIsTypeOf(YANG!Uses))->collect(e|thisModule.getUsesLeafs(e,children->union(dd))))
+	else
+		Set{}
+	endif;
+	
+helper def : getUsesLeafLists(u : YANG!Uses, dd : Set(YANG!DataDefinition)) : Set(YANG!DataDefinition) =
+	let namedUses : YANG!NamedElement = u in
+	let grouping : YANG!Grouping = YANG!Grouping.allInstances()->select(e|(thisModule.getPrefixedName(e))=u.convertLocalPathToOriginalPath(thisModule.getPrefixedName(u)))->first() in
+	let children : Set(YANG!DataDefinition) = if grouping.oclIsUndefined() then Set{} else grouping.children->select(e|e.oclIsTypeOf(YANG!LeafList)) endif in
+	if children->size() > 0
+	then
+		children->union(grouping.children->select(e|e.oclIsTypeOf(YANG!Uses))->collect(e|thisModule.getUsesLeafLists(e,children->union(dd))))
+	else
+		Set{}
+	endif;
+	
+helper def : getUsesListsAndContainers(u : YANG!Uses, dd : Set(YANG!DataDefinition)) : Set(YANG!DataDefinition) =
+	let namedUses : YANG!NamedElement = u in
+	let grouping : YANG!Grouping = YANG!Grouping.allInstances()->select(e|(thisModule.getPrefixedName(e))=u.convertLocalPathToOriginalPath(thisModule.getPrefixedName(u)))->first() in
+	let children : Set(YANG!DataDefinition) = if grouping.oclIsUndefined() then Set{} else grouping.children->select(e|e.oclIsTypeOf(YANG!ListWithStatus) or e.oclIsTypeOf(YANG!Container)) endif in
+	if children->size() > 0
+	then
+		children->union(grouping.children->select(e|e.oclIsTypeOf(YANG!Uses))->collect(e|thisModule.getUsesListsAndContainers(e,children->union(dd))))
+	else
+		Set{}
+	endif;
+	
+--check to see if an element is to be augmented. if it is then return the elements it is to be augmented with
+helper def : getReleventAugmentElements(element : OclAny) : OclAny =
+	YANG!Augment.allInstances()->select(e|e.convertLocalPathToOriginalPath()=thisModule.getFQN(element,''))->collect(e|e.elements)->flatten();
+
+helper def : getReleventAugmentElementsByType(element : OclAny, type : OclAny) : OclAny =
+	thisModule.getReleventAugmentElements(element)->select(e|e.oclIsTypeOf(type));
+
+--check to see if an element is to be contributed. if it is then return the elements it is to be contributed with
+helper def : getReleventContributionElements(element : OclAny) : OclAny =
+	--Retrieve the contribution property value(s)
+	let contributions : Set(YANG!Property) = YANG!Property.allInstances()->select(e|thisModule.getPrefixedName(e)=thisModule.getPrefixForImport(thisModule.getModule(e),'ericsson-yang-extensions')+':ecimContribution') in
+	contributions->select(e|thisModule.getModule(e).convertLocalPathToOriginalPath(e.value.value)=thisModule.getFQN(element,''))->collect(e|e.eContainer().statements)->flatten();
+
+helper def : getReleventContibutionElementsByType(element : OclAny, type : OclAny) : OclAny =
+	thisModule.getReleventContributionElements(element)->select(e|e.oclIsTypeOf(type));
+
+--only return augments which are relevent to the main module. we can tell if an augments is relevent by looking at the
+--path which can be local(omission of a : )or if the root prefix is the same as the main module prefix
+helper def : filterAugments(augment : YANG!Augment, modulePrefix : String) : Boolean =
+	let path : String = augment.convertLocalPathToOriginalPath() in
+	if path.indexOf(':') = 0 or path.startsWith('"/'+modulePrefix+':') or path.startsWith('/'+modulePrefix+':')
+	then
+		true
+	else
+		false
+	endif;
+
+--remove augments which are not targeting the main module
+helper def : filterAugmentsWrapper(element : OclAny) : Boolean =
+	if element.oclIsTypeOf(YANG!Augment)
+	then
+		 thisModule.filterAugments(element, thisModule.getNsPrefix(YANG!Module.allInstancesFrom('IN')->first()))
+	else
+		false
+	endif;
+
+--recurse up to the module/submodule to get the namespace prefix
+helper def : getNsPrefix(element : YANG!DataDefinition) : String =
+	if element.oclIsTypeOf(YANG!Module)
+	then
+		element.prefix.name
+	else
+		if element.oclIsTypeOf(YANG!SubModule)
+		then
+			--naviagte into belongs-to statement
+			element.belongsTo.prefix.name
+		else
+			thisModule.getNsPrefix(element.eContainer())
+		endif
+	endif;
+
+--recurse up to the module/submodule to get the fully qualified name of the element
+helper def : getFQN(element : YANG!DataDefinition, fqn : String) : String =
+	if element.eContainer().oclIsUndefined()
+	then
+		('/'+thisModule.getNsPrefix(element)+':'+element.name+if fqn <> '' then '/' else '' endif+fqn)
+	else
+		if element.eContainer().oclIsTypeOf(YANG!Augment)
+		then
+			(element.eContainer().convertLocalPathToOriginalPath()+'/'+thisModule.getNsPrefix(element)+':'+element.name+if fqn <> '' then '/' else '' endif+fqn)
+		else
+			if element.eContainer().oclIsKindOf(YANG!AbstractModule)
+			then
+				('/'+thisModule.getNsPrefix(element)+':'+element.name+if fqn <> '' then '/' else '' endif+fqn)
+			else
+				thisModule.getFQN(element.eContainer(),thisModule.getNsPrefix(element)+':'+element.name+if fqn <> '' then '/' else '' endif+fqn)
+			endif			
+		endif
+	endif;
+
+--get the name of an element along with its prefix i.e. prefix:element_name
+helper def : getPrefixedName(element : YANG!DataDefinition) : String =
+	if(element.name.indexOf(':') > 0)--name is already prefixed so return it
+	then
+		element.name
+	else
+		if(element.oclIsTypeOf(YANG!Uses) or element.oclIsTypeOf(YANG!Property) or element.oclIsTypeOf(YANG!Base) or element.oclIsTypeOf(YANG!DataType))
+		then
+			if(not element.prefix.oclIsUndefined())
+			then
+				element.prefix.name+':'+element.name
+			else
+				thisModule.getNsPrefix(element)+':'+element.name
+			endif
+		else
+			thisModule.getNsPrefix(element)+':'+element.name
+		endif
+	endif;
+
+--get the path of a local element along with its prefix i.e. /prefix:element_name/prefix:element_name
+helper def : getLocalPrefixedPath(element : OclAny, path : String) : String =
+	if(path.indexOf(':') > 0)--path is already prefixed so return it
+	then
+		path
+	else
+		path.regexReplaceAll('/','/'+thisModule.getNsPrefix(element)+':')
+	endif;
+
+--recurse up a container hierarchy to find the Module/SubModule a given element was defined in
+helper def : getModule(element : OclAny) : YANG!AbstractModule = 
+	if(element.eContainer().oclIsKindOf(YANG!AbstractModule))
+	then
+		element.eContainer()
+	else
+		thisModule.getModule(element.eContainer())
+	endif;
+
+--recurse up a container hierarchy to see if an element is inside an augments
+helper def : isInsideAugments(element : OclAny) : Boolean = 
+	if(element.eContainer().oclIsKindOf(YANG!AbstractModule))
+	then
+		false
+	else
+		if(thisModule.filterAugmentsWrapper(element.eContainer()))
+		then
+			true
+		else
+			thisModule.isInsideAugments(element.eContainer())
+		endif
+	endif;	
+
+--a list/container sitting directly under the module is a yang root
+rule isYangRoot(node : YANG!Node, class : UML!Class, st : UML!Stereotype)
+{
+	do
+	{
+		if(node.eContainer().oclIsKindOf(YANG!AbstractModule))
+		{
+			 --TODO:apply stereotype property as appropriate
+			 class.setValue(st, 'isYangRoot', true);
+			 --class.applyStereotype(st);
+		}
+		class;	
+	}
+
+}
+		

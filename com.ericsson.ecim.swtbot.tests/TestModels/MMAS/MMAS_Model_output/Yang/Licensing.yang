@@ -1,0 +1,148 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 4:21:11 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "Licensing" {
+	namespace "urn:com:ericsson:ecim:Licensing";
+	prefix "Licensing";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ComTop {
+		prefix "ComTop";
+	}
+
+	import MMAS {
+		prefix "MMAS";
+	}
+
+	description "Licensing MOM";
+
+	revision "2015-04-20" {
+		ericsson:version "2";
+		ericsson:revision "1";
+		ericsson:release "3";
+	}
+
+	augment "/ComTop:ManagedElement/MMAS:Mmas" {
+		list "Licensing" {
+			key "licensingId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "LicLicense" {
+				key "licLicenseId";
+				uses Licensing:LicLicense;
+			}
+
+			list "LicServer" {
+				key "licServerId";
+				max-elements 1;
+				list "LicServerSentinel" {
+					key "licServerSentinelId";
+					uses Licensing:LicServerSentinel;
+				}
+
+				uses Licensing:LicServer;
+			}
+
+			uses Licensing:Licensing;
+		}
+
+	}
+
+	grouping "LicServerSentinel" {
+		description
+		"The class LicServerSentinel is the Sentinel license server node.";
+		leaf "licServerSentinelId" {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the LicServerSentinel instance.";
+			ericsson:restricted;
+		}
+
+		leaf "host" {
+			type string;
+			mandatory true;
+			description "This attribute defines the IP address of the license host.";
+		}
+
+		leaf "port" {
+			type int32;
+			default "93";
+			description "This attribute defines the port to use on the license host.";
+		}
+
+	}
+
+	grouping "LicServer" {
+		description "The class LicServer is the license server node.";
+		leaf "licServerId" {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the LicServer instance.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "LicLicense" {
+		description "The class LicLicense defines one license.";
+		leaf "licLicenseId" {
+			type string;
+			mandatory true;
+			description "This attribute defines the identity of the LicLicense";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "Licensing" {
+		description "The Licensing MO represents the license management node.";
+		leaf "licensingId" {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the Licensing instance.";
+			ericsson:restricted;
+		}
+
+		leaf "softLimitPercentage" {
+			type int32;
+			default "80";
+			description
+			"This attribute defines the percentage, relative to the maximum license capacity. When the number of used licenses is above, or equal to, the given percentage, an alarm with severity Warning is issued.";
+		}
+
+		leaf "alarmHysteresisPercentage" {
+			type int32;
+			default "10";
+			description
+			"This attribute defines the percentage, relative to the softLimitPercentage. When the 
+number of used licenses is below softLimitPercentage - alarmHysteresisPercentage, the alarm with severity Warning ceases.
+The use of the hysteresis helps to avoid the alarm from going on and off too frequently, when the number of used licenses is close to the softLimitPercentage.";
+		}
+
+		leaf "advanceWarningTimeSeconds" {
+			type int64;
+			default "86400";
+			description
+			"This attribute defines the time in seconds before an advance warning is issued. When 
+an absolute time limited license is about to expire, the operator will be alerted, advanceWarningTimeSeconds
+seconds in advance, in order to allow ordering and installation of a new license.";
+		}
+
+		leaf "syncIntervalSeconds" {
+			type int32;
+			default "10";
+			description
+			"This attribute defines the interval in seconds between synchronization of the license cache and the license information on the license server.";
+		}
+
+	}
+
+}

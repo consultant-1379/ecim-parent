@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Dec 7, 2015 9:37:06 AM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>LDAP Authentication Method</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ETH/XES Balazs Kovacs</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="ETH/XES Balazs Kovacs" contact="" correction="0" date="2014-11-04" docNo="" name="ECIM_LDAP_Authentication" namespace="urn:com:ericsson:ecim:ECIM_LDAP_Authentication" namespacePrefix="ecim_ldap_authentication" organization="ETH/XES" release="2" revision="0" version="2">
+        <description>LDAP Authentication model.</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_LDAP_Authentication"/>
+            <extension name="ecimMomVersion" value="2"/>
+            <extension name="ecimMomRelease" value="2"/>
+            <extension name="ecimMomCorrection" value="0"/>
+        </domainExtension>
+        <enum name="ProfileFilter">
+            <description>Authorization profile filter types for LDAP.</description>
+            <enumMember name="POSIX_GROUPS">
+                <description>Standard POSIX group filter.&#13;
+&#13;
+The authorization profiles are selected from the LDAP database based on the standard Posix Group schema. The Common Name attribute (cn) of the Posix Group object is treated as authorization data, for example, role.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ERICSSON_FILTER">
+                <description>Ericsson specified filter. &#13;
+&#13;
+The authorization profiles are retrieved from the LDAP database from Ericsson extended Posix accounts, as defined by the Ericsson LDAP Interface.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="FLEXIBLE">
+                <description>Flexible filter.&#13;
+&#13;
+The authorization profiles are selected from the LDAP database based on attributes specified in the contained Filter MO.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="TlsMode">
+            <description>TLS establishment protocols for LDAP.</description>
+            <enumMember name="STARTTLS">
+                <description>The TLS-layer is established by using the StartTLS method of RFC4511.&#13;
+&#13;
+Default port number is 389.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="LDAPS">
+                <description>The TLS-layer is established by using the LDAPS protocol.&#13;
+&#13;
+Default port number is 636.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="EricssonFilterVersion">
+            <description>The valid version range of the Ericsson filter.</description>
+            <enumMember name="1">
+                <description>Version 1.</description>
+                <value>1</value>
+                <deprecated/>
+                <statusInformation>Please add status information about the deprecation to comply with ECIM Design Rule [ECIM BC 2].</statusInformation>
+            </enumMember>
+            <enumMember name="2">
+                <description>Version 2.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <class name="Filter">
+            <description>Indicates the filter used to locate the user's authorization profile in the LDAP directory. &#13;
+&#13;
+This class must be used when profileFilter in Ldap MO is set to FLEXIBLE.&#13;
+&#13;
+Example of use with POSIX group objects as authorization profile:&#13;
+&#13;
+The user authorization profile is mapped to posixGroups in the LDAP schema. Each posixGroup contains a set of users and by this association, users are mapped into one or more groups. To identify the set of groups a user is a member of, the following search filter must be used:&#13;
+&#13;
+(&amp;(objectClass=posixGroup)(memberUid=%u)) cn&#13;
+ &#13;
+where %u is the user ID parameter used during authentication and cn is the common name value returned for the posixGroup. This must match an authorization entity, for example role, in an authorization method. (&amp;(objectClass=posixGroup)(memberUid="")) is the search filter contained by the filter attribute.</description>
+            <systemCreated/>
+            <attribute name="filterId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="filter">
+                <description>The filter used to search in the LDAP tree. &#13;
+&#13;
+Example: (&amp;(objectClass=posixGroup)(memberUid="")),&#13;
+&#13;
+This specifies a filter, where the authorized users are members of posixGroup objects in the LDAP schema. Double quotes indicate where the ME inserts the user identifier.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="type">
+                <description>Determines which attribute to retrieve from an element in the database. &#13;
+&#13;
+The value can be the name of any parameter in the LDAP schema, for example, 'cn'.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>An additional descriptive text.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Ldap">
+            <description>Contains the configurable information on primary and secondary LDAP directories.  </description>
+            <systemCreated/>
+            <attribute name="ldapId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="ldapIpAddress">
+                <description>The IP or DNS address of the primary LDAP server.&#13;
+&#13;
+Default port number used is 389. The selected tlsMode overrides the default port number.</description>
+                <mandatory/>
+                <dataType>
+                    <derivedDataTypeRef name="IpDNSAddress">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="fallbackLdapIpAddress">
+                <description>The IP or DNS address of the fallback LDAP server.&#13;
+&#13;
+The fallback server is used when the primary server is inaccessible.&#13;
+&#13;
+Default port number used is 389. The selected tlsMode overrides the default port number.</description>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="IpDNSAddress">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="serverPort">
+                <description>Specifies the server port number to access the primary and secondary LDAP servers.&#13;
+&#13;
+Must only be specified when the default port number is not in use. &#13;
+&#13;
+Default ports are:&#13;
+ 389, when useTls is false.&#13;
+ 389, when useTls is true and tlsMode is STARTTLS.&#13;
+ 636, when useTls is true and tlsMode is LDAPS.</description>
+                <isNillable/>
+                <dataType>
+                    <uint16/>
+                </dataType>
+            </attribute>
+            <attribute name="bindDn">
+                <description>Default bind DN used to access the LDAP servers. &#13;
+&#13;
+When configured, the ME uses the specified DN as the bind name for LDAP searches. The bind DN must be specified in an LDAP DN format, for example 'cn=bindaccount,dc=mycompany,dc=com'.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="bindPassword">
+                <description>Password used with bindDn to access the LDAP servers. &#13;
+&#13;
+When configured, the ME establishes a password-based LDAP simple bind.</description>
+                <isNillable/>
+                <dataType>
+                    <structRef name="EcimPassword">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="baseDn">
+                <description>Default base DN to use in LDAP operations. &#13;
+&#13;
+The base DN must be specified in an LDAP DN format, for example, 'ou=people,dc=mycompany,dc=com'. All LDAP objects used for authentication and authorization must be accessible from the base DN.</description>
+                <mandatory/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="useReferrals">
+                <description>Toggle to enable the use of referrals.&#13;
+&#13;
+When set to false, the ME ignores referrals returned by the LDAP server.&#13;
+&#13;
+When set to true, the ME follows referrals. Referrals can be used for authentication and authorization only if the referral URI refers back to a directory tree within the same LDAP server instance; otherwise, access is denied for referred user accounts.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>false</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="profileFilter">
+                <description>Selects an LDAP filter to determine the user's authorization profile. &#13;
+&#13;
+Authorization profiles are used by authorization methods. &#13;
+&#13;
+For ERICSSON_FILTER, the contained EricssonFilter MO must exist. &#13;
+For FLEXIBLE, the contained Filter MO must exist.</description>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="ProfileFilter">
+                        <mimName>ECIM_LDAP_Authentication</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="nodeCredential">
+                <description>The credential used for LDAP.&#13;
+&#13;
+Specifies the DN of a NodeCredential MO in Certificate Management.</description>
+                <isNillable/>
+                <dataType>
+                    <moRef name="ManagedObject">
+                        <mimName>EcimCommon</mimName>
+                    </moRef>
+                </dataType>
+            </attribute>
+            <attribute name="trustCategory">
+                <description>The set of certificates trusted by LDAP.&#13;
+&#13;
+Specifies the DN of a TrustCategory MO in Certificate Management.</description>
+                <isNillable/>
+                <dataType>
+                    <moRef name="ManagedObject">
+                        <mimName>EcimCommon</mimName>
+                    </moRef>
+                </dataType>
+            </attribute>
+            <attribute name="tlsCaCertificate">
+                <description>Certificate Authority's (CA) certificate that signed the LDAP server certificate. &#13;
+&#13;
+The CA certificate is used to authenticate the server certificate. The CA certificate is provided by the operator and can be represented as follows: /etc/ssl/certs/cacert.pem.&#13;
+&#13;
+DEPRECATED. If this attribute is set, attribute trustCategory is ignored.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+                <deprecated/>
+                <statusInformation>Deprecated in version 2.0. Attribute trustCategory replaced its function.</statusInformation>
+            </attribute>
+            <attribute name="tlsClientCertificate">
+                <description>Client certificate used when the LDAP server needs to authenticate the client. &#13;
+&#13;
+It is generated and provided by the operator. Example of client certificate representation: /home/ldap-user/certs/client.cert.pem.&#13;
+&#13;
+DEPRECATED. If this attribute is set, attribute nodeCredential is ignored.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+                <deprecated/>
+                <statusInformation>Deprecated in version 2.0. Attribute nodeCredential replaced its function.</statusInformation>
+            </attribute>
+            <attribute name="tlsClientKey">
+                <description>Specifies the private key for the client certificate referred to by the tlsClientCertificate attribute. &#13;
+&#13;
+The key is generated and provided by the operator. &#13;
+&#13;
+Example of client key representation:  /home/ldap-user/certs/keys/client.key.pem&#13;
+&#13;
+DEPRECATED. If this attribute is set, attribute nodeCredential is ignored.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+                <deprecated/>
+                <statusInformation>Deprecated in version 2.0. Attribute nodeCredential replaced its function.</statusInformation>
+            </attribute>
+            <attribute name="useTls">
+                <description>Toggle to enable TLS access to primary and secondary LDAP targets.</description>
+                <mandatory/>
+                <dataType>
+                    <boolean/>
+                </dataType>
+            </attribute>
+            <attribute name="useTlsFallback">
+                <description>Toggle to enable TLS access to the secondary LDAP target.&#13;
+&#13;
+DEPRECATED. Attribute useTls configures TLS for the primary and fallback server.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>false</defaultValue>
+                    </boolean>
+                </dataType>
+                <deprecated/>
+                <statusInformation>Deprecated in version 2.0.</statusInformation>
+            </attribute>
+            <attribute name="tlsMode">
+                <description>Toggles the TLS establishment mode to access the primary and secondary LDAP servers.&#13;
+&#13;
+Takes effect when useTls is true.</description>
+                <dataType>
+                    <enumRef name="TlsMode">
+                        <defaultValue>STARTTLS</defaultValue>
+                        <mimName>ECIM_LDAP_Authentication</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>An additional descriptive text.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="LdapAuthenticationMethod">
+            <description>Root MOC of the LDAP Authentication Method.&#13;
+&#13;
+LDAP-based authentication uses a directory to store a user's credentials and allows them to be queried over a secure LDAP interface.</description>
+            <systemCreated/>
+            <root/>
+            <attribute name="ldapAuthenticationMethodId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="administrativeState">
+                <description>The administrative state of this authorization method.</description>
+                <mandatory/>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>An additional descriptive text.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="EricssonFilter">
+            <description>Provides configuration of features supported by the Ericsson LDAP schema. &#13;
+&#13;
+This class must be used when profileFilter in Ldap MO is set to ERICSSON_FILTER.</description>
+            <systemCreated/>
+            <attribute name="ericssonFilterId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="roleAliasesBaseDn">
+                <description>LDAP DN to a subtree of objects that is used to convert alias roles to roles the ME understands.&#13;
+&#13;
+An option for authorization methods that implements Role Based Access Control.&#13;
+&#13;
+The value is an LDAP DN. The format of the DN for such an object is 'role=[role], roleAliasesBaseDn', where [role] must be replaced with the name of a role alias or role group. All these objects must be accessible from the base DN defined in this attribute. For example: if roleAliasesBaseDn = "dc=example,dc=com" and the user has role Admin, and the object "role=Admin,dc=example,dc=com" exists and has attribute ericssonUserAuthorizationScope = Administrator, the user receives the Administrator role.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="targetBasedAccessControl">
+                <description>Toggles Target Based Access Control.&#13;
+&#13;
+The User Management MO provides the &lt;Target Type&gt; strings of the ME. The TBAC authorization behavior is defined in the User Management MOC.&#13;
+&#13;
+The optional Ericsson LDAP-schema-specified attribute ericssonUserAuthenticationScope stores the targets where the user can be authenticated and authorized. It is a case-insensitive string of &lt;Target Type&gt;. The Ericsson target-type identifier, such as ‘bsc’, ‘cscf’, classifies the target type the user can access.&#13;
+&#13;
+The optional Ericsson LDAP-schema-specified attribute ericssonUserAuthorizationScope stores the authorization profiles of which the user is a member. It is a case-insensitive string of form &lt;Target Type&gt;:&lt;Authorization Profile&gt;, where ':' is a separator; &lt;Target Type&gt; is the Ericsson target-type identifier, such as ‘bsc’, ‘cscf’, and it classifies the target type for which the user acquires the &lt;Authorization Profile&gt;. &lt;Authorization Profile&gt; is the Ericsson application-defined profile, for example, a role.&#13;
+&#13;
+Attribute ericssonUserAuthenticationScope behavior:&#13;
+&#13;
+When TBAC is LOCKED in the ME, authentication and authorization are performed without TBAC.&#13;
+When TBAC is UNLOCKED in the ME and the user has a target-restricted authentication scope, authentication and authorization are performed when a match is found. If not, it fails.&#13;
+&#13;
+Attribute ericssonUserAuthenticationScope allows the use of wild-carded scope ('*') to permit the user to be authorized on any ME based on its ericssonUserAuthorizationScope attribute.&#13;
+&#13;
+Attribute ericssonUserAuthorizationScope behavior:&#13;
+&#13;
+When TBAC is LOCKED in the ME, the authorization profiles without target qualifiers and with wildcard target qualifier ('*') are assigned to the user from the user database. When TBAC is UNLOCKED in the ME, the authorization profiles with matching target qualifiers and with wildcard target qualifier are assigned to the user from the user database.&#13;
+&#13;
+Not using the Ericsson LDAP schema in the user accounts, or improper use of this schema causes authorization failure.&#13;
+&#13;
+For more details, refer to the Ericsson LDAP Interface Description.&#13;
+&#13;
+Example with roles:&#13;
+If the ME in User Management MOC is configured with 'cscf.ims.stockholm' and the LDAP user account contains:&#13;
+&#13;
+ericssonUserAuthenticationScope: cscf.ims.stockholm&#13;
+ericssonUserAuthenticationScope: cscf.ims.malmo&#13;
+ericssonUserAuthorizationScope: cscf.ims.stockholm:SystemAdministrator&#13;
+ericssonUserAuthorizationScope: cscf.ims.malmo:SystemSecurityAdministrator&#13;
+ericssonUserAuthorizationScope: *:ApplicationOperator&#13;
+&#13;
+Then given the LDAP user provided a correct password it is authenticated on the ME and assigned with role 'SystemAdministrator' and 'ApplicationOperator'.</description>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <defaultValue>LOCKED</defaultValue>
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="version">
+                <description>The selected version of the Ericsson filtering behavior.&#13;
+&#13;
+Version 1 is deprecated. Version 1 allows wildcarding of roles without any qualifier and it supports the use of '*' character. Such syntax applies the given role on all targets:&#13;
+&#13;
+ericssonUserAuthorizationScope: ApplicationOperator&#13;
+ericssonUserAuthorizationScope: *:ApplicationOperator&#13;
+&#13;
+Version 2 differentiates the wildcarding behavior depending on the value of attribute targetBasedAccessControl. When targetBasedAccessControl is LOCKED, both syntaxes are allowed and assigns the role to the user in the ME. When targetBasedAccessControl is UNLOCKED, it only allows the use of '*' character, but unqualified roles are ignored. </description>
+                <dataType>
+                    <enumRef name="EricssonFilterVersion">
+                        <defaultValue>2</defaultValue>
+                        <mimName>ECIM_LDAP_Authentication</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Ldap_to_Filter">
+            <containment>
+                <parent>
+                    <hasClass name="Ldap">
+                        <mimName>ECIM_LDAP_Authentication</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Filter">
+                        <mimName>ECIM_LDAP_Authentication</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="LdapAuthenticationMethod_to_Ldap">
+            <containment>
+                <parent>
+                    <hasClass name="LdapAuthenticationMethod">
+                        <mimName>ECIM_LDAP_Authentication</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Ldap">
+                        <mimName>ECIM_LDAP_Authentication</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="Ldap_to_EricssonFilter">
+            <containment>
+                <parent>
+                    <hasClass name="Ldap">
+                        <mimName>ECIM_LDAP_Authentication</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="EricssonFilter">
+                        <mimName>ECIM_LDAP_Authentication</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="UserManagement_to_LdapAuthenticationMethod">
+            <containment>
+                <parent>
+                    <hasClass name="UserManagement">
+                        <mimName>ECIM_Security_Management</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="LdapAuthenticationMethod">
+                        <mimName>ECIM_LDAP_Authentication</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

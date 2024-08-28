@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Dec 7, 2015 9:31:31 AM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="Vahagn Avedian" contact="ETXAVED" correction="0" date="2015/02/12" docNo="" name="ECIM_TimeM" namespace="urn:com:ericsson:ecim:ECIM_TimeM" namespacePrefix="ecim_timem" organization="FLE/EU" release="1" revision="" version="1">
+        <description>The fragment contains the Time management attributes.</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_TimeM"/>
+            <extension name="ecimMomVersion" value="1"/>
+            <extension name="ecimMomRelease" value="1"/>
+            <extension name="ecimMomCorrection" value="0"/>
+        </domainExtension>
+        <class name="TimeM">
+            <description>Time management concerns the calendar date and local time of the node.</description>
+            <systemCreated/>
+            <root/>
+            <attribute name="timeMId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DateAndTime">
+            <description>Local time and time zone values.</description>
+            <systemCreated/>
+            <attribute name="dateAndTimeId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="timeZone">
+                <description>The time zone of the ME.&#13;
+&#13;
+A time zone is a region that has a uniform standard time. The string must match an entry in the ME’s time zone database, for example ‘Europe/Stockholm’.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="localDateTime">
+                <description>The local date and time of the ME.&#13;
+&#13;
+Local time is standard time in a time zone at a fixed offset from Coordinated Universal Time (UTC), possibly adjusted by Daylight Saving Time (DST) during part of the year.&#13;
+</description>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="dateTimeOffset">
+                <description>The offset in hours and minutes from UTC to local time.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DifferenceFromUTC">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="tzRevision">
+                <description>The revision of the time zone database stored on the ME.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="TimeM_to_DateAndTime">
+            <containment>
+                <parent>
+                    <hasClass name="TimeM">
+                        <mimName>ECIM_TimeM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DateAndTime">
+                        <mimName>ECIM_TimeM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="SysM_to_TimeM">
+            <containment>
+                <parent>
+                    <hasClass name="SysM">
+                        <mimName>ECIM_SysM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TimeM">
+                        <mimName>ECIM_TimeM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

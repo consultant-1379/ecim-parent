@@ -1,0 +1,40 @@
+[comment encoding = UTF-8 /]
+[module generateMgcCpp('http://www.eclipse.org/uml2/5.0.0/UML')/]
+[query private getFileName(className: String) : String = 
+	if (className.startsWith('Mo'))
+	then
+		className+'POT.cpp'
+	else
+		'Mo'+className+'POT.cpp'
+	endif /]
+[template public generateMgcCpp(aClass : Class)]
+[comment @main /]
+[let mgcContraints : Set(Constraint) = aClass.ownedRule->select(c:Constraint|c.getAppliedStereotypes()->size()>0) ]
+[if (mgcContraints->size()>0) ]
+[file (getFileName(aClass.name), false, 'UTF-8')]
+[for (aConstraint : Constraint | mgcContraints) separator('\n######')]
+[if (aConstraint.getAppliedStereotypes()->size()>0)]
+[let ss : Set(Stereotype) = aConstraint.getAppliedStereotypes()->select(e:Stereotype|e.getProfile().name = 'MGCProfile')]
+[for (s : Stereotype | ss) ]
+[aConstraint.getValue(s, 'type').oclAsType(EnumerationLiteral).name/]
+###[aConstraint.getValue(s, 'vType').oclAsType(EnumerationLiteral).name/]
+###[aConstraint.getValue(s, 'index').oclAsType(Integer)/]
+###[aConstraint.getValue(s, 'status').oclAsType(EnumerationLiteral).name/]
+###[if (aConstraint.ownedComment->size() > 0)]
+	[for (c : Comment | aConstraint.ownedComment)]
+		[c._body.trim()/]
+	[/for]
+	[else][comment this empty line is required to force acceleo to generate a newline whenever documentation field is empty /]
+
+[/if]
+###[for (vs : OpaqueExpression | aConstraint.specification.oclAsType(OpaqueExpression))]
+		[vs._body.trim()/]
+   [/for]
+[/for]
+[/let]
+[/if]
+[/for]
+[/file]
+[/if]
+[/let]
+[/template]

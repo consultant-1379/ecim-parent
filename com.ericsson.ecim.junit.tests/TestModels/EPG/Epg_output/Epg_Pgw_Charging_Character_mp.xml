@@ -1,0 +1,2758 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_Charging_Character" namespace="urn:com:ericsson:ecim:Epg_Pgw_Charging_Character" namespacePrefix="epg_pgw_charging_character" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="3">
+        <description>Account-type charging characteristics</description>
+        <enum name="TransferType">
+            <description>Method used to transfer charging data</description>
+            <enumMember name="ftp-pull">
+                <description>Charging data transfer uses FTP pull only</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="gtp-prime">
+                <description>Charging data transfer uses GTP Prime only</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="gtpp-ftp">
+                <description>Charging data transfer uses both FTP pull and GTP Prime</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="Profiles">
+            <description>Charging profiles</description>
+            <enumMember name="profile0">
+                <description>Profile 0</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="profile1">
+                <description>Profile 1</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="profile2">
+                <description>Profile 2</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="profile3">
+                <description>Profile 3</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="profile4">
+                <description>Profile 4</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="profile5">
+                <description>Profile 5</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="profile6">
+                <description>Profile 6</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="profile7">
+                <description>Profile 7</description>
+                <value>7</value>
+            </enumMember>
+            <enumMember name="profile8">
+                <description>Profile 8</description>
+                <value>8</value>
+            </enumMember>
+            <enumMember name="profile9">
+                <description>Profile 9</description>
+                <value>9</value>
+            </enumMember>
+            <enumMember name="profile10">
+                <description>Profile 10</description>
+                <value>10</value>
+            </enumMember>
+            <enumMember name="profile11">
+                <description>Profile 11</description>
+                <value>11</value>
+            </enumMember>
+            <enumMember name="profile12">
+                <description>Profile 12</description>
+                <value>12</value>
+            </enumMember>
+            <enumMember name="profile13">
+                <description>Profile 13</description>
+                <value>13</value>
+            </enumMember>
+            <enumMember name="profile14">
+                <description>Profile 14</description>
+                <value>14</value>
+            </enumMember>
+            <enumMember name="profile15">
+                <description>Profile 15</description>
+                <value>15</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="ChargeEventLimit">
+            <description>Charge Event Limit Type</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>5</min>
+                        <max>50</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="IpAddress">
+            <description>IP Address</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>15</max>
+                    </lengthRange>
+                    <validValues>^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="TimeLimit">
+            <description>Time to buffer charging data</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>15</min>
+                        <max>1440</max>
+                    </range>
+                    <unit>minutes</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="VolumeLimit">
+            <description>Volume of charging data to buffer</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>100</min>
+                        <max>2097152</max>
+                    </range>
+                    <unit>kilobytes</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SgsnChangeLimit">
+            <description>Maximum number of SGSN changes before generating partial CDR</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>5</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="UriLimit">
+            <description>Uri Limit Type</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>5</min>
+                        <max>50</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="ChangeLimit">
+            <description>Maximum record changes to buffer on PIC</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>5</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <class name="Characteristics">
+            <description>Account-type charging characteristics</description>
+            <root/>
+            <attribute name="characteristicsID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="default">
+                <description>Profile applied to context if context contains no charging characteristic</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Profiles">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile0">
+            <description>Profile 0 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile0ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile1">
+            <description>Profile 1 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile1ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile7">
+            <description>Profile 7 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile7ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile14">
+            <description>Profile 14 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile14ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile13">
+            <description>Profile 13 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile13ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile12">
+            <description>Profile 12 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile12ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile8">
+            <description>Profile 8 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile8ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile9">
+            <description>Profile 9 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile9ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile11">
+            <description>Profile 11 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile11ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile10">
+            <description>Profile 10 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile10ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile2">
+            <description>Profile 2 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile2ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile3">
+            <description>Profile 3 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile3ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile4">
+            <description>Profile 4 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile4ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile5">
+            <description>Profile 5 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile5ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="GtpPrime">
+            <description>Characteristic specific GTP Prime configuration</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(/ManagedElement/Epg/Pgw/Cpb/@gomAddressRange)'><name path='.'/>: cpb gomAddressRange must be configured</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="gtpPrimeID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="gateway">
+                <description>Address of billing gateway</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="IpAddress">
+                            <mimName>Epg_Pgw_Charging_Character</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>3</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile6">
+            <description>Profile 6 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile6ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile15">
+            <description>Profile 15 clients</description>
+            <attribute name="timeLimit">
+                <description>Limit of number of minutes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnChangeLimit">
+                <description>Limit of number of SGSN changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="SgsnChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="changeLimit">
+                <description>Limit of number of condition changes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChangeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Limit of number of kilobytes for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="profile15ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCallDetail">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferType">
+                <description>Method used to transfer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="TransferType">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ServiceData">
+            <description>Service data configuration</description>
+            <attribute name="serviceDataID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="uriLimit">
+                <description>Limit of number of URIs for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="UriLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="chargeEventLimit">
+                <description>Limit of number of charged events for generating partial CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ChargeEventLimit">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Characteristics_to_Profile0">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile0">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile1_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile1">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile7_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile7">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile14_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile14">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile13_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile13">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile12_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile12">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile8_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile8">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile9_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile9">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile11_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile11">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile10_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile10">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile2_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile2">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile3_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile3">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile4_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile4">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile5_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile5">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile0_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile0">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile6_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile6">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile15_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Profile15">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile0_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile0">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile1_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile1">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile10_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile10">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile11_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile11">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile12_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile12">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile13_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile13">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile14_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile14">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile15_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile15">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile2_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile2">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile3_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile3">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile4_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile4">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile5_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile5">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile6_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile6">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile7_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile7">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile8_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile8">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Profile9_to_ServiceData">
+            <containment>
+                <parent>
+                    <hasClass name="Profile9">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceData">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile1">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile1">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile2">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile2">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile4">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile4">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile5">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile5">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile6">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile6">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile7">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile7">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile8">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile8">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile9">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile9">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile10">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile10">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile11">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile11">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile12">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile12">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile13">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile13">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile14">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile14">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile15">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile15">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile3">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile3">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Charging_to_Characteristics">
+            <containment>
+                <parent>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Pgw_Charging_Character</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

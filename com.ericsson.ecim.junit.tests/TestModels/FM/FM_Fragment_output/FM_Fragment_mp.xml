@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-03 18:17:48 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="" contact="" date="" docNo="" name="FM" namespace="urn:com:ericsson:ecim:FM" namespacePrefix="fm" organization="" release="01" revision="A" version="1">
+        <description>ECIM FM Fragment.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <enum name="EventType">
+            <description>This is a general category for the alarm or alert type. The allowed values are defined by ITU-T X.733 and X.736.</description>
+            <enumMember name="COMMUNICATIONSALARM">
+                <value>2</value>
+            </enumMember>
+            <enumMember name="QUALITYOFSERVICEALARM">
+                <value>3</value>
+            </enumMember>
+            <enumMember name="PROCESSINGERRORALARM">
+                <value>4</value>
+            </enumMember>
+            <enumMember name="EQUIPMENTALARM">
+                <value>5</value>
+            </enumMember>
+            <enumMember name="ENVIRONMENTALALARM">
+                <value>6</value>
+            </enumMember>
+            <enumMember name="INTEGRITYVIOLATION">
+                <value>7</value>
+            </enumMember>
+            <enumMember name="OPERATIONALVIOLATION">
+                <value>8</value>
+            </enumMember>
+            <enumMember name="PHYSICALVIOLATION">
+                <value>9</value>
+            </enumMember>
+            <enumMember name="SECURITYSERVICEORMECHANISMVIOLATION">
+                <value>10</value>
+            </enumMember>
+            <enumMember name="TIMEDOMAINVIOLATION">
+                <value>11</value>
+            </enumMember>
+        </enum>
+        <enum name="SeverityLevel">
+            <description>The ENUM values are aligned to ITU-T X.733 Perceived Severity values. ITU-T X.733 severity values are Cleared(1),&#13;
+Indeterminiate(2) Warning(3), Minor(4), Major(5) and Critical(6). But the Indeterminiate severity level alarms (or alerts)&#13;
+are not supported as per Generic OaM Requirements (FM10). </description>
+            <enumMember name="CLEARED">
+                <description>none</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="WARNING">
+                <description>none</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="MINOR">
+                <description>none</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="MAJOR">
+                <description>none</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="CRITICAL">
+                <description>none</description>
+                <value>6</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="ProbableCause">
+            <description>Probable cause as specified in ITU recommendations M.3100, X.733 and X.736, and in ETSI recommendation GSM 12.11. This attribute value corresponds a Probable cause number. Reference the Ericsson Alarm Probable Cause MIB 4/196 03-CXC 172 7549 (Rev. A) to see the valid values for probable causes. &#13;
+</description>
+            <baseType>
+                <uint32/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="DateTime">
+            <description>The ·lexical space· of dateTime consists of finite-length sequences of characters of the form: '-'? yyyy '-' mm '-' dd 'T' hh ':' mm ':' ss ('.' s+)? (zzzzzz)?&#13;
+&#13;
+where:&#13;
+YYYY = four-digit year&#13;
+MM = two-digit month (01=January, etc.)&#13;
+DD = two-digit day of month (01 through 31)&#13;
+hh = two digits of hour (00 through 23) (am/pm NOT allowed)&#13;
+mm = two digits of minute (00 through 59)&#13;
+ss = two digits of second (00 through 59)&#13;
+s = one or more digits representing a decimal fraction of a second&#13;
+TZD = time zone designator (Z or +hh:mm or -hh:mm)</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>20</min>
+                        <max>31</max>
+                    </lengthRange>
+                    <validValues>/^([1-9][0-9][0-9][0-9])-([0-1][0-9])-([0-3][0-9])T([0-2][0-9]):([0-5][0-9]):([0-5][0-9])\.([0-9]*)(\S+)$/;</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="Fm">
+            <description>This is the fault management fragment and is used to manage the stateful alarms.</description>
+            <root/>
+            <attribute name="fmId">
+                <description>Internal Id to unique identify MOC instance.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="lastSequenceNo">
+                <description>The last used sequence number for an alarm state change notification. With the Fm:lastChanged, an external system can determine if a resynchronization operation is needed, such as following a loss and restore of a communications link.  </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint64/>
+                </dataType>
+            </attribute>
+            <attribute name="sumCritical">
+                <description>Shows the number of active alarms with perceived severity 'critical'.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="sumMajor">
+                <description>Shows the number of Active alarms with perceived severity 'major'.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="sumMinor">
+                <description>Shows the number of Active alarms with perceived severity 'minor'.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="sumWarning">
+                <description>Shows the number of Active alarms with perceived severity 'warning'.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="totalActive">
+                <description>This attribute shows the total number of currently active alarms, i.e. the total number of instantiated FmAlarm objects.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="lastChanged">
+                <description>This attribute contains a timestamp of when any  Fm alarm has last changed.  With the Fm:lastSequenceNo, an external system can determine if a resynchronization operation is needed, such as following a loss and restore of a communications link.  </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>FM</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FmAlarmModel">
+            <description>FmAlarmModel is a class that represents all alarm types (FmAlarmType) that can be generated from the managed element. This MOC is used for grouping FM Alarm types.</description>
+            <attribute name="fmAlarmModelId">
+                <description>Unique Id for MO instance</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FmAlarmType">
+            <description>An Alarm type is a specific kind of alarm that can be reported, for example "power failure". Within Ericsson this maps to specific problem. In an X.733 context it maps to event type, probable cause, and specific problem. The Ericsson ECIM FM MOC uses integers major and minor to uniquely identify  Fm alarm types and assumes a 1:1 mapping to textual specific problems. The same principle is used for Alert types as is for Alarm types. The FmAlarmType MOC is used to model alarm and alert types.  &#13;
+FmAlarmTypes are predefined Alarm types that are stored in FmAlarmType libraries. The predefined FmAlarmTypes contain all the data for a specific alarm type (i.e. Power failure). They are not considered as MOCs in ECIM. They are a predefined alarm type instance. There is however one specific FmAlarmType MOC. Refer to ECIM Tool-Chain (ET) User Guide (2/1553-LXA 119 613/3 ). The FmAlarmTypes are stored as XML files in the data model. Some applications may extend the model to instantiate FmAlarmTypes. This could be done for application specific purposes. NMS only reads FmAlarmTypes in XML format. &#13;
+&#13;
+</description>
+            <attribute name="fmAlarmTypeId">
+                <description>Unique Id for MO instance</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="majorType">
+                <description>The attributes majorType and minorType are the two key attributes used to identify the Alarm Type.  Ericsson practice is to define alarm types according to a combination of event type, probable cause and specific problem.  Assignment of values for each alarm type shall be centrally administered.  </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="minorType">
+                <description>The attributes majorType and minorType are the two key attributes used to identify the Alarm Type.  Ericsson practice is to define alarm types according to a combination of event type, probable cause and specific problem.  Assignment of values for each alarm type shall be centrally administered.  </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="moClasses">
+                <description>This represents the Managed Object classes that can raise this alarm type.  This attribute contains a comma seperated list of Managed Object Classes types that use this AlarmType .   This attribute shall be empty in the alarm type library and is filled out by the application designer when an alarm Type is  put into an instance model. See ECIM Tool-Chain User Guide 2/1553-LXA 119 613/3.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="specificProblem">
+                <description>This  provides further refinement to the information given in probableCause. The specificProblem is a unique string i.e no other Alarm type can have the same specificProblem value. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="eventType">
+                <description>This is a general category for the alarm or alert type. The allowed values are defined by ITU-T X.733 and X.736.&#13;
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="EventType">
+                        <mimName>FM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="probableCause">
+                <description>This attribute qualifies and provides further information on the reason for the event. A standard set of probableCause values is provided in the ERICSSON-ALARM-PC-MIB - 4/196 03-CXC 172 7549 rev A.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="ProbableCause">
+                        <mimName>FM</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="isStateful">
+                <description>This indicates whether the Alarm Type is an alarm (i.e. has state) or an alert (i.e. has no state).   TRUE indicates a stateful alarm and  FALSE indicates  a stateless alarm.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <boolean/>
+                </dataType>
+            </attribute>
+            <attribute name="additionalText">
+                <description>this attribute is used by the application designer when creating an Alarm type to specify extra information that would not be contained in other FmAlarmType attributes. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FmAlarm">
+            <description>FmAlarm instance  models an alarm type that is reported at a specific time and for a specific managed object instance. The FmAlarm MOC will get the static data from the FmAlarmType . The  Managed alarming object instance and alarm type make the alarm instance unique within a managed element. FmAlarmType:majorType and FmAlarmType:minorType are the two key attributes used by an alarming object to identify the Alarm Type. Assignment of values for each alarm type shall be centrally administered.  &#13;
+</description>
+            <systemCreated/>
+            <attribute name="fmAlarmId">
+                <description>Unique Id for MO instance.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="source">
+                <description>this attribute is the DN pointer towards the alarming object</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="lastEventTime">
+                <description>This attribute is the timestamp of when the alarm was last updated, i.e. alarm status change or severity change. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>FM</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sequenceNumber">
+                <description>This attribute is the notification identity for this object instance. It is not the same as the fmAlarmId as multiple notifications may be sent for one alarm instance. This changes at every notification (i.e. severity change, alarm clear, etc).</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <int64/>
+                </dataType>
+            </attribute>
+            <attribute name="activeSeverity">
+                <description>This attribute is used to define the current perceived severity level.  Attributes values are aligned to ITU-T X.733 Perceived Severity values</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="SeverityLevel">
+                        <mimName>FM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="additionalText">
+                <description>This attribute gets its value from the FmAlarmType:additionalText attribute. For the attribute description see  FmAlarmType:additionalText attribute. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="majorType">
+                <description>&lt;br /&gt;</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="minorType">
+                <description>The attributes majorType and minorType are the two key attributes used to identify the Alarm Type.  </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="specificProblem">
+                <description>This attribute gets its value from the FmAlarmType:specificProblem attribute. For the attribute description see  FmAlarmType:specificProblem attribute. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="eventType">
+                <description>This attribute gets its value from the FmAlarmType:eventType attribute. For the attribute description see  FmAlarmType:eventType attribute. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="EventType">
+                        <mimName>FM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="probableCause">
+                <description>This attribute gets its value from the FmAlarmType:probableCause attribute. For the attribute description see  FmAlarmType:probableCause attribute. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="ProbableCause">
+                        <mimName>FM</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="additionalInfo">
+                <description>This attribute contains  further information in text format that is appended to an alarm.  The information is provided by the alarming object.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Fm_to_FmAlarmModel">
+            <containment>
+                <parent>
+                    <hasClass name="Fm">
+                        <mimName>FM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FmAlarmModel">
+                        <mimName>FM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="FmAlarmModel_to_FmAlarmType">
+            <containment>
+                <parent>
+                    <hasClass name="FmAlarmModel">
+                        <mimName>FM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FmAlarmType">
+                        <mimName>FM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Fm_to_FmAlarm">
+            <containment>
+                <parent>
+                    <hasClass name="Fm">
+                        <mimName>FM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FmAlarm">
+                        <mimName>FM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+</models>

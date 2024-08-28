@@ -1,0 +1,132 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 4:21:12 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "PM" {
+	namespace "urn:com:ericsson:ecim:PM";
+	prefix "PM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ComTop {
+		prefix "ComTop";
+	}
+
+	import MMAS {
+		prefix "MMAS";
+	}
+
+	description "MMAS PM MOM";
+
+	revision "2015-04-20" {
+		ericsson:release "1";
+		ericsson:version "2";
+		ericsson:revision "1";
+	}
+
+	augment "/ComTop:ManagedElement/MMAS:Mmas" {
+		list "Pm" {
+			key "pmId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "PmJobs" {
+				key "pmJobsId";
+				list "PmJob" {
+					key "pmJobId";
+					uses PM:PmJob;
+				}
+
+				uses PM:PmJobs;
+			}
+
+			uses PM:Pm;
+		}
+
+	}
+
+	grouping "PmJobs" {
+		description
+		"The class PmJobs is the Performance Management (PM) jobs definitions node.";
+		leaf "pmJobsId" {
+			type string;
+			mandatory true;
+			description "This attribute defines the identity of the Pmjobs instance.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "PmJob" {
+		description
+		"The class PmJob is the Performance Management (PM) job definition node for MMAS.";
+		leaf "pmJobId" {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the identity of the Pmjob instance. For now, the PM framework accepts only integers.";
+			ericsson:restricted;
+		}
+
+		leaf "name" {
+			type string;
+			mandatory true;
+			description "This attribute defines the name of the job.";
+		}
+
+		leaf "state" {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the state of the job.Possible values are as follows: active, delete, resume, suspend.";
+		}
+
+		leaf "moc" {
+			type string;
+			mandatory true;
+			description
+			"This attribute defines the list of groups of counters (called MOCs) for this job. If it includes more than one MOC, they must be separated by ;";
+		}
+
+		leaf "startTime" {
+			type string;
+			default "";
+			description "This attribute defines the start time of the job.";
+		}
+
+		leaf "stopTime" {
+			type string;
+			default "";
+			description "This attribute defines the stop time of the job.";
+		}
+
+		leaf "granularityPeriod" {
+			type int32;
+			default "15";
+			description
+			"This attribute defines the time between counters measurements.
+   Possible values are as follows: 5, 15, 30, 60.";
+		}
+
+		leaf "reporter" {
+			type string;
+			default "com.ericsson.mmas.pm.report.SimpleReporter";
+			description "This optional attribute defines the report type of the job.";
+		}
+
+	}
+
+	grouping "Pm" {
+		description "PM root MOC";
+		leaf "pmId" {
+			type string;
+			mandatory true;
+			description "key attribute";
+			ericsson:restricted;
+		}
+
+	}
+
+}

@@ -1,0 +1,203 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-sep-04 14:47:38 using 
+    * com.ericsson.ecim.yang.m2m 2.11.2.qualifier
+*/
+module Grouping {
+	namespace "urn:com:ericsson:ecim:Grouping";
+	prefix Grouping;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	organization "Ericsson";
+	description "asdf";
+
+	revision "2014-09-04" {
+		ericsson:correction 1;
+		ericsson:release 1;
+		ericsson:version 1;
+	}
+
+	//grouping used by GroupingInGrouping which is in turn used by myGrouping
+	grouping GroupingInGroupingInGrouping {
+         description "";
+         leaf ggg1 {
+             type string;
+             description "original";
+             reference "original";
+         }
+         leaf-list ggg2 {
+             type string;
+             reference "original";
+         } 
+         list ggg3
+         {
+         	description "original";
+            reference "original";
+         	key e;
+         	leaf e {
+             type string;
+         	}
+		 }	
+         container ggg4
+         {
+         	description "original";
+            reference "original";         	
+         	leaf m{
+	             type string;
+	         }       
+         } 
+	}
+
+	//grouping used by myGrouping
+	grouping GroupingInGrouping {
+         description "";
+         uses GroupingInGroupingInGrouping;
+         leaf gg1 {
+             type string;
+             description "original";
+             reference "original";
+         }
+         leaf-list gg2 {
+             type string;
+             reference "original";
+         }
+         list gg3
+         {
+         	description "original";
+            reference "original";
+         	key e;
+         	leaf e {
+             type string;
+         	}
+		 }         
+         container gg4
+         {
+         	description "original";
+            reference "original";         	
+         	leaf m{
+	             type string;
+	         }       
+         }        
+	}
+	
+	//"root" grouping
+	grouping myGrouping {
+         description "A reusable endpoint group.";
+         uses GroupingInGrouping{}
+         leaf a {
+             type string;
+             description "original";
+             reference "original";
+         }
+         leaf-list b {
+             type string;
+             reference "original";
+         }
+         list listInGrouping
+         {
+         	description "original";
+            reference "original";
+         	key e;
+         	leaf e {
+             type string;
+         	}
+         	leaf f {
+             type string;
+         	}   
+         	list firstListInListInGrouping
+         	{
+         		description "original";
+            	reference "original"; 
+         		key h;
+	         	leaf h {
+					type string;
+					description "original";
+            		reference "original"; 
+	         	}
+	         	leaf i {
+	             type string;
+	         	}         	
+        	 }   
+			list secondListInListInGrouping
+         	{
+         		key k;
+	         	leaf k {
+	             type string;
+	         	}
+	         	leaf l {
+	             type string;
+	         	}         	
+        	 }           	    	
+         }
+         container containerC
+         {
+         	description "original";
+            reference "original";         	
+         	leaf m{
+	             type string;
+	         }       
+         }
+     }
+  /*
+	container a {
+  
+         uses myGrouping {
+             refine a {
+                 default 80;
+             }
+         }
+         leaf c {
+             type string;
+         }
+     }     
+     
+	container b {
+  
+         uses myGrouping {
+             refine a {
+                 default 80;
+             }
+         }
+         leaf c {
+             type string;
+         }
+     }    
+     
+     list regularList
+         {
+         	key leafA;
+         	leaf leafA {
+             type string;
+         	}
+         	leaf leafB {
+             type string;
+         	}   
+         	list innerList
+         	{
+         		key leafC;
+	         	leaf leafC {
+	             type string;
+	         	}
+	         	leaf leafD {
+	             type string;
+	         	} 
+	         	
+				list innerInnerList
+         		{
+         			key leafC;
+	         		leaf leafC {
+	            	type string;
+	         		}
+	         		leaf leafD {
+	             		type string;
+	         		}         	
+        	 	}  	         	
+	         	        	
+        	 }      	
+         }
+         * 
+         */
+}

@@ -1,0 +1,82 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 2:54:18 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "AMom" {
+	namespace "urn:com:ericsson:ecim:AMom";
+	prefix "AMom";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ComSaTop {
+		prefix "ComSaTop";
+	}
+
+	import XMom {
+		prefix "XMom";
+	}
+
+	import YMom {
+		prefix "YMom";
+	}
+
+	description "Docs...";
+
+	revision "2015-04-20" {
+		ericsson:release "1";
+		ericsson:version "1";
+		ericsson:correction "0";
+	}
+
+	augment "/ComSaTop:ManagedElement/XMom:RootX" {
+		list "RootA" {
+			key "rootAId";
+			list "ClassA" {
+				key "classAId";
+				uses AMom:ClassA;
+			}
+
+			uses AMom:RootA;
+		}
+
+	}
+
+	augment "/ComSaTop:ManagedElement/YMom:RootY" {
+		list "RootA" {
+			key "rootAId";
+			list "ClassA" {
+				key "classAId";
+				uses AMom:ClassA;
+			}
+
+			uses AMom:RootA;
+		}
+
+	}
+
+	grouping "RootA" {
+		description "Docs...";
+		leaf "rootAId" {
+			type string;
+			mandatory true;
+			description "Docs...";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "ClassA" {
+		description "Docs...";
+		leaf "classAId" {
+			type string;
+			mandatory true;
+			description "Docs...";
+			ericsson:restricted;
+		}
+
+	}
+
+}

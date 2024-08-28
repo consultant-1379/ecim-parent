@@ -1,0 +1,93 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 21, 2015 8:27:21 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "MMRevC_EnumIntKeyAttributes" {
+	namespace "urn:com:ericsson:ecim:MMRevC_EnumIntKeyAttributes";
+	prefix "MMRevC_EnumIntKeyAttributes";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import MomA {
+		prefix "MomA";
+	}
+
+	description "qwe";
+
+	revision "2015-04-21" {
+		ericsson:version "1";
+		ericsson:release "1";
+		ericsson:correction "0";
+	}
+
+	augment "/MomA:Root" {
+		list "MainEnumIntKeyAttributesClass" {
+			key "mainEnumIntKeyAttributesClassId";
+			list "Int64KeyedClass" {
+				key "int64KeyedClassId";
+				uses MMRevC_EnumIntKeyAttributes:Int64KeyedClass;
+			}
+
+			list "EnumKeyedClass1" {
+				key "enumKeyedClassId";
+				uses MMRevC_EnumIntKeyAttributes:EnumKeyedClass1;
+			}
+
+			list "DerivedIntegerKeyedClass" {
+				key "derivedIntegerKeyedClassId";
+				max-elements 23;
+				uses MMRevC_EnumIntKeyAttributes:DerivedIntegerKeyedClass;
+			}
+
+			uses MMRevC_EnumIntKeyAttributes:MainEnumIntKeyAttributesClass;
+		}
+
+	}
+
+	grouping "EnumKeyedClass1" {
+		description "qwe";
+		leaf "enumKeyedClassId" {
+			type MomA:AdmState;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "Int64KeyedClass" {
+		description "qwe";
+		leaf "int64KeyedClassId" {
+			type int64;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "DerivedIntegerKeyedClass" {
+		description "qwe";
+		leaf "derivedIntegerKeyedClassId" {
+			type MomA:RangeType;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "MainEnumIntKeyAttributesClass" {
+		description "qwe";
+		leaf "mainEnumIntKeyAttributesClassId" {
+			type int64;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+	}
+
+}

@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/" xmlns:Documentation="http://www.eclipse.org/papyrus/documentation" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CoreMWProfile/ pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw http:///schemas/ECIMBaseProfile/ pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ">
+  <uml:Model xmi:id="_NRAMoAwOEdmFcaeZXPdWAQ" name="RtnDhcpRelayIPv4">
+    <ownedComment xmi:id="_eHiuIELcEeOEmNFCRjXHzg" annotatedElement="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <body>DhcpRelay model.</body>
+    </ownedComment>
+    <packageImport xmi:id="_uWHKUIXbEd-Id79DLfNphQ">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_iT7qACCSEd-Egr3-YAWs7Q?EcimDataType?"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_ITn5YELdEeOEmNFCRjXHzg" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.uml#_5vlRYnhQEd-OM9oMWC6jJQ?ECIM%20Core%20MW%20Guidelines?"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_gRxUkELdEeOEmNFCRjXHzg" name="RtnDhcpRelayIPv4">
+      <ownedComment xmi:id="_7yk-MELdEeOEmNFCRjXHzg" annotatedElement="_gRxUkELdEeOEmNFCRjXHzg">
+        <body>DhcpRelay MOM</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_gR53cELdEeOEmNFCRjXHzg" name="DhcpRelayIPv4">
+        <ownedComment xmi:id="_gR-v8ULdEeOEmNFCRjXHzg">
+          <body>Dhcp-relay is a feature that makes it possible for a router to relay dhcp-traffic between a dhcp-client and a dhcp-server.</body>
+        </ownedComment>
+        <ownedRule xmi:id="_7L6XsKRBEeOXH4cKDHkMLw" name="TN_extension_administrativeStateDhcpRelayIPv4" constrainedElement="_TdNOMELjEeOgNpocz7LX5w">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_7L6XsaRBEeOXH4cKDHkMLw">
+            <language>Optionality</language>
+            <body>if-feature administrativeStateDhcpRelayIPv4</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_6IeYAKkTEeOoYKe3EK3sXA" name="DhcpRelayIPv4">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_6IeYAakTEeOoYKe3EK3sXA">
+            <language>Schematron</language>
+            <body>&lt;schema xmlns=&quot;http://purl.oclc.org/dsdl/schematron&quot;>
+	&lt;pattern>
+		&lt;rule>
+		&lt;assert test='every $subnet in @subnet satisfies (count(../DhcpRelayIPv4[($subnet = @subnet)]) eq 1)'>&lt;value-of select=&quot;.&quot;/> Subnet shall not be duplicated!&lt;/assert>
+		&lt;assert test='every $subnet in @subnet satisfies not($subnet/../@loopback)'>&lt;value-of select=&quot;.&quot;/> Loopback interfaces are not allowed in Subnet!&lt;/assert>
+		&lt;/rule>
+	&lt;/pattern>
+&lt;/schema></body>
+          </specification>
+        </ownedRule>
+        <ownedAttribute xmi:id="_gSDBYELdEeOEmNFCRjXHzg" name="dhcpRelayIPv4Id" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_gSH54ULdEeOEmNFCRjXHzg">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gSOAgELdEeOEmNFCRjXHzg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gSOAgULdEeOEmNFCRjXHzg" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Sv4qoELiEeOgNpocz7LX5w" name="subnet" visibility="public">
+          <ownedComment xmi:id="_S2mWoULiEeOgNpocz7LX5w">
+            <body>The IP subnets that the DHCP relay agent shall serve.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/EcimManagedObject?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xcQdUGb9EeOJFpF10s98Uw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_S2tEUULiEeOgNpocz7LX5w" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_dq8C8ELiEeOgNpocz7LX5w" name="server" visibility="public">
+          <ownedComment xmi:id="_jU0ckELiEeOgNpocz7LX5w">
+            <body>The peers of the DHCP servers that the DHCP packets shall be relayed to.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/EcimManagedObject?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_02yGYJ_HEeOY9epNz5Ktcw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_03BW8J_HEeOY9epNz5Ktcw" value="10"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_TdNOMELjEeOgNpocz7LX5w" name="administrativeState" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_TdW_MULjEeOgNpocz7LX5w">
+            <body>The administrative state.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#__jC9IJdbEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/AdmState?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_s8gAAFziEeOnsrXxvFd0jA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_s8upgFziEeOnsrXxvFd0jA" value="1"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_BZWSMMUvEeOLRKRjEvnbog" name="UNLOCKED">
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_CommonLibrary.uml#__jC9JZdbEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/AdmState/UNLOCKED?"/>
+          </defaultValue>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_Td6RcELmEeOgNpocz7LX5w" name="Router_to_DhcpRelayIPv4" memberEnd="_Td6RcULmEeOgNpocz7LX5w _Td7fkELmEeOgNpocz7LX5w">
+        <ownedEnd xmi:id="_Td6RcULmEeOgNpocz7LX5w" name="myRouter" visibility="public" association="_Td6RcELmEeOgNpocz7LX5w">
+          <type xmi:type="uml:Class" href="ECIM_Transport_IP.uml#_PjdYQADEEeGYdIzUhx57qA?RtnIP/RtnL3Router/Router?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Td8GoULmEeOgNpocz7LX5w" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Td8GoELmEeOgNpocz7LX5w" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_Td7fkELmEeOgNpocz7LX5w" name="fromDhcpRelayIPv4" visibility="public" type="_gR53cELdEeOEmNFCRjXHzg" aggregation="composite" association="_Td6RcELmEeOgNpocz7LX5w">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_TeAYEELmEeOgNpocz7LX5w"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Td_xAULmEeOgNpocz7LX5w" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_WiQGAJ_JEeOY9epNz5Ktcw" name="DhcpRelayIPv4_server_to_PeerIPv4_reservedBy" memberEnd="_WiQGAZ_JEeOY9epNz5Ktcw _WiRUIZ_JEeOY9epNz5Ktcw">
+        <ownedEnd xmi:id="_WiQGAZ_JEeOY9epNz5Ktcw" name="server" visibility="public" association="_WiQGAJ_JEeOY9epNz5Ktcw">
+          <type xmi:type="uml:Class" href="ECIM_Transport_Route.uml#_DHEIXW9wEeGFJsvcbhbyuA?RtnRoute/RtnRoutesPeerIPv4/PeerIPv4?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_WibFIZ_JEeOY9epNz5Ktcw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WibFIJ_JEeOY9epNz5Ktcw" value="10"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_WiRUIZ_JEeOY9epNz5Ktcw" name="reservedBy" visibility="public" type="_gR53cELdEeOEmNFCRjXHzg" association="_WiQGAJ_JEeOY9epNz5Ktcw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_VguqkODjEeO0Zuf4Jjzhsw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Vgs1YODjEeO0Zuf4Jjzhsw" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_wpQn0H94EeSqaJghTi263A" name="DhcpRelayIPv4_subnet_to_AddressIPv4_reservedBy" memberEnd="_wpRO4H94EeSqaJghTi263A _wpSdAH94EeSqaJghTi263A">
+        <ownedEnd xmi:id="_wpRO4H94EeSqaJghTi263A" name="subnet" visibility="public" association="_wpQn0H94EeSqaJghTi263A">
+          <type xmi:type="uml:Class" href="ECIM_Transport_IP.uml#_7MG50HRnEeSSBcEazp-x2w?RtnIP/RtnL3InterfaceIPv4/AddressIPv4?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wpdcIX94EeSqaJghTi263A" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wpdcIH94EeSqaJghTi263A" value="*"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_wpSdAH94EeSqaJghTi263A" name="reservedBy" visibility="public" type="_gR53cELdEeOEmNFCRjXHzg" association="_wpQn0H94EeSqaJghTi263A">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wpt60n94EeSqaJghTi263A"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wpt60X94EeSqaJghTi263A" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_lg_acH9BEeO1rZBjzNNOnA" name="RtnDhcpRelayIPv4Statistics">
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_p0q2IH9BEeO1rZBjzNNOnA" name="PmInstance">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_WHBeoL_7Ed-FYKAm2tRASg"/>
+        <slot xmi:id="_p1-dsH9BEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_WHeKkL_7Ed-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_qn5C0H9BEeO1rZBjzNNOnA" value="1"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_MCa44H9CEeO1rZBjzNNOnA" name="DhcpRelayIPv4Stats">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_cKJiUNq5EeCclon5NRd6Fw"/>
+        <slot xmi:id="_MDU30H9CEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_cLEvYNq5EeCclon5NRd6Fw"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_fmt-8H9CEeO1rZBjzNNOnA" value="DhcpRelayIPv4"/>
+        </slot>
+        <slot xmi:id="_MDVe4H9CEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_p-W5ENq5EeCclon5NRd6Fw"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_-HXZ8KnYEeOoYKe3EK3sXA" value="RtnDhcpRelayIPv4Statistics"/>
+        </slot>
+        <slot xmi:id="_MDVe4X9CEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_wh9wANq5EeCclon5NRd6Fw"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_d3WTEH9CEeO1rZBjzNNOnA" value="1"/>
+        </slot>
+        <slot xmi:id="_MDVe4n9CEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_fe53QOQzEeC4FPW5luT0gw"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_cw5oYH9CEeO1rZBjzNNOnA"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_saMRcH9CEeO1rZBjzNNOnA" name="dhcpRelayIPv4StatsDebugPmGroup">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_uKLt8MABEd-FYKAm2tRASg"/>
+        <slot xmi:id="_sa2YwH9CEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_uOfmMMABEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_3hylMKm5EeOoYKe3EK3sXA" value="DhcpRelayIPv4"/>
+        </slot>
+        <slot xmi:id="_6W75IH9CEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_PYCOcPo5EeCitcJoAgEPYQ"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_MH3kIH9DEeO1rZBjzNNOnA" value="DhcpRelayIPv4 Statistics"/>
+        </slot>
+        <slot xmi:id="_9kezMH9CEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_sHLJ4OQ0EeC4FPW5luT0gw"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_sWR5cH9QEeO1rZBjzNNOnA" instance="_MCa44H9CEeO1rZBjzNNOnA">
+            <type xmi:type="uml:Class" href="ECIM_PM.uml#_cKJiUNq5EeCclon5NRd6Fw?ECIM_PM/ECIM_PM/ManagedObjectClass?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_Ay0XcH9DEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_ib3pkNBQEd-v0N0F4ib9BA"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_Cq0a4H9DEeO1rZBjzNNOnA" value="true"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_aE1OQH9DEeO1rZBjzNNOnA" name="(PmInstance)" client="_saMRcH9CEeO1rZBjzNNOnA" supplier="_p0q2IH9BEeO1rZBjzNNOnA"/>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_5S1iYH9DEeO1rZBjzNNOnA" name="dhcpInClientMsgsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_5TkiMH9DEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_gzo2gIHeEeO1rZBjzNNOnA" value="dhcpInClientMsgsHC"/>
+        </slot>
+        <slot xmi:id="_pZZvEH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_1oUUIMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_1a3V0H9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_2UpOoMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_F6i0UH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_F6jbYH9FEeO1rZBjzNNOnA"/>
+        </slot>
+        <slot xmi:id="_Q2in0H9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_3Ady0MUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_b6W6kH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_b6XhoH9FEeO1rZBjzNNOnA" value="1"/>
+        </slot>
+        <slot xmi:id="_lvz8wH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_lv0j0H9FEeO1rZBjzNNOnA" value="true"/>
+        </slot>
+        <slot xmi:id="_1uu3kH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_1uu3kX9FEeO1rZBjzNNOnA" value="8"/>
+        </slot>
+        <slot xmi:id="_I-ppEH9GEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_mdbMYINFEeO1rZBjzNNOnA" value="Number of DHCP messages received from DHCP clients. Note that this counter includes all those counted by dhcpInClientErrorsHC."/>
+        </slot>
+        <slot xmi:id="_pqDvUH9GEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_VnjYkIHeEeO1rZBjzNNOnA" value="dhcpInClientMsgsHC"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_-5DkAH9DEeO1rZBjzNNOnA" name="dhcpInClientErrorsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_-5-KAH9DEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_hvXe8IHeEeO1rZBjzNNOnA" value="dhcpInClientErrorsHC"/>
+        </slot>
+        <slot xmi:id="_nolRsH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_n-YTsMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_zlLmkH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_ouuLgMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_EeY_YH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_EeZmcH9FEeO1rZBjzNNOnA"/>
+        </slot>
+        <slot xmi:id="_PFwmsH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_pYQQsMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_akxAoH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_akxAoX9FEeO1rZBjzNNOnA" value="1"/>
+        </slot>
+        <slot xmi:id="_kHJV0H9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_kHJV0X9FEeO1rZBjzNNOnA" value="true"/>
+        </slot>
+        <slot xmi:id="_0STV0H9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_0STV0X9FEeO1rZBjzNNOnA" value="8"/>
+        </slot>
+        <slot xmi:id="_MwgxIH9GEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_MwhYMH9GEeO1rZBjzNNOnA" value="Number of DHCP messages received from DHCP clients that are discarded because of DHCP-specific errors."/>
+        </slot>
+        <slot xmi:id="_m7sroH9GEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_UuK5gIHeEeO1rZBjzNNOnA" value="dhcpInClientErrorsHC"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_HqQT4H9EEeO1rZBjzNNOnA" name="dhcpOutClientMsgsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_Hq7pUH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_dpQlMIHeEeO1rZBjzNNOnA" value="dhcpOutClientMsgsHC"/>
+        </slot>
+        <slot xmi:id="_ureFoH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_uxp-UMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_6Nf-YH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_vcrRQMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_KTP58H9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_KTP58X9FEeO1rZBjzNNOnA"/>
+        </slot>
+        <slot xmi:id="_WMwekH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_wIIpEMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_f31cwH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_f32D0H9FEeO1rZBjzNNOnA" value="1"/>
+        </slot>
+        <slot xmi:id="_q7diQH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_q7eJUH9FEeO1rZBjzNNOnA" value="true"/>
+        </slot>
+        <slot xmi:id="_6MTPEH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_6MT2IH9FEeO1rZBjzNNOnA" value="8"/>
+        </slot>
+        <slot xmi:id="_QtcgwH9GEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_QtdH0H9GEeO1rZBjzNNOnA" value="Number of DHCP messages attempted to send to DHCP clients."/>
+        </slot>
+        <slot xmi:id="_w6kIgH9GEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_YyBJcIHeEeO1rZBjzNNOnA" value="dhcpOutClientMsgsHC"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_NfUp0H9EEeO1rZBjzNNOnA" name="dhcpInServerMsgsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_NgE3wH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_e3nOsIHeEeO1rZBjzNNOnA" value="dhcpInServerMsgsHC"/>
+        </slot>
+        <slot xmi:id="_s6dbAH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_yEwt0MUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_4uBIoH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_yypHgMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_Iw2TEH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_Iw26IH9FEeO1rZBjzNNOnA"/>
+        </slot>
+        <slot xmi:id="_UfymcH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_ze0RAMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_ejQPcH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_ejQ2gH9FEeO1rZBjzNNOnA" value="1"/>
+        </slot>
+        <slot xmi:id="_pRy1wH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_pRy1wX9FEeO1rZBjzNNOnA" value="true"/>
+        </slot>
+        <slot xmi:id="_4nsBsH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_4nsBsX9FEeO1rZBjzNNOnA" value="8"/>
+        </slot>
+        <slot xmi:id="_UOJAUH9GEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_jAAqUINFEeO1rZBjzNNOnA" value="Number of DHCP messages received from DHCP servers. Note that this counter includes all those counted by dhcpInServerErrorsHC."/>
+        </slot>
+        <slot xmi:id="_utZGUH9GEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_XodgYIHeEeO1rZBjzNNOnA" value="dhcpInServerMsgsHC"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_Rvjv8H9EEeO1rZBjzNNOnA" name="dhcpInServerErrorsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_RwYPUH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_f1nvEIHeEeO1rZBjzNNOnA" value="dhcpInServerErrorsHC"/>
+        </slot>
+        <slot xmi:id="_rCX4AH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_lwaAQMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_3NaRgH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_k-T08MUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_HSMjwH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_HSNK0H9FEeO1rZBjzNNOnA"/>
+        </slot>
+        <slot xmi:id="_Sms94H9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_kIIa4MUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_dO0zIH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_dO1aMH9FEeO1rZBjzNNOnA" value="1"/>
+        </slot>
+        <slot xmi:id="_ne1DUH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_ne1qYH9FEeO1rZBjzNNOnA" value="true"/>
+        </slot>
+        <slot xmi:id="_3LPR0H9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_3LP44H9FEeO1rZBjzNNOnA" value="8"/>
+        </slot>
+        <slot xmi:id="_X5tTIH9GEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_X5tTIX9GEeO1rZBjzNNOnA" value="Number of DHCP messages received from DHCP servers that are discarded because of DHCP-specific errors."/>
+        </slot>
+        <slot xmi:id="_sDbacH9GEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_Wn8ekIHeEeO1rZBjzNNOnA" value="dhcpInServerErrorsHC"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_VrwfwH9EEeO1rZBjzNNOnA" name="dhcpOutServerMsgsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_VsrFwH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_dA16UIHeEeO1rZBjzNNOnA" value="dhcpOutServerMsgsHC"/>
+        </slot>
+        <slot xmi:id="_wm2NMH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_rhpmIMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_7odggH9EEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_sM_pMMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_L0VSMH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_L0V5QH9FEeO1rZBjzNNOnA"/>
+        </slot>
+        <slot xmi:id="_YQl-kH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_s6tDwMUuEeOLRKRjEvnbog">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_hY6N8H9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_hY61AH9FEeO1rZBjzNNOnA" value="1"/>
+        </slot>
+        <slot xmi:id="_sWBbwH9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_sWCC0H9FEeO1rZBjzNNOnA" value="true"/>
+        </slot>
+        <slot xmi:id="_7ok_0H9FEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_7olm4H9FEeO1rZBjzNNOnA" value="8"/>
+        </slot>
+        <slot xmi:id="_bIe8QH9GEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_bIfjUH9GEeO1rZBjzNNOnA" value="Number of DHCP messages attempted to send to DHCP servers."/>
+        </slot>
+        <slot xmi:id="_zFDqIH9GEeO1rZBjzNNOnA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_Z3dukIHeEeO1rZBjzNNOnA" value="dhcpOutServerMsgsHC"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_F9skEH9HEeO1rZBjzNNOnA" name="" client="_-5DkAH9DEeO1rZBjzNNOnA" supplier="_saMRcH9CEeO1rZBjzNNOnA"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_I8qPkH9HEeO1rZBjzNNOnA" name="" client="_5S1iYH9DEeO1rZBjzNNOnA" supplier="_saMRcH9CEeO1rZBjzNNOnA"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_L6_B4H9HEeO1rZBjzNNOnA" name="" client="_Rvjv8H9EEeO1rZBjzNNOnA" supplier="_saMRcH9CEeO1rZBjzNNOnA"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_Of_8UH9HEeO1rZBjzNNOnA" name="" client="_NfUp0H9EEeO1rZBjzNNOnA" supplier="_saMRcH9CEeO1rZBjzNNOnA"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_RYQi4H9HEeO1rZBjzNNOnA" name="" client="_HqQT4H9EEeO1rZBjzNNOnA" supplier="_saMRcH9CEeO1rZBjzNNOnA"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_UMgMIH9HEeO1rZBjzNNOnA" name="" client="_VrwfwH9EEeO1rZBjzNNOnA" supplier="_saMRcH9CEeO1rZBjzNNOnA"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_eg1tQH9IEeO1rZBjzNNOnA" name="" client="_MCa44H9CEeO1rZBjzNNOnA" supplier="_saMRcH9CEeO1rZBjzNNOnA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_N3j-gKRCEeOXH4cKDHkMLw" name="RtnDhcpRelayIPv4_">
+      <ownedComment xmi:id="_WqcwcKRCEeOXH4cKDHkMLw">
+        <body>Decision MOM for RtnDhcpRelayIPv4.
+
+Shall not be visible.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_N3rTQKRCEeOXH4cKDHkMLw" name="Root" isAbstract="true">
+        <ownedComment xmi:id="_UO3e0KRCEeOXH4cKDHkMLw">
+          <body>Decision MO for RtnDhcpRelayIPv4.
+
+Shall not be visible.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_CER2UKRFEeOXH4cKDHkMLw" name="DURA">
+        <packagedElement xmi:type="uml:Class" xmi:id="_CEX88aRFEeOXH4cKDHkMLw" name="Model"/>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_UeIAINCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAIdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAItCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAI9CzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/documentation#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://PAPYRUS_DOCUMENTATION/Papyrus.profile.uml#_H9068AEYEeCIz8iAxBJnfA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_8SHr0ELbEeOWmOYukck-pQ">
+      <eAnnotations xmi:id="_vlrE-50SEeW4ma0yeKsZYQ" source="PapyrusVersion">
+        <details xmi:id="_vlrE_J0SEeW4ma0yeKsZYQ" key="Version" value="1.0.6"/>
+        <details xmi:id="_vlrE_Z0SEeW4ma0yeKsZYQ" key="Comment" value=""/>
+        <details xmi:id="_vlrE_p0SEeW4ma0yeKsZYQ" key="Copyright" value=""/>
+        <details xmi:id="_vlrE_50SEeW4ma0yeKsZYQ" key="Date" value="2015-12-07"/>
+        <details xmi:id="_vlrFAJ0SEeW4ma0yeKsZYQ" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_BXiQoHGoEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_BXiQoXGoEeWKa6xc8cMmlg" key="Version" value="1.0.5"/>
+        <details xmi:id="_BXiQonGoEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_BXiQo3GoEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_BXiQpHGoEeWKa6xc8cMmlg" key="Date" value="2015-08-24"/>
+        <details xmi:id="_BXiQpXGoEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_8f1XsELbEeOWmOYukck-pQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_cUcakNQkEd63X4o72aQidQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_16rzMELcEeOEmNFCRjXHzg">
+      <eAnnotations xmi:id="_BXl7AHGoEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_BXl7AXGoEeWKa6xc8cMmlg" key="Version" value="1.0.2"/>
+        <details xmi:id="_BXl7AnGoEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_BXl7A3GoEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_BXl7BHGoEeWKa6xc8cMmlg" key="Date" value="2015-09-04"/>
+        <details xmi:id="_BXl7BXGoEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_16wrsELcEeOEmNFCRjXHzg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_Br2_QBSXEd-ZjqYFUyJzOw"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_ESG50GW_EeWG3arGTiu4Mw" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ" createdBy="EAB/FJP/TA UABJOCL" approvedBy="EAB/FJP/TA UABJOCL" docDate=""/>
+  <CoreMWProfile:CmwModel xmi:id="_EO-tUGW_EeWG3arGTiu4Mw" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_ESG50WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Package="_gRxUkELdEeOEmNFCRjXHzg" author="EAB/FJP/TA UABJOCL" contact="EAB/FJP/TA UABJOCL" date="" docNo="" revision="" version="2" release="0" organization="" correction="6"/>
+  <CoreMWProfile:CmwMom xmi:id="_EO-tUWW_EeWG3arGTiu4Mw" base_Package="_gRxUkELdEeOEmNFCRjXHzg" immNamespace="NONE"/>
+  <CoreMWProfile:CmwClass xmi:id="_EO-tUmW_EeWG3arGTiu4Mw" base_Class="_gR53cELdEeOEmNFCRjXHzg"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_ESG50mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_gSDBYELdEeOEmNFCRjXHzg"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_ESG502W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="Subnet shall point to AddressIpv4 instances within the same Router where the DhcpRelayIpv4 is contained.&#xA;Subnet shall point to an AddressIpv4 that is the one and only AddressIpv4 on that InterfaceIpv4." disturbances="Changing this attribute causes traffic disturbances." precondition="" sideEffects="" takesEffect="DHCP-relay-application will be restarted when attribute is changed, so external products using dhcp-relay might get impacted during the restart." isNotifiable="true" isAssociationEnd="true" base_Property="_Sv4qoELiEeOgNpocz7LX5w"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_EO-tU2W_EeWG3arGTiu4Mw" base_Property="_Sv4qoELiEeOgNpocz7LX5w" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_ESG51GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="Changing this attribute causes traffic disturbances." precondition="" sideEffects="" takesEffect="DHCP-relay-application will be restarted when attribute is changed, so external products using dhcp-relay might get impacted during the restart." isNotifiable="true" isAssociationEnd="true" base_Property="_dq8C8ELiEeOgNpocz7LX5w"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_EO-tVGW_EeWG3arGTiu4Mw" base_Property="_dq8C8ELiEeOgNpocz7LX5w" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_ESG51WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" status="OBSOLETE" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_TdNOMELjEeOgNpocz7LX5w"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_EO-tVWW_EeWG3arGTiu4Mw" base_Property="_TdNOMELjEeOgNpocz7LX5w" isConfigurable="true"/>
+  <CoreMWProfile:CmwContribution xmi:id="_EO-tVmW_EeWG3arGTiu4Mw" splitImmDn="false" base_Association="_Td6RcELmEeOgNpocz7LX5w"/>
+  <ECIMBaseProfile:EcimContribution xmi:id="_ESG51mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_Td6RcELmEeOgNpocz7LX5w" isNotifiable="true"/>
+  <ECIMBaseProfile:EcimInstances xmi:id="_ESG512W_EeWG3arGTiu4Mw" base_Package="_lg_acH9BEeO1rZBjzNNOnA" version="1" release="3" correction="0"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_ESG52GW_EeWG3arGTiu4Mw" base_InstanceSpecification="_p0q2IH9BEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimStructInstance xmi:id="_ESG52WW_EeWG3arGTiu4Mw" base_InstanceSpecification="_MCa44H9CEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_ESG52mW_EeWG3arGTiu4Mw" base_InstanceSpecification="_saMRcH9CEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_ESG522W_EeWG3arGTiu4Mw" base_Dependency="_aE1OQH9DEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_ESG53GW_EeWG3arGTiu4Mw" base_InstanceSpecification="_5S1iYH9DEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_ESG53WW_EeWG3arGTiu4Mw" base_InstanceSpecification="_-5DkAH9DEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_ESG53mW_EeWG3arGTiu4Mw" base_InstanceSpecification="_HqQT4H9EEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_ESG532W_EeWG3arGTiu4Mw" base_InstanceSpecification="_NfUp0H9EEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_ESG54GW_EeWG3arGTiu4Mw" base_InstanceSpecification="_Rvjv8H9EEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_ESG54WW_EeWG3arGTiu4Mw" base_InstanceSpecification="_VrwfwH9EEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_ESG54mW_EeWG3arGTiu4Mw" base_Dependency="_F9skEH9HEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_ESG542W_EeWG3arGTiu4Mw" base_Dependency="_I8qPkH9HEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_ESG55GW_EeWG3arGTiu4Mw" base_Dependency="_L6_B4H9HEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_ESG55WW_EeWG3arGTiu4Mw" base_Dependency="_Of_8UH9HEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_ESG55mW_EeWG3arGTiu4Mw" base_Dependency="_RYQi4H9HEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_ESG552W_EeWG3arGTiu4Mw" base_Dependency="_UMgMIH9HEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_ESG56GW_EeWG3arGTiu4Mw" base_Dependency="_eg1tQH9IEeO1rZBjzNNOnA"/>
+  <ECIMBaseProfile:EcimClientAssociationEnd xmi:id="_ESG56WW_EeWG3arGTiu4Mw" base_Property="_WiQGAZ_JEeOY9epNz5Ktcw" isReserving="true"/>
+  <ECIMBaseProfile:EcimBiDirAssociation_CS xmi:id="_ESG56mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_WiQGAJ_JEeOY9epNz5Ktcw"/>
+  <ECIMBaseProfile:EcimServerAssociationEnd xmi:id="_ESQq0GW_EeWG3arGTiu4Mw" base_Property="_WiRUIZ_JEeOY9epNz5Ktcw"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_ESQq0WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Package="_N3j-gKRCEeOXH4cKDHkMLw" author="EAB/FJP/TA UABJOCL" contact="EAB/FJP/TA UABJOCL" date="" docNo="" revision="" version="0" release="0" organization="" correction="0"/>
+  <CoreMWProfile:CmwMom xmi:id="_EO-tV2W_EeWG3arGTiu4Mw" base_Package="_N3j-gKRCEeOXH4cKDHkMLw" immNamespace="MOM_NAME"/>
+  <ECIMBaseProfile:EcimDecisions xmi:id="_ESQq0mW_EeWG3arGTiu4Mw" base_Package="_CER2UKRFEeOXH4cKDHkMLw"/>
+  <ECIMBaseProfile:EcimDecision xmi:id="_ESQq02W_EeWG3arGTiu4Mw" base_Class="_CEX88aRFEeOXH4cKDHkMLw"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_ESQq1GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Class="_gR53cELdEeOEmNFCRjXHzg" isLegacyRoot="true"/>
+  <ECIMBaseProfile:EcimAbstractMoClass xmi:id="_ESQq1WW_EeWG3arGTiu4Mw" base_Class="_N3rTQKRCEeOXH4cKDHkMLw" hideGroupName="" specification="" status="OBSOLETE" statusInformation=""/>
+  <ECIMBaseProfile:EcimClientAssociationEnd xmi:id="_ESQq1mW_EeWG3arGTiu4Mw" base_Property="_wpRO4H94EeSqaJghTi263A" isReserving="true"/>
+  <ECIMBaseProfile:EcimBiDirAssociation_CS xmi:id="_ESQq12W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_wpQn0H94EeSqaJghTi263A"/>
+  <ECIMBaseProfile:EcimServerAssociationEnd xmi:id="_ESQq2GW_EeWG3arGTiu4Mw" base_Property="_wpSdAH94EeSqaJghTi263A"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_EO-tWGW_EeWG3arGTiu4Mw" base_Property="_gSDBYELdEeOEmNFCRjXHzg" isPersistent="true"/>
+  <ECIMBaseProfile:EcimSchematronConstraint xmi:id="_ESQq2WW_EeWG3arGTiu4Mw" interfaceVersion="1.0" interfaceName="ECIM_Schematron" base_Constraint="_6IeYAKkTEeOoYKe3EK3sXA"/>
+  <Documentation:Documentation xmi:id="_AMyDMGW_EeWG3arGTiu4Mw" base_Comment="_eHiuIELcEeOEmNFCRjXHzg"/>
+  <Documentation:Documentation xmi:id="_AMyDMWW_EeWG3arGTiu4Mw" base_Comment="_gR-v8ULdEeOEmNFCRjXHzg"/>
+  <Documentation:Documentation xmi:id="_AMyDMmW_EeWG3arGTiu4Mw" base_Comment="_gSH54ULdEeOEmNFCRjXHzg"/>
+  <Documentation:Documentation xmi:id="_AMyDM2W_EeWG3arGTiu4Mw" base_Comment="_7yk-MELdEeOEmNFCRjXHzg"/>
+  <Documentation:Documentation xmi:id="_AMyDNGW_EeWG3arGTiu4Mw" base_Comment="_S2mWoULiEeOgNpocz7LX5w"/>
+  <Documentation:Documentation xmi:id="_AMyDNWW_EeWG3arGTiu4Mw" base_Comment="_jU0ckELiEeOgNpocz7LX5w"/>
+  <Documentation:Documentation xmi:id="_AMyDNmW_EeWG3arGTiu4Mw" base_Comment="_TdW_MULjEeOgNpocz7LX5w"/>
+  <Documentation:Documentation xmi:id="_AMyDN2W_EeWG3arGTiu4Mw" base_Comment="_UO3e0KRCEeOXH4cKDHkMLw"/>
+  <Documentation:Documentation xmi:id="_AMyDOGW_EeWG3arGTiu4Mw" base_Comment="_WqcwcKRCEeOXH4cKDHkMLw"/>
+</xmi:XMI>

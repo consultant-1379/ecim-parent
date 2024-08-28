@@ -1,0 +1,1250 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Node" namespace="urn:com:ericsson:ecim:Epg_Node" namespacePrefix="epg_node" organization="Ericsson EAB, NDO EPG" release="1" revision="" version="3">
+        <description>Node settings</description>
+        <enum name="StatisticsNode">
+            <description>List of nodes</description>
+            <enumMember name="pgw">
+                <description>Show PGW statistics</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="sgw">
+                <description>Show SGW statistics</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="ApplicationId">
+            <description>Vendor-specific application identity</description>
+            <enumMember name="sgmb">
+                <description>SGmb</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="rf">
+                <description>Rf</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="Priority">
+            <description>Priority of the peer</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>255</max>
+                    </range>
+                    <unit>priority</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Watchdog">
+            <description>Watchdog timeout in seconds</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>3</min>
+                        <max>300</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="IpAddress">
+            <description>IP Address</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>15</max>
+                    </lengthRange>
+                    <validValues>^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Board">
+            <description>Board allocation</description>
+            <baseType>
+                <string>
+                    <validValues>^(gc|gu)-0/(20|1[0-9]|[1-9])/1</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="ServerName">
+            <description>Name of server</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>64</max>
+                    </lengthRange>
+                    <validValues>^[\.0-9A-Za-z\_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EchoInterval">
+            <description>Specifies how often a echo request should be sent out on each path (in seconds)</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>200</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="NotificationLimit">
+            <description>Number of notifications per second that are allowed to be sent from the node</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>100</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Ipv6prefix">
+            <description>Interface IPv6 address range</description>
+            <baseType>
+                <string>
+                    <validValues>((^([0-9a-f]{1,4}:){1,1}(:[0-9a-f]{1,4}){1,6}$)|(^([0-9a-f]{1,4}:){1,2}(:[0-9a-f]{1,4}){1,5}$)|(^([0-9a-f]{1,4}:){1,3}(:[0-9a-f]{1,4}){1,4}$)|(^([0-9a-f]{1,4}:){1,4}(:[0-9a-f]{1,4}){1,3}$)|(^([0-9a-f]{1,4}:){1,5}(:[0-9a-f]{1,4}){1,2}$)|)(/([1-9]|5[0-9]|6[0-4])){0,1}</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="AlarmTogglingPreventionTime">
+            <description>Number of seconds after an alarm toggling that it is prevented from being toggled again</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>0</min>
+                        <max>600</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="IpAddressRange">
+            <description>IP Address range</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>18</max>
+                    </lengthRange>
+                    <validValues>^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(/(3[0-2]|[1-2][0-9]|[1-9])){0,1}</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="Node">
+            <description>Node settings</description>
+            <root/>
+            <attribute name="nodeID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="BoardAllocation">
+            <description>Board allocation</description>
+            <action name="statistics">
+                <description>Show board statistics</description>
+                <returnType>
+                    <string/>
+                </returnType>
+                <parameter name="node">
+                    <description>Show board statistics for this node</description>
+                    <in/>
+                    <dataType>
+                        <enumRef name="StatisticsNode">
+                            <mimName>Epg_Node</mimName>
+                        </enumRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="boardAllocationId">
+                <description>The board to use</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="Board">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Diagnostics">
+            <description>Diagnostics and support</description>
+            <attribute name="diagnosticsID">
+                <description>Single instance node must have '1' as name
+</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="manualTrace">
+                <description>Manual trace</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Trace">
+            <description>Trace</description>
+            <attribute name="traceId">
+                <description>Trace item</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Override">
+            <description>Override</description>
+            <attribute name="overrideID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="gtpEchoInterval">
+                <description>GTP echo interval</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EchoInterval">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Isp">
+            <description>Isp logging</description>
+            <attribute name="ispID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Heartbeat">
+            <description>Isp heartbeat</description>
+            <attribute name="heartbeatID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="fast">
+                <description>Fast heartbeat</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="InternalDebug">
+            <description>Actions used internally</description>
+            <action name="exportLimTable">
+                <description>.</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <action name="resetAlerts">
+                <description>Resets info about any existing alerts</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <attribute name="internalDebugID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FaultManagement">
+            <description>Fault management settings</description>
+            <action name="activeNotifications">
+                <description>Show currently active notifications</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <action name="clearNotification">
+                <description>Force an active notification to be cleared</description>
+                <returnType>
+                    <string/>
+                </returnType>
+                <parameter name="faultId">
+                    <description>Fault ID of the notification to be cleared</description>
+                    <in/>
+                    <dataType>
+                        <uint16/>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="faultManagementID">
+                <description>Single instance node must have '1' as name
+</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="alarmTogglingPreventionTime">
+                <description>Number of seconds after an alarm toggling that it is prevented from being toggled again</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="AlarmTogglingPreventionTime">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="notificationLimit">
+                <description>Number of notifications per second that are allowed to be sent from the node</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="NotificationLimit">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Ebm">
+            <description>Event Based Monitoring setting</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $context in @routingInstance satisfies ($context = /ManagedElement/Context/@contextNameId)'><name path='.'/>,routingInstance: Routing instance must be configured under 'managed-element context'</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="ebmID">
+                <description>Id for EBM</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="enabled">
+                <description>Activate EBM</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="addressRange">
+                <description>Specifies the address range</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressRange">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="routingInstance">
+                <description>Specifies the Juniper VPN id (routing instance)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Server">
+            <description>Event Based Monitoring server name</description>
+            <attribute name="serverId">
+                <description>Name of server</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="ServerName">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="address">
+                <description>EBM server addresses</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddress">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="port">
+                <description>EBM port number</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <uint16/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="LogicalInterface">
+            <description>Interface settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $context in @routingInstance satisfies ($context = /ManagedElement/Context/@contextNameId)'><name path='.'/>,routingInstance: Routing instance must be configured under 'managed-element context'</assert>
+	    <assert id='set' test='exists(./@ipv6AddressRange) or exists(./@addressRange)'><name path='.'/>: At least one of address-range and ipv6-address-range must be configured'</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="logicalInterfaceId">
+                <description>Logical interface name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="routingInstance">
+                <description>Routing instance for logical-interface</description>
+                <noNotification/>
+                <dataType>
+                    <string>
+                        <defaultValue>local</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="addressRange">
+                <description>Interface address range</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressRange">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ipv6AddressRange">
+                <description>Interface IPv6 address range</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Ipv6prefix">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Diameter">
+            <description>Diameter settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='exists(./DiameterApplicationSystem/@diameterApplicationSystemId)'><name path='.'/>: Missing mandatory managed object 'diameter-application-system'</assert>
+	    <assert id='set' test='exists(./RemoteDiameterPeer/@remoteDiameterPeerId)'><name path='.'/>: Missing mandatory managed object 'remote-diameter-peer'</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <action name="status">
+                <description>Show Diameter status</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <attribute name="diameterID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="localRealm">
+                <description>Local diameter realm</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="localHostName">
+                <description>Local host name</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="RemoteDiameterPeer">
+            <description>Remote Diameter peer settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='@logicalInterface = /ManagedElement/Epg/Node/LogicalInterface/@logicalInterfaceId'><name path='.'/>,logicalInterface: Logical interface must be configured under [epg node logical-interface]</assert>
+            <assert id='set' test='every $id in @remoteDiameterPeerId satisfies (not(@address = ../RemoteDiameterPeer[@remoteDiameterPeerId != $id]/@address))'><name path='.'/>,address: Peer address must be unique</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="remoteDiameterPeerId">
+                <description>Peer ID</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="logicalInterface">
+                <description>Logical interface</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="address">
+                <description>Peer address</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddress">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="port">
+                <description>Peer port number</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <uint16/>
+                </dataType>
+            </attribute>
+            <attribute name="watchdog">
+                <description>Watchdog timeout in seconds</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Watchdog">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DiameterApplicationSystem">
+            <description>Diameter application system</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern>
+        <rule>
+            <assert id='set' test='exists(./Peer/@peerId)'><name path='.'/>: Missing mandatory managed object 'peer'</assert>
+        </rule>
+    </pattern>
+</schema>]]></dependenciesScript>
+            <action name="status">
+                <description>Show Diameter Application System status</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <attribute name="diameterApplicationSystemId">
+                <description>Diameter application system ID</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="destinationRealm">
+                <description>Destination realm</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="applicationId">
+                <description>Vendor-specific application identity</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="ApplicationId">
+                        <mimName>Epg_Node</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Peer">
+            <description>Remote Diameter peers and priorities</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='@peerId = ../../RemoteDiameterPeer/@remoteDiameterPeerId'><name path='.'/>: Remote Diameter peer must be configured under [epg node diameter remote-diameter-peer]</assert>
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="peerId">
+                <description>Remote Diameter peer ID</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="priority">
+                <description>Priority of the peer</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Priority">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FeatureActivation">
+            <description>Feature activation flags </description>
+            <attribute name="featureActivationID">
+                <description>Single instance node must have '1' as name </description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="chargingRf">
+                <description>Enable charging over Rf </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Node</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Node_to_Diagnostics">
+            <containment>
+                <parent>
+                    <hasClass name="Node">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Diagnostics">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Node_to_BoardAllocation">
+            <containment>
+                <parent>
+                    <hasClass name="Node">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="BoardAllocation">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Diagnostics_to_Trace">
+            <containment>
+                <parent>
+                    <hasClass name="Diagnostics">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Trace">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Diagnostics_to_Override">
+            <containment>
+                <parent>
+                    <hasClass name="Diagnostics">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Override">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Node_to_Isp">
+            <containment>
+                <parent>
+                    <hasClass name="Node">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Isp">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Isp_to_Heartbeat">
+            <containment>
+                <parent>
+                    <hasClass name="Isp">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Heartbeat">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Node_to_InternalDebug">
+            <containment>
+                <parent>
+                    <hasClass name="Node">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="InternalDebug">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Node_to_FaultManagement">
+            <containment>
+                <parent>
+                    <hasClass name="Node">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FaultManagement">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Ebm_to_Server">
+            <containment>
+                <parent>
+                    <hasClass name="Ebm">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Server">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Node_to_Ebm">
+            <containment>
+                <parent>
+                    <hasClass name="Node">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Ebm">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Node_to_Diameter">
+            <containment>
+                <parent>
+                    <hasClass name="Node">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Diameter">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Diameter_to_RemoteDiameterPeer">
+            <containment>
+                <parent>
+                    <hasClass name="Diameter">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RemoteDiameterPeer">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>32</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Diameter_to_DiameterApplicationSystem">
+            <containment>
+                <parent>
+                    <hasClass name="Diameter">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DiameterApplicationSystem">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>32</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="DiameterApplicationSystem_to_Peer">
+            <containment>
+                <parent>
+                    <hasClass name="DiameterApplicationSystem">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Peer">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>32</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Node_to_FeatureActivation">
+            <containment>
+                <parent>
+                    <hasClass name="Node">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FeatureActivation">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Node_to_LogicalInterface">
+            <containment>
+                <parent>
+                    <hasClass name="Node">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="LogicalInterface">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>32</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Epg_to_Node">
+            <containment>
+                <parent>
+                    <hasClass name="Epg">
+                        <mimName>Epg_epg</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Node">
+                        <mimName>Epg_Node</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

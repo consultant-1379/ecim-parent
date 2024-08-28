@@ -1,0 +1,130 @@
+module ListKey {
+
+  namespace "urn:com:ericsson:yang:ListKey";
+
+  prefix "list";
+  
+  import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+  
+  organization
+    "Ericsson AB.";
+
+  contact
+    "Web:   <http://www.ericsson.com>";
+
+  description
+    "This YANG module defines the configuration data
+    and operational state data for Context in IPOS.
+
+    Copyright (c) 2014 Ericsson AB.
+    All rights reserved.";
+
+  revision 2014-09-15 {
+      description
+      "Initial revision.";
+    reference
+      "A YANG Data Model for Routing Management
+      draft-ietf-netmod-routing-cfg-15.";
+    ericsson:correction 1;
+	ericsson:release 1;
+	ericsson:version 1;
+  }
+  
+  list list-1 {
+  	key "leaf-1-2 leaf-1-1";
+  	leaf leaf-1-1 {
+  		type uint8;
+  	}
+  	leaf leaf-1-2 {
+  		type string;
+  	}
+  	leaf leaf-1-3 {
+  		type boolean;
+  	}
+  }
+  
+
+  list list-2 {
+  	config false;
+  	key "leaf-2-1";
+  	leaf leaf-2-1 {
+  		type boolean;
+  	}
+  	leaf leaf-2-2 {
+  		type string;
+  	}
+  	container c-2-1 {
+  		list list-3 {
+  			leaf l-2-3 {
+  				type uint16;
+  			}
+  			leaf-list ll-3-1 {
+  				type uint32;
+  			}
+  		}
+  	}
+  }
+  
+  list list-4 {
+  	key "seq";
+  	leaf seq {
+  		type uint32;
+  	}
+  	leaf-list ll-4-1 {
+  		type string;
+  	}
+  	container c-4-1 {
+  		list list-5 {
+  			key "l-5-1";
+  			leaf l-5-1 {
+  				type boolean;
+  			}
+  			leaf-list ll-5-1 {
+  				type int8;
+  			}
+  		}
+  	}
+  }
+  
+  list list-6 {
+  	key "seq";
+  	leaf seq {
+  		type uint32;
+  	}
+  	container c-6-1 {
+  		leaf l {
+  			type string;
+  		}
+  		list list-7 {
+  			config false;
+  			
+  			container c-7-1 {
+  				leaf l-7-1 {
+  					type string;
+  				}
+  			}
+  			leaf seq {
+  				type uint32;
+  			}
+  			
+  			leaf-list ll-7-1 {
+  				type int16;
+  			}
+  			choice status {
+  				case up {
+  					leaf up {
+  						type empty;
+  					}
+  				}
+  				case down {
+  					leaf down {
+  						type empty;
+  					}
+  				}
+  			}
+  		}
+  	}
+  }
+}

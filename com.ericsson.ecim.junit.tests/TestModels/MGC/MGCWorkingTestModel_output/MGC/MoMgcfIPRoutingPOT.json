@@ -1,0 +1,104 @@
+{
+		"name" : "MoMgcfIPRouting" ,
+		"ss7" : "false" ,
+		"visible" : "true" ,
+		"desc" : "\nThis table defines the static IP Routings which will be used on Os level.\n    " ,
+		"filename" : "MoMgcfIPRoutingPOT.json" ,
+		"max_entries" : "1" ,
+		"modid" : "-1" ,
+		"attrs" : {
+				"mgcfIPRoutingId" : {
+						"name" : "mgcfIPRoutingId" ,
+						"keytype" : "ECIM_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "The MoClass key of the mgcfIPRouting" ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "false"
+				} ,
+				"mgcfRoutingDestination" : {
+						"name" : "mgcfRoutingDestination" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe destination host/net address for this static IP route\n      " ,
+						"types" : "derived0_15_[0-9.]{0,15}" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"mgcfRoutingNetworkMask" : {
+						"name" : "mgcfRoutingNetworkMask" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThis parameter defines the network mask for the routing destination IP address\n      " ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"mgcfRoutingNextHop" : {
+						"name" : "mgcfRoutingNextHop" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe next hop IP address (gateway address) for this static IP route.\n      " ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"mgcfRoutingInterface" : {
+						"name" : "mgcfRoutingInterface" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nForce the route to be associated with the specified device.\nMGC uses interface bond0 and it is not changeable. So bond0 will not present into the interface string. Only need to specify VLAN ID here.\nFor example, if Device Interface parameter value is 311, then the interface in OS will be bond0.311\n      "
+						,
+						"types" : "derived0_32_[0-9A-Za-z:]{0,32}" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				}
+		} ,
+		"actions" : {
+		} ,
+		"codecs" : {
+		} ,
+		"brs" : {
+		} ,
+		"enums" : {
+		} ,
+		"deriveds" : {
+				"derived0_15_[0-9.]{0,15}" : {
+						"name" : "derived0_15_[0-9.]{0,15}" ,
+						"stereotypes" : "EcimDerivedString" ,
+						"basetype" : "EcimString" ,
+						"length" : "0..15" ,
+						"range" : "" ,
+						"pattern" : "[0-9.]{0,15}"
+				} ,
+				"derived0_32_[0-9A-Za-z:]{0,32}" : {
+						"name" : "derived0_32_[0-9A-Za-z:]{0,32}" ,
+						"stereotypes" : "EcimDerivedString" ,
+						"basetype" : "EcimString" ,
+						"length" : "0..32" ,
+						"range" : "" ,
+						"pattern" : "[0-9A-Za-z:]{0,32}"
+				}
+		}
+}

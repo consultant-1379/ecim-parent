@@ -1,0 +1,429 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:10:08 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ComTop" {
+	namespace "urn:com:ericsson:ecim:ComTop";
+	prefix "ComTop";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	organization "EAB/FLE/CC";
+	description "This is the top-level of the Ericsson Common Information Model. 
+This model contains the singleton, root Managed Object Class, ManagedElement under which the complete model is contained.
+Directly under ManagedElement are managed-function level classes SystemFunctions, Transport, Equipment  and the root MOC of any managed functions. The Equipment Root MOC is in the Equipment MOM.  The root MOC for a managed function is hosted in the managed function MOM.
+";
+
+	revision "2014-04-11" {
+		ericsson:version "10";
+		ericsson:correction "1";
+		ericsson:author "XHARMUT";
+		ericsson:release "10";
+	}
+
+	list "ManagedElement" {
+		key "managedElementId";
+		list "SystemFunctions" {
+			key "systemFunctionsId";
+			min-elements 1;
+			max-elements 1;
+			uses ComTop:SystemFunctions;
+		}
+
+		list "Transport" {
+			key "transportId";
+			max-elements 1;
+			uses ComTop:Transport;
+		}
+
+		list "Legacy" {
+			key "legacyId";
+			max-elements 1;
+			uses ComTop:Legacy;
+		}
+
+		uses ComTop:ManagedElement;
+	}
+
+	typedef "AdmState" {
+		type enumeration {
+			enum "LOCKED" {
+				value 0;
+				description
+				"The resource is administratively prohibited from performing services for its users.";
+			}
+
+			enum "UNLOCKED" {
+				value 1;
+				description "The resource is administratively permitted to perform services for its users.
+This is independent of its inherent operability.";
+			}
+
+			enum "SHUTTINGDOWN" {
+				value 2;
+				description "Use of the resource is administratively permitted to existing instances of use only.
+While the system remains in the shutting down state the manager may at any time cause the managed object to revert to the locked state.";
+			}
+
+		}
+
+		status deprecated;
+		description "The administrative state of a resource. ";
+	}
+
+	typedef "BasicAdmState" {
+		type enumeration {
+			enum "LOCKED" {
+				value 0;
+				description
+				"The resource is administratively prohibited from performing services for its users.";
+			}
+
+			enum "UNLOCKED" {
+				value 1;
+				description " The resource is administratively permitted to perform services for its users.
+This is independent of its inherent operability.";
+			}
+
+		}
+
+		status deprecated;
+		description "The basic administrative states for a resource.";
+	}
+
+	typedef "OperState" {
+		type enumeration {
+			enum "DISABLED" {
+				value 0;
+				description "  The resource is  totally inoperable.";
+			}
+
+			enum "ENABLED" {
+				value 1;
+				description "The resource partially or fully operable.";
+			}
+
+		}
+
+		status deprecated;
+		description "The operational states of a resource.";
+	}
+
+	typedef "SchemaFormat" {
+		type enumeration {
+			enum "MP_DTD" {
+				value 0;
+				description "The data model format is XML based on mp.dtd.";
+			}
+
+		}
+
+		status deprecated;
+		description "The Schema formats of the supported data models. ";
+	}
+
+	typedef "DateTime" {
+		type string {
+			length "20..31";
+			pattern
+			"^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+)*(([\+|\-](0[0-9]|1[0-9]|2[0-4])(:[0-5][0-9])?)|(Z))$";
+		}
+
+		status deprecated;
+		description "Represents the International Standard for the representation of date and time ( ISO 8601).
+The string format is YYYY-MM-DDThh:mm:ss.SSSZ (excluding quotes).
+A DateTime string consists of a date part followed by a time part. When the time part represents local time, as opposed to UTC time indicated by Z as last character, an additional time offset part is added to the DateTime string.
+
+The following pattern describes the DateTime format in detail:
+YYYY-MM-DDThh:mm:ss[.S+][Z|+-hh:mm]
+Where:
+YYYY = four digit year
+MM = two digit month (01=January, etc.)
+DD = two digit day of month (01 through 31)
+T = time designator (shows start of time component)
+hh = two digits of hour (00 through 23, AM/PM not allowed)
+mm = two digits of minute (00 through 59)
+ss = two digits of second (00 through 59, leap second not allowed)
+S+ = one or more digits of decimal fraction of a second
+Z = time is Coordinated Universal Time (UTC)
++- = + or - character indicating positive or negative offset to UTC 
+
+DateTime values are compliant with ISO 8601 Representation of dates and times but are restricted according to RFC 3339 Date and Time on the Internet: Timestamps. The DateTime format is further restricted:
+- T and Z designators are upper case.
+- . (dot) is used to indicate start of fractions of seconds (ISO 8601 also allows comma)";
+	}
+
+	typedef "IpDNSAddress" {
+		type string {
+			length "1..253";
+			pattern
+			"(^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\s*$)|(^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]))*$)";
+		}
+
+		status deprecated;
+		description "The IpDNSAddress type represents an IP address or a DNS domain name.
+A version 4 IP address is specified in dotted quad notation, for example 130.100.92.154. RFC 791 describes the syntax details.
+A version 6 IP address is specified by 8 groups of 16 bit hexadecimal values separated by colons, for example 2001:0db8:85a3:0000:0000:8a2e:0370:7334. RFC 4291 describes the syntax details.
+A DNS name is specified as a fully qualified domain name, for example myhost.ericsson.com. Internet domain are loosely specified but RFC 1034 recommends a syntax.";
+	}
+
+	typedef "DateTimeWithoutOffset" {
+		type string {
+			length "19";
+			pattern
+			"^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+)*$";
+		}
+
+		status deprecated;
+		description "Represents the local date and time ( ISO 8601).
+The following pattern describes the DateTimeWithoutOffset format in detail:
+YYYY-MM-DDThh:mm:ss[.S+]
+Where:
+YYYY    = four digit year
+MM      = two digit month (01=January, etc.)
+DD      = two digit day of month (01 through 31)
+T       = time designator (shows start of time component)
+hh      = two digits of hour (00 through 23, AM/PM not allowed)
+mm      = two digits of minute (00 through 59)
+ss      = two digits of second (00 through 59, leap second not allowed)
+S+      = one or more digits of decimal fraction of a second
+
+DateTimeWithoutOffset values are compliant with ISO 8601 (Representation of dates and times) but are restricted according to RFC 3339 (Date and Time on the Internet: Timestamps). The DateTimeWithoutOffset format is further restricted:
+- T designator is upper case.
+- . (dot) is used to indicate start of fractions of seconds (ISO 8601 also allows comma)
+";
+		reference "ISO 8601:2004(E)";
+	}
+
+	typedef "DifferenceFromUTC" {
+		type string {
+			length "6";
+			pattern "^([+|-])(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9])$";
+		}
+
+		status deprecated;
+		description "Time zone difference between the local current time  and UTC (Coordinated Universal Time).
+The following format shall be used
+[+/-]hh:mm
+
+It is expressed as positive (that is, with the leading plus sign [+]) if the local time is ahead of or equal to UTC and as negative (i.e. with the leading minus sign [-]) if it is behind UTC.
+Example:  +01:00";
+		reference "ISO 8601:2004(E)";
+	}
+
+	grouping "ManagedElement" {
+		description "The top-level class in the Common Information Model is Managed Element root Managed Object Class.
+From this class, all model entities are contained.  The MOC has attributes that provide information on the Managed Element Identity, primary location and the products it contains.  ";
+		leaf "managedElementId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "siteLocation" {
+			type string;
+			description "A freetext attribute describing the geographic location of a Managed Element.
+";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description
+			"A freetext string for additional information to assist Managed Element identification.";
+		}
+
+		list "productIdentity" {
+			key "productNumber";
+			status deprecated;
+			description "Contains product information for the Managed Element and its Managed Function(s).
+This attribute is deprecated.";
+			uses ECIM_CommonLibrary:ProductIdentity;
+		}
+
+		leaf "localDateTime" {
+			type ECIM_CommonLibrary:DateTimeWithoutOffset;
+			config true;
+			description "This is the local date and time for the Managed Element.
+The following format is used: YYYY-MM-DDThh:mm:ss
+
+The meaning of each field is as follows:
+YYYY = four digit year
+MM = two digit month (01=January, etc.)
+DD = two digit day of month (01 through 31)
+T = time designator (shows start of time component)
+hh = two digits of hour (00 through 23, AM/PM not allowed)
+mm = two digits of minute (00 through 59)
+ss = two digits of second (00 through 59, leap second not allowed)
+The hyphen [-] and the colon [:] are used as separators within the date and time of day expressions, respectively.";
+		}
+
+		leaf "timeZone" {
+			type string;
+			config true;
+			description "This is the timeZone that the Managed Element resides in.
+The possible values for this attribute are defined in the public-domain zoneinfo (or Olson) database.
+Locations are identified by a string indicating the continent or ocean and then the name of the location, which is typically the largest city within the region. 
+See http://www.iana.org/time-zones for more information.
+
+Example: Europe/Stockholm
+";
+		}
+
+		leaf "dateTimeOffset" {
+			type ECIM_CommonLibrary:DifferenceFromUTC;
+			config true;
+			description
+			"Difference between the value of the localDateTime attribute and UTC (Coordinated Universal Time).";
+		}
+
+		leaf "dnPrefix" {
+			type string;
+			description "It provides naming context allowing the managed objects to be partitioned into logical domains.
+A Distingushed Name (DN) is defined by 3GPP TS 32.300  which splits the DN in a DN Prefix and Local DN for example DN format: dnPrefix=<DN Prefix>, localDn =<Local DN>
+Fault Management: dnPrefix does not impact Fault Management since an NMS recognises a ME by IP address
+Performance Management: The dnPrefix is present in the PM Data file (ROP File)  if the dnPrefix attribute is specified, that is, not an empty string.
+Example: DC=ericsson.se,g3SubNetwork=Sweden
+";
+		}
+
+		leaf "managedElementType" {
+			type string;
+			mandatory true;
+			config true;
+			description "The type of product being managed.
+For example the type could be  RBS or CSCF.";
+		}
+
+		leaf "release" {
+			type string;
+			mandatory true;
+			config true;
+			description "The release of the type of product specified by the attribute managedElementType.
+It commonly contains the Managed Element release, for example L12.0, 13A, R1A ";
+		}
+
+		leaf "networkManagedElementId" {
+			type string;
+			description
+			"Replaces the value component of the RDN in the COM Northbound Interface. 
+This attribute shall, if used, be set to a simple alphanumeric value. The value should be unique within the network namespace.";
+		}
+
+	}
+
+	grouping "SystemFunctions" {
+		description
+		"This model has a purpose to group the management of the system functions of the Managed Element.";
+		leaf "systemFunctionsId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.
+";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "Transport" {
+		description "This is a container for common transport functions used within the Managed Element. 
+
+";
+		leaf "transportId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.
+";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "Legacy" {
+		description "Introduced to support deprecated types";
+		leaf "legacyId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "admState" {
+			type ComTop:AdmState;
+			config true;
+			description
+			"Legacy  attribute deprecated in ECIM_Top and moved to ECIM_CommonLibrary.";
+		}
+
+		leaf "basicAdmState" {
+			type ComTop:BasicAdmState;
+			config true;
+			description
+			"Legacy  attribute deprecated in ECIM_Top and moved to ECIM_CommonLibrary.";
+		}
+
+		leaf "dateTime" {
+			type ComTop:DateTime;
+			config true;
+			description
+			"Legacy  attribute deprecated in ECIM_Top and moved to ECIM_CommonLibrary.";
+		}
+
+		leaf "ipDNSAddress" {
+			type ComTop:IpDNSAddress;
+			config true;
+			description
+			"Legacy  attribute deprecated in ECIM_Top and moved to ECIM_CommonLibrary.";
+		}
+
+		leaf "operState" {
+			type ComTop:OperState;
+			config true;
+			description
+			"Legacy  attribute deprecated in ECIM_Top and moved to ECIM_CommonLibrary.";
+		}
+
+		leaf "schemaFormat" {
+			type ComTop:SchemaFormat;
+			config true;
+			description
+			"Legacy  attribute deprecated in ECIM_Top and moved to ECIM_CommonLibrary.";
+		}
+
+	}
+
+	grouping "ProductIdentity" {
+		status deprecated;
+		description "Contains product information for a Managed Element and Managed Function(s).
+This entity is deprecated.";
+		leaf "productNumber" {
+			type string;
+			mandatory true;
+			description "The product number in Ericsson's ABC format.
+See Ericsson Corporate Basic Standards for information.";
+		}
+
+		leaf "productRevision" {
+			type string;
+			mandatory true;
+			description "The product revision in the form R[1-9][A-Z].
+See Ericsson Corporate Basic Standards for information.";
+		}
+
+		leaf "productDesignation" {
+			type string;
+			mandatory true;
+			description
+			"The product designation is the common name for the product.  ";
+		}
+
+	}
+
+}

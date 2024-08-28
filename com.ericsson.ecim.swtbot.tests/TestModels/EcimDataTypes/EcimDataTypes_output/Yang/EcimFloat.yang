@@ -1,0 +1,122 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 4:09:04 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "EcimFloat" {
+	namespace "urn:com:ericsson:ecim:EcimFloat";
+	prefix "EcimFloat";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RootMom {
+		prefix "RootMom";
+	}
+
+	revision "2015-04-20" {
+		ericsson:version "23";
+		ericsson:release "1";
+	}
+
+	augment "/RootMom:Root" {
+		list "FractionDigits" {
+			key "id";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "NumberRange" {
+				key "id";
+				min-elements 1;
+				max-elements 1;
+				uses EcimFloat:NumberRange;
+			}
+
+			uses EcimFloat:FractionDigits;
+		}
+
+	}
+
+	typedef "MyDerivedFloat(infinitRange)" {
+		type decimal64 {
+			range "0..*";
+			fraction-digits 1;
+		}
+
+	}
+
+	typedef "MyDerivedFloat(negativeRange)" {
+		type decimal64 {
+			range "-50..456";
+			fraction-digits 1;
+		}
+
+	}
+
+	typedef "MyDerivedFloat(positiveRange)" {
+		type decimal64 {
+			range "0..*";
+			fraction-digits 1;
+		}
+
+	}
+
+	grouping "FractionDigits" {
+		leaf "id" {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+		leaf "validNumber" {
+			type EcimFloat:MyDerivedFloat(infinitRange);
+			default "45.64";
+			config true;
+		}
+
+		leaf-list "validListOfNumbers" {
+			type EcimFloat:MyDerivedFloat(infinitRange);
+			config true;
+			max-elements 4;
+			ericsson:non-unique-leaf-list;
+		}
+
+	}
+
+	grouping "NumberRange" {
+		leaf "id" {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+		leaf "validPositiveNumber" {
+			type EcimFloat:MyDerivedFloat(positiveRange);
+			default "50";
+			config true;
+		}
+
+		leaf-list "validNegativeNumber" {
+			type EcimFloat:MyDerivedFloat(negativeRange);
+			config true;
+			max-elements 3;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "validPositiveListOfNumbers" {
+			type EcimFloat:MyDerivedFloat(positiveRange);
+			config true;
+			max-elements 3;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "validNegativeListOfNumbers" {
+			type EcimFloat:MyDerivedFloat(negativeRange);
+			config true;
+			max-elements 3;
+			ericsson:non-unique-leaf-list;
+		}
+
+	}
+
+}

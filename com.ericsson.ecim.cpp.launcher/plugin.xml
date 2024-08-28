@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.ericsson.ecim.transformations">
+      <transformation
+            checkedByDefault="true"
+            enabledForCmwModelMerge="false"
+            transformationClass="com.ericsson.ecim.launcher.transformations.internal.MpXmlTransform"
+            transformationId="mpCpp"
+            transformationName="MP XML (CPP)">
+         <requiredProfiles>
+            <profile
+                  name="ECIM Base Profile">
+            </profile>
+            <profile
+                  name="CoreMW Profile">
+            </profile>
+            <profile
+                  name="CppProfile">
+            </profile>
+         </requiredProfiles>
+      </transformation>
+   </extension>
+   <extension
+         point="com.ericsson.ecim.umlmod">
+      <umlmodifier
+            class="com.ericsson.ecim.cpp.launcher.extension.Cmw2CppProfileConverter">
+      </umlmodifier>
+      <umlmodifier
+            class="com.ericsson.ecim.cpp.launcher.extension.Cpp2CmwProfileConverter">
+      </umlmodifier>
+  </extension>   
+     <extension
+         point="com.ericsson.ecim.umlmod">
+       <umlmodifier
+            class="com.ericsson.ecim.cpp.launcher.utils.UnusedStructsRemover">
+      </umlmodifier>
+      <umlmodifier
+            class="com.ericsson.ecim.cpp.launcher.utils.RemoteTypeResolver">
+      </umlmodifier>
+   </extension>
+     <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:com.ericsson.ecim.launcher.ecimmenu?after=generateartifacts">
+         <command
+               commandId="com.ericsson.ecim.cpp.re.ConvertMpXmlToUml"
+               mnemonic="C"
+               style="push"
+               tooltip="Converts an MP XML model to an ECIM MM compliant UML model">
+            <visibleWhen>
+               <iterate>
+                  <test
+                        forcePluginActivation="true"
+                        property="com.ericsson.ecim.launcher.isMpXmlFile">
+                  </test>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="com.ericsson.ecim.launcher.ecimcategory"
+            defaultHandler="com.ericsson.ecim.cpp.launcher.extension.CppReAction"
+            id="com.ericsson.ecim.cpp.re.ConvertMpXmlToUml"
+            name="Transform to ECIM MetaModel UML">
+      </command>
+   </extension>
+   <extension
+         point="com.ericsson.ecim.reverse">
+      <reverse
+            reverseTransformationClass="com.ericsson.ecim.cpp.launcher.extension.CppReverseTransformation"
+            reverseTransformationId="remp"
+            reverseTransformationName="MP to UML">
+      </reverse>
+   </extension>
+</plugin>

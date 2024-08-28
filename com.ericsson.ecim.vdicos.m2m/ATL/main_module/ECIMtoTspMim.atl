@@ -1,0 +1,1061 @@
+-- /**
+-- * vDicos require a classic TSP MIM definition for every EcimMom. This is outside of the scope of ECIM but necessary for existing vDicos based nodes.
+-- * 
+-- * superimposition-dependencies: 
+-- * library-dependencies: HelperFunctions.atl
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 27-04-2011
+-- */
+
+-- @atlcompiler atl2006
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @path TSP_MIM=/com.ericsson.ecim.vdicos/model/tsp_mim.ecore
+
+
+module ECIMtoTspMim;
+create OUT : TSP_MIM from IN : UML;
+
+uses HelperFunctions;
+uses TspNameUsage;
+
+--Map model to documentroot
+rule ModelToDocumentRoot
+{
+	from s: UML!Model(s.oclIsTypeOf(UML!Model))
+	to t: TSP_MIM!ModelType
+	(
+		mim <- UML!Package.allInstances()->select(e|e.oclIsTypeOf(UML!Package) and e.hasStereotype('ECIM Base Profile::EcimMom')),
+		mim <- UML!Package.allInstances()->select(e|e.oclIsTypeOf(UML!Package) and e.hasStereotype('ECIM Base Profile::EcimLibrary'))
+	)
+}
+
+--Map package to mim
+rule PackageToMimType
+{
+	from s: UML!Package(s.oclIsTypeOf(UML!Package) and s.hasStereotype('ECIM Base Profile::EcimMom'))--need this guard as both models and packages are packages
+	using {
+		ldapServerNameContent : String = s.getValue(s.getVdicosAppliedStereotype(),'ldapServerName');
+		ldapServerNameHasValue : Boolean = thisModule.stringHasValue(ldapServerNameContent);
+	}
+	to t: TSP_MIM!MimType
+	(
+		name <- thisModule.addUnderscoreMim(s.name),
+		confdTargetNamespace <- thisModule.getConfdTargetNamespace(s),
+		dataType <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!DataType))->select(e|e.hasStereotype('ECIM Base Profile::EcimDerivedString') or e.hasStereotype('ECIM Base Profile::EcimDerivedFloat') or e.hasStereotype('ECIM Base Profile::EcimDerivedInteger'))->select(e|thisModule.isSharedType(e)),
+		description <- thisModule.hasDescription(s),
+		extension <- if (ldapServerNameHasValue) then tsp_ext else OclUndefined endif,
+		hideInConfd <- thisModule.isHideInConfd(s),
+		hideInLdap <- thisModule.isHideInLdap(s),		
+		--extension <- --ECIM has no support for this
+		jim <- if thisModule.isJIM(s) then TSP_MIM!JimType.newInstance() else OclUndefined endif,
+		ldapObjectId <- thisModule.getLDAPObjectId(s),
+		class <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.hasNotGotStereotype('ECIM Base Profile::EcimStruct') and e.hasNotGotStereotype('ECIM Base Profile::EcimException')),--Exclude all structs/exceptions from the class list
+		relationship <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->select(e|e.hasStereotype('ECIM Base Profile::EcimContainment') or e.hasStereotype('ECIM Base Profile::EcimContribution')),
+		release <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimMom'),'release'),
+		version <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimMom'),'version')
+		
+	),
+	tsp_ext : TSP_MIM!ExtensionType()
+	do
+	{			
+		tsp_ext.extender <- thisModule.TSP_EXTENSION_EXTENDER;
+		tsp_ext.name <- thisModule.TSP_EXTENSION_NAME;
+		tsp_ext.version <- thisModule.TSP_EXTENSION_VERSION;
+		tsp_ext.release <- thisModule.TSP_EXTENSION_RELEASE;	
+
+		if(not ldapServerNameContent.oclIsUndefined())
+		{
+			for(e in ldapServerNameContent.split(' ')) {
+				tsp_ext.addAny(thisModule.CreateLdapServerNameType(e));
+			}
+		}
+		
+	}
+}
+
+--Map library type package to mim. Associations are not mapped
+rule LibraryToMimType
+{
+	from s: UML!Package(s.oclIsTypeOf(UML!Package) and s.hasStereotype('ECIM Base Profile::EcimLibrary'))--need this guard as both models and packages are packages
+	to t: TSP_MIM!MimType
+	(
+		name <- thisModule.addUnderscoreMim(s.name),
+		confdTargetNamespace <- thisModule.getConfdTargetNamespace(s),
+		dataType <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!DataType))->select(e|e.hasStereotype('ECIM Base Profile::EcimDerivedString') or e.hasStereotype('ECIM Base Profile::EcimDerivedFloat') or e.hasStereotype('ECIM Base Profile::EcimDerivedInteger'))->select(e|thisModule.isSharedType(e)),
+		description <- thisModule.hasDescription(s),
+		hideInConfd <- thisModule.isHideInConfd(s),
+		hideInLdap <- thisModule.isHideInLdap(s),		
+		--extension <- --ECIM has no support for this
+		jim <- if thisModule.isJIM(s) then TSP_MIM!JimType.newInstance() else OclUndefined endif,
+		ldapObjectId <- thisModule.getLDAPObjectId(s),
+		class <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->select(e|e.hasNotGotStereotype('ECIM Base Profile::EcimStruct') and e.hasNotGotStereotype('ECIM Base Profile::EcimException')),--Exclude all structs/exceptions from the class list
+		release <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimLibrary'),'release'),
+		version <- s.getValue(s.getAppliedStereotype('ECIM Base Profile::EcimLibrary'),'version')	
+	)
+}
+
+--Map class to class
+rule ClassToClassType
+{
+	from s: UML!Class(s.oclIsTypeOf(UML!Class) and (s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimMom') or s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimLibrary')) and s.hasNotGotStereotype('ECIM Base Profile::EcimStruct') and s.hasNotGotStereotype('ECIM Base Profile::EcimException'))
+	using {
+		singletonKeyValue : OclAny = s.getValue(s.getVdicosAppliedStereotype(),'singletonKeyValue');
+	}
+	to t: TSP_MIM!ClassType
+	(
+		baseClass <- thisModule.hasBaseClass(s),
+		description <- thisModule.hasDescription(s),
+--		extension <- let hideGroup : String = s.getValue(s.getEcimAppliedStereotype(),'hideGroupName') in
+--					if(hideGroup <> OclUndefined and hideGroup <> '') then ext else OclUndefined endif,
+		--group <- --This is an Ecore artifact so ignore
+		extension <- ims_ext,
+		extension <- tsp_ext,
+		ldapObjectId <- thisModule.getLDAPObjectId(s),
+		name <- if thisModule.isJIM(s.getNearestPackage()) then thisModule.getTspName(s.name, s.getValue(s.getAppliedStereotype('VDicosProfile::VDicosClass'),'tspName')) else s.name endif,
+		reducedLoggingAllowed <- thisModule.isReducedLoggingAllowed(s),
+		singleton <- thisModule.isSingleton(s),
+		"abstract" <- thisModule.isAbstract(s),
+		systemCreated <- thisModule.isSystemCreated(s),
+		--Handle multiple inheritence for the top level class so that the class can be derived from the JIM-Application MOC 
+		--as well as from the ManagedFunction MOC. The TSP/vDicos MIM does not support multiple inheritence, therefore DX ET shall
+		-- flatten the model by marking only JIM-Application as base class and insert the attributes of the ManagedFunction class 
+		--as if they were defined in the application MOC derived from JIM-Application.	
+		attribute <- if thisModule.inheritsJIMapplicationAndOtherClass(s) 
+					 then 
+						-- we want all attributes in JIM-Application and its subclasses
+					 	let jimAppClassifier : UML!Classifier = s.general->select(e|e.name='JIM-Application')->first() in
+					 	let jimAppAttributes : Set(UML!Property) = jimAppClassifier.getAllAttributes() in
+						-- to be excluded from the attributes listed in the class
+					 	s.getAllAttributes()->select(e|e.hasEcimAppliedStereotype())->select(e|not jimAppAttributes->exists(f| e=f))->collect(e|thisModule.PropertyToAttributeType(e))
+					 else
+					 	s.ownedAttribute->select(e|e.hasEcimAppliedStereotype())->collect(e|thisModule.PropertyToAttributeType(e))
+					endif,
+		--ignore actions with no stereotypes		
+		action <- if thisModule.inheritsJIMapplicationAndOtherClass(s) 
+					 then 
+						-- we want all attributes in JIM-Application and its subclasses
+					 	let jimAppClassifier : UML!Classifier = s.general->select(e|e.name='JIM-Application')->first() in
+					 	let jimAppActions : Set(UML!Operation) = jimAppClassifier.getAllOperations() in
+						-- to be excluded from the attributes listed in the class
+					 	s.getAllOperations()->select(e|e.hasEcimAppliedStereotype())->select(e|not jimAppActions->exists(f| e=f))->collect(e|thisModule.OperationToActionType(e))
+					 else
+					 	s.ownedOperation->select(e|e.hasEcimAppliedStereotype())->collect(e|thisModule.OperationToActionType(e))
+					endif
+	),
+	ims_ext : TSP_MIM!ExtensionType(), tsp_ext : TSP_MIM!ExtensionType()
+	do
+	{
+		ims_ext.extender <- thisModule.IMS_EXTENSION_EXTENDER;
+		ims_ext.name <- thisModule.IMS_EXTENSION_NAME;
+		ims_ext.version <- thisModule.IMS_EXTENSION_VERSION;
+		ims_ext.release <- thisModule.IMS_EXTENSION_RELEASE;
+		ims_ext.addAny(thisModule.CreateStatusType(s.getValue(s.getEcimAppliedStereotype(),'status').name));
+		ims_ext.addAny(thisModule.hasCategory(s));
+				
+		tsp_ext.extender <- thisModule.TSP_EXTENSION_EXTENDER;
+		tsp_ext.name <- thisModule.TSP_EXTENSION_NAME;
+		tsp_ext.version <- thisModule.TSP_EXTENSION_VERSION;
+		tsp_ext.release <- thisModule.TSP_EXTENSION_RELEASE;
+		tsp_ext.addAny(thisModule.CreateEcimNameType(s.name));
+		tsp_ext.addAny(thisModule.CreateIsVirtualContainerType(s.getValue(s.getVdicosAppliedStereotype(),'isVirtualContainer')));
+		if (not singletonKeyValue.oclIsUndefined()) {
+			if (singletonKeyValue.toString().trim() <> '')
+			{
+				tsp_ext.addAny(thisModule.CreateSingletonKeyValueType(singletonKeyValue));
+			}
+		}
+	}
+}
+
+
+--Map a shared derived data type to a top level data type
+rule DerivedDataTypeToDataTypeTypeShared
+{
+	from s: UML!DataType(s.oclIsTypeOf(UML!DataType) and (s.hasStereotype('ECIM Base Profile::EcimDerivedString') or s.hasStereotype('ECIM Base Profile::EcimDerivedFloat') or s.hasStereotype('ECIM Base Profile::EcimDerivedInteger') or s.hasStereotype('ECIM Base Profile::EcimDerivedFloat')) and thisModule.isSharedType(s))
+	using 
+	{
+		isPassphrase : OclAny = if s.hasStereotype('ECIM Base Profile::EcimDerivedString') then s.getValue(s.getEcimAppliedStereotype(),'isPassphrase') else OclUndefined endif;
+	}
+	to t: TSP_MIM!DataTypeType
+	(
+		name <- s.name,
+		description <- thisModule.hasDescription(s),
+		extension <- if (not isPassphrase.oclIsUndefined()) then 
+					 	if (isPassphrase.toString().trim() = 'true') then
+							tsp_ext 
+						else 
+							OclUndefined 
+						endif
+					 else
+					 	OclUndefined
+					 endif,
+		boolean <- if s.oclIsTypeOf(UML!DataType) and s.general->first().name ='EcimBoolean' then bool else OclUndefined endif,
+		integer <- if s.oclIsTypeOf(UML!DataType) and (s.general->first().name ='EcimInt8' or s.general->first().name ='EcimUInt8' or s.general->first().name ='EcimInt16' or s.general->first().name ='EcimUInt16' or s.general->first().name ='EcimInt32' or s.general->first().name ='EcimUInt32' or s.general->first().name ='EcimInt64' or s.general->first().name ='EcimUInt64' or s.general->first().name ='EcimInteger') then int else OclUndefined endif,
+	    float <- if s.oclIsTypeOf(UML!DataType) and s.general->first().name ='EcimFloat' then flt else OclUndefined endif,	
+		string <- if s.oclIsTypeOf(UML!DataType) and s.general->first().name ='EcimString' then st else OclUndefined endif	
+		--extension <- ,--ECIM has no support for this
+		--ldapTypeInfo <- thisModule.getLdapTypeInfo(s)--ECIM has no support for this
+		--sequence <- This is not possible
+		--struct <- --Not a relevent mapping in ECIM
+	),
+	bool : TSP_MIM!BooleanType
+	(
+		--defaultValue <- --Default value is not supported here in UML
+	),
+	st : TSP_MIM!StringType
+	(
+		--defaultValue <-  --Default value is not supported here in UML
+		
+		lengthRange <- if s.hasStereotype('ECIM Base Profile::EcimDerivedString') then thisModule.getLength(s) else OclUndefined endif,
+		pattern <- if s.hasStereotype('ECIM Base Profile::EcimDerivedString') then thisModule.getPattern(s) else OclUndefined endif
+		
+		--validValues <- --No mapping in ECIM
+	),
+	int : TSP_MIM!IntegerType
+	(
+		--defaultValue <-  --Default value is not supported here in UML
+		range <- if s.hasStereotype('ECIM Base Profile::EcimDerivedInteger') then if not thisModule.getRange(s).oclIsUndefined() then thisModule.CreateRangeType(thisModule.getRange(s)) else OclUndefined endif else OclUndefined endif
+		--pattern <- , --No mapping in ECIM
+		--validValues <- --No mapping in ECIM		
+	),
+	date : TSP_MIM!DateTimeType --TODO:No mapping in ECIM for this
+	(
+		--defaultValue <- 	
+	),
+	flt : TSP_MIM!FloatType --TODO:No mapping in ECIM for this
+	(
+		--defaultValue <- 
+		range <- if s.hasStereotype('ECIM Base Profile::EcimDerivedFloat') then if not thisModule.getRange(s).oclIsUndefined() then thisModule.CreateRangeType(thisModule.getRange(s)) else OclUndefined endif else OclUndefined endif
+		
+	),	
+	tsp_ext : TSP_MIM!ExtensionType()
+	do
+	{
+		tsp_ext.extender <- thisModule.TSP_EXTENSION_EXTENDER;
+		tsp_ext.name <- thisModule.TSP_EXTENSION_NAME;
+		tsp_ext.version <- thisModule.TSP_EXTENSION_VERSION;
+		tsp_ext.release <- thisModule.TSP_EXTENSION_RELEASE;
+		tsp_ext.addAny(thisModule.CreateIsPassphraseType(isPassphrase.toString()));
+	}
+}
+
+-- Map struct class to struct. This must be a lazy rule as we need to create many output copies of the input elements.
+lazy rule StructToStructType
+{
+	from s: UML!Class(s.oclIsTypeOf(UML!Class) and (s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimMom') or s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimLibrary')) and s.hasStereotype('ECIM Base Profile::EcimStruct'))
+	to t: TSP_MIM!StructType
+	(
+		description <- thisModule.hasDescription(s),
+		--extension <- ,--ECIM has no support for this
+		member <- s.ownedAttribute->select(e|e.hasEcimAppliedStereotype())->collect(e|thisModule.PropertyToMemberType(e))
+	
+	)
+}
+
+--Map property to struct member. This must be a lazy rule as we need to create many output copies of the input elements.
+lazy rule PropertyToMemberType
+{
+	from s: UML!Property(s.oclIsTypeOf(UML!Property) and s.hasEcimAppliedStereotype() and s.owner.hasStereotype('ECIM Base Profile::EcimStruct'))
+	to t: TSP_MIM!MemberType
+	(		
+		name <- if thisModule.isJIM(s.getNearestPackage()) then thisModule.getTspName(s.name, s.getValue(s.getAppliedStereotype('VDicosProfile::VDicosAttribute'),'tspName')) else s.name endif,
+		dataType <- if s.type.oclIsTypeOf(UML!DataType) and (s.type.hasStereotype('ECIM Base Profile::EcimDerivedString') or s.type.hasStereotype('ECIM Base Profile::EcimDerivedFloat') or s.type.hasStereotype('ECIM Base Profile::EcimDerivedInteger')) then thisModule.DerivedDataTypeToDataTypeType(s) else thisModule.DataTypeToDataType(s.type,s) endif,
+		description <- thisModule.hasDescription(s)--,
+		--extension <- --ECIM has no support for this
+	)
+}
+
+
+
+--Map property to attribute
+lazy rule PropertyToAttributeType
+{
+	from s: UML!Property(s.oclIsTypeOf(UML!Property) and s.hasEcimAppliedStereotype() and (s.owner.hasStereotype('ECIM Base Profile::EcimMoClass') or 
+																						   s.owner.hasStereotype('ECIM Base Profile::EcimRootMoClass') or 
+																						   s.owner.hasStereotype('ECIM Base Profile::EcimAbstractMoClass')))																			
+	using {
+		isPassphrase : OclAny = s.getValue(s.getEcimAppliedStereotype(),'isPassphrase');
+	}
+	to t: TSP_MIM!AttributeType
+	(
+		name <- if thisModule.isJIM(s.getNearestPackage()) then thisModule.getTspName(s.name, s.getValue(s.getAppliedStereotype('VDicosProfile::VDicosAttribute'),'tspName')) else s.name endif,
+		cached <- if not s.getValue(s.getEcimAppliedStereotype(),'isKey') then thisModule.isCached(s) else OclUndefined endif,--key attributes are never cached
+		--assign the datatype using different called rules depending on whether it is a derived type or not
+		--only assign a datatype if the "from" is not defined
+		dataType <- if thisModule.getFrom(s).oclIsUndefined() then if s.type.oclIsTypeOf(UML!DataType) and (s.type.hasStereotype('ECIM Base Profile::EcimDerivedString') or s.type.hasStereotype('ECIM Base Profile::EcimDerivedFloat') or s.type.hasStereotype('ECIM Base Profile::EcimDerivedInteger')) then thisModule.DerivedDataTypeToDataTypeType(s) else thisModule.DataTypeToDataType(s.type,s) endif else OclUndefined endif,
+		deletable <- thisModule.isDeletable(s),
+		description <- thisModule.hasDescription(s),
+		extension <- ims_ext,
+		extension <- tsp_ext,
+		"from" <- thisModule.getFrom(s),
+		--group <- ,--This is an Ecore artifact so ignore
+		hideInConfd <- thisModule.isHideInConfd(s),
+		hideInLdap <- thisModule.isHideInLdap(s),
+		initialValue <- if s.default = '""' then '' else 
+				if s.type.oclIsTypeOf(UML!Enumeration) then
+			    	if s.defaultValue.oclIsUndefined() then OclUndefined else s.defaultValue.instance.specification.stringValue() endif
+				else if thisModule.isTypeBoolean(s) then
+					if s.default.oclIsUndefined() then OclUndefined else s.default.toString().toUpper() endif
+				else
+			    	thisModule.removeEscapeCommaCharacters(s.default) 
+				endif
+				endif
+			endif,
+		key <- thisModule.isKey(s),
+		ldapObjectId <- thisModule.getLDAPObjectId(s),
+		mandatory <- thisModule.isMandatory(s),
+		nonPersistent <- if not s.getValue(s.getEcimAppliedStereotype(),'isKey') then thisModule.isNonPersistent(s) else OclUndefined endif, 
+		readOnly <- thisModule.isPropertyReadOnly(s),
+		restricted <- thisModule.isRestricted(s),
+		--the isConfigurable flag comes from the owning class for key attributes otherwise it comes from the attribute directly
+		--however, if the owner is abstarct then don't check
+		runtime <- if s.owner.isAbstract then OclUndefined else if not s.getValue(s.getEcimAppliedStereotype(),'isKey') then thisModule.isRuntime(s) else thisModule.isRuntime(s.owner) endif endif, 
+		sensitive <- thisModule.isSensitive(s),
+		systemMaintained <- thisModule.isSystemMaintained(s)
+	),
+	ims_ext : TSP_MIM!ExtensionType(), tsp_ext : TSP_MIM!ExtensionType()
+	do
+	{
+		ims_ext.extender <- thisModule.IMS_EXTENSION_EXTENDER;
+		ims_ext.name <- thisModule.IMS_EXTENSION_NAME;
+		ims_ext.version <- thisModule.IMS_EXTENSION_VERSION;
+		ims_ext.release <- thisModule.IMS_EXTENSION_RELEASE;
+		ims_ext.addAny(thisModule.CreateStatusType(s.getValue(s.getEcimAppliedStereotype(),'status').name));
+		ims_ext.addAny(thisModule.hasCategory(s));
+		ims_ext.addAny(thisModule.hasDependencies(s));
+		ims_ext.addAny(thisModule.hasTakesEffect(s));
+		if(s.upper > 1 or s.upper = -1)
+		{
+			ims_ext.addAny(thisModule.isUnique(s));
+			ims_ext.addAny(thisModule.isOrdered(s));		
+		}
+		
+		tsp_ext.extender <- thisModule.TSP_EXTENSION_EXTENDER;
+		tsp_ext.name <- thisModule.TSP_EXTENSION_NAME;
+		tsp_ext.version <- thisModule.TSP_EXTENSION_VERSION;
+		tsp_ext.release <- thisModule.TSP_EXTENSION_RELEASE;
+		tsp_ext.addAny(thisModule.CreateEcimNameType(s.name));
+		tsp_ext.addAny(thisModule.CreateNotifiableType(s.getValue(s.getEcimAppliedStereotype(),'isNotifiable').toString()));
+		if (not isPassphrase.oclIsUndefined()) {
+			if (isPassphrase.toString().trim() = 'true')
+			{
+				tsp_ext.addAny(thisModule.CreateIsPassphraseType(isPassphrase.toString()));
+			}
+		}
+	}
+}
+
+--Map a non derived type datatype
+--Note:We have no support for defaults on multivalued enumerations
+rule DataTypeToDataType(dt: UML!DataType, prop : UML!MultiplicityElement)
+{
+	to t: TSP_MIM!DataTypeType
+	(
+		--nameRef is only used when refering to non built in types
+		nameRef <- if dt.oclIsTypeOf(UML!Class) and not thisModule.isEcimStruct(dt) and prop.upper = 1 then thisModule.getTspNameFromClassifier(dt) else OclUndefined endif,
+		boolean <- if thisModule.isTypeBoolean(prop) and prop.upper = 1 then bool else OclUndefined endif,
+		integer <- if dt.oclIsTypeOf(UML!DataType) and prop.upper = 1 and (dt.name ='EcimInt8' or dt.name ='EcimUInt8' or dt.name ='EcimInt16' or dt.name ='EcimUInt16' or dt.name ='EcimInt32' or dt.name ='EcimUInt32' or dt.name ='EcimInt64' or dt.name ='EcimUInt64' or dt.name ='EcimInteger')then int else OclUndefined endif,
+		float <- if dt.oclIsTypeOf(UML!DataType) and prop.upper = 1 and dt.name ='EcimFloat' then flt else OclUndefined endif,
+		string <- if dt.oclIsTypeOf(UML!DataType) and prop.upper = 1 and dt.name ='EcimString' then st else OclUndefined endif,
+		integer <- if dt.oclIsTypeOf(UML!Enumeration) and prop.upper = 1 then enum else OclUndefined endif,
+		
+		--extension <- ,--ECIM has no support for this
+		
+		--LDAP info is only allow on UML Properties so exclude all other callers e.g. param types
+		--LDAP info is only on simple, derived types & enumerations so exclude other types like refs
+		ldapTypeInfo <- if (dt.oclIsTypeOf(UML!DataType) or dt.oclIsTypeOf(UML!Enumeration)) and prop.upper = 1 and prop.oclIsTypeOf(UML!Property) then thisModule.getLdapTypeInfo(prop) else OclUndefined endif,
+		--description <- thisModule.hasDescription(s),--ECIM has no support for this
+		--name <- ,--not valid in this context
+		--if the attribute can have multiple values then it is a sequence which is handled differently
+		sequence <- if prop.upper <> 1 then seq else OclUndefined endif,
+		
+		--create the struct definition for the referenced struct, if any
+		struct <- if thisModule.isEcimStruct(dt) and prop.upper = 1 then thisModule.StructToStructType(dt) else OclUndefined endif
+	),
+	bool : TSP_MIM!BooleanType
+	(
+		defaultValue <- if prop.oclIsUndefined() then OclUndefined else if prop.default.oclIsUndefined() then OclUndefined else prop.default.toString().toUpper() endif endif
+	),
+	st : TSP_MIM!StringType
+	(
+		defaultValue <- if prop.oclIsUndefined() then OclUndefined else if prop.default.oclIsUndefined() then OclUndefined else if prop.default = '""' then '' else thisModule.removeEscapeCommaCharacters(prop.default.toString()) endif endif endif
+		--lengthRange <- ,--not valid in this context
+		--pattern <- ,--not valid in this context
+		--validValues <-  if isStringEnum then vv else OclUndefined endif
+	),
+	int : TSP_MIM!IntegerType
+	(
+		defaultValue <- if prop.oclIsUndefined() then OclUndefined else if prop.default.oclIsUndefined() then OclUndefined else prop.default endif endif
+		--lengthRange <- ,--not valid in this context
+		--pattern <- ,--not valid in this context
+		--validValues <-  if isNumericEnum then vv else OclUndefined endif
+	),
+	enum : TSP_MIM!IntegerType--enums are always mapped to ints in vDicos
+	(
+		defaultValue <- if prop.oclIsUndefined() then OclUndefined else if prop.default.oclIsUndefined() then OclUndefined else if dt.oclIsTypeOf(UML!Enumeration) then prop.defaultValue.instance.specification.stringValue() else OclUndefined endif endif endif,
+		--lengthRange <- ,--not valid in this context
+		--pattern <- ,--not valid in this context
+		validValues <-  vv
+	),
+	vv : TSP_MIM!ValidValuesType
+	(
+		value <- if dt.oclIsTypeOf(UML!Enumeration) then dt.ownedLiteral->collect(e|thisModule.EnumerationLiteraltoValidValue(e)) else OclUndefined endif
+	),	
+	date : TSP_MIM!DateTimeType --TODO:No mapping in ECIM for this
+	(
+		--defaultValue <- 	
+	),
+	flt : TSP_MIM!FloatType --TODO:No mapping in ECIM for this
+	(
+		defaultValue <- if prop.oclIsUndefined() then OclUndefined else if prop.default.oclIsUndefined() then OclUndefined else prop.default endif endif
+	),
+	seq : TSP_MIM!SequenceType
+	(
+		dataType <- seqdt,
+		--description <- ,--TODO
+		lengthRange <- thisModule.CreateLengthRangeType(prop.lower,prop.upper)
+		--extension <- --ECIM has no support for this
+	),
+	seqdt : TSP_MIM!DataTypeType
+	(
+		nameRef <- if dt.oclIsTypeOf(UML!Class) and not thisModule.isEcimStruct(dt) and prop.upper <> 1 then thisModule.getTspNameFromClassifier(dt) else OclUndefined endif,
+		boolean <- if thisModule.isTypeBoolean(prop) and prop.upper <> 1 then bool else OclUndefined endif,
+		integer <- if dt.oclIsTypeOf(UML!DataType) and prop.upper <> 1 and (dt.name ='EcimInt8' or dt.name ='EcimUInt8' or dt.name ='EcimInt16' or dt.name ='EcimUInt16' or dt.name ='EcimInt32' or dt.name ='EcimUInt32' or dt.name ='EcimInt64' or dt.name ='EcimUInt64' or dt.name ='EcimInteger')then int else OclUndefined endif,
+		float  <-  if dt.oclIsTypeOf(UML!DataType) and prop.upper <> 1 and (dt.name ='EcimFloat')then flt else OclUndefined endif,
+		string <- if dt.oclIsTypeOf(UML!DataType) and prop.upper <> 1 and dt.name ='EcimString' then st else OclUndefined endif,
+		integer <- if dt.oclIsTypeOf(UML!Enumeration) and prop.upper <> 1 then enum else OclUndefined endif,
+		struct <- if thisModule.isEcimStruct(dt) and prop.upper <> 1 then thisModule.StructToStructType(dt) else OclUndefined endif,
+		ldapTypeInfo <- if dt.oclIsTypeOf(UML!DataType) and prop.upper <> 1 and prop.oclIsTypeOf(UML!Property) then thisModule.getLdapTypeInfo(prop) else OclUndefined endif	
+	)
+	do
+	{
+		t;
+	
+	}
+}
+
+--Map an operation to an action
+lazy rule OperationToActionType
+{
+	from s: UML!Operation(s.oclIsTypeOf(UML!Operation))
+	to t: TSP_MIM!ActionType
+	(
+		name <- s.name,
+		description <- thisModule.hasDescription(s),
+		--extension <- ,--ECIM has no support for this
+		--group <- , --Ecore artifact so ignore
+		hideInConfd <- thisModule.isHideInConfd(s),
+		hideInLdap <- thisModule.isHideInLdap(s),
+		parameter <- s.ownedParameter->select(e|e.direction = #"in"),
+		reducedLoggingAllowed <- thisModule.isReducedLoggingAllowed(s),
+		returnType <- if(s.ownedParameter->select(e|e.direction = #"return")->size() > 0) then s.ownedParameter->select(e|e.direction = #"return")->first() else no_rt endif,
+		sensitive <- thisModule.isSensitive(s),
+		systemMaintained <- thisModule.isSystemMaintained(s)
+	),
+	no_rt: TSP_MIM!ReturnTypeType--If no return type is set then return void
+	(
+		void <- TSP_MIM!VoidType.newInstance()
+	)
+}
+
+--Map an output operation parameter to an action parameter
+rule OutputParameterToParameterType
+{
+	from s: UML!Parameter(s.oclIsTypeOf(UML!Parameter) and s.direction = #"return")
+	to t: TSP_MIM!ReturnTypeType
+	(
+		dataType <- if s.type.oclIsUndefined() then OclUndefined else if s.type.oclIsTypeOf(UML!DataType) and (s.type.hasStereotype('ECIM Base Profile::EcimDerivedString') or s.type.hasStereotype('ECIM Base Profile::EcimDerivedFloat') or s.type.hasStereotype('ECIM Base Profile::EcimDerivedInteger')) then thisModule.DerivedDataTypeToDataTypeType(s) else thisModule.DataTypeToDataType(s.type,s) endif endif,
+		void <- if s.type.oclIsUndefined() then TSP_MIM!VoidType.newInstance() else OclUndefined endif --if no return type is specified then assume void
+	)
+}
+
+--Map an input operation parameter to an action parameter
+rule InputParameterToParameterType
+{
+	from s: UML!Parameter(s.oclIsTypeOf(UML!Parameter) and s.direction = #"in")
+	to t: TSP_MIM!ParameterType
+	(
+		name <- s.name,
+		direction <-  #"in", --In ECIM parameters are always just IN
+		dataType <- if s.type.oclIsUndefined() then OclUndefined else if s.type.oclIsTypeOf(UML!DataType) and (s.type.hasStereotype('ECIM Base Profile::EcimDerivedString') or s.type.hasStereotype('ECIM Base Profile::EcimDerivedFloat') or s.type.hasStereotype('ECIM Base Profile::EcimDerivedInteger')) then thisModule.DerivedDataTypeToDataTypeType(s) else thisModule.DataTypeToDataType(s.type,s) endif endif,
+		description <- thisModule.hasDescription(s),
+		--extension <- ,--ECIM has no support for this
+		optional <- thisModule.isOptional(s)
+	)
+}
+
+--Define generic pattern for derived type mapping rules
+lazy abstract rule DerivedDataTypeToDataTypeType
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and (s.type.hasStereotype('ECIM Base Profile::EcimDerivedString') or s.type.hasStereotype('ECIM Base Profile::EcimDerivedFloat') or s.type.hasStereotype('ECIM Base Profile::EcimDerivedInteger')))
+	to t: TSP_MIM!DataTypeType()
+}
+
+--Map a derived data type to a data type for types that are not shared datatypes
+lazy rule DerivedDataTypeToDataTypeTypeInSameMomAndNotShared extends DerivedDataTypeToDataTypeType
+{
+	from s: UML!TypedElement(not thisModule.isSharedType(s.type))
+	using
+	{
+		isPassphrase : OclAny = if s.type.hasStereotype('ECIM Base Profile::EcimDerivedString') then s.type.getValue(s.type.getEcimAppliedStereotype(),'isPassphrase') else OclUndefined endif;
+	}
+	to t: TSP_MIM!DataTypeType
+	(
+		--name <- s.name,--Not needed
+		description <- thisModule.hasDescription(s.type),
+		extension <- if (not isPassphrase.oclIsUndefined()) then 
+						if (isPassphrase.toString().trim() = 'true') then
+							tsp_ext 
+						else 
+							OclUndefined 
+						endif
+					 else
+					 	OclUndefined
+					 endif,
+		boolean <- if s.type.oclIsTypeOf(UML!DataType) and s.upper = 1 and s.type.general->first().name ='EcimBoolean' then bool else OclUndefined endif,
+		integer <- if s.type.oclIsTypeOf(UML!DataType) and s.upper = 1 and (s.type.general->first().name ='EcimInt8' or s.type.general->first().name ='EcimUInt8' or s.type.general->first().name ='EcimInt16' or s.type.general->first().name ='EcimUInt16' or s.type.general->first().name ='EcimInt32' or s.type.general->first().name ='EcimUInt32' or s.type.general->first().name ='EcimInt64' or s.type.general->first().name ='EcimUInt64' or s.type.general->first().name ='EcimInteger')then int else OclUndefined endif,
+		float   <- if s.type.oclIsTypeOf(UML!DataType) and s.upper = 1 and s.type.general->first().name ='EcimFloat' then flt else OclUndefined endif,
+		string <- if s.type.oclIsTypeOf(UML!DataType) and s.upper = 1 and s.type.general->first().name ='EcimString' then st else OclUndefined endif,
+		--extension <- ,--ECIM has no support for this
+		ldapTypeInfo <- if s.oclIsTypeOf(UML!Property) and s.upper = 1 then thisModule.getLdapTypeInfo(s) else OclUndefined endif,
+		--if the attribute can have multiple values then it is a sequence which is handled differently
+		sequence <- if s.upper <> 1 then seq else OclUndefined endif
+		--struct <- --Not a relevent mapping in ECIM
+	),
+	bool : TSP_MIM!BooleanType
+	(
+		defaultValue <-  if not s.default.oclIsUndefined() then s.default.toString().toUpper() else OclUndefined endif
+	),
+	st : TSP_MIM!StringType
+	(
+		defaultValue <-  if not s.default.oclIsUndefined() then thisModule.removeEscapeCommaCharacters(s.default) else OclUndefined endif,
+		lengthRange <- if s.type.hasStereotype('ECIM Base Profile::EcimDerivedString') then thisModule.getLength(s.type) else OclUndefined endif,
+		pattern <- if s.type.hasStereotype('ECIM Base Profile::EcimDerivedString') then thisModule.getPattern(s.type) else OclUndefined endif
+		--validValues <- --No mapping in ECIM
+	),
+	int : TSP_MIM!IntegerType
+	(
+		defaultValue <- if not s.default.oclIsUndefined() then s.default else OclUndefined endif,
+		range <- if s.type.hasStereotype('ECIM Base Profile::EcimDerivedInteger') then if not thisModule.getRange(s.type).oclIsUndefined() then thisModule.CreateRangeType(thisModule.getRange(s.type)) else OclUndefined endif else OclUndefined endif
+		--pattern <- , --No mapping in ECIM
+		--validValues <- --No mapping in ECIM		
+	),
+	date : TSP_MIM!DateTimeType --TODO:No mapping in ECIM for this
+	(
+		--defaultValue <- 	
+	),
+	flt : TSP_MIM!FloatType --TODO:No mapping in ECIM for this
+	(
+		defaultValue <- if not s.default.oclIsUndefined() then s.default else OclUndefined endif,
+		range <- if s.type.hasStereotype('ECIM Base Profile::EcimDerivedFloat') then if not thisModule.getRange(s.type).oclIsUndefined() then thisModule.CreateRangeType(thisModule.getRange(s.type)) else OclUndefined endif else OclUndefined endif
+	),
+	seq : TSP_MIM!SequenceType
+	(
+		dataType <- seqdt,
+		--description <- ,--TODO
+		lengthRange <- thisModule.CreateLengthRangeType(s.lower,s.upper)
+		--extension <- --ECIM has no support for this
+	),
+	seqdt : TSP_MIM!DataTypeType
+	(
+		boolean <- if s.type.oclIsTypeOf(UML!DataType) and s.upper <> 1 and s.type.general->first().name ='EcimBoolean' then bool else OclUndefined endif,
+		integer <- if s.type.oclIsTypeOf(UML!DataType) and s.upper <> 1 and (s.type.general->first().name ='EcimInt8' or s.type.general->first().name ='EcimUInt8' or s.type.general->first().name ='EcimInt16' or s.type.general->first().name ='EcimUInt16' or s.type.general->first().name ='EcimInt32' or s.type.general->first().name ='EcimUInt32' or s.type.general->first().name ='EcimInt64' or s.type.general->first().name ='EcimUInt64' or s.type.general->first().name ='EcimInteger') then int else OclUndefined endif,
+		float  <- if s.type.oclIsTypeOf(UML!DataType) and s.upper <> 1 and (s.type.general->first().name ='EcimFloat')then flt else OclUndefined endif,
+		string <- if s.type.oclIsTypeOf(UML!DataType) and s.upper <> 1 and s.type.general->first().name ='EcimString' then st else OclUndefined endif,
+		ldapTypeInfo <- if s.oclIsTypeOf(UML!Property) and s.upper <> 1 then thisModule.getLdapTypeInfo(s) else OclUndefined endif
+	),
+	tsp_ext : TSP_MIM!ExtensionType()
+	do
+	{
+		tsp_ext.extender <- thisModule.TSP_EXTENSION_EXTENDER;
+		tsp_ext.name <- thisModule.TSP_EXTENSION_NAME;
+		tsp_ext.version <- thisModule.TSP_EXTENSION_VERSION;
+		tsp_ext.release <- thisModule.TSP_EXTENSION_RELEASE;
+		tsp_ext.addAny(thisModule.CreateIsPassphraseType(isPassphrase.toString()));
+	}
+}
+
+--Map a derived data type to a data type that are not shared datatypes
+--There is alot of checks in this rule for isSpecialType as these types require special processing for backwards compatibility reasons
+lazy rule DerivedDataTypeToDataTypeTypeInSameMomAndShared extends DerivedDataTypeToDataTypeType
+{
+	from s: UML!TypedElement(thisModule.isSharedType(s.type))
+	using
+	{
+		name : String = (thisModule.addUnderscoreMim(s.type.getNearestPackage().name) + ':' + s.type.name);
+		isSpecialType : Boolean = thisModule.isSpecialDataType(name);--Special types in VDicos need to have their names manipulated
+	}
+	to t: TSP_MIM!DataTypeType
+	(
+		--if the type comes from a different package we must prefix it with the package name
+		nameRef <- if isSpecialType then OclUndefined else if s.upper = 1 then if s.type.getNearestPackage() = s.getNearestPackage() then s.type.name else name endif else OclUndefined endif endif,
+		ldapTypeInfo <- if s.oclIsTypeOf(UML!Property) and s.upper = 1 then thisModule.getLdapTypeInfo(s) else OclUndefined endif,
+		--if the attribute can have multiple values then it is a sequence which is handled differently
+		sequence <- if s.upper <> 1 then seq else OclUndefined endif,
+		float <- if(isSpecialType and name.toLower() = 'commontypes_mim:float' and s.upper = 1) then thisModule.CreateFloatType(s) else OclUndefined endif,
+		integer <- if ((isSpecialType and name.toLower() = 'commontypes_mim:integer' and s.upper = 1) or (isSpecialType and name.toLower() = 'commontypes_mim:integerkeystring' and s.upper = 1)) then thisModule.CreateIntegerType(s) else OclUndefined endif,
+		dateTime <- if (isSpecialType and name.toLower() = 'commontypes_mim:datetime' and s.upper = 1) then thisModule.CreateDateTimeType(s) else OclUndefined endif
+	),
+	seq : TSP_MIM!SequenceType
+	(
+		dataType <- seqdt,
+		--description <- ,--TODO
+		lengthRange <- thisModule.CreateLengthRangeType(s.lower,s.upper)
+		--extension <- --ECIM has no support for this
+	),
+	seqdt : TSP_MIM!DataTypeType
+	(
+		--if the type comes from a different package we must prefix it with the package name
+		nameRef <- if isSpecialType then OclUndefined else if s.upper <> 1 then if s.type.getNearestPackage() = s.getNearestPackage() then s.type.name else name endif else OclUndefined endif endif,
+		ldapTypeInfo <- if s.oclIsTypeOf(UML!Property) and s.upper <> 1 then thisModule.getLdapTypeInfo(s) else OclUndefined endif,
+		float <- if(isSpecialType and name.toLower() = 'commontypes_mim:float') then thisModule.CreateFloatType(s) else OclUndefined endif,
+		integer <- if ((isSpecialType and name.toLower() = 'commontypes_mim:integer') or (isSpecialType and name.toLower() = 'commontypes_mim:integerkeystring')) then thisModule.CreateIntegerType(s) else OclUndefined endif,
+		dateTime <- if (isSpecialType and name.toLower() = 'commontypes_mim:datetime') then thisModule.CreateDateTimeType(s) else OclUndefined endif
+	)
+}
+
+--Map an association to a relationship
+rule AssociationToRelationshipType
+{
+	from s: UML!Association(s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimMom') and (s.hasStereotype('ECIM Base Profile::EcimContainment') or s.hasStereotype('ECIM Base Profile::EcimContribution')))
+	using
+	{
+		min : Integer = s.memberEnd->select(e|e.aggregation=#composite)->first().lower;
+		max : Integer = s.memberEnd->select(e|e.aggregation=#composite)->first().upper;
+	}
+	to t: TSP_MIM!RelationshipType
+	(
+		child <- cd,
+		parent <- pt,
+		--extension <- --ECIM has no support for this
+		description <- thisModule.hasDescription(s)		
+	),
+	cd : TSP_MIM!ChildType
+	(
+		name <- thisModule.getTspNameFromClassifier(s.memberEnd->select(e|e.aggregation=#composite)->first().type),
+		description <- thisModule.hasDescription(s),
+		--extension <- ,--ECIM has no support for this
+		min <- if min = 0 then OclUndefined else min endif,
+		max <- if max = -1 then OclUndefined else max endif
+	),
+	pt : TSP_MIM!ParentType
+	(
+		--prefix the parent name with the package name. we also must potentially manipulate the name according to VDicos rules	
+		--but only prefix name if the parent is in a different package
+		name <- if s.memberEnd->select(e|e.aggregation=#none)->first().type.getNearestPackage() <> s.getNearestPackage() then thisModule.manipulateParentName(thisModule.addUnderscoreMim(s.memberEnd->select(e|e.aggregation=#none)->first().type.getNearestPackage().name) + ':' + thisModule.getTspNameFromClassifier(s.memberEnd->select(e|e.aggregation=#none)->first().type)) else thisModule.getTspNameFromClassifier(s.memberEnd->select(e|e.aggregation=#none)->first().type) endif,
+		description <- thisModule.hasDescription(s)
+		--extension <- --ECIM has no support for this
+	)
+}
+
+--This called rule creates an XML CDATA section with the description text inside it
+rule CreateDescriptionType(descriptionText : String)
+{
+	to xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- descriptionText
+	),		
+	t : TSP_MIM!DescriptionType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}		
+}
+
+--This called rule figures out the base class of a class. Note: We assume only one class can be a base class for a given class
+rule CreateBaseClassType(classifier : UML!Class)
+{
+	to t : TSP_MIM!BaseClassType
+	(
+		name <- thisModule.getBaseClassName(classifier)
+	)
+	do
+	{
+		t;
+	}		
+}
+
+--This called rule splits out a range type into min and max according to the pattern min..max
+--rule CreateRangeType(range : String)
+--{
+--	to t : TSP_MIM!RangeType
+--	(
+--		min <- range.split('[..]')->at(1),
+--		max <- range.split('[..]')->at(3)
+--	)
+--	do
+--	{
+--		t;
+--	}
+--}
+
+--This called rule splits out a range type into min and max according to the pattern min..max
+rule CreateRangeType(range : String)
+{
+	using
+	{
+		min : String = range.split('[..]')->at(1);
+		max : String = range.split('[..]')->at(3);
+	}
+	to t : TSP_MIM!RangeType
+	(
+		min <- min,--always show the min
+		max <- if max = '*' then OclUndefined else max endif --when we have an unlimited upper limit we should ommit the max tag 
+	)
+	do
+	{
+		if(t.min.oclIsUndefined() and t.max.oclIsUndefined())
+		{
+			OclUndefined;
+		}
+		else
+		{
+			t;	
+		}
+	}
+}
+
+--This called rule creates a FloatType with a default
+rule CreateFloatType(prop : UML!Property)
+{
+	to t : TSP_MIM!FloatType
+	(
+		defaultValue <- if prop.oclIsUndefined() then OclUndefined else if prop.default.oclIsUndefined() then OclUndefined else prop.default endif endif
+	)
+	do
+	{
+		t;
+	}
+}
+
+--This called rule creates a IntegerType with a default
+rule CreateIntegerType(prop : UML!Property)
+{
+	to t : TSP_MIM!IntegerType
+	(
+		defaultValue <- if prop.oclIsUndefined() then OclUndefined else if prop.default.oclIsUndefined() then OclUndefined else prop.default endif endif
+	)
+	do
+	{
+		t;
+	}
+}
+
+--This called rule creates a DateTimeType with a default
+rule CreateDateTimeType(prop : UML!Property)
+{
+	to t : TSP_MIM!DateTimeType
+	(
+		defaultValue <- if prop.oclIsUndefined() then OclUndefined else if prop.default.oclIsUndefined() then OclUndefined else prop.default endif endif
+	)
+	do
+	{
+		t;
+	}
+}
+
+
+--This called rule creates a min and max LengthRangeType
+rule CreateLengthRangeType(min : Integer, max : Integer)
+{
+	to t : TSP_MIM!LengthRangeType
+	(
+		min <- if min = 0 then OclUndefined else min.toString() endif,--when we have an optional lower limit we should ommit the min tag
+		max <- if max = -1 then OclUndefined else max.toString() endif--when we have an unlimited upper limit we should ommit the max tag
+	)
+	do
+	{
+		--only return LdapTypeInfoType is some properties were set
+		if(t.min.oclIsUndefined() and t.max.oclIsUndefined())
+		{
+			OclUndefined;
+		}
+		else
+		{
+			t;	
+		}
+	}
+}
+
+--This called rule splits out a length type into min and max according to the pattern min..max
+rule CreateLengthRangeTypeOnString(length : String)
+{
+	using
+	{
+		min : String = length.split('[..]')->at(1);
+		max : String = length.split('[..]')->at(3);
+	}
+	to t : TSP_MIM!LengthRangeType
+	(
+		min <- if min = '0' then OclUndefined else min endif,--when we have an optional lower limit we should ommit the min tag
+		max <- if max = '*' then OclUndefined else max endif --when we have an unlimited upper limit we should ommit the max tag 
+	)
+	do
+	{
+		if(t.min.oclIsUndefined() and t.max.oclIsUndefined())
+		{
+			OclUndefined;
+		}
+		else
+		{
+			t;	
+		}
+	}
+}
+
+--Create the LDAP details
+rule CreateLdapTypeInfoType(equality : String, substr : String, ordering : String, syntax : String)
+{
+	to t : TSP_MIM!LdapTypeInfoType
+	(
+		--only create the values if a value was specified
+		equality <- if equality = '' or equality = 'n/a' then OclUndefined else equality endif,
+		substr <-  if substr = '' or substr = 'n/a' then OclUndefined else substr endif,
+		ordering <- if ordering = '' or ordering = 'n/a' then OclUndefined else ordering endif,
+		syntax <- if syntax = '' then OclUndefined else syntax endif
+	)
+	do
+	{
+		--only return LdapTypeInfoType is some properties were set
+		if(t.equality->size()=0 and t.substr->size()=0 and t.ordering->size()=0 and t.syntax->size()=0)
+		{
+			OclUndefined;
+		}
+		else
+		{
+			t;	
+		}
+	}
+}
+
+--Create a ValueType for every EnumerationLiteral passed in when called
+lazy rule EnumerationLiteraltoValidValue
+{
+	from s: UML!EnumerationLiteral
+	
+	to t:TSP_MIM!ValueType
+	(
+		name <- s.getSpecification().stringValue(),--the name is filled with the value in vDicos
+		description <- thisModule.CreateDescriptionType(s.name),--the description is the name in vDicos
+		extension <- ims_ext
+	),
+	ims_ext : TSP_MIM!ExtensionType()
+	do
+	{
+		ims_ext.extender <- thisModule.IMS_EXTENSION_EXTENDER;
+		ims_ext.name <- thisModule.IMS_EXTENSION_NAME;
+		ims_ext.version <- thisModule.IMS_EXTENSION_VERSION;
+		ims_ext.release <- thisModule.IMS_EXTENSION_RELEASE;
+		ims_ext.addAny(thisModule.CreateStatusType(s.getValue(s.getEcimAppliedStereotype(),'status').name));
+	}
+}
+
+
+rule CreateCategoryType(s : String)
+{
+	to 	xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- s
+	),		
+	ct : TSP_MIM!CategoryType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		ct;
+	}
+}
+
+rule CreateEcimNameType(s : String)
+{
+	to 	xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- s
+	),		
+	st : TSP_MIM!EcimNameType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		st;
+	}
+}
+
+rule CreateLdapServerNameType(s : String)
+{
+	to 	xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- s.trim()
+	),		
+	st : TSP_MIM!LdapServerNameType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		st;
+	}
+}
+
+
+helper def : stringHasValue(s : String) : Boolean = 
+	if (not s.oclIsUndefined()) then
+		if (s.trim().size()>0) then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+	
+
+rule CreateIsVirtualContainerType(b : Boolean)
+{
+	to 	xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- b.toString()
+	),		
+	st : TSP_MIM!IsVirtualContainerType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		st;
+	}
+}
+
+rule CreateSingletonKeyValueType(s : String)
+{
+	to 	xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- if (s.oclIsUndefined()) then '' else s endif
+	),		
+	st : TSP_MIM!SingletonKeyValueType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		st;
+	}
+}
+
+rule CreateNotifiableType(s : String)
+{
+	to 	xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- s
+	),		
+	st : TSP_MIM!NotifiableType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		st;
+	}
+}
+
+rule CreateIsPassphraseType(s : String)
+{
+	to 	xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- s
+	),		
+	st : TSP_MIM!IsPassphraseType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		st;
+	}
+}
+
+rule CreateStatusType(s : String)
+{
+	to 	xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- s
+	),		
+	st : TSP_MIM!StatusType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		st;
+	}
+}
+
+rule CreateDependenciesType(s : String)
+{
+	to 	xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- s
+	),		
+	dt : TSP_MIM!DependenciesType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		dt;
+	}
+}
+
+rule CreateTakesEffectType(s : String)
+{
+	to 	xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- s
+	),		
+	tet : TSP_MIM!TakesEffectType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		tet;
+	}
+}
+
+rule CreateUniqueType(s : String)
+{
+	to 	xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- s			
+	),		
+	ut : TSP_MIM!UniqueType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		ut;
+	}
+}
+
+rule CreateOrderedType(s : String)
+{
+	to 	xmltype : TSP_MIM!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- s					
+	),		
+	ot : TSP_MIM!OrderedType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		ot;
+	}
+}

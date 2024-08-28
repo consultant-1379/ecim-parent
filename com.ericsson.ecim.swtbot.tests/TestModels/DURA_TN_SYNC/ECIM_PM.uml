@@ -1,0 +1,1562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/" xmlns:Documentation="http://www.eclipse.org/papyrus/documentation" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CoreMWProfile/ pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw http:///schemas/ECIMBaseProfile/ pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ">
+  <uml:Model xmi:id="_NRAMoAwOEdmFcaeZXPdWAQ" name="ECIM_PM">
+    <ownedComment xmi:id="_XsyikL_7Ed-FYKAm2tRASg" annotatedElement="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <body>&lt;p >ECIM Performance Management model fragment.&lt;/p>&lt;p >Copyright (c) 2014 Ericsson AB.&lt;/p>&lt;p >All rights reserved.&lt;/p></body>
+    </ownedComment>
+    <packageImport xmi:id="_uWHKUIXbEd-Id79DLfNphQ">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_iT7qACCSEd-Egr3-YAWs7Q"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_WE8bAL_7Ed-FYKAm2tRASg" name="ECIM_PM">
+      <ownedComment xmi:id="_WGlZwL_7Ed-FYKAm2tRASg" annotatedElement="_WE8bAL_7Ed-FYKAm2tRASg">
+        <body>Performance Management MOM.&#xD;
+3GPP defines Performance Management in 3GPP 32.401.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_CGK6QMANEd-FYKAm2tRASg" name="Aggregation">
+        <ownedComment xmi:id="_CGK6QcANEd-FYKAm2tRASg" annotatedElement="_CGK6QMANEd-FYKAm2tRASg">
+          <body>The aggregation method for a Measurement Type.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_RERRQMANEd-FYKAm2tRASg" name="SUM">
+          <ownedComment xmi:id="_RERRQcANEd-FYKAm2tRASg">
+            <body>Aggregation method = SUM.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_REbCQcANEd-FYKAm2tRASg" value="2"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_T-iqAMANEd-FYKAm2tRASg" name="AVG">
+          <ownedComment xmi:id="_T-iqAcANEd-FYKAm2tRASg">
+            <body>Aggregation method = AVG.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_T-rz8cANEd-FYKAm2tRASg" value="3"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_XPRa8MANEd-FYKAm2tRASg" name="MIN">
+          <ownedComment xmi:id="_XPRa8cANEd-FYKAm2tRASg">
+            <body>Aggregation method = MIN.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_XPRa88ANEd-FYKAm2tRASg" value="4"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_a-gFwMANEd-FYKAm2tRASg" name="MAX">
+          <ownedComment xmi:id="_a-gFwcANEd-FYKAm2tRASg">
+            <body>Aggregation method = MAX.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_a-pPscANEd-FYKAm2tRASg" value="5"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_-NIUwPpQEeCitcJoAgEPYQ" name="LAST_UPDATE">
+          <ownedComment xmi:id="_-NUiAPpQEeCitcJoAgEPYQ">
+            <body>Aggregation method = LAST_UPDATE.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_-NgIMfpQEeCitcJoAgEPYQ" value="6"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_WHBeoL_7Ed-FYKAm2tRASg" name="Pm">
+        <ownedComment xmi:id="_WHBeob_7Ed-FYKAm2tRASg" annotatedElement="_WHBeoL_7Ed-FYKAm2tRASg">
+          <body>The top class of the Performance Management model.&#xD;
+It is used to manage the Performance Management jobs and PM measurements.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_WHeKkL_7Ed-FYKAm2tRASg" name="pmId" isReadOnly="true">
+          <ownedComment xmi:id="_WHeKkb_7Ed-FYKAm2tRASg" annotatedElement="_WHeKkL_7Ed-FYKAm2tRASg">
+            <body>Value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_qNFoMMCvEd-L_MRWlk6_Rg" name="pmMeasurementCapabilities" visibility="public" type="_FwKIcL_8Ed-FYKAm2tRASg" aggregation="composite" association="_qNFBIMCvEd-L_MRWlk6_Rg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_qNFoMcCvEd-L_MRWlk6_Rg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_qNFoMsCvEd-L_MRWlk6_Rg" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_lrzG8cCyEd-L_MRWlk6_Rg" name="pmGroup" visibility="public" type="_uKLt8MABEd-FYKAm2tRASg" aggregation="composite" association="_lrzG8MCyEd-L_MRWlk6_Rg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lrzuAMCyEd-L_MRWlk6_Rg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lrzuAcCyEd-L_MRWlk6_Rg" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_zvInQZKIEeKHI86i-mB5yA" name="PmJob" visibility="public" type="_htclYMCOEd-L_MRWlk6_Rg" aggregation="composite" association="_zvInQJKIEeKHI86i-mB5yA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lx4dEZLnEeKheIgT2WotmA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lx4dEJLnEeKheIgT2WotmA" value="*"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_FwKIcL_8Ed-FYKAm2tRASg" name="PmMeasurementCapabilities">
+        <ownedComment xmi:id="_FwKIcb_8Ed-FYKAm2tRASg" annotatedElement="_FwKIcL_8Ed-FYKAm2tRASg">
+          <body>Contains the measurement capabilities of the ME.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_FwmNUL_8Ed-FYKAm2tRASg" name="pmMeasurementCapabilitiesId" isReadOnly="true">
+          <ownedComment xmi:id="_FwmNUb_8Ed-FYKAm2tRASg">
+            <body>Value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_9PljoL_9Ed-FYKAm2tRASg" name="maxNoOfJobs" isReadOnly="true">
+          <ownedComment xmi:id="_9Pljor_9Ed-FYKAm2tRASg" annotatedElement="_9PljoL_9Ed-FYKAm2tRASg">
+            <body>Specifies the maximum number of jobs that can be defined.&#xD;
+A value of 0 means there is no limit to the number of jobs.&#xD;
+If the specified limit is exceeded, when a performance monitoring is created or started, the create job or start job operation is rejected.&#xD;
+This is an upper system limit, and support for it cannot be guaranteed in high-load conditions.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxWcACCTEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_9Pljob_9Ed-FYKAm2tRASg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_D9NAQMAAEd-FYKAm2tRASg" name="jobStartStopSupport" type="_r9Z_QL__Ed-FYKAm2tRASg" isReadOnly="true">
+          <ownedComment xmi:id="_D9NAQ8AAEd-FYKAm2tRASg" annotatedElement="_D9NAQMAAEd-FYKAm2tRASg">
+            <body>Specifies whether or not Performance Management jobs defined in the ME can be started and stopped. &#xD;
+Possible values: &#xD;
+NONE: a job is started when it is created and runs until it is deleted. &#xD;
+BASIC: simple start/stop supported</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_D9NAQcAAEd-FYKAm2tRASg"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_D9NAQsAAEd-FYKAm2tRASg" name="BASIC" instance="_2GERUL__Ed-FYKAm2tRASg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Oyo4wMAAEd-FYKAm2tRASg" name="finalROP" isReadOnly="true">
+          <ownedComment xmi:id="_Oyo4wsAAEd-FYKAm2tRASg" annotatedElement="_Oyo4wMAAEd-FYKAm2tRASg">
+            <body>Indicates if measurement file for the last ROP is expected. &#xD;
+When a measurement job is stopped, this attribute specifies whether a result file for the last ROP is expected (true), or not expected (false).</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Oyo4wcAAEd-FYKAm2tRASg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Xv1dQMAAEd-FYKAm2tRASg" name="jobPrioritizationSupport" isReadOnly="true">
+          <ownedComment xmi:id="_Xv1dQ8AAEd-FYKAm2tRASg" annotatedElement="_Xv1dQMAAEd-FYKAm2tRASg">
+            <body>Defines whether or not measurement jobs can be stopped by the system.&#xD;
+Based on the priority of the Measurement jobs, they can either be stopped (true) or not (false) by the system. Attribute jobPriority in the job sets the priority per job.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Xv1dQcAAEd-FYKAm2tRASg"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_Xv1dQsAAEd-FYKAm2tRASg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_k6VvsMAAEd-FYKAm2tRASg" name="maxNoOfMeasurements" isReadOnly="true">
+          <ownedComment xmi:id="_k6VvssAAEd-FYKAm2tRASg" annotatedElement="_k6VvsMAAEd-FYKAm2tRASg">
+            <body>The maximum number of counter instances, i.e. active counters, that can be reported in one ROP.&#xD;
+This is used by an MS to determine the max PM data file size. An alarm is issued if the total number of simultaneously active counters becomes higher than the value defined in this attribute. This is an upper-system limit, and support for it cannot be guaranteed in high-load conditions.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxVN4CCTEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_k6VvscAAEd-FYKAm2tRASg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_tRoKwMAAEd-FYKAm2tRASg" name="maxNoOfPmFiles" isReadOnly="true">
+          <ownedComment xmi:id="_tRoKwsAAEd-FYKAm2tRASg" annotatedElement="_tRoKwMAAEd-FYKAm2tRASg">
+            <body>Specifies the maximum number of Result Output Period (ROP) files that are maintained in the ME.&#xD;
+If a new file is created and the limit is exceeded, the oldest file is deleted. This is an upper-system limit, and support for it cannot be guaranteed in high-load conditions.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxWcACCTEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_tRoKwcAAEd-FYKAm2tRASg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_AWKysMABEd-FYKAm2tRASg" name="alignedReportingPeriod" isReadOnly="true">
+          <ownedComment xmi:id="_AWKys8ABEd-FYKAm2tRASg" annotatedElement="_AWKysMABEd-FYKAm2tRASg">
+            <body>Defines whether or not the Managed Element aligns its reporting periods to the hour.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_AWKyscABEd-FYKAm2tRASg"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_AWKyssABEd-FYKAm2tRASg" value="true"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_2VF5gAaEEeCCt4JYS-SMPA" name="measurementJobSupport" isReadOnly="true">
+          <ownedComment xmi:id="_2VPDcgaEEeCCt4JYS-SMPA" annotatedElement="_2VF5gAaEEeCCt4JYS-SMPA">
+            <body>Indicates if Managed Element supports Measurement Job Types.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_2VPDcQaEEeCCt4JYS-SMPA"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_r0MrwOqQEeCi14KMiojsFg" value="true"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_MH-ygAaPEeCCt4JYS-SMPA" name="realTimeJobSupport" isReadOnly="true">
+          <ownedComment xmi:id="_MH-yhAaPEeCCt4JYS-SMPA" annotatedElement="_MH-ygAaPEeCCt4JYS-SMPA">
+            <body>Indicates if the Managed Element supports Realtime Jobs.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MH-ygwaPEeCCt4JYS-SMPA"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_Nh27oOoBEeCi14KMiojsFg" value="true"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_XQTx0AaPEeCCt4JYS-SMPA" name="thresholdJobSupport" isReadOnly="true">
+          <ownedComment xmi:id="_XQTx1AaPEeCCt4JYS-SMPA" annotatedElement="_XQTx0AaPEeCCt4JYS-SMPA">
+            <body>Indicates if the Managed Element supports Threshold Jobs.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XQTx0waPEeCCt4JYS-SMPA"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_QBsbIOoBEeCi14KMiojsFg" value="true"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_oWsk4FlDEeGI65sVd8eJAw" name="fileLocation" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_oWsk4VlDEeGI65sVd8eJAw" annotatedElement="_oWsk4FlDEeGI65sVd8eJAw">
+            <body>Contains the path to the virtual file system on the node from which to fetch the measurement files.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_oWsk41lDEeGI65sVd8eJAw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oWsk4llDEeGI65sVd8eJAw" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_qMOjIFlDEeGI65sVd8eJAw" name="fileGroup" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_qMOjIVlDEeGI65sVd8eJAw" annotatedElement="_qMOjIFlDEeGI65sVd8eJAw">
+            <body>Deprecated, contains the file storage path to the measurement files on the ME.&#xD;
+This attribute is only set if FileM is present, and refers to the file storage path. If this attribute is not set, the file storage path is stored locally in the fileLocation attribute in PmMeasurementCapabilities.&#xD;
+Deprecated in ECIM PM 2.0.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_3u6SwAdREeSbOIECU1jilg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_3vEDwAdREeSbOIECU1jilg" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_1d7CMIzTEeK7rMH4qRu-3g" name="fileRPSupported" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_1eEzMYzTEeK7rMH4qRu-3g">
+            <body>Specifies if ME supports a file Reporting Period different to Granularity Period where RP > GP.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1eXuIozTEeK7rMH4qRu-3g"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1eXuI4zTEeK7rMH4qRu-3g" value="1"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_80tyYMbjEeKURPpljJD6NA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ljJfkDgREeOYVorwJJdiCQ" name="supportedRopPeriods" visibility="public" type="_msfs8OgxEeCi14KMiojsFg" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_ljVFwTgREeOYVorwJJdiCQ">
+            <body>Indicates the Result Output Period (ROP) or ROPs supported by the ME.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ljhTADgREeOYVorwJJdiCQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ljh6EDgREeOYVorwJJdiCQ" value="9"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_ljgr8TgREeOYVorwJJdiCQ" name="FIFTEEN_MIN" instance="_dVu8cOgyEeCi14KMiojsFg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_qkQpADgREeOYVorwJJdiCQ" name="supportedMeasJobGps" visibility="public" type="_msfs8OgxEeCi14KMiojsFg" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_qkQpATgREeOYVorwJJdiCQ">
+            <body>Indicates which granularity periods are supported by the ME for Measurement jobs.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_qkQpAzgREeOYVorwJJdiCQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_qkQpAjgREeOYVorwJJdiCQ" value="9"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_C8Ds4GW_EeWG3arGTiu4Mw" visibility="public" type="_msfs8OgxEeCi14KMiojsFg" value="FIFTEEN_MIN">
+            <name xsi:nil="true"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_4bNKsDgREeOYVorwJJdiCQ" name="supportedRtJobGps" visibility="public" type="_msfs8OgxEeCi14KMiojsFg" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_4bNKsTgREeOYVorwJJdiCQ">
+            <body>Indicates which granularity periods are supported by the ME for Realtime jobs.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4bNKszgREeOYVorwJJdiCQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4bNKsjgREeOYVorwJJdiCQ" value="9"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_7U7-AEIvEeONm_FN1jUcGw" name="ONE_MIN" instance="_msshQOgxEeCi14KMiojsFg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_A4ijYDgSEeOYVorwJJdiCQ" name="supportedThreshJobGps" visibility="public" type="_msfs8OgxEeCi14KMiojsFg" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_A4ijYTgSEeOYVorwJJdiCQ">
+            <body>Indicates which granularity periods are supported by the ME for Threshold jobs.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_A4ijYzgSEeOYVorwJJdiCQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_A4ijYjgSEeOYVorwJJdiCQ" value="9"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_C8Ds4WW_EeWG3arGTiu4Mw" visibility="public" type="_msfs8OgxEeCi14KMiojsFg" value="FIFTEEN_MIN">
+            <name xsi:nil="true"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_RmO90DgUEeOYVorwJJdiCQ" name="supportedCompressionTypes" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_RmO90TgUEeOYVorwJJdiCQ">
+            <body>Indicates which compression types are supported by the ME for report files.&#xD;
+If this attribute is not present, the ME does not support compression of report files.&#xD;
+</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#_6k1F4CDzEeGswNWNFFrJZw"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jUDDYDgUEeOYVorwJJdiCQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rIblsDgUEeOYVorwJJdiCQ" value="2"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_mQe-sEItEeONm_FN1jUcGw" name="jobGroupingSupport" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_mQiCAUItEeONm_FN1jUcGw">
+            <body>Indicates if Managed Element supports grouping of selected measurement job results in a report file.&#xD;
+If set to true, the ME groups selected measurement job results into one file based on the PmJob attribute jobGroup. &#xD;
+If set to false, the default behaviour is to generate one PM report file per granularity period.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XJb88FBYEeOUgaMXmIw4BQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_XJjRsFBYEeOUgaMXmIw4BQ" value="1"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_mQlsYUItEeONm_FN1jUcGw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_tkXEAAj2EeSxd-3a2hDUyg" name="producesUtcRopFiles" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_tknisAj2EeSxd-3a2hDUyg">
+            <body>Indicates if the PM report files are produced using UTC format.&#xD;
+If the timestamp is expressed in UTC time with no offset, then the value shall be true.&#xD;
+If the timestamp is expressed in local time with UTC offset, then the value shall be false.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_tkzI4gj2EeSxd-3a2hDUyg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_tkzv8Aj2EeSxd-3a2hDUyg" value="1"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_tkzI4Qj2EeSxd-3a2hDUyg" value="true"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_r9Z_QL__Ed-FYKAm2tRASg" name="JobStartStopSupport">
+        <ownedComment xmi:id="_r9Z_Qb__Ed-FYKAm2tRASg" annotatedElement="_r9Z_QL__Ed-FYKAm2tRASg">
+          <body>Specifies if Performance Management jobs defined in ME can be started and stopped.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_r92rML__Ed-FYKAm2tRASg" name="NONE">
+          <ownedComment xmi:id="_r92rMb__Ed-FYKAm2tRASg" annotatedElement="_r92rML__Ed-FYKAm2tRASg">
+            <body>NONE - a job is started when it is created and will run until it is deleted.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_r-AcMb__Ed-FYKAm2tRASg"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_2GERUL__Ed-FYKAm2tRASg" name="BASIC">
+          <ownedComment xmi:id="_2GERUb__Ed-FYKAm2tRASg" annotatedElement="_2GERUL__Ed-FYKAm2tRASg">
+            <body>BASIC - simple start/stop supported.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_2GNbQb__Ed-FYKAm2tRASg" value="1"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_uKLt8MABEd-FYKAm2tRASg" name="PmGroup">
+        <ownedComment xmi:id="_uKLt8cABEd-FYKAm2tRASg" annotatedElement="_uKLt8MABEd-FYKAm2tRASg">
+          <body>A grouping of the measurements into logical grouping. &#xD;
+PmGroup is unique in the ME.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_uOfmMMABEd-FYKAm2tRASg" name="pmGroupId" isReadOnly="true">
+          <ownedComment xmi:id="_uOfmMcABEd-FYKAm2tRASg">
+            <body>Value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_DPHgUMACEd-FYKAm2tRASg" name="category" isReadOnly="true">
+          <ownedComment xmi:id="_DPHgUsACEd-FYKAm2tRASg" annotatedElement="_DPHgUMACEd-FYKAm2tRASg">
+            <body>Deprecated, Comma-separated sequence of key words.&#xD;
+Used for categorization and searching for data among reports. e.g. KPI, Feature xx, etc.&#xD;
+Deprecated in ECIM PM 2.2.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_DPHgUcACEd-FYKAm2tRASg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_NS22IMACEd-FYKAm2tRASg" name="consistentData" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_NS22I8ACEd-FYKAm2tRASg" annotatedElement="_NS22IMACEd-FYKAm2tRASg">
+            <body>Deprecated, Defines whether or not this group of data is guaranteed to be consistent.&#xD;
+Counter Data Consistency&#xD;
+In some MEs there are both detailed counters, e.g. #failedConnections and #succeededConnections, as well as more high-level summary counters. e.g. #totalConnections. &#xD;
+A counter group is guaranteed to be consistent if it does not contain a summary counter whose value can be calculated based on other counters in that group, or if it does so but this calculation will always show the same value as the summary counter. &#xD;
+Deprecated in ECIM PM 2.2.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_NS22IcACEd-FYKAm2tRASg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_XutJ8MACEd-FYKAm2tRASg" name="generation" isReadOnly="true">
+          <ownedComment xmi:id="_XutJ8sACEd-FYKAm2tRASg" annotatedElement="_XutJ8MACEd-FYKAm2tRASg">
+            <body>Determines if group concerns GSM, UMTS, EPS, combined (GSM+UMTS+EPS) or IMS measurements.&#xD;
+Values are defined in 3GPP standard 32:404.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XutJ8cACEd-FYKAm2tRASg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_lmtCQMAHEd-FYKAm2tRASg" name="switchingTechnology" isReadOnly="true">
+          <ownedComment xmi:id="_lm2zQMAHEd-FYKAm2tRASg" annotatedElement="_lmtCQMAHEd-FYKAm2tRASg">
+            <body>The Switching domain or domains to which this measurement is applicable.&#xD;
+Values are defined in 3GPP standard 32.404.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lmtCQcAHEd-FYKAm2tRASg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ADadcMC_Ed-L_MRWlk6_Rg" name="MeasurementType" visibility="public" type="_Saq1wMAIEd-FYKAm2tRASg" aggregation="composite" association="_ADZ2YMC_Ed-L_MRWlk6_Rg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ADadccC_Ed-L_MRWlk6_Rg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ADadcsC_Ed-L_MRWlk6_Rg" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ib3pkNBQEd-v0N0F4ib9BA" name="validity" isReadOnly="true">
+          <ownedComment xmi:id="_ib3pkdBQEd-v0N0F4ib9BA" annotatedElement="_ib3pkNBQEd-v0N0F4ib9BA">
+            <body>States if the group is valid.&#xD;
+A group might not be valid if, for example, the feature that this group is used for is not available to the customer.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_icBaktBQEd-v0N0F4ib9BA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sHLJ4OQ0EeC4FPW5luT0gw" name="moClass" type="_cKJiUNq5EeCclon5NRd6Fw" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_sHYlQOQ0EeC4FPW5luT0gw" annotatedElement="_sHLJ4OQ0EeC4FPW5luT0gw">
+            <body>The Managed Object Class that uses the Measurement Types in this PmGroup.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sHkLcOQ0EeC4FPW5luT0gw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sHkygOQ0EeC4FPW5luT0gw" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_PYCOcPo5EeCitcJoAgEPYQ" name="description" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_PaNYsPo5EeCitcJoAgEPYQ" annotatedElement="_PYCOcPo5EeCitcJoAgEPYQ">
+            <body>Description of the PmGroup.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_PacCMPo5EeCitcJoAgEPYQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_PacpQPo5EeCitcJoAgEPYQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_WLqz8JF4EeKHI86i-mB5yA" name="pmGroupVersion" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_WL-V8ZF4EeKHI86i-mB5yA">
+            <body>PM Group version identifier.&#xD;
+Unique version identifier associated with a change to the contents of the PM Group, where new MeasurementTypes have been added.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_WMHf4ZF4EeKHI86i-mB5yA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WMHf4pF4EeKHI86i-mB5yA" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_Saq1wMAIEd-FYKAm2tRASg" name="MeasurementType">
+        <ownedComment xmi:id="_Saq1wcAIEd-FYKAm2tRASg" annotatedElement="_Saq1wMAIEd-FYKAm2tRASg">
+          <body>Defines a Measurement Type on the Managed Element to be monitored and collected.&#xD;
+MeasurementType is unique within the PM Group.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_SbRSsMAIEd-FYKAm2tRASg" name="measurementTypeId" isReadOnly="true">
+          <ownedComment xmi:id="_SbRSscAIEd-FYKAm2tRASg" annotatedElement="_SbRSsMAIEd-FYKAm2tRASg">
+            <body>Value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_w8dkIMAIEd-FYKAm2tRASg" name="measurementName" isReadOnly="true">
+          <ownedComment xmi:id="_w8dkIsAIEd-FYKAm2tRASg" annotatedElement="_w8dkIMAIEd-FYKAm2tRASg">
+            <body>The full name of the measurement type.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_77VA8IzHEeK7rMH4qRu-3g" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_-0sfQMAIEd-FYKAm2tRASg" name="size" isReadOnly="true">
+          <ownedComment xmi:id="_-0sfQsAIEd-FYKAm2tRASg" annotatedElement="_-0sfQMAIEd-FYKAm2tRASg">
+            <body>Contains the size of the measurement in number of octets.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxWcACCTEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_-gnoMIzHEeK7rMH4qRu-3g" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_jn_ygMAKEd-FYKAm2tRASg" name="collectionMethod" type="_S3b00MAJEd-FYKAm2tRASg" isReadOnly="true">
+          <ownedComment xmi:id="_jn_ygsAKEd-FYKAm2tRASg" annotatedElement="_jn_ygMAKEd-FYKAm2tRASg">
+            <body>Contains the form in which this measurement data is obtained.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_03Wn4IzHEeK7rMH4qRu-3g" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_kNrAgMAMEd-FYKAm2tRASg" name="description" isReadOnly="true">
+          <ownedComment xmi:id="_kNrAgsAMEd-FYKAm2tRASg" annotatedElement="_kNrAgMAMEd-FYKAm2tRASg">
+            <body>A comprehensible explanation of this measurement.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4RwSMIzHEeK7rMH4qRu-3g" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_qh5XoMAMEd-FYKAm2tRASg" name="condition" isReadOnly="true">
+          <ownedComment xmi:id="_qh5XosAMEd-FYKAm2tRASg" annotatedElement="_qh5XoMAMEd-FYKAm2tRASg">
+            <body>Details the condition which causes the measurement result data to be updated.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_2pAywIzHEeK7rMH4qRu-3g" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_oIjsQMANEd-FYKAm2tRASg" name="aggregation" type="_CGK6QMANEd-FYKAm2tRASg" isReadOnly="true">
+          <ownedComment xmi:id="_oIjsQ8ANEd-FYKAm2tRASg" annotatedElement="_oIjsQMANEd-FYKAm2tRASg">
+            <body>Describes how the PM service aggregates the measurement values for measurement instances.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_TqsOsIzHEeK7rMH4qRu-3g" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5Of5gMANEd-FYKAm2tRASg" name="measurementStatus" type="_JBHdsMAOEd-FYKAm2tRASg" isReadOnly="true">
+          <ownedComment xmi:id="_5Of5gsANEd-FYKAm2tRASg" annotatedElement="_5Of5gMANEd-FYKAm2tRASg">
+            <body>Contains the status of the measurement.&#xD;
+If this is set to PRELIMINARY, the measurement is available and stepped in this version of the Managed Element, but is not yet approved.&#xD;
+If it is set to USED, the measurement is approved, available and stepped in this version of the Managed Element.&#xD;
+If it is set to OBSOLETE, the measurement is not available and not stepped in this version of the Managed Element.&#xD;
+If it is set to DEPRECATED, the measurement is available but is not stepped in this version of the Managed Element.&#xD;
+</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_8xyH0IzHEeK7rMH4qRu-3g" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_9RKRANBQEd-v0N0F4ib9BA" name="measurementResult" isReadOnly="true">
+          <ownedComment xmi:id="_9RKRAdBQEd-v0N0F4ib9BA" annotatedElement="_9RKRANBQEd-v0N0F4ib9BA">
+            <body>Contains a description of expected result value or values.&#xD;
+For example, result will be a single integer value. See 3GPP 32.404.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_9RUCAdBQEd-v0N0F4ib9BA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_XCG4sOgmEeCi14KMiojsFg" name="multiplicity" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_XCSe4egmEeCi14KMiojsFg">
+            <body>Where a counter is an array of values, this attribute represents the size of the array.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_-Z9gkCCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_9sGbAIzHEeK7rMH4qRu-3g" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_XCfTMOgmEeCi14KMiojsFg" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_kpYzcOg2EeCi14KMiojsFg" name="initialValue" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_kplAseg2EeCi14KMiojsFg" annotatedElement="_kpYzcOg2EeCi14KMiojsFg">
+            <body>The initial value to which a counter must be set at the beginning of a new granularity period.&#xD;
+This attribute is only valid if resetAtGranPeriod = true.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_-kmDQCCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jL--kPjPEeCitcJoAgEPYQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kpxN8Og2EeCi14KMiojsFg" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_dhIh4Og3EeCi14KMiojsFg" name="resetAtGranPeriod" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_dhNaYOg3EeCi14KMiojsFg" annotatedElement="_dhIh4Og3EeCi14KMiojsFg">
+            <body>Specifies whether the value is initialized at the beginning of each granularity period.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iLwRgPpMEeCitcJoAgEPYQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_dhRr0ug3EeCi14KMiojsFg" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_G8s2MOg4EeCi14KMiojsFg" name="derSampleRate" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_G85Dceg4EeCi14KMiojsFg" annotatedElement="_G8s2MOg4EeCi14KMiojsFg">
+            <body>Specifies the sample rate for DER counters.&#xD;
+Defined as according to 3GPP 32.401.&#xD;
+Data related to a particular event is captured. Every nth event is registered, where n can be 1 or greater.&#xD;
+This attribute defines n.&#xD;
+This attribute is not valid for non-DER Measurement Types.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_-Z9gkCCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_JweSkPpFEeCitcJoAgEPYQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_G-PuUOg4EeCi14KMiojsFg" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_DKYUsFlCEeGI65sVd8eJAw" name="fmAlarmType" isReadOnly="true">
+          <ownedComment xmi:id="_DKYUsVlCEeGI65sVd8eJAw" annotatedElement="_DKYUsFlCEeGI65sVd8eJAw">
+            <body>FmAlarmType associated to Threshold Monitoring of this MeasurementType.&#xD;
+&#xD;
+If this attribute has not been assigned, this MeasurementType is not available for selection for a PM Threshold Job.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_FM.uml#_tqWg0GGaEd-7fPz80YESTA"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_BQCv4IIWEeS4rKG8BwI1TA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_BQPkMIIWEeS4rKG8BwI1TA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_HuuCkFlCEeGI65sVd8eJAw" name="thresholdDirection" type="_XBwJoMCMEd-L_MRWlk6_Rg" isReadOnly="true">
+          <ownedComment xmi:id="_HuuCkVlCEeGI65sVd8eJAw" annotatedElement="_HuuCkFlCEeGI65sVd8eJAw">
+            <body>The threshold direction of a Measurement Type value which raises the Threshold Alarm severity.&#xD;
+&#xD;
+The attribute is assigned if this MeasurementType shall only be monitored in one direction in a PM Threshold Job. If it can be monitored in either direction, then the direction will be set as part of the threshold job creation.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_HuuCkllCEeGI65sVd8eJAw"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_HuuCk1lCEeGI65sVd8eJAw" name="INCREASING" instance="_XCbfEMCMEd-L_MRWlk6_Rg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_YQgE0Aj2EeSxd-3a2hDUyg" name="isCompressed" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_YQzm0Aj2EeSxd-3a2hDUyg">
+            <body>Indicates if the MeasurementType result is in compressed format.&#xD;
+For MeasurementTypes with multiplicity greater than 1, the result can be compressed by only reporting the non-zero values.&#xD;
+A detailed explanation of the format of the measurement result is given in the measurementResult attribute.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YQ7ioAj2EeSxd-3a2hDUyg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YQ8wwAj2EeSxd-3a2hDUyg" value="1"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_w0pywBP8EeS2I_ULyYYuow"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_S3b00MAJEd-FYKAm2tRASg" name="CollectionMethod">
+        <ownedComment xmi:id="_S3b00cAJEd-FYKAm2tRASg" annotatedElement="_S3b00MAJEd-FYKAm2tRASg">
+          <body>The form in which measurement data for a Measurement Type  is obtained.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_S4eWoMAJEd-FYKAm2tRASg" name="CC">
+          <ownedComment xmi:id="_S4eWocAJEd-FYKAm2tRASg">
+            <body>The collection method is Cumulative Counter.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_S4eWo8AJEd-FYKAm2tRASg" value="1"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_ZTqRYMAJEd-FYKAm2tRASg" name="GAUGE">
+          <ownedComment xmi:id="_ZTqRYcAJEd-FYKAm2tRASg">
+            <body>The collection method is Gauge - based on a dynamic variable.&#xD;
+This method is used when data being measured can vary up or down during the period of measurement.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_ZTqRY8AJEd-FYKAm2tRASg" value="2"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_gWIOkMAJEd-FYKAm2tRASg" name="DER">
+          <ownedComment xmi:id="_gWIOkcAJEd-FYKAm2tRASg">
+            <body>The collection method is Discrete Event Registration (DER).&#xD;
+When data related to a particular event are captured, every nth event is registered, where n can be 1 or greater.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_nkdqwGLHEeGzRZ5njnd0IA" value="3"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_niRsMMAJEd-FYKAm2tRASg" name="SI">
+          <ownedComment xmi:id="_niRsMcAJEd-FYKAm2tRASg" annotatedElement="_niRsMMAJEd-FYKAm2tRASg">
+            <body>The collection method is Status Inspection.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_niRsM8AJEd-FYKAm2tRASg" value="4"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_JBHdsMAOEd-FYKAm2tRASg" name="MeasurementStatus">
+        <ownedComment xmi:id="_JBHdscAOEd-FYKAm2tRASg" annotatedElement="_JBHdsMAOEd-FYKAm2tRASg">
+          <body>The Measurement status of a Measurement Type.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_JB3EkMAOEd-FYKAm2tRASg" name="USED">
+          <ownedComment xmi:id="_JB3EkcAOEd-FYKAm2tRASg">
+            <body>Measurement status = Used. </body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_JB3Ek8AOEd-FYKAm2tRASg" value="1"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_psMBwMCHEd-L_MRWlk6_Rg" name="DEPRECATED">
+          <ownedComment xmi:id="_puB00MCHEd-L_MRWlk6_Rg" annotatedElement="_psMBwMCHEd-L_MRWlk6_Rg">
+            <body>Measurement status = Deprecated.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_puIigMCHEd-L_MRWlk6_Rg" value="2"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_zPPFUMCHEd-L_MRWlk6_Rg" name="OBSOLETE">
+          <ownedComment xmi:id="_zPVL8cCHEd-L_MRWlk6_Rg" annotatedElement="_zPPFUMCHEd-L_MRWlk6_Rg">
+            <body>Measurement status = Obsolete.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_zPbSkcCHEd-L_MRWlk6_Rg" value="3"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_vIeKQOeuEeC4FPW5luT0gw" name="PRELIMINARY">
+          <ownedComment xmi:id="_vL4qoOeuEeC4FPW5luT0gw" annotatedElement="_vIeKQOeuEeC4FPW5luT0gw">
+            <body>MeasurementStatus = Preliminary.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_vM2T8OeuEeC4FPW5luT0gw" value="4"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_UiTogMCIEd-L_MRWlk6_Rg" name="PmThresholdMonitoring">
+        <ownedComment xmi:id="_UiZvIMCIEd-L_MRWlk6_Rg" annotatedElement="_UiTogMCIEd-L_MRWlk6_Rg">
+          <body>Contains configuration of each threshold for Threshold jobs.&#xD;
+To be able to monitor the overall health of the network, thresholds are used for generating Performance Alarms.&#xD;
+Performance alarms cannot be cleared manually. Performance alarms must be cleared when the threshold is (a) crossed, or (b) reached, in the opposite direction to the one that triggers the alarm.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_Ulk-8MCIEd-L_MRWlk6_Rg" name="pmThresholdMonitoringId" isReadOnly="true">
+          <ownedComment xmi:id="_UlrFkMCIEd-L_MRWlk6_Rg">
+            <body>Value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_9SGpsMCNEd-L_MRWlk6_Rg" name="thresholdHigh">
+          <ownedComment xmi:id="_9SLiMcCNEd-L_MRWlk6_Rg" annotatedElement="_9SGpsMCNEd-L_MRWlk6_Rg">
+            <body>Defines the high-threshold level for this alarm severity.&#xD;
+For each pair of high-threshold and low-threshold levels, one of them must generate an alarm notification - or increase the severity of an existing alarm. The other one must generate an alarm clear notification, or decrease the severity of an existing alarm. &#xD;
+If the direction of the threshold is increasing, a new alarm (or severity increase of an existing alarm) is not generated before the measurement value has (a) crossed or (b) reached the high-level threshold value. &#xD;
+Furthermore, an existing alarm is not cleared (or its severity decreased) before the measurement value has reached or crossed the low-level threshold value. &#xD;
+For decreasing thresholds, the opposite is applied. The hysteresis mechanism can be used for both Gauges and Cumulative Counters thresholds.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_-maBICCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_WWN3QFLVEeSensIGmBGX_g" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WWUk8FLVEeSensIGmBGX_g" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_HGO2MMCOEd-L_MRWlk6_Rg" name="thresholdLow">
+          <ownedComment xmi:id="_HGTuscCOEd-L_MRWlk6_Rg" annotatedElement="_HGO2MMCOEd-L_MRWlk6_Rg">
+            <body>Defines the low-threshold level for this alarm severity.&#xD;
+For each pair of high-threshold and low-threshold levels, one of them must generate an alarm notification, or increase the severity of an existing alarm. The other one must generate an alarm clear notification, or decrease the severity of an existing alarm. &#xD;
+If the direction of the threshold is increasing, a new alarm (or severity increase of an existing alarm) is not generated before the measurement value has (a) crossed or (b) reached the high-level threshold value. &#xD;
+Furthermore, an existing alarm is not cleared (or its severity decreased) before the measurement value has reached or crossed the low-level threshold value. &#xD;
+For decreasing thresholds, the opposite is applied. The hysteresis mechanism can be used for both Gauges and Cumulative Counters thresholds.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_-maBICCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_alpFEFLVEeSensIGmBGX_g" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_alxn8FLVEeSensIGmBGX_g" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ho9l4EZEEeCdkNkmh9f5rA" name="thresholdSeverity">
+          <ownedComment xmi:id="_hpjbw0ZEEeCdkNkmh9f5rA" annotatedElement="_ho9l4EZEEeCdkNkmh9f5rA">
+            <body>Threshold severity.&#xD;
+One of the following Severity Levels must be assigned per threshold, in order to raise a threshold alarm of this severity, or change an existing alarm to this severity, if that threshold is reached or crossed:&#xD;
+CRITICAL&#xD;
+MAJOR&#xD;
+MINOR&#xD;
+WARNING&#xD;
+&#xD;
+Severity level CLEARED is not a valid severity level and cannot be assigned to this attribute.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_FM.uml#_nb6ooGZ8Ed-6dskNiSnY4Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_hpjbwUZEEeCdkNkmh9f5rA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_O_CMIMQhEeChca-APuV3rg" value="1"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_OtQfoMQhEeChca-APuV3rg" name="MINOR">
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_FM.uml#_elMNoGZ-Ed-VkJjlpEntLQ"/>
+          </defaultValue>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_XBwJoMCMEd-L_MRWlk6_Rg" name="ThresholdDirection">
+        <ownedComment xmi:id="_XB1pMMCMEd-L_MRWlk6_Rg" annotatedElement="_XBwJoMCMEd-L_MRWlk6_Rg">
+          <body>The threshold direction of a Measurement Type value which raises the Performance Alarm severity.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_XCbfEMCMEd-L_MRWlk6_Rg" name="INCREASING">
+          <ownedComment xmi:id="_XCgXkMCMEd-L_MRWlk6_Rg" annotatedElement="_XCbfEMCMEd-L_MRWlk6_Rg">
+            <body>Threshold direction = Increasing.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_XCkpAcCMEd-L_MRWlk6_Rg" value="1"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_cxtWEMCMEd-L_MRWlk6_Rg" name="DECREASING">
+          <ownedComment xmi:id="_cxyOkMCMEd-L_MRWlk6_Rg" annotatedElement="_cxtWEMCMEd-L_MRWlk6_Rg">
+            <body>Threshold Direction = Decreasing.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_cx2gAcCMEd-L_MRWlk6_Rg" value="2"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_htclYMCOEd-L_MRWlk6_Rg" name="PmJob">
+        <ownedComment xmi:id="_rx2KACMcEeCPnbVZgXlObg" annotatedElement="_htclYMCOEd-L_MRWlk6_Rg">
+          <body>Describes a user-defined PM job on the Managed Element.&#xD;
+A PM Job defines the attributes required per job and also defines the measurements to be included in the job. An instance of the MeasurementReader class is created for every PmGroup or MeasurementType instance being measured.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_hwR28MCOEd-L_MRWlk6_Rg" name="pmJobId" isReadOnly="true">
+          <ownedComment xmi:id="_hwXWgMCOEd-L_MRWlk6_Rg">
+            <body>Value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_4XDJUOgUEeCi14KMiojsFg" name="measurementReader" visibility="public" type="_SsyyMMClEd-L_MRWlk6_Rg" aggregation="composite" association="_4XB7MOgUEeCi14KMiojsFg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4XIo4OgUEeCi14KMiojsFg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4XIB0OgUEeCi14KMiojsFg" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_biaxEMCPEd-L_MRWlk6_Rg" name="requestedJobState" type="_DMbdoMCPEd-L_MRWlk6_Rg">
+          <ownedComment xmi:id="_bigQoMCPEd-L_MRWlk6_Rg" annotatedElement="_biaxEMCPEd-L_MRWlk6_Rg">
+            <body>Contains the requested state of the PM job.&#xD;
+It represents the state that the job has been ordered to reach.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bifpkcCPEd-L_MRWlk6_Rg"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_zUmC4FfwEeGI65sVd8eJAw" name="ACTIVE" instance="_DNIBMMCPEd-L_MRWlk6_Rg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_egW18MCcEd-L_MRWlk6_Rg" name="reportingPeriod" type="_msfs8OgxEeCi14KMiojsFg">
+          <ownedComment xmi:id="_V3yaYCMEEeCPnbVZgXlObg" annotatedElement="_egW18MCcEd-L_MRWlk6_Rg">
+            <body>Contains the reporting period of the result file.&#xD;
+This is directly related to the granularity period as the granularity period can not be longer than the reporting period.&#xD;
+Possible Values (s=second,m=minute, h=hour): 10s,30s,1m, 5m, 15m, 30m, 1h, 12h, 24h.&#xD;
+Default Value: 15m.&#xD;
+Report files are only generated for jobs of jobType MEASUREMENTJOB.&#xD;
+The value of reportingPeriod must be equal to the value of granularityPeriod if fileRPSupported in PmMeasurementCapabilities is false, or may be equal to a multiple of the value of granularityperiod if fileRPSupported is set to true.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_egbuccCcEd-L_MRWlk6_Rg"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_2_kv0PgJEeChmJamZT1ahQ" name="FIFTEEN_MIN" instance="_dVu8cOgyEeCi14KMiojsFg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5LZbkMCkEd-L_MRWlk6_Rg" name="jobType" type="__FirUMCPEd-L_MRWlk6_Rg">
+          <ownedComment xmi:id="_5LeUEsCkEd-L_MRWlk6_Rg" annotatedElement="_5LZbkMCkEd-L_MRWlk6_Rg">
+            <body>Contains the type of PM job.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5LeUEMCkEd-L_MRWlk6_Rg"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_5LeUEcCkEd-L_MRWlk6_Rg" name="MEASUREMENTJOB" instance="__GREEMCPEd-L_MRWlk6_Rg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_74zScMCjEd-L_MRWlk6_Rg" name="jobPriority" type="_SDkg8MCjEd-L_MRWlk6_Rg">
+          <ownedComment xmi:id="_744yAMCjEd-L_MRWlk6_Rg" annotatedElement="_74zScMCjEd-L_MRWlk6_Rg">
+            <body>Contains the priority of the job.&#xD;
+Each job must have a priority if jobPrioritizationSupport in the PmMeasurementCapabilities is set to true.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_744K8cCjEd-L_MRWlk6_Rg"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_He5L0MCkEd-L_MRWlk6_Rg" name="MEDIUM" instance="_aXb0kMCjEd-L_MRWlk6_Rg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_qSFqgMCPEd-L_MRWlk6_Rg" name="granularityPeriod" type="_msfs8OgxEeCi14KMiojsFg">
+          <ownedComment xmi:id="_XXLlACMOEeCPnbVZgXlObg" annotatedElement="_qSFqgMCPEd-L_MRWlk6_Rg">
+            <body>Contains the granularity period of the job.&#xD;
+The granularity period is the time between the initiation of two successive gatherings of measurement data. This is directly related to the ReportingPeriod as the granularity period can not be longer than the reporting period.&#xD;
+Possible Values (s=second,m=minute, h=hour): 10s,30s,1m, 5m, 15m, 30m, 1h, 12h, 24h.&#xD;
+Default Value: 15m.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_qSKjAMCPEd-L_MRWlk6_Rg"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_yqov4PgJEeChmJamZT1ahQ" name="FIFTEEN_MIN" instance="_dVu8cOgyEeCi14KMiojsFg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_c-tRoOg0EeCi14KMiojsFg" name="currentJobState" type="_DMbdoMCPEd-L_MRWlk6_Rg" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_ni8FYOg0EeCi14KMiojsFg" annotatedElement="_c-tRoOg0EeCi14KMiojsFg">
+            <body>Describes the current state of the PM job.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c-6F8Og0EeCi14KMiojsFg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c-6F8eg0EeCi14KMiojsFg" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_iaI04Dr-EeOYVorwJJdiCQ" name="jobControl" visibility="public" type="_VPHngDf9EeOYVorwJJdiCQ" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_iaL4MTr-EeOYVorwJJdiCQ">
+            <body>Describes the level of MS control of the PM job.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iaO7gjr-EeOYVorwJJdiCQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iaO7gzr-EeOYVorwJJdiCQ" value="1"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_iaO7gTr-EeOYVorwJJdiCQ" name="FULL" instance="_aza9kDf9EeOYVorwJJdiCQ"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_xp_nQDsfEeOYVorwJJdiCQ" name="compressionType" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_xqCqkTsfEeOYVorwJJdiCQ">
+            <body>Indicates file compression type to be applied to the report file.&#xD;
+If no value is supplied, then no compression is to be applied to the report file for this job.&#xD;
+Only valid for PM jobs of type MEASUREMENTJOB.&#xD;
+Must have the same value for all PM jobs with the same jobGroup tag assigned.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#_6k1F4CDzEeGswNWNFFrJZw"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xqFt4jsfEeOYVorwJJdiCQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_xqFt4zsfEeOYVorwJJdiCQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Mz_a8DtCEeOYVorwJJdiCQ" name="jobGroup" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_M0CeQTtCEeOYVorwJJdiCQ">
+            <body>Tag for grouping PM measurement job results.&#xD;
+Represents a grouping of separate PM Jobs for which the measurement results must be collected together in a single report file for that group only.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_M0FhkDtCEeOYVorwJJdiCQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_M0FhkTtCEeOYVorwJJdiCQ" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_DMbdoMCPEd-L_MRWlk6_Rg" name="JobState">
+        <ownedComment xmi:id="_DMgWIcCPEd-L_MRWlk6_Rg" annotatedElement="_DMbdoMCPEd-L_MRWlk6_Rg">
+          <body>PM job states.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_DNIBMMCPEd-L_MRWlk6_Rg" name="ACTIVE">
+          <ownedComment xmi:id="_DNM5scCPEd-L_MRWlk6_Rg" annotatedElement="_DNIBMMCPEd-L_MRWlk6_Rg">
+            <body>Job State = Active.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_DNRyMcCPEd-L_MRWlk6_Rg" value="1"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_Mkc88MCPEd-L_MRWlk6_Rg" name="STOPPED">
+          <ownedComment xmi:id="_MkicgcCPEd-L_MRWlk6_Rg" annotatedElement="_Mkc88MCPEd-L_MRWlk6_Rg">
+            <body>Job State = Stopped.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_Mkmt8cCPEd-L_MRWlk6_Rg" value="2"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="__FirUMCPEd-L_MRWlk6_Rg" name="JobType">
+        <ownedComment xmi:id="__Fnj0cCPEd-L_MRWlk6_Rg" annotatedElement="__FirUMCPEd-L_MRWlk6_Rg">
+          <body>PM job types.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="__GREEMCPEd-L_MRWlk6_Rg" name="MEASUREMENTJOB">
+          <ownedComment xmi:id="__GWjoMCPEd-L_MRWlk6_Rg" annotatedElement="__GREEMCPEd-L_MRWlk6_Rg">
+            <body>Measurement Job.&#xD;
+This job monitors a number of Measurement Types and the resulting data will be presented in an XML file. This file will then be available for collection.&#xD;
+</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="__GbcIMCPEd-L_MRWlk6_Rg" value="1"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_Gzi40MCQEd-L_MRWlk6_Rg" name="THRESHOLDJOB">
+          <ownedComment xmi:id="_GzoYYMCQEd-L_MRWlk6_Rg" annotatedElement="_Gzi40MCQEd-L_MRWlk6_Rg">
+            <body>Threshold Job.&#xD;
+This job monitors one or more Measurement Types against assigned thresholds. If a threshold is exceeded an alarm will be issued.&#xD;
+</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_Gzsp0cCQEd-L_MRWlk6_Rg" value="2"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_MonOwMCQEd-L_MRWlk6_Rg" name="REALTIMEJOB">
+          <ownedComment xmi:id="_MosuUMCQEd-L_MRWlk6_Rg" annotatedElement="_MonOwMCQEd-L_MRWlk6_Rg">
+            <body>Real-time Job.&#xD;
+This job monitors one or more Measurement Types and makes the current value available in the model to be fetched by the MS.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_Mow_wcCQEd-L_MRWlk6_Rg" value="3"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_SDkg8MCjEd-L_MRWlk6_Rg" name="JobPriority">
+        <ownedComment xmi:id="_SDqAgMCjEd-L_MRWlk6_Rg" annotatedElement="_SDkg8MCjEd-L_MRWlk6_Rg">
+          <body>Job Priority.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_SEyB4MCjEd-L_MRWlk6_Rg" name="LOW">
+          <ownedComment xmi:id="_SE26YcCjEd-L_MRWlk6_Rg">
+            <body>Priority = Low.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_SE7L0cCjEd-L_MRWlk6_Rg" value="1"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_aXb0kMCjEd-L_MRWlk6_Rg" name="MEDIUM">
+          <ownedComment xmi:id="_aXgtEcCjEd-L_MRWlk6_Rg">
+            <body>Priority = Medium.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_aXk-gcCjEd-L_MRWlk6_Rg" value="2"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_eV2x8MCjEd-L_MRWlk6_Rg" name="HIGH">
+          <ownedComment xmi:id="_eV8RgMCjEd-L_MRWlk6_Rg" annotatedElement="_eV2x8MCjEd-L_MRWlk6_Rg">
+            <body>Priority = High.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_eWAi8cCjEd-L_MRWlk6_Rg" value="3"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_SsyyMMClEd-L_MRWlk6_Rg" name="MeasurementReader">
+        <ownedComment xmi:id="_Ss3qscClEd-L_MRWlk6_Rg" annotatedElement="_SsyyMMClEd-L_MRWlk6_Rg">
+          <body>Represents the capability to read the value of the MeasurementType or group of MeasurementTypes.&#xD;
+There can be many Measurement Reader instances for each job (one for each MeasurementType or PmGroup).&#xD;
+For a Threshold Job, only a MeasurementType instance can be referenced by the the Measurement Reader. &#xD;
+</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_SvMl8MClEd-L_MRWlk6_Rg" name="measurementReaderId" isReadOnly="true">
+          <ownedComment xmi:id="_SvQ3YcClEd-L_MRWlk6_Rg">
+            <body>Value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_tO3R8MDBEd-L_MRWlk6_Rg" name="pmThresholdMonitoring" visibility="public" type="_UiTogMCIEd-L_MRWlk6_Rg" aggregation="composite" association="_tO2q4MDBEd-L_MRWlk6_Rg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_tO3R8cDBEd-L_MRWlk6_Rg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_tO3R8sDBEd-L_MRWlk6_Rg" value="4"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Sx4c8NBQEd-v0N0F4ib9BA" name="measurementReaderNameValue" type="_kibYUNBOEd-v0N0F4ib9BA" isReadOnly="true">
+          <ownedComment xmi:id="_Sx4c8dBQEd-v0N0F4ib9BA" annotatedElement="_Sx4c8NBQEd-v0N0F4ib9BA">
+            <body>Contains the real-time measurement data.&#xD;
+Only used by a PM job of type REALTIMEJOB.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_SyVI4dBQEd-v0N0F4ib9BA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_SyCN8dBQEd-v0N0F4ib9BA" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_vNqKcPkAEeCitcJoAgEPYQ" name="measurementSpecification" type="_f75QkPkAEeCitcJoAgEPYQ" isUnique="false">
+          <ownedComment xmi:id="_Bljc4PkDEeCitcJoAgEPYQ">
+            <body>This struct allows reference to either MeasurementType or PmGroup of MeasurementTypes to be defined.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_vN2-wPkAEeCitcJoAgEPYQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_vN2-wfkAEeCitcJoAgEPYQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Q0q1cAeCEeSbOIECU1jilg" name="moInstances" visibility="public" type="_KCvvUAd6EeSbOIECU1jilg" isUnique="false">
+          <ownedComment xmi:id="_Q06GAAeCEeSbOIECU1jilg">
+            <body>Target MO instance or instances.&#xD;
+It is possible to select one or more MO instances as the specific target of the job.&#xD;
+If this attribute is not present the job will be applied to all MO instances relevant to the selected PmGroup or MeasurementType.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Q1EeEQeCEeSbOIECU1jilg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aePVID2jEeS8rOfIlUYttA" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_UKJfEE71EeSZmouxTerDvA" name="thresholdRateOfVariation" visibility="public" type="_AbGMcE7zEeSZmouxTerDvA" isUnique="false">
+          <ownedComment xmi:id="_UKYIkE71EeSZmouxTerDvA">
+            <body>Time interval used for monitoring the Measurement Type against a threshold.&#xD;
+Specifies, for Threshold Monitoring of a Cumulative Counter Measurement Type, how to calculate the value of the Measurment Type used to compare against the threshold.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_UKkV0E71EeSZmouxTerDvA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_UKk84E71EeSZmouxTerDvA" value="1"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_UKjuwE71EeSZmouxTerDvA" name="RATEOFVARIATION" instance="_AhV-YE7zEeSZmouxTerDvA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_80NDoE8FEeSZmouxTerDvA" name="thresholdDirection" visibility="public" type="_XBwJoMCMEd-L_MRWlk6_Rg" isUnique="false">
+          <ownedComment xmi:id="_80U_cU8FEeSZmouxTerDvA">
+            <body>Threshold direction for a Threshold Job.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_80ZQ4U8FEeSZmouxTerDvA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_80Z38E8FEeSZmouxTerDvA" value="1"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_A96TgIIVEeS4rKG8BwI1TA" name="INCREASING" instance="_XCbfEMCMEd-L_MRWlk6_Rg"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_qNFBIMCvEd-L_MRWlk6_Rg" name="Pm_to_PmMeasurementCapabilities" memberEnd="_qNFoMMCvEd-L_MRWlk6_Rg _qNGPQMCvEd-L_MRWlk6_Rg">
+        <ownedEnd xmi:id="_qNGPQMCvEd-L_MRWlk6_Rg" name="pm" visibility="public" type="_WHBeoL_7Ed-FYKAm2tRASg" association="_qNFBIMCvEd-L_MRWlk6_Rg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_qNGPQcCvEd-L_MRWlk6_Rg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_qNGPQsCvEd-L_MRWlk6_Rg" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lrzG8MCyEd-L_MRWlk6_Rg" name="Pm_to_PmGroup" memberEnd="_lrzG8cCyEd-L_MRWlk6_Rg _lrzuAsCyEd-L_MRWlk6_Rg">
+        <ownedEnd xmi:id="_lrzuAsCyEd-L_MRWlk6_Rg" name="pm" visibility="public" type="_WHBeoL_7Ed-FYKAm2tRASg" association="_lrzG8MCyEd-L_MRWlk6_Rg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_HDDDEFi4EeGI65sVd8eJAw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_HDDDEVi4EeGI65sVd8eJAw" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_ADZ2YMC_Ed-L_MRWlk6_Rg" name="PmGroup_to_MeasurementType" memberEnd="_ADadcMC_Ed-L_MRWlk6_Rg _ADadc8C_Ed-L_MRWlk6_Rg">
+        <ownedEnd xmi:id="_ADadc8C_Ed-L_MRWlk6_Rg" name="pmGroup" visibility="public" type="_uKLt8MABEd-FYKAm2tRASg" association="_ADZ2YMC_Ed-L_MRWlk6_Rg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ADbEgMC_Ed-L_MRWlk6_Rg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ADbEgcC_Ed-L_MRWlk6_Rg" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_tO2q4MDBEd-L_MRWlk6_Rg" name="MeasurementReader_to_PmThresholdMonitoring" memberEnd="_tO3R8MDBEd-L_MRWlk6_Rg _tO35AMDBEd-L_MRWlk6_Rg">
+        <ownedEnd xmi:id="_tO35AMDBEd-L_MRWlk6_Rg" name="measurementReader" visibility="public" type="_SsyyMMClEd-L_MRWlk6_Rg" association="_tO2q4MDBEd-L_MRWlk6_Rg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_tO35AcDBEd-L_MRWlk6_Rg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_tO35AsDBEd-L_MRWlk6_Rg" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_kibYUNBOEd-v0N0F4ib9BA" name="MeasurementReaderNameValue">
+        <ownedComment xmi:id="_kjnrINBOEd-v0N0F4ib9BA" annotatedElement="_kibYUNBOEd-v0N0F4ib9BA">
+          <body>This name value is used for real-time monitoring.&#xD;
+The real-time monitoring is set up using a PM job of type REALTIMEJOB.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_lfIRINBOEd-v0N0F4ib9BA" name="currentValue">
+          <ownedComment xmi:id="_lfSCIdBOEd-v0N0F4ib9BA" annotatedElement="_lfIRINBOEd-v0N0F4ib9BA">
+            <body>Contains the real-time value of the measurement.&#xD;
+This value can be read in conjunction with attribute lastUpdated to determine the value of counters in real time.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Dr38kNBPEd-v0N0F4ib9BA" name="lastUpdated">
+          <ownedComment xmi:id="_DsBtkdBPEd-v0N0F4ib9BA" annotatedElement="_Dr38kNBPEd-v0N0F4ib9BA">
+            <body>Contains the exact time the currentValue was last set. &#xD;
+This attribute is used to determine how recent the value supplied in currentValue is.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_CommonLibrary.uml#_LJxvsJdcEeC11vgiYYrb4A"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iFWAkMQfEeChca-APuV3rg" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Qas_oNBPEd-v0N0F4ib9BA" name="moClassInstance">
+          <ownedComment xmi:id="_Qa2wodBPEd-v0N0F4ib9BA" annotatedElement="_Qas_oNBPEd-v0N0F4ib9BA">
+            <body>Specifies the MO class instance that the real-time measurement applies to.&#xD;
+This maps to the measObjLdn as defined in 3GPP 32.401.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sf6hMMRPEeC7DIVgt_OK8Q" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_t8RnINBPEd-v0N0F4ib9BA" name="suspectFlag">
+          <ownedComment xmi:id="_t8kiEdBPEd-v0N0F4ib9BA" annotatedElement="_t8RnINBPEd-v0N0F4ib9BA">
+            <body>Indicates if the collected measurement result is suspect.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_1guPACCSEd-Egr3-YAWs7Q"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_D1MagDPDEeKuGId1hpfiyQ" value="1"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_CMGVwDPDEeKuGId1hpfiyQ"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_Nnw2IAaCEeCCt4JYS-SMPA" name="SystemFunctions_to_Pm" memberEnd="_NoNiEAaCEeCCt4JYS-SMPA _NoNiEwaCEeCCt4JYS-SMPA">
+        <ownedEnd xmi:id="_NoNiEwaCEeCCt4JYS-SMPA" name="pm" visibility="public" type="_WHBeoL_7Ed-FYKAm2tRASg" aggregation="composite" association="_Nnw2IAaCEeCCt4JYS-SMPA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_NoNiFAaCEeCCt4JYS-SMPA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_NoNiFQaCEeCCt4JYS-SMPA" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_NoNiEAaCEeCCt4JYS-SMPA" name="systemFunctions" visibility="public" association="_Nnw2IAaCEeCCt4JYS-SMPA">
+          <type xmi:type="uml:Class" href="ECIM_Top.uml#_ETwJsJmNEd-RhrgDerFWug"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_NoNiEQaCEeCCt4JYS-SMPA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_NoNiEgaCEeCCt4JYS-SMPA" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_cKJiUNq5EeCclon5NRd6Fw" name="ManagedObjectClass">
+        <ownedComment xmi:id="_cK3UANq5EeCclon5NRd6Fw">
+          <body>This struct represents a Managed Object Class.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_cLEvYNq5EeCclon5NRd6Fw" name="moClassName">
+          <ownedComment xmi:id="_cLSx0Nq5EeCclon5NRd6Fw" annotatedElement="_cLEvYNq5EeCclon5NRd6Fw">
+            <body>Contains the Managed Object Class name.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cLRjsNq5EeCclon5NRd6Fw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_cLSKwNq5EeCclon5NRd6Fw" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_p-W5ENq5EeCclon5NRd6Fw" name="mimName">
+          <ownedComment xmi:id="_p-jtYNq5EeCclon5NRd6Fw" annotatedElement="_p-W5ENq5EeCclon5NRd6Fw">
+            <body>Contains the name of the MIM that contains the Managed Object Class.&#xD;
+&#xD;
+</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_p-jGUNq5EeCclon5NRd6Fw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_p-jGUdq5EeCclon5NRd6Fw" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_wh9wANq5EeCclon5NRd6Fw" name="mimVersion">
+          <ownedComment xmi:id="_wiLLYNq5EeCclon5NRd6Fw" annotatedElement="_wh9wANq5EeCclon5NRd6Fw">
+            <body>Contains the version of the MIM that contains the Managed Object Class.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wiJ9Qdq5EeCclon5NRd6Fw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wiKkUNq5EeCclon5NRd6Fw" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_fe53QOQzEeC4FPW5luT0gw" name="mimRelease">
+          <ownedComment xmi:id="_fmYYQOQzEeC4FPW5luT0gw" annotatedElement="_fe53QOQzEeC4FPW5luT0gw">
+            <body>Contains the release number of the MIM that contains the Managed Object Class.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fuFiweQzEeC4FPW5luT0gw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fuGJ0OQzEeC4FPW5luT0gw" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_4XB7MOgUEeCi14KMiojsFg" name="PmJob_to_MeasurementReader" memberEnd="_4XDJUOgUEeCi14KMiojsFg _4XE-gOgUEeCi14KMiojsFg">
+        <ownedEnd xmi:id="_4XE-gOgUEeCi14KMiojsFg" name="pmJob" visibility="public" type="_htclYMCOEd-L_MRWlk6_Rg" association="_4XB7MOgUEeCi14KMiojsFg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4XWrUOgUEeCi14KMiojsFg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4XWEQOgUEeCi14KMiojsFg" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_msfs8OgxEeCi14KMiojsFg" name="TimePeriod">
+        <ownedComment xmi:id="_zTbYQOgxEeCi14KMiojsFg" annotatedElement="_msfs8OgxEeCi14KMiojsFg">
+          <body>The different time periods associated with Performance Monitoring.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_msshQOgxEeCi14KMiojsFg" name="ONE_MIN">
+          <ownedComment xmi:id="_ms4HcegxEeCi14KMiojsFg">
+            <body>This represents a one-minute time period.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_FOjA8ArXEeGF7-z1Y8Jrmg" value="3"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_VtDT0OgyEeCi14KMiojsFg" name="FIVE_MIN">
+          <ownedComment xmi:id="_VtO6AOgyEeCi14KMiojsFg">
+            <body>This represents a five-minute time period.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_HYGucArXEeGF7-z1Y8Jrmg" value="4"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_dVu8cOgyEeCi14KMiojsFg" name="FIFTEEN_MIN">
+          <ownedComment xmi:id="_dV7JsOgyEeCi14KMiojsFg">
+            <body>This represents a 15-minute time period.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_IW-xgArXEeGF7-z1Y8Jrmg" value="5"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_k_e8EOgyEeCi14KMiojsFg" name="THIRTY_MIN">
+          <ownedComment xmi:id="_k_qiQOgyEeCi14KMiojsFg">
+            <body>This represents a 30-minute time period.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_JgSi8ArXEeGF7-z1Y8Jrmg" value="6"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_pmN2oOgyEeCi14KMiojsFg" name="ONE_HOUR">
+          <ownedComment xmi:id="_pmZc0OgyEeCi14KMiojsFg">
+            <body>This represents a one-hour time period.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_MP2ggArXEeGF7-z1Y8Jrmg" value="7"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_1qHGUOgyEeCi14KMiojsFg" name="TWELVE_HOUR">
+          <ownedComment xmi:id="_1qSsgegyEeCi14KMiojsFg">
+            <body>This represents a 12-hour (720-minute)  time period.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_MvhfEArXEeGF7-z1Y8Jrmg" value="8"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_8esYgOgyEeCi14KMiojsFg" name="ONE_DAY">
+          <ownedComment xmi:id="_8e3-sOgyEeCi14KMiojsFg">
+            <body>This represents a 24-hour (1440-minute)  time period.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_N37RkArXEeGF7-z1Y8Jrmg" value="9"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_qO4oUPjJEeCitcJoAgEPYQ" name="TEN_SECONDS">
+          <ownedComment xmi:id="_qPKVIPjJEeCitcJoAgEPYQ">
+            <body>This represents a 10-second time period.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_CJEdwArXEeGF7-z1Y8Jrmg" value="1"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_x84OwPjJEeCitcJoAgEPYQ" name="THIRTY_SECONDS">
+          <ownedComment xmi:id="_x9AKkfjJEeCitcJoAgEPYQ">
+            <body>This represents a 30-second time period.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_DwZn8ArXEeGF7-z1Y8Jrmg" value="2"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_f75QkPkAEeCitcJoAgEPYQ" name="MeasurementSpecification">
+        <ownedComment xmi:id="_f8g7ofkAEeCitcJoAgEPYQ" annotatedElement="_f75QkPkAEeCitcJoAgEPYQ">
+          <body>Specifies a reference to either a MeasurementType MO or to a PmGroup MO.&#xD;
+Must contain only one member, either groupRef or measurementTypeRef.&#xD;
+</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_f8xaUPkAEeCitcJoAgEPYQ" name="groupRef" type="_uKLt8MABEd-FYKAm2tRASg">
+          <ownedComment xmi:id="_QQomsPkCEeCitcJoAgEPYQ" annotatedElement="_f8xaUPkAEeCitcJoAgEPYQ">
+            <body>Reference to a PmGroup which can be associated with a MeasurementReader.&#xD;
+The MeasurementReader will therefore handle all the MeasurementTypes contained by the PmGroup.&#xD;
+Only valid for PM jobs of type MEASUREMENTJOB.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xpqA0Ot5EeGU3btUNIiNUA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_f9CgEPkAEeCitcJoAgEPYQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_wO220PkCEeCitcJoAgEPYQ" name="measurementTypeRef" type="_Saq1wMAIEd-FYKAm2tRASg">
+          <ownedComment xmi:id="_wPIjofkCEeCitcJoAgEPYQ" annotatedElement="_wO220PkCEeCitcJoAgEPYQ">
+            <body>Reference to a MeasurementType which can be associated with a MeasurementReader.&#xD;
+The MeasurementReader will handle this MeasurementType.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_0HD3YOt5EeGU3btUNIiNUA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wPVX8PkCEeCitcJoAgEPYQ" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_zvInQJKIEeKHI86i-mB5yA" name="Pm_to_PmJob" memberEnd="_zvInQZKIEeKHI86i-mB5yA _zvInRJKIEeKHI86i-mB5yA">
+        <ownedEnd xmi:id="_zvInRJKIEeKHI86i-mB5yA" name="Pm" visibility="public" type="_WHBeoL_7Ed-FYKAm2tRASg" association="_zvInQJKIEeKHI86i-mB5yA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zvRxMpKIEeKHI86i-mB5yA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zvRxMZKIEeKHI86i-mB5yA" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_VPHngDf9EeOYVorwJJdiCQ" name="JobControl">
+        <ownedComment xmi:id="_VPWRADf9EeOYVorwJJdiCQ">
+          <body>The level of MS control of the PM job.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_aza9kDf9EeOYVorwJJdiCQ" name="FULL">
+          <ownedComment xmi:id="_hed5QDf9EeOYVorwJJdiCQ">
+            <body>MS has Full control of the PM Job.&#xD;
+MS can create, delete, start and stop a job.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_ISuAEDr-EeOYVorwJJdiCQ"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_XtjDcDsLEeOYVorwJJdiCQ" name="STARTSTOP">
+          <ownedComment xmi:id="_XtmGwTsLEeOYVorwJJdiCQ">
+            <body>MS has Restricted control of the PM Job.&#xD;
+MS can stop and start a job, but cannot delete or create it.&#xD;
+</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_XtpKETsLEeOYVorwJJdiCQ" value="1"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_lj5fIEIlEeONm_FN1jUcGw" name="VIEWONLY">
+          <ownedComment xmi:id="_lj--sUIlEeONm_FN1jUcGw">
+            <body>MS can only view the PM job.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_lkCpEUIlEeONm_FN1jUcGw" value="2"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_KCvvUAd6EeSbOIECU1jilg" name="MoFilter">
+        <ownedComment xmi:id="_KDCqQAd6EeSbOIECU1jilg">
+          <body>MO Filter Data Type.&#xD;
+This data type is used to specify a target Managed Object (MO) specified by MO DN or MO filter expression.&#xD;
+The filter expression is encoded in a simplified regular expression.&#xD;
+The following uses are covered:&#xD;
+&#xD;
+Specifying by particular MO : Use the 3GPP DN notation. &#xD;
+Example: &#xD;
+&quot;ManagedElement=ABC,AppX=1&quot; selects the MO identified by that DN (where the naming attribute follows the convention MO Class name + &quot;Id&quot;).&#xD;
+Additionally here a mix of MO and MOC is allowed in the same filter expression. This usage allows singleton MOCs to be unnamed, and makes the filter specification independent of the system implementation for the naming of singleton MOC types.&#xD;
+Example: &#xD;
+&quot;ManagedElement,Equipment,FRU=19&quot;  selects a specific FRU MO, without specifying the name of its singleton parents.&#xD;
+&#xD;
+Specifying by MO where the naming attributes are not of the conventional form:&#xD;
+If the naming attribute is not the same as the MO Class name + “Id”, the 3GPP DN uses a dot notation to specify the naming attribute. &#xD;
+Example:&#xD;
+&quot;ManagedElement,Equipment,Abc.xyz=1&quot;  selects a specific MO of MO class Abc where the naming attribute is not equal to the MOC Name + “Id” 3GPP special case.</body>
+        </ownedComment>
+        <generalization xmi:id="_KDPekAd6EeSbOIECU1jilg">
+          <general xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </generalization>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_AbGMcE7zEeSZmouxTerDvA" name="PerTimeInterval">
+        <ownedComment xmi:id="_AhPQsE7zEeSZmouxTerDvA">
+          <body>Time interval used to monitor a MeaurementType value against a threshold.&#xD;
+&#xD;
+Specifies, for Threshold Monitoring of a Cumulative Counter, what to compare against the threshold.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_AhV-YE7zEeSZmouxTerDvA" name="PER_SECOND">
+          <ownedComment xmi:id="_Aha24E7zEeSZmouxTerDvA">
+            <body>Rate of variation per second of the measurement type value shall be monitored.&#xD;
+What shall be compared against the threshold is the rate of variation per second of the measurement type over the monitor granularity period.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_AhfIUU7zEeSZmouxTerDvA"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_ISMEgE7zEeSZmouxTerDvA" name="PER_GP">
+          <ownedComment xmi:id="_ISgNkU7zEeSZmouxTerDvA">
+            <body>Absolute value of the measurement type shall be monitored.&#xD;
+What shall be compared against the threshold is the absolute value of the measurement type at the end of the monitor granularity period.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_ISrMsU7zEeSZmouxTerDvA" value="1"/>
+        </ownedLiteral>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_Ahh0sMuvEeSqB9jiTSOdEQ" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.uml#_5vlRYnhQEd-OM9oMWC6jJQ"/>
+    </packagedElement>
+    <profileApplication xmi:id="_UeIAINCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAIdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAItCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAI9CzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/documentation#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://PAPYRUS_DOCUMENTATION/Papyrus.profile.uml#_H9068AEYEeCIz8iAxBJnfA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_-N14cL_5Ed-FYKAm2tRASg">
+      <eAnnotations xmi:id="_tgLYAJ0SEeW4ma0yeKsZYQ" source="PapyrusVersion">
+        <details xmi:id="_tgLYAZ0SEeW4ma0yeKsZYQ" key="Version" value="1.0.6"/>
+        <details xmi:id="_tgLYAp0SEeW4ma0yeKsZYQ" key="Comment" value=""/>
+        <details xmi:id="_tgLYA50SEeW4ma0yeKsZYQ" key="Copyright" value=""/>
+        <details xmi:id="_tgLYBJ0SEeW4ma0yeKsZYQ" key="Date" value="2015-12-07"/>
+        <details xmi:id="_tgLYBZ0SEeW4ma0yeKsZYQ" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_vR0ocHGnEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_vR0ocXGnEeWKa6xc8cMmlg" key="Version" value="1.0.5"/>
+        <details xmi:id="_vR0ocnGnEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_vR0oc3GnEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_vR0odHGnEeWKa6xc8cMmlg" key="Date" value="2015-08-24"/>
+        <details xmi:id="_vR0odXGnEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_-N14cb_5Ed-FYKAm2tRASg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_cUcakNQkEd63X4o72aQidQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_AcSvYMuvEeSqB9jiTSOdEQ">
+      <eAnnotations xmi:id="_vSU-wHGnEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_vSU-wXGnEeWKa6xc8cMmlg" key="Version" value="1.0.2"/>
+        <details xmi:id="_vSU-wnGnEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_vSU-w3GnEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_vSU-xHGnEeWKa6xc8cMmlg" key="Date" value="2015-09-04"/>
+        <details xmi:id="_vSU-xXGnEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_AcTWcMuvEeSqB9jiTSOdEQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_Br2_QBSXEd-ZjqYFUyJzOw"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_H3QbkGW_EeWG3arGTiu4Mw" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_H3QbkWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Package="_WE8bAL_7Ed-FYKAm2tRASg" author="LMI/LXR/SC Enda Murphy" contact="LMI/LXR/SC Enda Murphy" date="09/12/2014" docNo="" revision="A" version="2" release="3" organization="LMI/LXR" ecimMomName="ECIM_PM" ecimMomVersion="2" ecimMomRelease="3" ecimMomCorrection="0" correction="0" variant=""/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_H3QbkmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_WHeKkL_7Ed-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_H3Qbk2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_FwmNUL_8Ed-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_H3QblGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Enumeration="_r9Z_QL__Ed-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3QblWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_r92rML__Ed-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3QblmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_2GERUL__Ed-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_H3Qbl2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_uOfmMMABEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_H3QbmGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_SbRSsMAIEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_H3QbmWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Enumeration="_S3b00MAJEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3QbmmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_S4eWoMAJEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3Qbm2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_ZTqRYMAJEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3QbnGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_gWIOkMAJEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3QbnWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_niRsMMAJEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_H3QbnmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Enumeration="_CGK6QMANEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3Qbn2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_RERRQMANEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3QboGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_T-iqAMANEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3QboWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_XPRa8MANEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3QbomW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_a-gFwMANEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_H3Qbo2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Enumeration="_JBHdsMAOEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3QbpGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_JB3EkMAOEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3QbpWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_psMBwMCHEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3QbpmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_zPPFUMCHEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_H3Qbp2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Class="_UiTogMCIEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_H3QbqGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_Ulk-8MCIEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_H3aMkGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Enumeration="_XBwJoMCMEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3aMkWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_XCbfEMCMEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3aMkmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_cxtWEMCMEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_H3aMk2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_hwR28MCOEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_H3aMlGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Enumeration="_DMbdoMCPEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3aMlWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_DNIBMMCPEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3aMlmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_Mkc88MCPEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_H3aMl2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Enumeration="__FirUMCPEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3aMmGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="__GREEMCPEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3aMmWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_Gzi40MCQEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3aMmmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_MonOwMCQEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_H3aMm2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Enumeration="_SDkg8MCjEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3aMnGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_SEyB4MCjEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3aMnWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_aXb0kMCjEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3aMnmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_EnumerationLiteral="_eV2x8MCjEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_H3aMn2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_SvMl8MClEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_H3aMoGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Association="_qNFBIMCvEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_H3aMoWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Association="_lrzG8MCyEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_H3aMomW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Association="_ADZ2YMC_Ed-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_H3aMo2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Association="_tO2q4MDBEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimStruct xmi:id="_H3aMpGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Class="_kibYUNBOEd-v0N0F4ib9BA"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_H3aMpWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_lfIRINBOEd-v0N0F4ib9BA"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_H3aMpmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_Dr38kNBPEd-v0N0F4ib9BA"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_H3aMp2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_Qas_oNBPEd-v0N0F4ib9BA"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_H3aMqGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_t8RnINBPEd-v0N0F4ib9BA"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_H3aMqWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Class="_SsyyMMClEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMqmW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" base_Property="_Sx4c8NBQEd-v0N0F4ib9BA"/>
+  <ECIMBaseProfile:EcimContribution xmi:id="_H3aMq2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Association="_Nnw2IAaCEeCCt4JYS-SMPA"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_H3aMrGW_EeWG3arGTiu4Mw" base_Class="_Saq1wMAIEd-FYKAm2tRASg" isSystemCreated="true"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_H3aMrWW_EeWG3arGTiu4Mw" base_Class="_uKLt8MABEd-FYKAm2tRASg" isSystemCreated="true"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_H3aMrmW_EeWG3arGTiu4Mw" base_Class="_FwKIcL_8Ed-FYKAm2tRASg" isSystemCreated="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3aMr2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_ho9l4EZEEeCdkNkmh9f5rA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMsGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_9PljoL_9Ed-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMsWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_D9NAQMAAEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMsmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_Oyo4wMAAEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMs2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_Xv1dQMAAEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMtGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_k6VvsMAAEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMtWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_tRoKwMAAEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMtmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_AWKysMABEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMt2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_2VF5gAaEEeCCt4JYS-SMPA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMuGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_MH-ygAaPEeCCt4JYS-SMPA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMuWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_XQTx0AaPEeCCt4JYS-SMPA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMumW_EeWG3arGTiu4Mw" hideGroupName="" specification="" status="DEPRECATED" statusInformation="There is no practical use for this attribute in the model. It will not be visible in PM report files." base_Property="_DPHgUMACEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMu2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" status="DEPRECATED" statusInformation="There is no practical need for this attribute in the model." base_Property="_NS22IMACEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMvGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_XutJ8MACEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMvWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_lmtCQMAHEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMvmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_ib3pkNBQEd-v0N0F4ib9BA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMv2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_w8dkIMAIEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMwGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_-0sfQMAIEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMwWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_jn_ygMAKEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMwmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_kNrAgMAMEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMw2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_qh5XoMAMEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMxGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_oIjsQMANEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMxWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_5Of5gMANEd-FYKAm2tRASg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3aMxmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" base_Property="_9RKRANBQEd-v0N0F4ib9BA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3aMx2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" range="" unit="" resolution="" multiplicationFactor="" isNotifiable="true" base_Property="_9SGpsMCNEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3aMyGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" range="" unit="" resolution="" multiplicationFactor="" isNotifiable="true" base_Property="_HGO2MMCOEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimStruct xmi:id="_H3aMyWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Class="_cKJiUNq5EeCclon5NRd6Fw"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_H3aMymW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Property="_cLEvYNq5EeCclon5NRd6Fw"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_H3aMy2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Property="_p-W5ENq5EeCclon5NRd6Fw"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_H3jWgGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Property="_wh9wANq5EeCclon5NRd6Fw"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_H3jWgWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Property="_fe53QOQzEeC4FPW5luT0gw"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWgmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Property="_sHLJ4OQ0EeC4FPW5luT0gw"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_H3jWg2W_EeWG3arGTiu4Mw" base_Class="_htclYMCOEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWhGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_EnumerationLiteral="_vIeKQOeuEeC4FPW5luT0gw"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_H3jWhWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_4XB7MOgUEeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWhmW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" base_Property="_XCG4sOgmEeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_H3jWh2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Enumeration="_msfs8OgxEeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWiGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_EnumerationLiteral="_msshQOgxEeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWiWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_EnumerationLiteral="_VtDT0OgyEeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWimW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_EnumerationLiteral="_dVu8cOgyEeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWi2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_EnumerationLiteral="_k_e8EOgyEeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWjGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_EnumerationLiteral="_pmN2oOgyEeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWjWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_EnumerationLiteral="_1qHGUOgyEeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWjmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_EnumerationLiteral="_8esYgOgyEeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWj2W_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" base_Property="_kpYzcOg2EeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWkGW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" base_Property="_dhIh4Og3EeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWkWW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" base_Property="_G8s2MOg4EeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWkmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_EnumerationLiteral="_qO4oUPjJEeCitcJoAgEPYQ"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWk2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_EnumerationLiteral="_x84OwPjJEeCitcJoAgEPYQ"/>
+  <ECIMBaseProfile:EcimStruct xmi:id="_H3jWlGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Class="_f75QkPkAEeCitcJoAgEPYQ" isExclusive="true"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_H3jWlWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Property="_f8xaUPkAEeCitcJoAgEPYQ"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3jWlmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" isNotifiable="true" base_Property="_vNqKcPkAEeCitcJoAgEPYQ"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_H3jWl2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Property="_wO220PkCEeCitcJoAgEPYQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWmGW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" base_Property="_PYCOcPo5EeCitcJoAgEPYQ"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWmWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_EnumerationLiteral="_-NIUwPpQEeCitcJoAgEPYQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWmmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_DKYUsFlCEeGI65sVd8eJAw"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWm2W_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_oWsk4FlDEeGI65sVd8eJAw"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWnGW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" status="DEPRECATED" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_qMOjIFlDEeGI65sVd8eJAw"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWnWW_EeWG3arGTiu4Mw" base_Property="_HuuCkFlCEeGI65sVd8eJAw"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWnmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_1d7CMIzTEeK7rMH4qRu-3g"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWn2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_WLqz8JF4EeKHI86i-mB5yA"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_H3jWoGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_zvInQJKIEeKHI86i-mB5yA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3jWoWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_biaxEMCPEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3jWomW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_egW18MCcEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3jWo2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_5LZbkMCkEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3jWpGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_74zScMCjEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3jWpWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" isNotifiable="true" base_Property="_qSFqgMCPEd-L_MRWlk6_Rg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWpmW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" isNotifiable="true" base_Property="_c-tRoOg0EeCi14KMiojsFg"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_H3jWp2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Enumeration="_VPHngDf9EeOYVorwJJdiCQ"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWqGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_EnumerationLiteral="_aza9kDf9EeOYVorwJJdiCQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWqWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" range="" unit="" resolution="" isNotifiable="true" base_Property="_ljJfkDgREeOYVorwJJdiCQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWqmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" range="" unit="" resolution="" isNotifiable="true" base_Property="_qkQpADgREeOYVorwJJdiCQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWq2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" range="" unit="" resolution="" isNotifiable="true" base_Property="_4bNKsDgREeOYVorwJJdiCQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWrGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" range="" unit="" resolution="" isNotifiable="true" base_Property="_A4ijYDgSEeOYVorwJJdiCQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWrWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" range="" unit="" resolution="" isNotifiable="true" base_Property="_RmO90DgUEeOYVorwJJdiCQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWrmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" range="" unit="" resolution="" isNotifiable="true" base_Property="_iaI04Dr-EeOYVorwJJdiCQ"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWr2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_EnumerationLiteral="_XtjDcDsLEeOYVorwJJdiCQ"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3jWsGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" range="" unit="" resolution="" isNotifiable="true" base_Property="_xp_nQDsfEeOYVorwJJdiCQ"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3jWsWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" length="" range="" unit="" resolution="" pattern="" isNotifiable="true" base_Property="_Mz_a8DtCEeOYVorwJJdiCQ"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWsmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_EnumerationLiteral="_lj5fIEIlEeONm_FN1jUcGw"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWs2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" range="" unit="" resolution="" isNotifiable="true" base_Property="_mQe-sEItEeONm_FN1jUcGw"/>
+  <ECIMBaseProfile:EcimDerivedString xmi:id="_H3jWtGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" length="" pattern="(^[^,=[:space:]+&lt;>#;\\&quot;*$|.]+(\.[^,=[:space:]+&lt;>#;\\&quot;*$|.]+)?(=[^,=[:cntrl:]+&lt;>#;\\&quot;*$|]+)?(,[^,=[:space:]+&lt;>#;\\&quot;*$|.]+(\.[^,=[:space:]+&lt;>#;\\&quot;*$|.]+)?(=[^,=[:cntrl:]+&lt;>#;\\&quot;*$|]+)?)*(  \.[^,=[:space:]+&lt;>#;\\&quot;*$|.]+)?$)" base_DataType="_KCvvUAd6EeSbOIECU1jilg"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3jWtWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" isAssociationEnd="true" base_Property="_Q0q1cAeCEeSbOIECU1jilg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWtmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" isAssociationEnd="true" base_Property="_YQgE0Aj2EeSxd-3a2hDUyg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_H3jWt2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" isAssociationEnd="true" base_Property="_tkXEAAj2EeSxd-3a2hDUyg"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_H3jWuGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Enumeration="_AbGMcE7zEeSZmouxTerDvA"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWuWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_EnumerationLiteral="_AhV-YE7zEeSZmouxTerDvA"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_H3jWumW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_EnumerationLiteral="_ISMEgE7zEeSZmouxTerDvA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3jWu2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" isAssociationEnd="true" base_Property="_UKJfEE71EeSZmouxTerDvA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_H3jWvGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" isAssociationEnd="true" base_Property="_80NDoE8FEeSZmouxTerDvA"/>
+  <CoreMWProfile:CmwModel xmi:id="_HyyyUGW_EeWG3arGTiu4Mw" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <CoreMWProfile:CmwMom xmi:id="_HyyyUWW_EeWG3arGTiu4Mw" base_Package="_WE8bAL_7Ed-FYKAm2tRASg"/>
+  <CoreMWProfile:CmwClass xmi:id="_HyyyUmW_EeWG3arGTiu4Mw" base_Class="_WHBeoL_7Ed-FYKAm2tRASg"/>
+  <CoreMWProfile:CmwClass xmi:id="_HyyyU2W_EeWG3arGTiu4Mw" base_Class="_FwKIcL_8Ed-FYKAm2tRASg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HyyyVGW_EeWG3arGTiu4Mw" base_Property="_9PljoL_9Ed-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jUGW_EeWG3arGTiu4Mw" base_Property="_D9NAQMAAEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jUWW_EeWG3arGTiu4Mw" base_Property="_Oyo4wMAAEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jUmW_EeWG3arGTiu4Mw" base_Property="_Xv1dQMAAEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jU2W_EeWG3arGTiu4Mw" base_Property="_k6VvsMAAEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jVGW_EeWG3arGTiu4Mw" base_Property="_tRoKwMAAEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jVWW_EeWG3arGTiu4Mw" base_Property="_AWKysMABEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jVmW_EeWG3arGTiu4Mw" base_Property="_2VF5gAaEEeCCt4JYS-SMPA" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jV2W_EeWG3arGTiu4Mw" base_Property="_MH-ygAaPEeCCt4JYS-SMPA" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jWGW_EeWG3arGTiu4Mw" base_Property="_XQTx0AaPEeCCt4JYS-SMPA" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jWWW_EeWG3arGTiu4Mw" base_Property="_oWsk4FlDEeGI65sVd8eJAw"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jWmW_EeWG3arGTiu4Mw" base_Property="_qMOjIFlDEeGI65sVd8eJAw"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jW2W_EeWG3arGTiu4Mw" base_Property="_1d7CMIzTEeK7rMH4qRu-3g" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jXGW_EeWG3arGTiu4Mw" base_Property="_ljJfkDgREeOYVorwJJdiCQ" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jXWW_EeWG3arGTiu4Mw" base_Property="_qkQpADgREeOYVorwJJdiCQ" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jXmW_EeWG3arGTiu4Mw" base_Property="_4bNKsDgREeOYVorwJJdiCQ" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jX2W_EeWG3arGTiu4Mw" base_Property="_A4ijYDgSEeOYVorwJJdiCQ" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jYGW_EeWG3arGTiu4Mw" base_Property="_RmO90DgUEeOYVorwJJdiCQ" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jYWW_EeWG3arGTiu4Mw" base_Property="_mQe-sEItEeONm_FN1jUcGw" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jYmW_EeWG3arGTiu4Mw" base_Property="_tkXEAAj2EeSxd-3a2hDUyg" isPersistent="true"/>
+  <CoreMWProfile:CmwClass xmi:id="_Hy8jY2W_EeWG3arGTiu4Mw" base_Class="_uKLt8MABEd-FYKAm2tRASg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jZGW_EeWG3arGTiu4Mw" base_Property="_DPHgUMACEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jZWW_EeWG3arGTiu4Mw" base_Property="_NS22IMACEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jZmW_EeWG3arGTiu4Mw" base_Property="_XutJ8MACEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jZ2W_EeWG3arGTiu4Mw" base_Property="_lmtCQMAHEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jaGW_EeWG3arGTiu4Mw" base_Property="_ib3pkNBQEd-v0N0F4ib9BA" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jaWW_EeWG3arGTiu4Mw" base_Property="_sHLJ4OQ0EeC4FPW5luT0gw" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jamW_EeWG3arGTiu4Mw" base_Property="_PYCOcPo5EeCitcJoAgEPYQ"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8ja2W_EeWG3arGTiu4Mw" base_Property="_WLqz8JF4EeKHI86i-mB5yA" isPersistent="true"/>
+  <CoreMWProfile:CmwClass xmi:id="_Hy8jbGW_EeWG3arGTiu4Mw" base_Class="_Saq1wMAIEd-FYKAm2tRASg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jbWW_EeWG3arGTiu4Mw" base_Property="_w8dkIMAIEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jbmW_EeWG3arGTiu4Mw" base_Property="_-0sfQMAIEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jb2W_EeWG3arGTiu4Mw" base_Property="_jn_ygMAKEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jcGW_EeWG3arGTiu4Mw" base_Property="_kNrAgMAMEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jcWW_EeWG3arGTiu4Mw" base_Property="_qh5XoMAMEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jcmW_EeWG3arGTiu4Mw" base_Property="_oIjsQMANEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jc2W_EeWG3arGTiu4Mw" base_Property="_5Of5gMANEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jdGW_EeWG3arGTiu4Mw" base_Property="_9RKRANBQEd-v0N0F4ib9BA" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jdWW_EeWG3arGTiu4Mw" base_Property="_XCG4sOgmEeCi14KMiojsFg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jdmW_EeWG3arGTiu4Mw" base_Property="_kpYzcOg2EeCi14KMiojsFg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jd2W_EeWG3arGTiu4Mw" base_Property="_dhIh4Og3EeCi14KMiojsFg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jeGW_EeWG3arGTiu4Mw" base_Property="_G8s2MOg4EeCi14KMiojsFg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jeWW_EeWG3arGTiu4Mw" base_Property="_DKYUsFlCEeGI65sVd8eJAw" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jemW_EeWG3arGTiu4Mw" base_Property="_HuuCkFlCEeGI65sVd8eJAw" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8je2W_EeWG3arGTiu4Mw" base_Property="_YQgE0Aj2EeSxd-3a2hDUyg" isPersistent="true"/>
+  <CoreMWProfile:CmwClass xmi:id="_Hy8jfGW_EeWG3arGTiu4Mw" base_Class="_UiTogMCIEd-L_MRWlk6_Rg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jfWW_EeWG3arGTiu4Mw" base_Property="_9SGpsMCNEd-L_MRWlk6_Rg" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jfmW_EeWG3arGTiu4Mw" base_Property="_HGO2MMCOEd-L_MRWlk6_Rg" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jf2W_EeWG3arGTiu4Mw" base_Property="_ho9l4EZEEeCdkNkmh9f5rA" isConfigurable="true"/>
+  <CoreMWProfile:CmwClass xmi:id="_Hy8jgGW_EeWG3arGTiu4Mw" base_Class="_htclYMCOEd-L_MRWlk6_Rg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jgWW_EeWG3arGTiu4Mw" base_Property="_biaxEMCPEd-L_MRWlk6_Rg" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jgmW_EeWG3arGTiu4Mw" base_Property="_egW18MCcEd-L_MRWlk6_Rg" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Hy8jg2W_EeWG3arGTiu4Mw" base_Property="_5LZbkMCkEd-L_MRWlk6_Rg" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtQGW_EeWG3arGTiu4Mw" base_Property="_74zScMCjEd-L_MRWlk6_Rg" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtQWW_EeWG3arGTiu4Mw" base_Property="_qSFqgMCPEd-L_MRWlk6_Rg" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtQmW_EeWG3arGTiu4Mw" base_Property="_c-tRoOg0EeCi14KMiojsFg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtQ2W_EeWG3arGTiu4Mw" base_Property="_iaI04Dr-EeOYVorwJJdiCQ" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtRGW_EeWG3arGTiu4Mw" base_Property="_xp_nQDsfEeOYVorwJJdiCQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtRWW_EeWG3arGTiu4Mw" base_Property="_Mz_a8DtCEeOYVorwJJdiCQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwClass xmi:id="_HzFtRmW_EeWG3arGTiu4Mw" base_Class="_SsyyMMClEd-L_MRWlk6_Rg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtR2W_EeWG3arGTiu4Mw" base_Property="_Sx4c8NBQEd-v0N0F4ib9BA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtSGW_EeWG3arGTiu4Mw" base_Property="_vNqKcPkAEeCitcJoAgEPYQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtSWW_EeWG3arGTiu4Mw" base_Property="_Q0q1cAeCEeSbOIECU1jilg" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtSmW_EeWG3arGTiu4Mw" base_Property="_UKJfEE71EeSZmouxTerDvA" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtS2W_EeWG3arGTiu4Mw" base_Property="_80NDoE8FEeSZmouxTerDvA" isConfigurable="true"/>
+  <CoreMWProfile:CmwStruct xmi:id="_HzFtTGW_EeWG3arGTiu4Mw" base_Class="_kibYUNBOEd-v0N0F4ib9BA"/>
+  <CoreMWProfile:CmwStructMember xmi:id="_HzFtTWW_EeWG3arGTiu4Mw" base_Property="_lfIRINBOEd-v0N0F4ib9BA" isConfigurable="true"/>
+  <CoreMWProfile:CmwStructMember xmi:id="_HzFtTmW_EeWG3arGTiu4Mw" base_Property="_Dr38kNBPEd-v0N0F4ib9BA" isConfigurable="true"/>
+  <CoreMWProfile:CmwStructMember xmi:id="_HzFtT2W_EeWG3arGTiu4Mw" base_Property="_Qas_oNBPEd-v0N0F4ib9BA" isConfigurable="true"/>
+  <CoreMWProfile:CmwStructMember xmi:id="_HzFtUGW_EeWG3arGTiu4Mw" base_Property="_t8RnINBPEd-v0N0F4ib9BA" isConfigurable="true"/>
+  <CoreMWProfile:CmwContribution xmi:id="_HzFtUWW_EeWG3arGTiu4Mw" base_Association="_Nnw2IAaCEeCCt4JYS-SMPA"/>
+  <CoreMWProfile:CmwStruct xmi:id="_HzFtUmW_EeWG3arGTiu4Mw" base_Class="_cKJiUNq5EeCclon5NRd6Fw"/>
+  <CoreMWProfile:CmwStructMember xmi:id="_HzFtU2W_EeWG3arGTiu4Mw" base_Property="_cLEvYNq5EeCclon5NRd6Fw" isConfigurable="true"/>
+  <CoreMWProfile:CmwStructMember xmi:id="_HzFtVGW_EeWG3arGTiu4Mw" base_Property="_p-W5ENq5EeCclon5NRd6Fw" isConfigurable="true"/>
+  <CoreMWProfile:CmwStructMember xmi:id="_HzFtVWW_EeWG3arGTiu4Mw" base_Property="_wh9wANq5EeCclon5NRd6Fw" isConfigurable="true"/>
+  <CoreMWProfile:CmwStructMember xmi:id="_HzFtVmW_EeWG3arGTiu4Mw" base_Property="_fe53QOQzEeC4FPW5luT0gw" isConfigurable="true"/>
+  <CoreMWProfile:CmwStruct xmi:id="_HzFtV2W_EeWG3arGTiu4Mw" base_Class="_f75QkPkAEeCitcJoAgEPYQ"/>
+  <CoreMWProfile:CmwStructMember xmi:id="_HzFtWGW_EeWG3arGTiu4Mw" base_Property="_f8xaUPkAEeCitcJoAgEPYQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwStructMember xmi:id="_HzFtWWW_EeWG3arGTiu4Mw" base_Property="_wO220PkCEeCitcJoAgEPYQ" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_H3jWvWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Class="_WHBeoL_7Ed-FYKAm2tRASg" isSystemCreated="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtWmW_EeWG3arGTiu4Mw" base_Property="_WHeKkL_7Ed-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtW2W_EeWG3arGTiu4Mw" base_Property="_FwmNUL_8Ed-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtXGW_EeWG3arGTiu4Mw" base_Property="_uOfmMMABEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtXWW_EeWG3arGTiu4Mw" base_Property="_SbRSsMAIEd-FYKAm2tRASg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtXmW_EeWG3arGTiu4Mw" base_Property="_Ulk-8MCIEd-L_MRWlk6_Rg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtX2W_EeWG3arGTiu4Mw" base_Property="_hwR28MCOEd-L_MRWlk6_Rg" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_HzFtYGW_EeWG3arGTiu4Mw" base_Property="_SvMl8MClEd-L_MRWlk6_Rg" isPersistent="true"/>
+  <Documentation:Documentation xmi:id="_C8Nd4GW_EeWG3arGTiu4Mw" base_Comment="_WGlZwL_7Ed-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd4WW_EeWG3arGTiu4Mw" base_Comment="_WHBeob_7Ed-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd4mW_EeWG3arGTiu4Mw" base_Comment="_WHeKkb_7Ed-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd42W_EeWG3arGTiu4Mw" base_Comment="_XsyikL_7Ed-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd5GW_EeWG3arGTiu4Mw" base_Comment="_FwKIcb_8Ed-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd5WW_EeWG3arGTiu4Mw" base_Comment="_FwmNUb_8Ed-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd5mW_EeWG3arGTiu4Mw" base_Comment="_9Pljor_9Ed-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd52W_EeWG3arGTiu4Mw" base_Comment="_r9Z_Qb__Ed-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd6GW_EeWG3arGTiu4Mw" base_Comment="_r92rMb__Ed-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd6WW_EeWG3arGTiu4Mw" base_Comment="_2GERUb__Ed-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd6mW_EeWG3arGTiu4Mw" base_Comment="_D9NAQ8AAEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd62W_EeWG3arGTiu4Mw" base_Comment="_Oyo4wsAAEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd7GW_EeWG3arGTiu4Mw" base_Comment="_Xv1dQ8AAEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd7WW_EeWG3arGTiu4Mw" base_Comment="_k6VvssAAEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd7mW_EeWG3arGTiu4Mw" base_Comment="_tRoKwsAAEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd72W_EeWG3arGTiu4Mw" base_Comment="_AWKys8ABEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd8GW_EeWG3arGTiu4Mw" base_Comment="_uKLt8cABEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd8WW_EeWG3arGTiu4Mw" base_Comment="_uOfmMcABEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd8mW_EeWG3arGTiu4Mw" base_Comment="_DPHgUsACEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd82W_EeWG3arGTiu4Mw" base_Comment="_NS22I8ACEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd9GW_EeWG3arGTiu4Mw" base_Comment="_XutJ8sACEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd9WW_EeWG3arGTiu4Mw" base_Comment="_lm2zQMAHEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd9mW_EeWG3arGTiu4Mw" base_Comment="_Saq1wcAIEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd92W_EeWG3arGTiu4Mw" base_Comment="_SbRSscAIEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd-GW_EeWG3arGTiu4Mw" base_Comment="_w8dkIsAIEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd-WW_EeWG3arGTiu4Mw" base_Comment="_-0sfQsAIEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd-mW_EeWG3arGTiu4Mw" base_Comment="_S3b00cAJEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd-2W_EeWG3arGTiu4Mw" base_Comment="_S4eWocAJEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd_GW_EeWG3arGTiu4Mw" base_Comment="_ZTqRYcAJEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd_WW_EeWG3arGTiu4Mw" base_Comment="_gWIOkcAJEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd_mW_EeWG3arGTiu4Mw" base_Comment="_niRsMcAJEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8Nd_2W_EeWG3arGTiu4Mw" base_Comment="_jn_ygsAKEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8NeAGW_EeWG3arGTiu4Mw" base_Comment="_kNrAgsAMEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8NeAWW_EeWG3arGTiu4Mw" base_Comment="_qh5XosAMEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8NeAmW_EeWG3arGTiu4Mw" base_Comment="_CGK6QcANEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8NeA2W_EeWG3arGTiu4Mw" base_Comment="_RERRQcANEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8NeBGW_EeWG3arGTiu4Mw" base_Comment="_T-iqAcANEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8NeBWW_EeWG3arGTiu4Mw" base_Comment="_XPRa8cANEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8NeBmW_EeWG3arGTiu4Mw" base_Comment="_a-gFwcANEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8NeB2W_EeWG3arGTiu4Mw" base_Comment="_oIjsQ8ANEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8NeCGW_EeWG3arGTiu4Mw" base_Comment="_5Of5gsANEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8NeCWW_EeWG3arGTiu4Mw" base_Comment="_JBHdscAOEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8NeCmW_EeWG3arGTiu4Mw" base_Comment="_JB3EkcAOEd-FYKAm2tRASg"/>
+  <Documentation:Documentation xmi:id="_C8NeC2W_EeWG3arGTiu4Mw" base_Comment="_puB00MCHEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeDGW_EeWG3arGTiu4Mw" base_Comment="_zPVL8cCHEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeDWW_EeWG3arGTiu4Mw" base_Comment="_UiZvIMCIEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeDmW_EeWG3arGTiu4Mw" base_Comment="_UlrFkMCIEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeD2W_EeWG3arGTiu4Mw" base_Comment="_XB1pMMCMEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeEGW_EeWG3arGTiu4Mw" base_Comment="_XCgXkMCMEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeEWW_EeWG3arGTiu4Mw" base_Comment="_cxyOkMCMEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeEmW_EeWG3arGTiu4Mw" base_Comment="_9SLiMcCNEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeE2W_EeWG3arGTiu4Mw" base_Comment="_HGTuscCOEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeFGW_EeWG3arGTiu4Mw" base_Comment="_hwXWgMCOEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeFWW_EeWG3arGTiu4Mw" base_Comment="_DMgWIcCPEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeFmW_EeWG3arGTiu4Mw" base_Comment="_DNM5scCPEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeF2W_EeWG3arGTiu4Mw" base_Comment="_MkicgcCPEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeGGW_EeWG3arGTiu4Mw" base_Comment="__Fnj0cCPEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeGWW_EeWG3arGTiu4Mw" base_Comment="__GWjoMCPEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeGmW_EeWG3arGTiu4Mw" base_Comment="_GzoYYMCQEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeG2W_EeWG3arGTiu4Mw" base_Comment="_MosuUMCQEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeHGW_EeWG3arGTiu4Mw" base_Comment="_SDqAgMCjEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeHWW_EeWG3arGTiu4Mw" base_Comment="_SE26YcCjEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeHmW_EeWG3arGTiu4Mw" base_Comment="_aXgtEcCjEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeH2W_EeWG3arGTiu4Mw" base_Comment="_eV8RgMCjEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeIGW_EeWG3arGTiu4Mw" base_Comment="_Ss3qscClEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeIWW_EeWG3arGTiu4Mw" base_Comment="_SvQ3YcClEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeImW_EeWG3arGTiu4Mw" base_Comment="_kjnrINBOEd-v0N0F4ib9BA"/>
+  <Documentation:Documentation xmi:id="_C8NeI2W_EeWG3arGTiu4Mw" base_Comment="_lfSCIdBOEd-v0N0F4ib9BA"/>
+  <Documentation:Documentation xmi:id="_C8NeJGW_EeWG3arGTiu4Mw" base_Comment="_DsBtkdBPEd-v0N0F4ib9BA"/>
+  <Documentation:Documentation xmi:id="_C8NeJWW_EeWG3arGTiu4Mw" base_Comment="_Qa2wodBPEd-v0N0F4ib9BA"/>
+  <Documentation:Documentation xmi:id="_C8NeJmW_EeWG3arGTiu4Mw" base_Comment="_t8kiEdBPEd-v0N0F4ib9BA"/>
+  <Documentation:Documentation xmi:id="_C8NeJ2W_EeWG3arGTiu4Mw" base_Comment="_Sx4c8dBQEd-v0N0F4ib9BA"/>
+  <Documentation:Documentation xmi:id="_C8NeKGW_EeWG3arGTiu4Mw" base_Comment="_ib3pkdBQEd-v0N0F4ib9BA"/>
+  <Documentation:Documentation xmi:id="_C8NeKWW_EeWG3arGTiu4Mw" base_Comment="_9RKRAdBQEd-v0N0F4ib9BA"/>
+  <Documentation:Documentation xmi:id="_C8NeKmW_EeWG3arGTiu4Mw" base_Comment="_2VPDcgaEEeCCt4JYS-SMPA"/>
+  <Documentation:Documentation xmi:id="_C8NeK2W_EeWG3arGTiu4Mw" base_Comment="_MH-yhAaPEeCCt4JYS-SMPA"/>
+  <Documentation:Documentation xmi:id="_C8NeLGW_EeWG3arGTiu4Mw" base_Comment="_XQTx1AaPEeCCt4JYS-SMPA"/>
+  <Documentation:Documentation xmi:id="_C8NeLWW_EeWG3arGTiu4Mw" base_Comment="_rx2KACMcEeCPnbVZgXlObg"/>
+  <Documentation:Documentation xmi:id="_C8NeLmW_EeWG3arGTiu4Mw" base_Comment="_hpjbw0ZEEeCdkNkmh9f5rA"/>
+  <Documentation:Documentation xmi:id="_C8NeL2W_EeWG3arGTiu4Mw" base_Comment="_cK3UANq5EeCclon5NRd6Fw"/>
+  <Documentation:Documentation xmi:id="_C8NeMGW_EeWG3arGTiu4Mw" base_Comment="_cLSx0Nq5EeCclon5NRd6Fw"/>
+  <Documentation:Documentation xmi:id="_C8NeMWW_EeWG3arGTiu4Mw" base_Comment="_p-jtYNq5EeCclon5NRd6Fw"/>
+  <Documentation:Documentation xmi:id="_C8NeMmW_EeWG3arGTiu4Mw" base_Comment="_wiLLYNq5EeCclon5NRd6Fw"/>
+  <Documentation:Documentation xmi:id="_C8NeM2W_EeWG3arGTiu4Mw" base_Comment="_fmYYQOQzEeC4FPW5luT0gw"/>
+  <Documentation:Documentation xmi:id="_C8NeNGW_EeWG3arGTiu4Mw" base_Comment="_sHYlQOQ0EeC4FPW5luT0gw"/>
+  <Documentation:Documentation xmi:id="_C8NeNWW_EeWG3arGTiu4Mw" base_Comment="_vL4qoOeuEeC4FPW5luT0gw"/>
+  <Documentation:Documentation xmi:id="_C8NeNmW_EeWG3arGTiu4Mw" base_Comment="_XCSe4egmEeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NeN2W_EeWG3arGTiu4Mw" base_Comment="_ms4HcegxEeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NeOGW_EeWG3arGTiu4Mw" base_Comment="_zTbYQOgxEeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NeOWW_EeWG3arGTiu4Mw" base_Comment="_VtO6AOgyEeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NeOmW_EeWG3arGTiu4Mw" base_Comment="_dV7JsOgyEeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NeO2W_EeWG3arGTiu4Mw" base_Comment="_k_qiQOgyEeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NePGW_EeWG3arGTiu4Mw" base_Comment="_pmZc0OgyEeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NePWW_EeWG3arGTiu4Mw" base_Comment="_1qSsgegyEeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NePmW_EeWG3arGTiu4Mw" base_Comment="_8e3-sOgyEeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NeP2W_EeWG3arGTiu4Mw" base_Comment="_kplAseg2EeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NeQGW_EeWG3arGTiu4Mw" base_Comment="_dhNaYOg3EeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NeQWW_EeWG3arGTiu4Mw" base_Comment="_G85Dceg4EeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NeQmW_EeWG3arGTiu4Mw" base_Comment="_qPKVIPjJEeCitcJoAgEPYQ"/>
+  <Documentation:Documentation xmi:id="_C8NeQ2W_EeWG3arGTiu4Mw" base_Comment="_x9AKkfjJEeCitcJoAgEPYQ"/>
+  <Documentation:Documentation xmi:id="_C8NeRGW_EeWG3arGTiu4Mw" base_Comment="_f8g7ofkAEeCitcJoAgEPYQ"/>
+  <Documentation:Documentation xmi:id="_C8NeRWW_EeWG3arGTiu4Mw" base_Comment="_QQomsPkCEeCitcJoAgEPYQ"/>
+  <Documentation:Documentation xmi:id="_C8NeRmW_EeWG3arGTiu4Mw" base_Comment="_wPIjofkCEeCitcJoAgEPYQ"/>
+  <Documentation:Documentation xmi:id="_C8NeR2W_EeWG3arGTiu4Mw" base_Comment="_Bljc4PkDEeCitcJoAgEPYQ"/>
+  <Documentation:Documentation xmi:id="_C8NeSGW_EeWG3arGTiu4Mw" base_Comment="_PaNYsPo5EeCitcJoAgEPYQ"/>
+  <Documentation:Documentation xmi:id="_C8NeSWW_EeWG3arGTiu4Mw" base_Comment="_-NUiAPpQEeCitcJoAgEPYQ"/>
+  <Documentation:Documentation xmi:id="_C8NeSmW_EeWG3arGTiu4Mw" base_Comment="_DKYUsVlCEeGI65sVd8eJAw"/>
+  <Documentation:Documentation xmi:id="_C8NeS2W_EeWG3arGTiu4Mw" base_Comment="_HuuCkVlCEeGI65sVd8eJAw"/>
+  <Documentation:Documentation xmi:id="_C8NeTGW_EeWG3arGTiu4Mw" base_Comment="_oWsk4VlDEeGI65sVd8eJAw"/>
+  <Documentation:Documentation xmi:id="_C8NeTWW_EeWG3arGTiu4Mw" base_Comment="_qMOjIVlDEeGI65sVd8eJAw"/>
+  <Documentation:Documentation xmi:id="_C8NeTmW_EeWG3arGTiu4Mw" base_Comment="_1eEzMYzTEeK7rMH4qRu-3g"/>
+  <Documentation:Documentation xmi:id="_C8NeT2W_EeWG3arGTiu4Mw" base_Comment="_WL-V8ZF4EeKHI86i-mB5yA"/>
+  <Documentation:Documentation xmi:id="_C8NeUGW_EeWG3arGTiu4Mw" base_Comment="_bigQoMCPEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeUWW_EeWG3arGTiu4Mw" base_Comment="_V3yaYCMEEeCPnbVZgXlObg"/>
+  <Documentation:Documentation xmi:id="_C8NeUmW_EeWG3arGTiu4Mw" base_Comment="_5LeUEsCkEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeU2W_EeWG3arGTiu4Mw" base_Comment="_744yAMCjEd-L_MRWlk6_Rg"/>
+  <Documentation:Documentation xmi:id="_C8NeVGW_EeWG3arGTiu4Mw" base_Comment="_XXLlACMOEeCPnbVZgXlObg"/>
+  <Documentation:Documentation xmi:id="_C8NeVWW_EeWG3arGTiu4Mw" base_Comment="_ni8FYOg0EeCi14KMiojsFg"/>
+  <Documentation:Documentation xmi:id="_C8NeVmW_EeWG3arGTiu4Mw" base_Comment="_VPWRADf9EeOYVorwJJdiCQ"/>
+  <Documentation:Documentation xmi:id="_C8NeV2W_EeWG3arGTiu4Mw" base_Comment="_hed5QDf9EeOYVorwJJdiCQ"/>
+  <Documentation:Documentation xmi:id="_C8NeWGW_EeWG3arGTiu4Mw" base_Comment="_ljVFwTgREeOYVorwJJdiCQ"/>
+  <Documentation:Documentation xmi:id="_C8NeWWW_EeWG3arGTiu4Mw" base_Comment="_qkQpATgREeOYVorwJJdiCQ"/>
+  <Documentation:Documentation xmi:id="_C8NeWmW_EeWG3arGTiu4Mw" base_Comment="_4bNKsTgREeOYVorwJJdiCQ"/>
+  <Documentation:Documentation xmi:id="_C8NeW2W_EeWG3arGTiu4Mw" base_Comment="_A4ijYTgSEeOYVorwJJdiCQ"/>
+  <Documentation:Documentation xmi:id="_C8NeXGW_EeWG3arGTiu4Mw" base_Comment="_RmO90TgUEeOYVorwJJdiCQ"/>
+  <Documentation:Documentation xmi:id="_C8NeXWW_EeWG3arGTiu4Mw" base_Comment="_iaL4MTr-EeOYVorwJJdiCQ"/>
+  <Documentation:Documentation xmi:id="_C8NeXmW_EeWG3arGTiu4Mw" base_Comment="_XtmGwTsLEeOYVorwJJdiCQ"/>
+  <Documentation:Documentation xmi:id="_C8NeX2W_EeWG3arGTiu4Mw" base_Comment="_xqCqkTsfEeOYVorwJJdiCQ"/>
+  <Documentation:Documentation xmi:id="_C8NeYGW_EeWG3arGTiu4Mw" base_Comment="_M0CeQTtCEeOYVorwJJdiCQ"/>
+  <Documentation:Documentation xmi:id="_C8NeYWW_EeWG3arGTiu4Mw" base_Comment="_lj--sUIlEeONm_FN1jUcGw"/>
+  <Documentation:Documentation xmi:id="_C8NeYmW_EeWG3arGTiu4Mw" base_Comment="_mQiCAUItEeONm_FN1jUcGw"/>
+  <Documentation:Documentation xmi:id="_C8NeY2W_EeWG3arGTiu4Mw" base_Comment="_KDCqQAd6EeSbOIECU1jilg"/>
+  <Documentation:Documentation xmi:id="_C8NeZGW_EeWG3arGTiu4Mw" base_Comment="_Q06GAAeCEeSbOIECU1jilg"/>
+  <Documentation:Documentation xmi:id="_C8NeZWW_EeWG3arGTiu4Mw" base_Comment="_YQzm0Aj2EeSxd-3a2hDUyg"/>
+  <Documentation:Documentation xmi:id="_C8NeZmW_EeWG3arGTiu4Mw" base_Comment="_tknisAj2EeSxd-3a2hDUyg"/>
+  <Documentation:Documentation xmi:id="_C8NeZ2W_EeWG3arGTiu4Mw" base_Comment="_AhPQsE7zEeSZmouxTerDvA"/>
+  <Documentation:Documentation xmi:id="_C8NeaGW_EeWG3arGTiu4Mw" base_Comment="_Aha24E7zEeSZmouxTerDvA"/>
+  <Documentation:Documentation xmi:id="_C8NeaWW_EeWG3arGTiu4Mw" base_Comment="_ISgNkU7zEeSZmouxTerDvA"/>
+  <Documentation:Documentation xmi:id="_C8NeamW_EeWG3arGTiu4Mw" base_Comment="_UKYIkE71EeSZmouxTerDvA"/>
+  <Documentation:Documentation xmi:id="_C8Nea2W_EeWG3arGTiu4Mw" base_Comment="_80U_cU8FEeSZmouxTerDvA"/>
+</xmi:XMI>

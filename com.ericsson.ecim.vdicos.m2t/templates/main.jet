@@ -1,0 +1,20 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+<%-- Main entry point for Model_To_Text_Transformation --%>
+
+<%-- 
+  Let c:iterate tags set the XPath context object.
+  For 100% compatibility with JET 0.9.x or earlier, remove this statement
+ --%>
+<c:setVariable var="org.eclipse.jet.taglib.control.iterateSetsContext" select="true()"/>
+
+
+	<c:iterate select="/model/mim" var="mom">
+    <c:include template="templates/dump.jet"
+	passVariables="mom"/>
+	
+	<%-- This will output the result of running the template into the destination path (which is filesystem path) --%>
+	<%-- It will also register the output file(s) in the com.ericsson.ecim.m2t.JetFileOutRegistry under the transformID (if specified) --%>
+	<ecim:file template="templates/dump.jet" path="{$destination}/{$mom/@name}.xml" replace="true"/>
+    </c:iterate>
+    
+ 

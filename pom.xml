@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ericsson.ecim</groupId>
+	<artifactId>ecim-parent</artifactId>
+	<version>3.1.1</version>
+	<packaging>pom</packaging>
+	
+	<name>Ericsson CBA DX EcimToolchain</name>
+	
+	<properties>
+		<tycho-version>0.20.0</tycho-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- Sonar -->
+		<sonar.language>java</sonar.language>
+		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+	</properties>
+	<scm>
+		<connection>scm:git:https://gerritforge.lmera.ericsson.se/gerrit/p/ecimtoolchain.git</connection>
+		<developerConnection>scm:git:https://gerritforge.lmera.ericsson.se/gerrit/p/ecimtoolchain.git</developerConnection>
+	</scm>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<!-- Make sure warnings and such are displayed, for Jenkins to parse -->
+				<configuration>
+					<optimize>true</optimize>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+					<compilerArgument>-Xlint:all</compilerArgument>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.4.201502262128</version>
+				<executions>
+					<execution>
+						<id>pre-test</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>com.ericsson.*</include>
+							</includes>
+							<destFile>${sonar.jacoco.reportPath}</destFile>
+							<append>true</append>
+						</configuration>
+					</execution>
+					<execution>
+						<id>post-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>xtend-maven-plugin</artifactId>
+				<version>2.7.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>2.6</version>
+			</plugin>
+		</plugins>
+	</build>
+	<reporting>
+		<plugins>
+			<!-- for some silly reason we get warnings if this plugin isn't specified 
+				with version -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+			<!-- This is some sort of source code link helper for the reports Used 
+				by the static analysis pluginin below -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.5.0</version>
+				<configuration>
+					<effort>Max</effort>
+					<threshold>Low</threshold>
+					<findbugsXmlOutput>true</findbugsXmlOutput>
+					<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+					<xmlOutput>true</xmlOutput>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<linkXref>true</linkXref>
+					<sourceEncoding>utf-8</sourceEncoding>
+					<targetJdk>1.6</targetJdk>
+				</configuration>
+			</plugin>
+			<!-- Haven't figured out a way to get any reports out of checkstyle -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.10</version>
+			</plugin>
+		</plugins>
+	</reporting>
+	<repositories>
+		<repository>
+			<id>CPP_SYSTEM_TOOLS</id>
+			<url>${env.CPP_SYSTEM_TOOLS}</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>MMA-Papyrus</id>
+			<url>${env.MMA_PAPYRUS_REPO}</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>ATL</id>
+			<url>http://download.eclipse.org/mmt/atl/updates/releases/3.5/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>Luna</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/luna/</url>
+		</repository>
+		<repository>
+			<id>Papyrus</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/modeling/mdt/papyrus/updates/releases/luna/1.0.2c/</url>
+		</repository>
+		<repository>
+			<id>OCL</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/modeling/mdt/ocl/updates/milestones/5.0.5/S201510060617</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>SWTBot</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>PlantUML</id>
+			<layout>p2</layout>
+			<url>http://plantuml.sourceforge.net/updatesitejuno/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<!-- remote P2 repository storing openArchitectureWare libraries (essential 
+			for xtext) -->
+		<pluginRepository>
+			<id>fornax.plugin.repository</id>
+			<name>Fornax Plugin Repository</name>
+			<url>http://www.fornax-platform.org/m2/repository</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>Eclipse - Acceleo Snapshots</id>
+			<url>https://repo.eclipse.org/content/repositories/acceleo-snapshots</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>Central Repository</id>
+			<url>http://repo1.maven.org/maven2</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<profiles>
+		<profile>
+			<id>Windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<osgi.os>win32</osgi.os>
+				<osgi.ws>win32</osgi.ws>
+				<osgi.arch>x86_64</osgi.arch>
+			</properties>
+		</profile>
+		<profile>
+			<id>Linux</id>
+			<activation>
+				<os>
+					<family>unix</family>
+				</os>
+			</activation>
+			<properties>
+				<osgi.os>linux</osgi.os>
+				<osgi.ws>gtk</osgi.ws>
+				<osgi.arch>x86_64</osgi.arch>
+			</properties>
+		</profile>
+	</profiles>
+	<modules>
+	
+		<module>com.ericsson.ecim.plugin.log4j</module>
+		<module>com.ericsson.ecim.tools</module>
+		<module>com.ericsson.ecim.core</module>
+		<module>com.ericsson.ecim.ant</module>
+		<module>com.ericsson.ecim.core.uml</module>
+		<module>com.ericsson.ecim.datatypes</module>
+		<module>com.ericsson.ecim.dsl</module>
+		<module>com.ericsson.ecim.dsl.profile.validation</module>
+		<module>com.ericsson.ecim.m2m</module>
+		<module>com.ericsson.ecim.edm</module>
+		<module>com.ericsson.yang</module>
+		<module>com.ericsson.ecim.umlmod</module>
+		<module>com.ericsson.ecim.guidelines</module>
+		<module>com.ericsson.ecim.validator</module>
+		<module>com.ericsson.ecim.extensions</module>
+		<module>com.ericsson.ecim.flattener</module>
+		<module>com.ericsson.ecim.domainextension</module>
+		<module>com.ericsson.ecim.launcher</module>
+
+		<!-- Optionality Modules -->
+		<module>com.ericsson.ecim.optionality</module>
+		<module>com.ericsson.ecim.optionality.ui</module>
+		<module>com.ericsson.ecim.optionality.processor</module>
+		<module>com.ericsson.ecim.optionality.papyrusintegration</module>
+
+		<!-- Extensiontemplate Modules -->
+		<module>com.ericsson.ecim.extensiontemplate.dsl</module>
+		<module>com.ericsson.ecim.extensiontemplate.guideline</module>
+
+		<module>com.ericsson.ecim.headlesslauncher</module>
+
+		<module>com.ericsson.ecim.core.tests</module>
+
+		<module>com.ericsson.ecim.feature</module>
+		<module>com.ericsson.ecim.domainextension.feature</module>
+		<module>com.ericsson.ecim.extensiontemplate.feature</module>
+
+		<!-- Core MW Modules -->
+		<module>com.ericsson.ecim.coremw.core</module>
+		<module>com.ericsson.ecim.coremw.dsl</module>
+		<module>com.ericsson.ecim.coremw.dsl.profile.validation</module>
+		<module>com.ericsson.ecim.coremw.guidelines</module>
+		<module>com.ericsson.ecim.coremw.imm</module>
+		<module>com.ericsson.ecim.coremw.launcher</module>
+		<module>com.ericsson.ecim.coremw.m2m</module>
+		
+		<!--  IMS UDM Module  -->
+		<module>com.ericsson.ecim.imsudm</module>
+
+		<!-- CPP Modules -->
+		<module>com.ericsson.ecim.cpp.re</module>
+		<module>com.ericsson.ecim.cpp.dsl</module>
+		<module>com.ericsson.ecim.cpp.launcher</module>
+		<module>com.ericsson.ecim.cpp.guidelines</module>
+		<module>com.ericsson.ecim.cpp.pm</module>
+
+		<!-- Yang Modules -->
+		<module>com.ericsson.ecim.yang.dsl</module>
+		<module>com.ericsson.ecim.yang.guidelines</module>
+		<module>com.ericsson.ecim.yang.launcher</module>
+		<module>com.ericsson.ecim.yang.m2m</module>
+		<module>com.ericsson.ecim.yang</module>
+		<module>com.ericsson.ecim.yang.ui</module>
+		<module>com.ericsson.ecim.yang.tests</module>
+
+		<!-- Mgc Modules -->
+		<module>com.ericsson.ecim.mgc.dsl</module>
+		<module>com.ericsson.ecim.mgc.guidelines</module>
+		<module>com.ericsson.ecim.mgc.json</module>
+		<module>com.ericsson.ecim.mgc.json.ui</module>
+		<module>com.ericsson.ecim.mgc.cpp</module>
+		<module>com.ericsson.ecim.mgc.launcher</module>
+		<module>com.ericsson.ecim.mgc.m2m</module>
+
+		<!-- MMAS Modules -->
+		<module>com.ericsson.ecim.mmas.cmpojo</module>
+		<module>com.ericsson.ecim.mmas.cmpojo.launcher</module>
+		<module>com.ericsson.ecim.mmas.dsl</module>
+		<module>com.ericsson.ecim.mmas.guidelines</module>
+
+		<!-- VDicos Modules -->
+		<module>com.ericsson.ecim.vdicos</module>
+		<module>com.ericsson.ecim.vdicos.dsl</module>
+		<module>com.ericsson.ecim.vdicos.dsl.profile.validation</module>
+		<module>com.ericsson.ecim.vdicos.guidelines</module>
+		<module>com.ericsson.ecim.vdicos.launcher</module>
+		<module>com.ericsson.ecim.vdicos.m2m</module>
+
+		<!-- STN Modules -->
+		<module>com.ericsson.ecim.stn.dsl</module>
+		<module>com.ericsson.ecim.stn.guidelines</module>
+		<module>com.ericsson.ecim.stn.launcher</module>
+
+		<module>com.ericsson.ecim.coremw.feature</module>
+		<module>com.ericsson.ecim.cpp.feature</module>
+		<module>com.ericsson.ecim.vdicos.feature</module>
+		<module>com.ericsson.ecim.stn.feature</module>
+		<module>com.ericsson.ecim.mgc.feature</module>
+		<module>com.ericsson.ecim.yang.feature</module>
+		<module>com.ericsson.ecim.mmas.feature</module>
+		<!-- DX-ET testcases -->
+		<module>com.ericsson.ecim.swtbot.tests</module>
+
+		<!-- The P2 Repository -->
+		<module>com.ericsson.ecim.repository</module>
+
+	</modules>
+    
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Releases</name>
+            <url>https://arm1s11-eiffel004.eiffel.gic.ericsson.se:8443/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Snapshots</name>
+            <url>https://arm1s11-eiffel004.eiffel.gic.ericsson.se:8443/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>

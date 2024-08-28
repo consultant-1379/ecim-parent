@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Dec 7, 2015 9:33:20 AM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="FLE/EU Vahagn Avedian" contact="FLE/EU Vahagn Avedian" correction="0" date="2014-10-21" docNo="" name="ECIM_HwIM" namespace="urn:com:ericsson:ecim:ECIM_HwIM" namespacePrefix="ecim_hwim" organization="FLE/EU" release="0" revision="A" version="2">
+        <description>ECIM Hardware Inventory.</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_HwIM"/>
+            <extension name="ecimMomVersion" value="2"/>
+            <extension name="ecimMomRelease" value="0"/>
+            <extension name="ecimMomCorrection" value="0"/>
+        </domainExtension>
+        <struct name="HwItemAttribute">
+            <description>The HwItemAttribute allows for the addition of attributes that are considered application specific.</description>
+            <structMember name="name">
+                <description>Attribute name.</description>
+                <string/>
+            </structMember>
+            <structMember name="value">
+                <description>Attribute value.</description>
+                <string/>
+            </structMember>
+        </struct>
+        <enum name="HwDataEntry">
+            <description>The mode used for handling the inventory data insertion. &#13;
+Indicates whether the unit is passive, that is, manual insertion of inventory data is required, or active, that is, inventory data can be read from the unit.</description>
+            <enumMember name="PASSIVE">
+                <description>Manual insertion of inventory data is required. </description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ACTIVE">
+                <description>Inventory data can be read from the hardware item.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <class name="HwInventory">
+            <description>The HW Inventory.&#13;
+&#13;
+This MO is created by the system.</description>
+            <systemCreated/>
+            <root/>
+            <attribute name="timeOfLatestInvChange">
+                <description>The time of the latest inventory change. An inventory change results in an AVC notification.</description>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="hwInventoryId">
+                <description>The unique identifier for this object instance. </description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>Label that is to be used by the operator or commissioning engineer to provide relevant information.</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="HwItem">
+            <description>HwItem represents any kind of Ericsson hardware that is present on the ME. &#13;
+&#13;
+This MO is created by the system.</description>
+            <systemCreated/>
+            <attribute name="hwItemId">
+                <description>The unique identifier for this object instance.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="vendorName">
+                <description>The name of the hardware item vendor or the manufacturer's name provided by the vendor.</description>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="hwModel">
+                <description>The hardware configuration. &#13;
+&#13;
+For example a standard HW unit or a variant that contains additional disk capacity. &#13;
+Compared to hwName, this is yet a further specification of the HwItem, for example a DUG or GEP5.&#13;
+</description>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="hwType">
+                <description>The hardware item type. &#13;
+&#13;
+Used for a general classification of the HwItem, for example, Blade or ReplaceableUnit. &#13;
+The hwType must correspond to the MO Class of the corresponding MO in ECIM Equipment, for example, Blade or FieldReplaceableUnit. &#13;
+If a managed element does not support ECIM Equipment, it can choose one of the ECIM Optional Constructs – Cabinet, Shelf , Rack, PluginUnit, Blade, Card, PhysicalConnector, FanModule – as appropriate&#13;
+</description>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="hwName">
+                <description>Mnemonic of HW inventory unit family type. &#13;
+&#13;
+Compared to hwType, this is a more specific classification of the HwItem, for example, Fan, Digital Unit or Generic Processor.</description>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="hwCapability">
+                <description>A freetext description of the hardware capability, for example, capacity or size.&#13;
+</description>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="equipmentMoRef">
+                <description>Reference to a managed object from the Equipment model.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="ManagedObject">
+                            <mimName>EcimCommon</mimName>
+                        </moRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="additionalInformation">
+                <description>Supplementary information about the inventory data, if any.</description>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="hwUnitLocation">
+                <description>The position of the hardware item. &#13;
+&#13;
+Depending on the implementation of the unit in the managed system, the value and meaning of this attribute can vary. &#13;
+For example, if a system has three levels and types of units that represents Rack, Shelf and Slot respectively, that is, the Managed Element contains multiple Rack inventory units, each Rack inventory unit contains multiple Shelf inventory units and each Shelf inventory unit contains multiple Slot inventory units. In this example: &#13;
+&#13;
+- For the Inventory Unit that represents a Rack, the Frame Identification code can be used as the value of this attribute. &#13;
+- For the Inventory Unit that represents a Shelf, the Rack Shelf code can be used as the value of this attribute. &#13;
+- For the Inventory Unit that represents a Slot, the position code can be used as the value of this attribute.</description>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="manualDataEntry">
+                <description>The mode for handling the inventory data insertion.&#13;
+Indicates whether the unit is passive, that is, manual insertion of inventory data is needed, or active, that is, inventory data can be read from the unit.</description>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="HwDataEntry">
+                        <defaultValue>ACTIVE</defaultValue>
+                        <mimName>ECIM_HwIM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="serialNumber">
+                <description>The hardware serial number. &#13;
+&#13;
+It consists of max 35 alphanumerical characters to accommodate support for foreign numbers as well as acquired companies' solutions. However, it typically consists of 13 characters grouped as 6 plus 7 characters. The first 6 characters are to be used for factory codes and the last 7 characters are used for an individual number or batch number. </description>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="dateOfLastService">
+                <description>The date of last service or repair of the hardware item.</description>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="dateOfManufacture">
+                <description>The date of manufacture of the hardware item.&#13;
+DEPRECATED. Use productData:productionDate</description>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+                <deprecated/>
+                <statusInformation>Use productData:productionDate</statusInformation>
+            </attribute>
+            <attribute name="swInvMoRef">
+                <description>Reference to a managed object from the SwIM model.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="ManagedObject">
+                            <mimName>EcimCommon</mimName>
+                        </moRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="licMgmtMoRef">
+                <description>Reference to a managed object from the Licence Management model.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="ManagedObject">
+                            <mimName>EcimCommon</mimName>
+                        </moRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="additionalAttributes">
+                <description>Additional HwItem attributes that are considered application specific.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <structRef name="HwItemAttribute">
+                            <mimName>ECIM_HwIM</mimName>
+                        </structRef>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="productIdentity">
+                <description>ProductIdentity contains product designation, number, and revision information.&#13;
+DEPRECATED. Use productData.&#13;
+&#13;
+The product designation, that is, productNumber + productRevision must correspond to the criteria defined in PRIM.</description>
+                <readOnly/>
+                <dataType>
+                    <structRef name="ProductIdentity">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </structRef>
+                </dataType>
+                <deprecated/>
+                <statusInformation>Use productData.</statusInformation>
+            </attribute>
+            <attribute name="productData">
+                <description>ProductData contains product name, type, number, revision, and production date.&#13;
+&#13;
+The product description i.e. productNumber + productRevision should correspond to what is defined in PRIM.&#13;
+&#13;
+productName is the mnemonic of HW inventory unit family type. &#13;
+Compared to hwType, this is a more specific classification of the HwItem, for example, Fan, Digital Unit or Generic Processor.&#13;
+&#13;
+productNumber is the unique product number of the hardware in the Ericsson ABC format. See Ericsson Corporate Basic Standards for information.&#13;
+&#13;
+type is the hardware item type. &#13;
+Used for a general classification of the HwItem, for example, Blade or ReplaceableUnit. &#13;
+The hwType must correspond to the MO Class of the corresponding MO in ECIM Equipment, for example, Blade or FieldReplaceableUnit. &#13;
+If a managed element does not support ECIM Equipment, it can choose one of the ECIM Optional Constructs – Cabinet, Shelf , Rack, PluginUnit, Blade, Card, PhysicalConnector, FanModule – as appropriate.&#13;
+&#13;
+productionDate is the manufacturing date of the hardware item.&#13;
+&#13;
+productRevision is in the format R[1-9][A-Z]. See the Ericsson Corporate Basic Standards for information.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="ProductData">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="HwInventory_to_HwItem">
+            <containment>
+                <parent>
+                    <hasClass name="HwInventory">
+                        <mimName>ECIM_HwIM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HwItem">
+                        <mimName>ECIM_HwIM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="HwItem_to_HwItem">
+            <containment>
+                <parent>
+                    <hasClass name="HwItem">
+                        <mimName>ECIM_HwIM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HwItem">
+                        <mimName>ECIM_HwIM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="SystemFunctions_to_HwInventory">
+            <containment>
+                <parent>
+                    <hasClass name="SystemFunctions">
+                        <mimName>ECIM_Top</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HwInventory">
+                        <mimName>ECIM_HwIM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

@@ -1,0 +1,104 @@
+{
+		"name" : "MoMgcfIPAddress" ,
+		"ss7" : "false" ,
+		"visible" : "true" ,
+		"desc" : "\nThis Table defines the IP address which will be used on MGC blade.\n    " ,
+		"filename" : "MoMgcfIPAddressPOT.json" ,
+		"max_entries" : "1" ,
+		"modid" : "0" ,
+		"attrs" : {
+				"mgcfIPAddressId" : {
+						"name" : "mgcfIPAddressId" ,
+						"keytype" : "ECIM_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "The MoClass key of the mgcfIPAddress" ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "false"
+				} ,
+				"mgcfIpAddress" : {
+						"name" : "mgcfIpAddress" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe local IP address of MGC\n      " ,
+						"types" : "derived0_24_[0-9.]{0,24}" ,
+						"default" : "" ,
+						"category" : "categoryA" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"mgcfIpNetAddress" : {
+						"name" : "mgcfIpNetAddress" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe IP subnet address where the local IP Address belonging to\n      " ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "categoryB" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"mgcfIpSubnetMask" : {
+						"name" : "mgcfIpSubnetMask" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe Subnet Mask for the IP Address\n      " ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "categoryC" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"mgcfIpVlanTag" : {
+						"name" : "mgcfIpVlanTag" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" :
+						"\nThe VLAN Tag for the Local IP Address. \nFormat: For the first IP of one VLAN_ID, it should be VLAN_ID; next one should be VLAN_ID:Sub_ID, e.g, for the first IP of 311, it should be 311, others will be 311:1, 311:2, etc.\n      "
+						,
+						"types" : "derived0_32_[0-9:]{0,32}" ,
+						"default" : "" ,
+						"category" : "categoryD" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				}
+		} ,
+		"actions" : {
+		} ,
+		"codecs" : {
+		} ,
+		"brs" : {
+		} ,
+		"enums" : {
+		} ,
+		"deriveds" : {
+				"derived0_32_[0-9:]{0,32}" : {
+						"name" : "derived0_32_[0-9:]{0,32}" ,
+						"stereotypes" : "EcimDerivedString" ,
+						"basetype" : "EcimString" ,
+						"length" : "0..32" ,
+						"range" : "" ,
+						"pattern" : "[0-9:]{0,32}"
+				} ,
+				"derived0_24_[0-9.]{0,24}" : {
+						"name" : "derived0_24_[0-9.]{0,24}" ,
+						"stereotypes" : "EcimDerivedString" ,
+						"basetype" : "EcimString" ,
+						"length" : "0..24" ,
+						"range" : "" ,
+						"pattern" : "[0-9.]{0,24}"
+				}
+		}
+}

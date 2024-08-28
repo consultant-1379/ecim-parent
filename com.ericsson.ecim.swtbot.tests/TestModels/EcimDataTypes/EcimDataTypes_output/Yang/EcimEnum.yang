@@ -1,0 +1,97 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 4:09:09 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "EcimEnum" {
+	namespace "urn:com:ericsson:ecim:EcimEnum";
+	prefix "EcimEnum";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RootMom {
+		prefix "RootMom";
+	}
+
+	revision "2015-04-20" {
+		ericsson:version "4";
+		ericsson:release "2";
+	}
+
+	augment "/RootMom:Root" {
+		list "enumerations" {
+			key "id";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			uses EcimEnum:enumerations;
+		}
+
+	}
+
+	typedef "equipmentList" {
+		type enumeration {
+			enum "router" {
+				value 1;
+				description "router";
+			}
+
+			enum "switchL2" {
+				value 2;
+				description "switchL2";
+			}
+
+			enum "switchL3" {
+				value 3;
+				description "switchL3";
+			}
+
+			enum "SBG" {
+				value 4;
+				description "SBG";
+			}
+
+			enum "slotMachine" {
+				value 6;
+				description "slotMachine";
+			}
+
+		}
+
+		description "Equipment List";
+	}
+
+	grouping "enumerations" {
+		description "enumerations";
+		leaf "id" {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+		leaf "enumWithSingleStringValue" {
+			type EcimEnum:equipmentList;
+			mandatory true;
+		}
+
+		leaf-list "enumWithMultipleValues" {
+			type EcimEnum:equipmentList;
+			min-elements 1;
+			max-elements 4;
+		}
+
+		leaf-list "enumWithEmptyDefaultValue" {
+			type EcimEnum:equipmentList;
+			min-elements 1;
+			max-elements 4;
+		}
+
+		leaf "enumWithSingleValue" {
+			type EcimEnum:equipmentList;
+			mandatory true;
+		}
+
+	}
+
+}

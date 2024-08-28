@@ -1,0 +1,75 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-sep-04 14:47:38 using 
+    * com.ericsson.ecim.yang.m2m 2.11.2.qualifier
+*/
+module Identities {
+	namespace "urn:com:ericsson:ecim:Identities";
+	prefix Identities;
+	
+	include IdentitiesSub;
+	
+	organization "Ericsson";
+	description "asdf";
+	revision 2014-12-03 {
+		description trialVersion ;
+	}
+	
+  //contains no members in output	
+  identity a {
+  	status deprecated;
+    base b;
+    description
+      "Identity A";
+  }
+
+  //contains a member in output
+  identity b {
+    base c;
+    status current;
+    description
+      "Identity B";
+  }
+  
+  //contains a and b members in output
+  identity c {
+    description
+      "Identity C";
+  }
+  
+  //this identity should not show up as it is not used
+  identity unUsedIdentity {
+    description
+      "Identity unUsedIdentity";
+  }  
+  
+	list myList{
+		key simpleToC;
+		leaf simpleToC {
+			type identityref {				
+			base c;
+      		} 
+		}
+		leaf prefixedToC {
+			type identityref {				
+			base Identities:c;	
+      		} 
+		}		
+		leaf quotesToC {
+			type identityref {				
+			base "Identities:c";	
+      		} 
+		}	
+		leaf prefixedToB {
+			type identityref {				
+			base Identities:b;	
+      		} 
+		}		
+		leaf prefixedToA {
+			type identityref {				
+			base Identities:a;					
+      		} 
+		}			
+	}  
+}

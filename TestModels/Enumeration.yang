@@ -1,0 +1,110 @@
+module Enumeration {
+
+  namespace "urn:com:ericsson:yang:Enumeration";
+
+  prefix "Enumeration";
+
+  organization
+    "Ericsson AB.";
+
+  contact
+    "Web:   <http://www.ericsson.com>";
+
+  description
+    "This YANG module defines the configuration data
+    and operational state data for Context in IPOS.
+
+    Copyright (c) 2014 Ericsson AB.
+    All rights reserved.";
+
+  revision 2014-09-15 {
+    description
+      "Initial revision.";
+    reference
+      "A YANG Data Model for Routing Management
+      draft-ietf-netmod-routing-cfg-15.";
+  }
+
+list simpleList {
+	key leafA;
+       leaf leafA {
+			type enumeration {
+             enum zero;
+             enum one;
+             enum seven {
+                 value 7;
+             }
+            }
+          }
+       leaf leafListB{
+			type enumeration {
+             enum zero;
+             enum one;
+             enum seven {
+                 value 7;
+             }
+            }
+       }
+ } 
+  
+
+   container simpleContainer {
+       leaf leafA {
+             type enumeration {
+             enum zero{
+             	//the quotes break the grammar so commented out for now
+             	//value "7"
+             }
+             enum one;
+             enum seven {
+                 value 7;
+             }
+         }
+       }
+       leaf-list leafListB{
+       		type enumeration {
+             enum zero;
+             enum one;
+             enum seven {
+                 value 7;
+             }
+         }
+       }       
+  }
+ 
+ 
+  list listParent {
+  	key leafA;
+		leaf leafA
+		{ 
+			type string;
+		}
+	list listChild {
+		key leafA;
+		leaf leafA {
+			type enumeration {
+             enum zero;
+             enum one;
+             enum seven {
+                 value 7;
+             }
+		} 
+	}
+  }
+  
+}
+  
+  container containerParent {
+	container containerChild {
+		leaf leafA {
+			type enumeration {
+             enum zero;
+             enum one;
+             enum seven {
+                 value 7;
+             }
+		} 
+	}
+}
+}
+}

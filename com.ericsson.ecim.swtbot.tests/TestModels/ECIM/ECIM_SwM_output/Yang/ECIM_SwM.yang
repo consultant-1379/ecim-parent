@@ -1,0 +1,387 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:31:53 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ECIM_SwM" {
+	namespace "urn:com:ericsson:ecim:ECIM_SwM";
+	prefix "ECIM_SwM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	description "ECIM Software management model.";
+
+	revision "2015-03-30" {
+		ericsson:correction "0";
+		ericsson:docNo "15/155 56-FAE 151 01";
+		ericsson:author "xcssukd";
+		ericsson:release "0";
+		ericsson:contact "xcssukd";
+		ericsson:revision "A";
+		ericsson:version "4";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:SystemFunctions" {
+		list "SwM" {
+			key "swMId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "UpgradePackage" {
+				key "upgradePackageId";
+				uses ECIM_SwM:UpgradePackage;
+			}
+
+			uses ECIM_SwM:SwM;
+		}
+
+	}
+
+	typedef "UpgradePackageState" {
+		type enumeration {
+			enum "INITIALIZED" {
+				value 1;
+				description
+				"The Upgrade Package is initialized.The administrative data and activation steps of the UP can be read.In this state, only the prepare() action can be called.";
+			}
+
+			enum "PREPARE_IN_PROGRESS" {
+				value 2;
+				description
+				"Prepare action in progress. In this state, only the cancel() action can be called. If the prepare() action completes successfully, the UP moves to state PREPARE_COMPLETED . If the prepare() action fails, or cancel() is called, the UP moves back to state INITIALIZED .";
+			}
+
+			enum "PREPARE_COMPLETED" {
+				value 3;
+				description
+				"Prepare action has finished successfully. In this state, only the verify() or the activate() action can be called. If the activate() action is called, the UP moves to state ACTIVATION_IN_PROGRESS .";
+			}
+
+			enum "ACTIVATION_IN_PROGRESS" {
+				value 4;
+				description
+				"Activation is in progress. In this state, only the cancel() action can be called. If the cancel() action is called, the UP moves to state DEACTIVATION_IN_PROGRESS. If the activation step completes successfully, the UP moves to state ACTIVATION_STEP_COMPLETED .";
+			}
+
+			enum "ACTIVATION_STEP_COMPLETED" {
+				value 5;
+				description
+				"The previous activation step completed successfully. There are still more activation steps left. In this state, only the activate() or the cancel() action can be called. If the cancel() action is called, the UP moves to state DEACTIVATION_IN_PROGRESS . If the activate() action is called, the ME starts the activation of the next activation step and the UP moves to state ACTIVATION_IN_PROGRESS . If the fallback timer expires in this state, the UP moves to state DEACTIVATION_IN_PROGRESS .";
+			}
+
+			enum "WAITING_FOR_COMMIT" {
+				value 6;
+				description "The last activation step completed successfully.The operator must confirm the upgrade. In this state, only the confirm() or the cancel() action can be called. If the cancel() action is called, the UP moves to state DEACTIVATION_IN_PROGRESS. If the confirm() action is called, the UP moves to state COMMIT_COMPLETED .
+";
+			}
+
+			enum "COMMIT_COMPLETED" {
+				value 7;
+				description
+				"The upgrade is confirmed.The whole upgrade procedure has completed.";
+			}
+
+			enum "DEACTIVATION_IN_PROGRESS" {
+				value 8;
+				description
+				"Deactivation of the UP is in progress.This can be the result of a cancel() action, or the fallback timer has expired. In this state, no action can be called. At the end of fallback operation, the UP moves back to state PREPARE_COMPLETED.";
+			}
+
+		}
+
+		description "Lists possible states of the Upgrade Package.";
+	}
+
+	typedef "SwMTimeoutFallbackCapability" {
+		type enumeration {
+			enum "SUPPORTED" {
+				value 1;
+				description "Shows that the fallback capability is supported.";
+			}
+
+			enum "NOT_SUPPORTED" {
+				value 2;
+				description "Shows that the fallback capability is not supported.";
+			}
+
+		}
+
+		description "Fallback support.";
+	}
+
+	typedef "EcimPasswordString" {
+		type string;
+		description "This type enables secure handling of passwords.";
+	}
+
+	grouping "SwM" {
+		description "The root structural element of SW management activities.";
+		list "reportProgress" {
+			key "actionId";
+			max-elements 1;
+			config true;
+			description "Represents the progress report, including the result, of the ongoing action. This MO supports only one action execution at a time.
+";
+			uses ECIM_CommonLibrary:AsyncActionProgress;
+		}
+
+		leaf "fallbackTimer" {
+			type int16;
+			mandatory true;
+			description
+			"Maximum interval in seconds within which the next action must be invoked to avoid fallback. The maximum number of seconds allowed to elapse between the finish of an activation step and the start of the next new activate() action or new confirm() action. This attribute holds the value to which attribute timeRemainingBeforeFallback is set after the action activate() is successfully completed. -1 means infinity. In this case, the start value of timeRemainingBeforeFallback must also be set to -1 when the timer starts, even though no countdown ever starts (it remains always -1).";
+		}
+
+		leaf "swMId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "timeRemainingBeforeFallback" {
+			type int16;
+			mandatory true;
+			config true;
+			description
+			"Remaining number of seconds before performing fallback. Value -1 indicates an infinite number of seconds. Fallback means that the system returns to state PREPARE_COMPLETED .";
+		}
+
+		leaf "localFileStorePath" {
+			type string;
+			config true;
+			description "URI of the directory where the UPs are stored on the ME.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "Used for free-text description. ";
+		}
+
+		leaf "timeoutFallbackCapability" {
+			type ECIM_SwM:SwMTimeoutFallbackCapability;
+			config true;
+			description
+			"Shows whether fallback capability is supported or not. If fallback capability is not supported, setting SwM fallbackTimer has no effect and automatic fallback does not occur.";
+		}
+
+	}
+
+	grouping "UpgradePackage" {
+		description "Controls the change process of the software configuration of a ME. An instance of UpgradePackage (UP) represents a specific change
+of software configuration from the existing one to the new one identified by the attribute administrativeData. The execution of the change process described by UP class is the normal way to change the content of the SW inventory. An UP can be seen as a modification agent. It can add new, remove, or modify functionality. The sequence in which a Software upgrade executes is as follows: 
+1. Prepare
+2. Verify, which is optional
+3. Activate 
+4. Confirm
+When the upgrade package MO is created the upgrade control file is downloaded to specify the administrative data and the activation steps for this upgrade.";
+		leaf "state" {
+			type ECIM_SwM:UpgradePackageState;
+			mandatory true;
+			config true;
+			description "Current state of Upgrade Package.";
+		}
+
+		list "reportProgress" {
+			max-elements 1;
+			config true;
+			description
+			"Represents the progress report, including the result, of the ongoing action. This MO supports only one action execution at a time.";
+			uses ECIM_SwM:AsyncActionProgressWithSteps;
+		}
+
+		leaf "upgradePackageId" {
+			type string;
+			mandatory true;
+			description "Holds the name used when identifying the MO.";
+			ericsson:restricted;
+		}
+
+		leaf "ignoreBreakPoints" {
+			type boolean;
+			mandatory true;
+			description
+			"Influences the behavior of the activate() action. False means there is a breakpoint between each activation step. Activation process stops at each breakpoint. True means execution ignores breakpoints between activation steps and instead executes the end-to-end activation process. This invokes all activation steps in sequence, assuming no errors occur.";
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "Used for free-text description. ";
+		}
+
+		list "administrativeData" {
+			min-elements 1;
+			config true;
+			description
+			"The product identification of the software versions that are activated when an upgrade is completed. If the resulting software version after activation is unknown or uncertain, the administrativeData can be empty.";
+			uses ECIM_CommonLibrary:ProductData;
+		}
+
+		list "activationStep" {
+			min-elements 1;
+			config true;
+			description
+			"List of activation steps in the activation procedure. It is possible to stop after each step, perform supervision, and continue with the procedure.The upgrade procedure consists of at least one activation step.";
+			uses ECIM_SwM:ActivationStep;
+		}
+
+		leaf "created" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			config true;
+			description "Date and time  this Upgrade Package instance is created.";
+		}
+
+		leaf "uri" {
+			type string;
+			description
+			"A URI that points to the directory where the UP can be found. The URI can be local, for example, file://data/dir/subdir. It can also be remote, for example, ftp://hostname/dir/subdir.";
+		}
+
+		leaf "creatorActionId" {
+			type uint16;
+			default "0";
+			config true;
+			description
+			"The Id of the action that created this UpgradePackage MO. Default value 0 shows that the ME does not record this information.";
+		}
+
+		list "password" {
+			key "password";
+			max-elements 1;
+			description "Password to the server that provides the UpgradePackage.";
+			uses ECIM_CommonLibrary:EcimPassword;
+		}
+
+	}
+
+	grouping "ActivationStep" {
+		description "Activation step details.";
+		leaf "serialNumber" {
+			type int16;
+			mandatory true;
+			description
+			"Activation step number.The position of the activation step in the activation procedure.Starts at 1.";
+		}
+
+		leaf "name" {
+			type string;
+			mandatory true;
+			description "Activation step name.";
+		}
+
+		leaf "description" {
+			type string;
+			mandatory true;
+			description
+			"Textual description of the activation step. It can describe the role, meaning, or interpretation of the activation step, or any information which is useful to the operator.";
+		}
+
+	}
+
+	grouping "AsyncActionProgressWithSteps" {
+		description
+		"The progress of an ongoing action. Some actions can have 1 or more breakpoints.Breakpoints allow an action to be divided into defined steps. A breakpoint is an intentional stop of an executing action, for example, the  Activate action in the ECIM SwM MOM. The activate action puts an upgrade package into operation. A breakpoint represents a part of the upgrade,after which the functionality of the ME can be observed manually.In other words, the breakpoints give the operator an option to verify manually that the upgrade step has been executed correctly. The ProgressReport MOC models a standard action. This MOC struct has the same attributes as the ProgressReport MOC, plus two extra attributes, step and stepProgressPercentage.step stores the current execution action step. stepProgressPercentage stores the progress percentage of the currently executing action step.";
+		leaf "actionName" {
+			type string;
+			mandatory true;
+			config true;
+			description
+			"Name of the invoked action, for example, prepare(), verify(), activate() on UpgradePackage MO.";
+		}
+
+		leaf-list "additionalInfo" {
+			type string;
+			config true;
+			description
+			"Used to log significant messages during execution of an action. It contains information about the history of the execution.This field contains the log entries as an array. It can be empty.This information is for display only. It is not recommended to build any logic on the content of this field.";
+		}
+
+		leaf "progressInfo" {
+			type string;
+			mandatory true;
+			config true;
+			description
+			"Description of the actual state of the execution, which can be useful or required by NMS. This information is for display only. It is not recommended to build any logic on the content of this field.";
+		}
+
+		leaf "progressPercentage" {
+			type uint8;
+			mandatory true;
+			config true;
+			description
+			"This represents the overall progress for completion of the action. Range is between 0 and 100. It calculates the percentage with regard to time.";
+		}
+
+		leaf "result" {
+			type ECIM_CommonLibrary:ActionResultType;
+			config true;
+			description
+			"Result of completed action.This field has a value NOT_AVAILABLE if the action is not finished.";
+		}
+
+		leaf "resultInfo" {
+			type string;
+			config true;
+			description
+			"Textual description of the outcome or result of the action. It contains useful information for the NMS. For example, it can contain an error message if the action failed. This information is for display only. It is not recommended to build any logic on the content of this	field.";
+		}
+
+		leaf "state" {
+			type ECIM_CommonLibrary:ActionStateType;
+			mandatory true;
+			config true;
+			description "Current state of the action.";
+		}
+
+		leaf "actionId" {
+			type uint16;
+			description
+			"Id of the action. Each action has an action id. The Id is used to query the progress of an action.";
+		}
+
+		leaf "timeActionStarted" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			description "The date and time when the current action started.";
+		}
+
+		leaf "timeActionCompleted" {
+			type ECIM_CommonLibrary:DateTime;
+			description
+			"The date and time when the action completed successfully or unsuccessfully.";
+		}
+
+		leaf "timeOfLastStatusUpdate" {
+			type ECIM_CommonLibrary:DateTime;
+			description
+			"The date and time of the last MO Struct update. The last date and time when any attribute changed.";
+		}
+
+		leaf "step" {
+			type int16;
+			mandatory true;
+			description "Current execution action step number.
+ 
+";
+		}
+
+		leaf "stepProgressPercentage" {
+			type int8;
+			mandatory true;
+			description
+			"This represents the progress percentage of the currently executing step. It goes from 0 to 100 percentage for each and every step.";
+		}
+
+	}
+
+}

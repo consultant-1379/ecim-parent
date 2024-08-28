@@ -1,0 +1,128 @@
+{
+		"name" : "MoMgcfTrace" ,
+		"ss7" : "false" ,
+		"visible" : "true" ,
+		"desc" : "\nData for Media Gateway Controller trace settings.\n    " ,
+		"filename" : "MoMgcfTracePOT.json" ,
+		"max_entries" : "1" ,
+		"modid" : "-5555" ,
+		"attrs" : {
+				"mgcfTraceId" : {
+						"name" : "mgcfTraceId" ,
+						"keytype" : "ECIM_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "The MoClass key of the mgcfTrace" ,
+						"types" : "EcimString" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-only" ,
+						"realtime" : "false"
+				} ,
+				"callTraceReference" : {
+						"name" : "callTraceReference" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThis is a string which should be unique in all the trace records.\n      " ,
+						"types" : "derived1_32_[0-9A-Za-z]{1,32}" ,
+						"default" : "" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"callTraceOriginatingUserID" : {
+						"name" : "callTraceOriginatingUserID" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe Originating User ID for Trace session.\n      " ,
+						"types" : "derived0_32_[0-9A-E]{0,32}" ,
+						"default" : "" ,
+						"category" : "categoryB" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"callTraceTerminatingUserID" : {
+						"name" : "callTraceTerminatingUserID" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nThe Terminating User ID for Trace session.\n      " ,
+						"types" : "derived0_32_[0-9A-E]{0,32}" ,
+						"default" : "" ,
+						"category" : "categoryC" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"callTraceLevel" : {
+						"name" : "callTraceLevel" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nLevel for call trace, can be eTraceAll\nor eTraceNotice.\n      " ,
+						"types" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>}" ,
+						"default" : "" ,
+						"category" : "categoryA" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				} ,
+				"callTraceTimeout" : {
+						"name" : "callTraceTimeout" ,
+						"keytype" : "NONE_KEY" ,
+						"keyorder" : "" ,
+						"desc" : "\nthe timer is for Call Trace Timeout,\nunit is second.\n      " ,
+						"types" : "EcimUInt64" ,
+						"default" : "3600" ,
+						"category" : "" ,
+						"changereq" : "false" ,
+						"visible" : "true" ,
+						"maxaccess" : "read-write" ,
+						"realtime" : "false"
+				}
+		} ,
+		"actions" : {
+		} ,
+		"codecs" : {
+		} ,
+		"brs" : {
+		} ,
+		"enums" : {
+				"enumSequence {IN6!<unnamed>, IN6!<unnamed>}" : {
+						"name" : "enumSequence {IN6!<unnamed>, IN6!<unnamed>}" ,
+						"attrs" : {
+								"eKeepBeginTime" : {
+										"default" : "1" ,
+										"name" : "eKeepBeginTime"
+								} ,
+								"eResetBeginTime" : {
+										"default" : "2" ,
+										"name" : "eResetBeginTime"
+								}
+						}
+				}
+		} ,
+		"deriveds" : {
+				"derived0_32_[0-9A-E]{0,32}" : {
+						"name" : "derived0_32_[0-9A-E]{0,32}" ,
+						"stereotypes" : "EcimDerivedString" ,
+						"basetype" : "EcimString" ,
+						"length" : "0..32" ,
+						"range" : "" ,
+						"pattern" : "[0-9A-E]{0,32}"
+				} ,
+				"derived1_32_[0-9A-Za-z]{1,32}" : {
+						"name" : "derived1_32_[0-9A-Za-z]{1,32}" ,
+						"stereotypes" : "EcimDerivedString" ,
+						"basetype" : "EcimString" ,
+						"length" : "1..32" ,
+						"range" : "" ,
+						"pattern" : "[0-9A-Za-z]{1,32}"
+				}
+		}
+}

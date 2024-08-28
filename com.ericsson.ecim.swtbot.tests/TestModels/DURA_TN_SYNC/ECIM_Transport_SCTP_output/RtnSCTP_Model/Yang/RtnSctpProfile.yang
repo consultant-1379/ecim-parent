@@ -1,0 +1,410 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 14, 2015 3:52:40 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RtnSctpProfile" {
+	namespace "urn:com:ericsson:ecim:RtnSctpProfile";
+	prefix "RtnSctpProfile";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RtnSctp {
+		prefix "RtnSctp";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	description "SCTP Profile";
+
+	revision "2015-10-14" {
+		ericsson:correction "0";
+		ericsson:author "EAB/FJP/TA UABERPE";
+		ericsson:release "4";
+		ericsson:contact "EAB/FJP/TA UABERPE";
+		ericsson:version "2";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport" {
+		list "SctpProfile" {
+			key "sctpProfileId";
+			uses RtnSctpProfile:SctpProfile;
+		}
+
+	}
+
+	grouping "SctpProfile" {
+		description "The SctpProfile defines the configuration that controls the behaviour of an SctpEndpoint. 
+
+The SctpProfile can be shared by one or more SctpEndpoint MOs.";
+		leaf "dscp" {
+			type uint8 {
+				range "0..63";
+			}
+
+			mandatory true;
+			description "The DSCP value. ";
+		}
+
+		leaf "incCookieLife" {
+			type uint8 {
+				range "0..180";
+			}
+
+			mandatory true;
+			description "Allowed increment of parameter valid.Cookie.Life in local node.
+
+Applied when an increase of the parameter is requested from the remote node.
+A new value of the attribute does not apply to associations that are already established.";
+		}
+
+		leaf "bundlingActivated" {
+			type boolean;
+			mandatory true;
+			description "States whether bundling is allowed for an endpoint.
+
+True: An endpoint bundles chunks by including multiple chunks in one outbound SCTP packet.
+False: Bundling is not used.";
+		}
+
+		leaf "bundlingTimer" {
+			type uint16 {
+				range "0..1000";
+			}
+
+			mandatory true;
+			description "Maximum allowed bundling delay.";
+		}
+
+		leaf "heartbeatInterval" {
+			type uint32 {
+				range "10..1800000";
+			}
+
+			mandatory true;
+			description "SCTP heartbeat interval.";
+		}
+
+		leaf "hbMaxBurst" {
+			type uint32 {
+				range "0..4";
+			}
+
+			mandatory true;
+			description
+			"HB.MaxBurst value.
+A new value of the attribute does not apply to associations that are already established.";
+		}
+
+		leaf "initialHeartbeatInterval" {
+			type uint32 {
+				range "10..1800000";
+			}
+
+			mandatory true;
+			description "Period for acceptance of a heartbeat acknowledge message during path probing.
+
+It limits the intensity of heartbeats for path probing after association start-up.";
+		}
+
+		leaf "heartbeatActivated" {
+			type boolean;
+			mandatory true;
+			description "States whether heartbeat is activated.
+
+True: Activates heartbeats for SCTP endpoint.
+False: Disables heartbeats for SCTP endpoint.";
+		}
+
+		leaf "initARWnd" {
+			type uint32 {
+				range "1500..1048576";
+			}
+
+			mandatory true;
+			description
+			"Value of the initial advertised receiver window credit (a_rwnd sent in the INIT message).
+
+If the value of this attribute is increased, it applies to both existing and new associations. If the value is decreased, it does not apply to associations that are already established.";
+		}
+
+		leaf "initRto" {
+			type uint32 {
+				range "10..120000";
+			}
+
+			mandatory true;
+			description
+			"RTO initial value.
+
+A new value of the attribute does not apply to associations that are already established.";
+		}
+
+		leaf "maxBurst" {
+			type uint16 {
+				range "1..16384";
+			}
+
+			mandatory true;
+			description "Maximum number of burst packets.";
+		}
+
+		leaf "maxRto" {
+			type uint32 {
+				range "11..120000";
+			}
+
+			mandatory true;
+			description "Maximum RTO.";
+		}
+
+		leaf "maxInStreams" {
+			type uint16 {
+				range "1..16384";
+			}
+
+			mandatory true;
+			description
+			"Maximum number of inbound streams to negotiate for an association. 
+
+A change to this attribute does not affect the existing associations. 
+To apply a new value, the endpoint must be re-created.";
+		}
+
+		leaf "maxInitRt" {
+			type uint8 {
+				range "1..16";
+			}
+
+			mandatory true;
+			description
+			"Maximum number of retransmissions allowed for both INIT and COOKIE_ECHO chunks.
+
+A new value of the attribute does not apply to associations that are already established.";
+		}
+
+		leaf "maxOutStreams" {
+			type uint16 {
+				range "1..16384";
+			}
+
+			mandatory true;
+			description
+			"Maximum number of outbound streams to negotiate for an association. 
+
+A change to this attribute does not affect the existing associations. 
+To apply a new value, the endpoint must be re-created.";
+		}
+
+		leaf "maxShutdownRt" {
+			type uint8 {
+				range "1..20";
+			}
+
+			mandatory true;
+			description
+			"Maximum number of retransmissions during the shutdown phase of an association.";
+		}
+
+		leaf "transmitBufferSize" {
+			type uint16 {
+				range "1..2048";
+			}
+
+			mandatory true;
+			description
+			"Size of the buffer used for storing data pending to be sent or retransmitted in an association.";
+		}
+
+		leaf "minRto" {
+			type uint16 {
+				range "10..5000";
+			}
+
+			mandatory true;
+			description "Minimum RTO.";
+		}
+
+		leaf "thrTransmitBufferCongCeased" {
+			type uint8 {
+				range "1..100";
+			}
+
+			mandatory true;
+			description "Size of threshold of the transmit buffer in percentage when congestion cease indication is sent.
+
+See also description of attribute thrTransmitBuffer.";
+		}
+
+		leaf "thrTransmitBuffer" {
+			type uint16 {
+				range "1..2048";
+			}
+
+			mandatory true;
+			description
+			"Threshold of the transmit buffer size. 
+
+Upon exceeding this threshold the user of SCTP will be asked to stop sending data. This condition will persist until the occupancy of the transmit buffer drops below thrTransmitBufferCongCeased * thrTransmitBuffer.";
+		}
+
+		leaf "alphaIndex" {
+			type RtnSctp:AlphaIndex;
+			mandatory true;
+			description "RTO alpha index.";
+		}
+
+		leaf "betaIndex" {
+			type RtnSctp:BetaIndex;
+			mandatory true;
+			description "RTO beta index. 
+";
+		}
+
+		leaf "maxActivateThr" {
+			type uint16 {
+				range "1..65535";
+			}
+
+			mandatory true;
+			description "Maximum number of consecutive successful heartbeats.
+
+It must be sent over the data transfer path (DTP) before switchback can be performed.";
+		}
+
+		leaf "minActivateThr" {
+			type uint16 {
+				range "1..65535";
+			}
+
+			mandatory true;
+			description "Minimum and initial number of consecutive successful heartbeats before switchback can be performed.
+
+The minimum and initial value for the number of consecutive successful heartbeats that must be sent over the preferred primary path before switchback can be performed.";
+		}
+
+		leaf "sackTimer" {
+			type uint16 {
+				range "0..500";
+			}
+
+			mandatory true;
+			description "The time delay for sending the Selective Acknowledgement (SACK).
+
+Time is measured from receiving the DATA chunk to sending the SACK chunk.";
+		}
+
+		leaf "cookieLife" {
+			type uint8 {
+				range "1..180";
+			}
+
+			mandatory true;
+			description
+			"Valid cookie life.
+A new value of the attribute does not apply to associations that are already established. ";
+		}
+
+		leaf "assocMaxRtx" {
+			type uint8 {
+				range "1..20";
+			}
+
+			mandatory true;
+			description "Association maximum number of retransmissions packets.";
+		}
+
+		leaf "pathMaxRtx" {
+			type uint8 {
+				range "1..20";
+			}
+
+			mandatory true;
+			description "Maximum number of consecutive retransmissions on an IP path.
+
+An IP path is defined by the pair of local and remote IP addresses.";
+		}
+
+		leaf "primaryPathMaxRtx" {
+			type uint8 {
+				range "0..20";
+			}
+
+			mandatory true;
+			description "Maximum value of the error counter of the current primary path before switchover.
+
+In case of enabled Primary Path Avoidance(PPA), if the error counter of the primary path exceeds this value, SCTP chooses another current primary path.";
+		}
+
+		leaf "maxSctpPduSize" {
+			type uint16 {
+				range "508..1480";
+			}
+
+			mandatory true;
+			description "Maximum size of the SCTP PDU.
+
+This is equal to the size of IP MTU minus the size of IP overhead.";
+		}
+
+		leaf "sctpProfileId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "primaryPathAvoidance" {
+			type boolean;
+			mandatory true;
+			description "Whether SCTP can avoid primary path usage when it didn't work for the latest transmission.
+
+True: Enable functionality. 
+False: Disable functionality.";
+		}
+
+		leaf "noSwitchback" {
+			type boolean;
+			mandatory true;
+			description "Recovery of the failed Primary Path does not invoke change of the (current) data transfer path. 
+
+True: No switchback.
+False: Switchback.";
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use.";
+		}
+
+		leaf-list "reservedBy" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description
+			"Contains a list of MO instances that reserve this MO instance.";
+		}
+
+		leaf "bundlingAdaptiveActivated" {
+			type boolean;
+			description
+			"States whether adaptive bundling is applied. 
+It is only applicable if bundlingActivated is set to true.
+According to traffic condition, SCTP bundles chunks by including multiple chunks in one outbound SCTP packet.
+
+True :  Adaptive bundling is enabled.
+False : Adaptive bundling is disabled.";
+		}
+
+	}
+
+}

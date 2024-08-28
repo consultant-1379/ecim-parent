@@ -1,0 +1,671 @@
+-- /**
+-- * Map a UML TypedElement's type to an MP RetrunType
+-- * 
+-- * superimposition-dependencies: ECIMtoMP 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 24/05/2010
+-- */
+
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module ReturnTypeMappingRules;
+create OUT : MP from IN : UML;
+
+--Abstract rule for TypedElement to ReturnTypeType mapping
+lazy abstract rule ResolveReturnType
+{
+	from s: UML!TypedElement--we use TypedElement as then this rule can be used for many things like Properties and Parameters
+	to t: MP!ReturnTypeType 
+	(
+	),
+	--Prepare a DerivedTypeRef in case we need to convert an inline type to a ref for COM
+	ddtr : MP!DerivedDataTypeRefType
+	(
+		name <- thisModule.CreateDerivedTypeName(s),
+		defaultValue <- thisModule.hasDefault(s),		
+		mimName <- thisModule.hasMimNameType(thisModule.getOwningOrCurrentPackage(s))--get the name of the mom that the TypedElement lives in
+	)
+}
+
+lazy rule ReferenceDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement((s.type.oclIsTypeOf(UML!Class) and s.upper = 1 and not (s.type.hasStereotype('ECIM Base Profile::EcimStruct') or s.type.hasStereotype('ECIM Base Profile::EcimAbstractMoClass'))))
+	to t: MP!ReturnTypeType 
+	(
+		moRef <- moRefType
+	),
+	moRefType : MP!MoRefType
+	(
+		name <- thisModule.setCurrentPackage(s.getNearestPackage()),-- we wrap/store the current mim package to be reused for structs members and exception parameters	
+		name <- s.type.name,
+		mimName <- thisModule.hasMimNameType(s.type.getNearestPackage())--get the name of the mom that the MO class lives in
+--		mimVersion <- thisModule.hasMimVersionType(s.type.getNearestPackage())--get the version of the mom that the MO class lives in
+	)	
+}
+
+--Abstract types always get mapped to the special Class name "ManagedObject"
+lazy rule AbstractTypeDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.type.hasStereotype('ECIM Base Profile::EcimAbstractMoClass'))
+	to t: MP!ReturnTypeType 
+	(
+		moRef <- moRefType
+	),
+	moRefType : MP!MoRefType
+	(
+		name <- 'ManagedObject',
+		mimName <- if thisModule.isDWAXE() then thisModule.CreateMimNameType('EcimCommon') else OclUndefined endif
+	)	
+}
+
+lazy rule StructReferenceDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement((s.type.oclIsTypeOf(UML!Class) and s.type.hasStereotype('ECIM Base Profile::EcimStruct') and s.upper = 1))
+	to t: MP!ReturnTypeType 
+	(
+		structRef <- structRefType
+	),
+	structRefType : MP!StructRefType
+	(
+		name <- s.type.name,
+		mimName <- thisModule.hasMimNameType(thisModule.getOwningOrCurrentPackage(s))--get the name of the mom that the TypedElement lives in
+--		mimVersion <- thisModule.hasMimVersionType(s.type.getNearestPackage())--get the version of the mom that the TypedElement lives in
+	)	
+}
+
+--Map the DataType from a UML!String or from a ECIM!EcimString
+lazy rule StringDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.getTypeName() = 'EcimString' and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+	),
+	stringType : MP!StringType
+	(
+		lengthRange <- thisModule.hasLengthRange(s),
+		stringLength <- thisModule.hasStringLength(s),
+		defaultValue <- thisModule.hasDefault(s),
+		validValues <- thisModule.hasValidValues(s),
+		isPassphrase <- thisModule.hasIsPassphrase(s),	
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() and not thisModule.isKeyAttribute(s) then thisModule.hasUndefinedValue(s) else OclUndefined endif
+		--CPP properties that are not supported
+		--alphabet <- 
+		--date <-
+		--ipV4Address <- 
+		--ipV6Address <- 
+		--macAddress <-
+		--time <-
+				
+	)
+	do
+	{
+		--When running in certains modes and inline types have been set we must create a DerivedType Ref
+		if(thisModule.isCOM() and s.hasInlinePropertiesSet())
+		{
+			--The inline properties may not be set. Instead create a DerivedType and point to it
+			t.string <- OclUndefined;
+			
+			--Set a derivedType
+			t.derivedDataTypeRef <- ddtr;
+			
+			t;
+		}
+		else
+		{
+			--The inline properties may be set
+			t.string <- stringType;
+			
+			--Do not set a DerivedType
+			t.derivedDataTypeRef <- OclUndefined;
+			
+			t;	
+		}	
+	}
+}
+
+--Map the DataType from a UML!Boolean or from a ECIM!EcimBoolean
+lazy rule BooleanDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.getTypeName() = 'EcimBoolean' and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+		boolean <- booleanType
+	),	
+	booleanType : MP!BooleanType
+	(
+		defaultValue <- thisModule.hasDefault(s)
+	)
+}
+
+--Map the DataType from a ECIM!Int*
+lazy rule Int8DataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.getTypeName() = 'EcimInt8' and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+	),	
+	int8Type : MP!Int8Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif	
+	)
+	do
+	{
+		--When running in certains modes and inline types have been set we must create a DerivedType Ref
+		if(thisModule.isCOM() and s.hasInlinePropertiesSet())
+		{
+			--The inline properties may not be set. Instead create a DerivedType and point to it
+			t.int8 <- OclUndefined;
+			
+			--Set a derivedType
+			t.derivedDataTypeRef <- ddtr;
+			
+			t;
+		}
+		else
+		{
+			--The inline properties may be set
+			t.int8 <- int8Type;
+			
+			--Do not set a DerivedType
+			t.derivedDataTypeRef <- OclUndefined;
+			
+			t;	
+		}	
+	}
+}
+
+--Map the DataType from a ECIM!Int*
+lazy rule Int16DataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.getTypeName() = 'EcimInt16' and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+	),	
+	int16Type : MP!Int16Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif		
+	)	
+	do
+	{
+		--When running in certains modes and inline types have been set we must create a DerivedType Ref
+		if(thisModule.isCOM() and s.hasInlinePropertiesSet())
+		{
+			--The inline properties may not be set. Instead create a DerivedType and point to it
+			t.int16 <- OclUndefined;
+			
+			--Set a derivedType
+			t.derivedDataTypeRef <- ddtr;
+			
+			t;
+		}
+		else
+		{
+			--The inline properties may be set
+			t.int16 <- int16Type;
+			
+			--Do not set a DerivedType
+			t.derivedDataTypeRef <- OclUndefined;
+			
+			t;	
+		}	
+	}
+}
+
+--Map the DataType from a ECIM!Int*
+lazy rule Int32DataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.getTypeName() = 'EcimInt32' and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+	),	
+	int32Type : MP!Int32Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif		
+	)
+	do
+	{
+		--When running in certains modes and inline types have been set we must create a DerivedType Ref
+		if(thisModule.isCOM() and s.hasInlinePropertiesSet())
+		{
+			--The inline properties may not be set. Instead create a DerivedType and point to it
+			t.int32 <- OclUndefined;
+			
+			--Set a derivedType
+			t.derivedDataTypeRef <- ddtr;
+			
+			t;
+		}
+		else
+		{
+			--The inline properties may be set
+			t.int32 <- int32Type;
+			
+			--Do not set a DerivedType
+			t.derivedDataTypeRef <- OclUndefined;
+			
+			t;	
+		}	
+	}	
+}
+
+--Map the DataType from a ECIM!Int*
+lazy rule Int64DataType extends ResolveReturnType
+{
+	from s: UML!TypedElement((s.getTypeName() = 'EcimInt64' or (s.getTypeName() = 'EcimInteger' and not thisModule.isDWAXE())) and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+	),	
+	int64Type : MP!Int64Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif		
+	)
+	do
+	{
+		--When running in certains modes and inline types have been set we must create a DerivedType Ref
+		if(thisModule.isCOM() and s.hasInlinePropertiesSet())
+		{
+			--The inline properties may not be set. Instead create a DerivedType and point to it
+			t.int64 <- OclUndefined;
+			
+			--Set a derivedType
+			t.derivedDataTypeRef <- ddtr;
+			
+			t;
+		}
+		else
+		{
+			--The inline properties may be set
+			t.int64 <- int64Type;
+			
+			--Do not set a DerivedType
+			t.derivedDataTypeRef <- OclUndefined;
+			
+			t;	
+		}	
+	}	
+}
+
+--Map the DataType from a ECIM!Int*
+lazy rule IntegerDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement((s.getTypeName() = 'EcimInteger' and thisModule.isDWAXE()) and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+	),	
+	integerType : MP!IntegerType
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif		
+	)
+	do
+	{
+			--The inline properties may be set
+			t.integer <- integerType;
+			
+			--Do not set a DerivedType
+			t.derivedDataTypeRef <- OclUndefined;
+			
+			t;	
+	}	
+}
+
+
+--Map the DataType from a ECIM!Int*
+lazy rule IntU8DataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.getTypeName() = 'EcimUInt8' and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+	),	
+	uint8Type : MP!Uint8Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif		
+	)
+	do
+	{
+		--When running in certains modes and inline types have been set we must create a DerivedType Ref
+		if(thisModule.isCOM() and s.hasInlinePropertiesSet())
+		{
+			--The inline properties may not be set. Instead create a DerivedType and point to it
+			t.uint8 <- OclUndefined;
+			
+			--Set a derivedType
+			t.derivedDataTypeRef <- ddtr;
+			
+			t;
+		}
+		else
+		{
+			--The inline properties may be set
+			t.uint8 <- uint8Type;
+			
+			--Do not set a DerivedType
+			t.derivedDataTypeRef <- OclUndefined;
+			
+			t;	
+		}	
+	}
+}
+
+--Map the DataType from a ECIM!Int*
+lazy rule IntU16DataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.getTypeName() = 'EcimUInt16' and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+	),	
+	uint16Type : MP!Uint16Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif		
+	)
+	do
+	{
+		--When running in certains modes and inline types have been set we must create a DerivedType Ref
+		if(thisModule.isCOM() and s.hasInlinePropertiesSet())
+		{
+			--The inline properties may not be set. Instead create a DerivedType and point to it
+			t.uint16 <- OclUndefined;
+			
+			--Set a derivedType
+			t.derivedDataTypeRef <- ddtr;
+			
+			t;
+		}
+		else
+		{
+			--The inline properties may be set
+			t.uint16 <- uint16Type;
+			
+			--Do not set a DerivedType
+			t.derivedDataTypeRef <- OclUndefined;
+			
+			t;	
+		}	
+	}	
+}
+
+--Map the DataType from a ECIM!Int*
+lazy rule IntU32DataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.getTypeName() = 'EcimUInt32' and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+	),	
+	uint32Type : MP!Uint32Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif		
+	)
+	do
+	{
+		--When running in certains modes and inline types have been set we must create a DerivedType Ref
+		if(thisModule.isCOM() and s.hasInlinePropertiesSet())
+		{
+			--The inline properties may not be set. Instead create a DerivedType and point to it
+			t.uint32 <- OclUndefined;
+			
+			--Set a derivedType
+			t.derivedDataTypeRef <- ddtr;
+			
+			t;
+		}
+		else
+		{
+			--The inline properties may be set
+			t.uint32 <- uint32Type;
+			
+			--Do not set a DerivedType
+			t.derivedDataTypeRef <- OclUndefined;
+			
+			t;	
+		}	
+	}
+}
+
+--Map the DataType from a ECIM!Int*
+lazy rule IntU64DataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.getTypeName() = 'EcimUInt64' and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+	),	
+	uint64Type : MP!Uint64Type
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif		
+	)
+	do
+	{
+		--When running in certains modes and inline types have been set we must create a DerivedType Ref
+		if(thisModule.isCOM() and s.hasInlinePropertiesSet())
+		{
+			--The inline properties may not be set. Instead create a DerivedType and point to it
+			t.uint64 <- OclUndefined;
+			
+			--Set a derivedType
+			t.derivedDataTypeRef <- ddtr;
+			
+			t;
+		}
+		else
+		{
+			--The inline properties may be set
+			t.uint64 <- uint64Type;
+			
+			--Do not set a DerivedType
+			t.derivedDataTypeRef <- OclUndefined;
+			
+			t;	
+		}	
+	}
+}
+
+--Map the DataType from a ECIM!Float
+lazy rule DoubleDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.getTypeName() = 'EcimFloat' and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+	),	
+	doubleType : MP!DoubleType
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s),
+		defaultValue <- thisModule.hasDefault(s),
+		--Supported CPP specific properties
+		undefinedValue <- if thisModule.isCPP() then thisModule.hasUndefinedValue(s) else OclUndefined endif			
+	)
+	do
+	{
+		--When running in certains modes and inline types have been set we must create a DerivedType Ref
+		if(thisModule.isCOM() and s.hasInlinePropertiesSet())
+		{
+			--The inline properties may not be set. Instead create a DerivedType and point to it
+			t.double <- OclUndefined;
+			
+			--Set a derivedType
+			t.derivedDataTypeRef <- ddtr;
+			
+			t;
+		}
+		else
+		{
+			--The inline properties may be set
+			t.double <- doubleType;
+			
+			--Do not set a DerivedType
+			t.derivedDataTypeRef <- OclUndefined;
+			
+			t;	
+		}	
+	}		
+}
+
+--Map the DataType from a ECIM!DerviedStringDataType*
+lazy rule DerviedStringDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.type.hasStereotype('ECIM Base Profile::EcimDerivedString') and s.type.oclIsTypeOf(UML!DataType) and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+		derivedDataTypeRef <- derivedDataTypeRefType--,
+		--validValues <- thisModule.hasDataTypeConstraint(s.type)
+	),
+	derivedDataTypeRefType : MP!DerivedDataTypeRefType
+	(
+		name <- s.type.name,
+		defaultValue <- thisModule.hasDefault(s),		
+		mimName <- thisModule.hasMimNameType(thisModule.getOwningOrCurrentPackage(s))--get the name of the mom that the parameter lives in
+--		mimVersion <- thisModule.hasMimVersionType(s.type.getNearestPackage())--get the version of the mom that the MO class lives in
+
+	)
+}
+
+--Map the DataType from a ECIM!DerviedStringDataType*
+lazy rule DerviedFloatDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.type.hasStereotype('ECIM Base Profile::EcimDerivedFloat') and s.type.oclIsTypeOf(UML!DataType) and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+		derivedDataTypeRef <- derivedDataTypeRefType--,
+		--validValues <- thisModule.hasDataTypeConstraint(s.type)		
+	),
+	derivedDataTypeRefType : MP!DerivedDataTypeRefType
+	(
+		name <- s.type.name,
+		defaultValue <- thisModule.hasDefault(s),		
+		mimName <- thisModule.hasMimNameType(thisModule.getOwningOrCurrentPackage(s))--get the name of the mom that the parameter lives in
+--		mimVersion <- thisModule.hasMimVersionType(s.type.getNearestPackage())--get the version of the mom that the MO class lives in
+
+	)
+}
+
+--Map the DataType from a ECIM!DerviedNumericDataType*
+lazy rule DerviedNumericDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.type.hasStereotype('ECIM Base Profile::EcimDerivedInteger') and s.type.oclIsTypeOf(UML!DataType) and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+		derivedDataTypeRef <- derivedDataTypeRefType
+	),
+	derivedDataTypeRefType : MP!DerivedDataTypeRefType
+	(
+		name <- s.type.name,
+		defaultValue <- thisModule.hasDefault(s),		
+		mimName <- thisModule.hasMimNameType(thisModule.getOwningOrCurrentPackage(s))--get the name of the mom that the parameter lives in
+--		mimVersion <- thisModule.hasMimVersionType(s.type.getNearestPackage())--get the version of the mom that the MO class lives in	
+	)
+}
+
+--Map the DataType from a ECIM!DerviedBooleanDataType*
+lazy rule DerviedBooleanDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.type.hasStereotype('ECIM Base Profile::EcimDerivedBoolean') and s.type.oclIsTypeOf(UML!DataType) and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+		derivedDataTypeRef <- derivedDataTypeRefType
+	),
+	derivedDataTypeRefType : MP!DerivedDataTypeRefType
+	(
+		name <- s.type.name,
+		defaultValue <- thisModule.hasDefault(s),	
+		mimName <- thisModule.hasMimNameType(thisModule.getOwningOrCurrentPackage(s))--get the name of the mom that the parameter lives in
+--		mimVersion <- thisModule.hasMimVersionType(s.type.getNearestPackage())--get the version of the mom that the MO class lives in	
+	)
+}
+
+lazy rule SequenceDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement((s.type.oclIsTypeOf(UML!DataType) or s.type.oclIsTypeOf(UML!Class) or s.type.oclIsTypeOf(UML!Enumeration) or s.hasStereotype('ECIM Base Profile::EcimAssociation')) and s.upper <> 1)
+	to t: MP!ReturnTypeType 
+	(
+		sequence <- thisModule.ResolveSequenceDataType(s)
+	)
+}
+
+--Map UML enumerations to an EnumRefType
+lazy rule EnumerationDataType extends ResolveReturnType
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!Enumeration) and s.upper = 1)
+	to t: MP!ReturnTypeType 
+	(
+		enumRef <- enumRefType
+	),
+	enumRefType : MP!EnumRefType
+	(
+		name <- s.type.name,
+		defaultValue <- thisModule.hasDefault(s),
+		mimName <- thisModule.hasMimNameType(thisModule.getOwningOrCurrentPackage(s))--get the name of the mom that the parameter lives in
+--		mimVersion <- thisModule.hasMimVersionType(s.type.getNearestPackage())--get the version of the mom that the MO class lives in	
+	)
+}
+
+

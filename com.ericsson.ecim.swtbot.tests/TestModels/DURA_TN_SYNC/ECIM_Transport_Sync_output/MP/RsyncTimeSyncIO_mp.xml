@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Oct 13, 2015 2:23:27 PM using:
+	* com.ericsson.ecim.m2m 3.0.2.qualifier
+	* com.ericsson.ecim.dsl 3.0.2.qualifier
+	* com.ericsson.ecim.edm 3.0.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate/>
+    </momIdentity>
+    <createdBy>
+      <signature>EAB/FJP/TA UABJOCL</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>EAB/FJP/TA UABJOCL</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim author="EAB/FJP/TA UABJOCL" contact="EAB/FJP/TA UABJOCL" correction="0" date="" docNo="" name="RsyncTimeSyncIO" namespace="urn:com:ericsson:ecim:RsyncTimeSyncIO" namespacePrefix="rsynctimesyncio" organization="" release="0" revision="" version="3">
+    <description>ECIM Transport time SyncIO Model.</description>
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <enum name="PortDirection">
+      <description>The direction of the synchronization interface.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="5"/>
+        <extension name="originatingMimName" value="RsyncSyncLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="BIDIRECTION">
+        <description>The port can input and output signal.</description>
+        <value>3</value>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature PortDirection_literals</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="INPUT_ONLY">
+        <description>The port can only input signals.
+
+It cannot output any signals. </description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="OUTPUT_ONLY">
+        <description>The port can only output signals.
+
+It cannot input any signals. 
+</description>
+        <value>2</value>
+      </enumMember>
+    </enum>
+    <enum name="AvailStatus">
+      <description>The availability status is used to qualify the operational state.&#13;
+ It indicates why the operational state has changed its value. </description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="6"/>
+        <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="IN_TEST">
+        <description>The resource is undergoing a test procedure. &#13;
+If the administrative state is locked or  shutting down then normal users are precluded from using the resource.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="FAILED">
+        <description>The resource has an internal fault that prevents it from operating.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="POWER_OFF">
+        <description>The resource requires power to be applied and is not powered on.</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="OFF_LINE">
+        <description>The resource requires a routine operation to be performed.&#13;
+This routine operation is to place the resource online and make it available for use. The operation may be manual or automatic, or both. The operational state is disabled.</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="OFF_DUTY">
+        <description>The resource has been made inactive by an internal control process.</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY">
+        <description>The resource cannot operate because some other resource on which it depends is unavailable.</description>
+        <value>5</value>
+      </enumMember>
+      <enumMember name="DEGRADED">
+        <description>The service available from the resource is degraded in some respect.</description>
+        <value>6</value>
+      </enumMember>
+      <enumMember name="NOT_INSTALLED">
+        <description>The resource represented by the managed object is not present, or is incomplete.</description>
+        <value>7</value>
+      </enumMember>
+      <enumMember name="LOG_FULL">
+        <description>This indicates a log full condition.</description>
+        <value>8</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_LOCKED">
+        <description>The administrative state of a resource that this resource depends on is locked.&#13;
+ or the availability status of the other resource is dependency locked.  </description>
+        <value>9</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_FAILED">
+        <description>The availability status of a resource that this resource depends on is failed or dependency failed.</description>
+        <value>10</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_SHUTTINGDOWN">
+        <description>The administrative state of a resource that this resource depends on is shutting down.&#13;
+ or the availability status of the other resource is dependency shutting down. </description>
+        <value>11</value>
+      </enumMember>
+    </enum>
+    <enum name="ToDFormat">
+      <description>Time of Day format whichTimeSyncIO supports.&#13;
+&#13;
+It inculdes GPS, GNSS, GLONASS, BEIDO, GALILEO, HPTSI and TDI. Products can implement part of them.&#13;
+&#13;
+Optional to support - Flag :	if-feature TimeSyncIOTodFormatGPS&#13;
+							if-feature TimeSyncIOTodFormatGNSS&#13;
+							if-feature TimeSyncIOTodFormatGLONASS&#13;
+							if-feature TimeSyncIOTodFormatBEIDO&#13;
+							if-feature TimeSyncIOTodFormatGALILEO&#13;
+							if-feature TimeSyncIOTodFormatHPTSI&#13;
+							if-feature TimeSyncIOTodFormatTDI</description>
+      <enumMember name="GNSS">
+        <description>ToD format for GNSS system.</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="GPS">
+        <description>ToD format for GPS system.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="HPTSI">
+        <description>ToD format for HPTSI.&#13;
+&#13;
+HPTSI is a customer specific time of day format, defined by CMCC.</description>
+        <value>6</value>
+      </enumMember>
+      <enumMember name="GLONASS">
+        <description>ToD format for GLONASS system.</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="BEIDO">
+        <description>ToD format for BEIDO system.</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="GALILEO">
+        <description>ToD format for GALILEO system.</description>
+        <value>5</value>
+      </enumMember>
+      <enumMember name="TDI">
+        <description>ToD format for TDI.&#13;
+&#13;
+ToD format for Time distribution interface. It is under discussion in Draft of Recommendation ITU-T G.8271.1.</description>
+        <value>7</value>
+      </enumMember>
+    </enum>
+    <enum name="LinkStatus">
+      <description>Link status.&#13;
+&#13;
+It is deceided by the physical status of underlying implementation.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="5"/>
+        <extension name="originatingMimName" value="RsyncSyncLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="LINK_UNKONWN">
+        <description>Indicates that can't get the status.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="LINK_UP">
+        <description>Indicates that link is up.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="LINK_DOWN">
+        <description>Indicates that link is down.</description>
+        <value>2</value>
+      </enumMember>
+    </enum>
+    <enum name="OperState">
+      <description>The operational states of a resource.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="6"/>
+        <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="DISABLED">
+        <description> The resource is  totally inoperable.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="ENABLED">
+        <description> The resource is partially or fully operable.</description>
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="TimeSyncIOStatus">
+      <description>The status of the time synchronization IO.</description>
+      <enumMember name="NO_FAULT">
+        <description>No faults detected.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="LOSS_OF_SIGNAL">
+        <description>No signals received.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="HW_FAULT">
+        <description>Hardware fault reported from the reference.</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="NO_MESSAGES">
+        <description>No messages received.</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="PROTOCOL_NOT_RECOGNIZED">
+        <description>The protocol used by the reference is not recognized.</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="LOSS_OF_1PPS_SIGNAL">
+        <description>1PPS synchronization signal lost.</description>
+        <value>5</value>
+      </enumMember>
+      <enumMember name="NO_SYNC_TO_SATELLITES">
+        <description>GNSS receiver not synchronized to satellites.</description>
+        <value>6</value>
+      </enumMember>
+      <enumMember name="DEGRADED">
+        <description>The stability of the 1PPS is considered degraded.</description>
+        <value>7</value>
+      </enumMember>
+    </enum>
+    <enum name="AdmState">
+      <description>The administrative state of a resource. </description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="6"/>
+        <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="LOCKED">
+        <description>The resource is administratively prohibited from performing services for its users.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="UNLOCKED">
+        <description>The resource is administratively permitted to perform services for its users.&#13;
+This is independent of its inherent operability.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="SHUTTINGDOWN">
+        <description>Use of the resource is administratively permitted to existing instances of use only.&#13;
+While the system remains in the shutting down state the manager may at any time cause the managed object to revert to the locked state.</description>
+        <value>2</value>
+      </enumMember>
+    </enum>
+    <derivedDataType name="RsyncTimeSyncIO_TimeSyncIO_compensationDelay">
+      <baseType>
+        <uint16>
+          <range>
+            <min>0</min>
+            <max>65535</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>0</min>
+              <max>65535</max>
+            </subrange>
+          </ranges>
+          <unit>ns</unit>
+        </uint16>
+      </baseType>
+    </derivedDataType>
+    <class name="TimeSyncIO">
+      <description>The TimeSyncIO is used to indicate that a physical synchronization port is used for time synchronization.</description>
+      <validationRules>
+        <rule exceptionText="" format="ECIM_Schematron_1.0" name="TimeSyncIO"><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+	<pattern>
+		<rule>
+		<assert test='every $timeSyncIOId in @timeSyncIOId satisfies (every $encapsulation in @encapsulation satisfies ((count(../FrequencySyncIO[($encapsulation eq @encapsulation)]) + count(../TimeSyncIO[($timeSyncIOId ne @timeSyncIOId) and ($encapsulation eq @encapsulation)])) eq 0))'> <value-of select="."/> Two or more FrequencySyncIO/TimeSyncIO cannot refer to the same SyncPort in attribute encapsulation </assert>
+		<assert test='contains(@encapsulation, "SyncPort=")'><value-of select="."/> Attribute encapsulation of a TimeSyncIO can only refer to a SyncPort </assert>
+		<assert test='exists(@encapsulation)'><value-of select="."/> MO in attribute encapsulation does not exist. </assert>
+		<assert test='(@adminPortDirection eq 1)'><value-of select="."/> Attribute adminPortDirection of a TimeSyncIO can only support INPUT_ONLY. </assert>	
+		</rule>
+	</pattern>
+</schema>]]></rule>
+      </validationRules>
+      <root/>
+      <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+	<pattern>
+		<rule>
+		<assert test='every $timeSyncIOId in @timeSyncIOId satisfies (every $encapsulation in @encapsulation satisfies ((count(../FrequencySyncIO[($encapsulation eq @encapsulation)]) + count(../TimeSyncIO[($timeSyncIOId ne @timeSyncIOId) and ($encapsulation eq @encapsulation)])) eq 0))'> <value-of select="."/> Two or more FrequencySyncIO/TimeSyncIO cannot refer to the same SyncPort in attribute encapsulation </assert>
+		<assert test='contains(@encapsulation, "SyncPort=")'><value-of select="."/> Attribute encapsulation of a TimeSyncIO can only refer to a SyncPort </assert>
+		<assert test='exists(@encapsulation)'><value-of select="."/> MO in attribute encapsulation does not exist. </assert>
+		<assert test='(@adminPortDirection eq 1)'><value-of select="."/> Attribute adminPortDirection of a TimeSyncIO can only support INPUT_ONLY. </assert>	
+		</rule>
+	</pattern>
+</schema>]]></dependenciesScript>
+      <attribute name="timeSyncIOId">
+        <description>The value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="linkStatus">
+        <description>Shows the physical link status of time SyncIO.</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="LinkStatus">
+            <mimName>RsyncTimeSyncIO</mimName>
+          </enumRef>
+        </dataType>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature TimeSyncIO_attributes</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="todFormat">
+        <description>Specifies Time of Day format for TimeSyncIO.&#13;
+&#13;
+TodFormat  inculdes GPS, GNSS, GLONASS, BEIDO, GALILEO, HPTSI and TDI. Products can implement part of them.</description>
+        <mandatory/>
+        <dataType>
+          <enumRef name="ToDFormat">
+            <mimName>RsyncTimeSyncIO</mimName>
+          </enumRef>
+        </dataType>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature TimeSyncIO_attributes</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="adminPortDirection">
+        <description>Specifies the direction of the time synchronization I/O port
+</description>
+        <dataType>
+          <enumRef name="PortDirection">
+            <defaultValue>INPUT_ONLY</defaultValue>
+            <mimName>RsyncTimeSyncIO</mimName>
+          </enumRef>
+        </dataType>
+        <deprecated/>
+        <dependencies>Attribute adminPortDirection of a TimeSyncIO can only support INPUT_ONLY.</dependencies>
+      </attribute>
+      <attribute name="operPortDirection">
+        <description>Shows the direction of the time syncIO interface.&#13;
+&#13;
+operPortDirection is read-only attribute, decided by the physical status of time SyncIO hardware.</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="PortDirection">
+            <mimName>RsyncTimeSyncIO</mimName>
+          </enumRef>
+        </dataType>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature TimeSyncIO_attributes</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="encapsulation">
+        <description>Reference to the underlying encapsulation.
+
+The underlying encapsulation must be a SyncPort MO.</description>
+        <mandatory/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+        <dependencies>Two or more FrequencySyncIO/TimeSyncIO cannot refer to the same SyncPort in attribute encapsulation.
+Attribute encapsulation of a TimeSyncIO can only refer to a SyncPort.
+MO in attribute encapsulation does not exist.
+</dependencies>
+      </attribute>
+      <attribute name="compensationDelay">
+        <description>The delay of the input signal.
+
+The delay is calculated using the documentation of the GPS receiver System for RBS 6000.</description>
+        <dataType>
+          <derivedDataTypeRef name="RsyncTimeSyncIO_TimeSyncIO_compensationDelay">
+            <defaultValue>0</defaultValue>
+            <mimName>RsyncTimeSyncIO</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="availabilityStatus">
+        <description>The availability status.
+
+It contains details about operationalState.</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <enumRef name="AvailStatus">
+              <mimName>RsyncTimeSyncIO</mimName>
+            </enumRef>
+            <minLength>0</minLength>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="operationalState">
+        <description>The operational state.</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="OperState">
+            <mimName>RsyncTimeSyncIO</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+      <attribute name="administrativeState">
+        <description>Specifies the administrative state of the MO.</description>
+        <dataType>
+          <enumRef name="AdmState">
+            <defaultValue>LOCKED</defaultValue>
+            <mimName>RsyncTimeSyncIO</mimName>
+          </enumRef>
+        </dataType>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature TimeSyncIO_attributes</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="reservedBy">
+        <description>Contains a list of MO instances that reserve this MO instance.</description>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <moRef name="ManagedObject"/>
+            <minLength>0</minLength>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="timeSyncIOStatus">
+        <description>The status of TimeSyncIO as reference.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <readOnly/>
+        <isNillable/>
+        <dataType>
+          <enumRef name="TimeSyncIOStatus">
+            <mimName>RsyncTimeSyncIO</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="TimeSyncIO_encapsulation_to_SyncPort_reservedBy">
+      <biDirectionalAssociation>
+        <associationEnd name="encapsulation">
+          <hasClass name="SyncPort">
+            <mimName>ReqSyncPort</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="TimeSyncIO">
+            <mimName>RsyncTimeSyncIO</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+  </mim>
+  <interMim>
+    <relationship name="Synchronization_to_TimeSyncIO">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="false"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Synchronization">
+            <mimName>RsyncSynchronization</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="TimeSyncIO">
+            <mimName>RsyncTimeSyncIO</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>8</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+        <noNotification/>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

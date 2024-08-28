@@ -1,0 +1,83 @@
+/*
+ manually generated
+*/
+module ericsson-yang-extensions {
+	namespace "urn:com:ericsson:ecim:extensions";
+	prefix extensions;
+	organization "Ericsson";
+	description "<p> </p>";
+
+typedef identifier {
+    type string {
+      pattern "[A-Za-z_][A-Za-z0-9_\-]*";
+    }
+  }
+
+extension organization { argument x {extensions:arg-type { type string;}}}
+extension release {argument x;}
+extension version {argument x;}
+extension docNo {argument x;}
+extension contact {argument x;}
+extension author {argument x;}
+extension correction {argument x;}
+extension specification {argument x;}
+extension restricted {}
+extension keyless-config-list {}
+
+extension non-unique-leaf-list {}
+ 
+extension revision {
+    argument date {
+      extensions:arg-type {
+        type extensions:identifier;
+      }
+    }
+    extensions:substatement "author";
+    extensions:substatement "contact";
+    extensions:substatement "correction";
+    extensions:substatement "docNo";
+    extensions:substatement "organization";
+    extensions:substatement "release";
+    extensions:substatement "revision";
+    extensions:substatement "specification";
+    extensions:substatement "version";
+    description
+      "Defines the revison of a yang document.";
+  }
+
+  extension use-in {
+    argument name;
+    description
+      "Specifies where an extension statement can be used.";
+  }
+
+  extension substatement {
+    argument name;
+    description
+      "Specifies what substatements can be used.";
+  }
+
+  extension arg-type {
+    extensions:substatement "type";
+    description
+      "Specifies the type of argument.";
+  }
+
+  extension action {
+    argument name {
+      extensions:arg-type {
+        type extensions:identifier;
+      }
+    }
+    extensions:use-in "list";
+    extensions:use-in "container";
+    extensions:use-in "grouping";
+    extensions:substatement "description";
+    extensions:substatement "input";
+    extensions:substatement "output";
+    description
+      "Defines an action (method) in the data model.";
+  }
+
+
+}

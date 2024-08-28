@@ -1,0 +1,92 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:23:51 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RsyncPacketFrequencySyncNTP" {
+	namespace "urn:com:ericsson:ecim:RsyncPacketFrequencySyncNTP";
+	prefix "RsyncPacketFrequencySyncNTP";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RsyncSynchronization {
+		prefix "RsyncSynchronization";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RsyncSyncLibrary {
+		prefix "RsyncSyncLibrary";
+	}
+
+	description "Packet Frequency Synchronization NTP";
+
+	revision "2015-10-13" {
+		ericsson:correction "2";
+		ericsson:release "0";
+		ericsson:version "1";
+		ericsson:contact "EAB/FJP/TA UABJOCL";
+		ericsson:author "EAB/FJP/TA UABJOCL";
+	}
+
+	augment
+	"/ECIM_Top:ManagedElement/ECIM_Top:Transport/RsyncSynchronization:Synchronization"
+	{
+		list "PacketFrequencySyncNTP" {
+			key "packetFrequencySyncNTPId";
+			max-elements 1;
+			status obsolete;
+			uses RsyncPacketFrequencySyncNTP:PacketFrequencySyncNTP;
+		}
+
+	}
+
+	grouping "PacketFrequencySyncNTP" {
+		status obsolete;
+		description "Packet Frequency Synchronization NTP";
+		leaf "packetFrequencySyncNTPId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "frequencySyncNtpServer" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			mandatory true;
+			description
+			"Reference to a peerIPv4  MO which provides the server address and possibility to manage BFD.";
+		}
+
+		leaf "dscp" {
+			type RsyncSyncLibrary:NtpDscp;
+			mandatory true;
+			description "The dscp value used for SNTP/UDP/IP transmitted packets.";
+		}
+
+		leaf "frequencyNtpOperationalMode" {
+			type RsyncSyncLibrary:FrequencyNtpOperMode;
+			mandatory true;
+			description
+			"This attribute defines if the Frequency Synchronization function using NTP shall act as a Client or as a Server.";
+		}
+
+		leaf "encapsulation" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			mandatory true;
+			description "Specifies the underlying IPv4  address of the own node.";
+		}
+
+	}
+
+}

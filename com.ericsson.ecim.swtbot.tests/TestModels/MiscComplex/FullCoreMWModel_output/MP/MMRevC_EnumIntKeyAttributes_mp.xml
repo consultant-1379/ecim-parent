@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Apr 20, 2015 10:51:01 AM using:
+	* com.ericsson.ecim.m2m 3.0.0.qualifier
+	* com.ericsson.ecim.dsl 3.0.0.qualifier
+	* com.ericsson.ecim.edm 3.0.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+    <createdBy>
+      <signature>ecreate</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>eapprov</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim author="" contact="" correction="0" date="" docNo="" name="MMRevC_EnumIntKeyAttributes" namespace="urn:com:ericsson:ecim:MMRevC_EnumIntKeyAttributes" namespacePrefix="mmrevc_enumintkeyattributes" organization="" release="1" revision="" version="1">
+    <description>qwe</description>
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="MOM_NAME"/>
+    </domainExtension>
+    <enum name="AdmState">
+      <description>qwe</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="4"/>
+        <extension name="originatingMimName" value="MomA"/>
+        <extension name="originatingMimVersion" value="3"/>
+      </domainExtension>
+      <enumMember name="LOCKED">
+        <description>q</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="UNLOCKED">
+        <description>2</description>
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <derivedDataType name="RangeType">
+      <description>qwe</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="4"/>
+        <extension name="originatingMimName" value="MomA"/>
+        <extension name="originatingMimVersion" value="3"/>
+      </domainExtension>
+      <baseType>
+        <int32>
+          <range>
+            <min>0</min>
+            <max>10</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>0</min>
+              <max>10</max>
+            </subrange>
+          </ranges>
+          <unit>SEK</unit>
+        </int32>
+      </baseType>
+    </derivedDataType>
+    <class name="EnumKeyedClass1">
+      <description>qwe</description>
+      <attribute name="enumKeyedClassId">
+        <description>qwe</description>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <enumRef name="AdmState">
+            <defaultValue>LOCKED</defaultValue>
+            <mimName>MMRevC_EnumIntKeyAttributes</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="Int64KeyedClass">
+      <description>qwe</description>
+      <attribute name="int64KeyedClassId">
+        <description>qwe</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <int64/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="DerivedIntegerKeyedClass">
+      <description>qwe</description>
+      <attribute name="derivedIntegerKeyedClassId">
+        <description>qwe</description>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <derivedDataTypeRef name="RangeType">
+            <defaultValue>4</defaultValue>
+            <mimName>MMRevC_EnumIntKeyAttributes</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MainEnumIntKeyAttributesClass">
+      <description>qwe</description>
+      <root/>
+      <attribute name="mainEnumIntKeyAttributesClassId">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <int64/>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="MainEnumIntKeyAttributesClass_to_Int64KeyedClass">
+      <containment>
+        <parent>
+          <hasClass name="MainEnumIntKeyAttributesClass">
+            <mimName>MMRevC_EnumIntKeyAttributes</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="Int64KeyedClass">
+            <mimName>MMRevC_EnumIntKeyAttributes</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+    <relationship name="MainEnumIntKeyAttributesClass_to_EnumKeyedClass1">
+      <containment>
+        <parent>
+          <hasClass name="MainEnumIntKeyAttributesClass">
+            <mimName>MMRevC_EnumIntKeyAttributes</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="EnumKeyedClass1">
+            <mimName>MMRevC_EnumIntKeyAttributes</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+    <relationship name="MainEnumIntKeyAttributesClass_to_DerivedIntegerKeyedClass">
+      <containment>
+        <parent>
+          <hasClass name="MainEnumIntKeyAttributesClass">
+            <mimName>MMRevC_EnumIntKeyAttributes</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="DerivedIntegerKeyedClass">
+            <mimName>MMRevC_EnumIntKeyAttributes</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>23</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </mim>
+  <interMim>
+    <relationship name="Root_to_MainEnumIntKeyAttributesClass">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="true"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>MomA</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MainEnumIntKeyAttributesClass">
+            <mimName>MMRevC_EnumIntKeyAttributes</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

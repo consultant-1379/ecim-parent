@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Oct 13, 2015 2:23:27 PM using:
+	* com.ericsson.ecim.m2m 3.0.2.qualifier
+	* com.ericsson.ecim.dsl 3.0.2.qualifier
+	* com.ericsson.ecim.edm 3.0.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate/>
+    </momIdentity>
+    <createdBy>
+      <signature>EAB/FJP/TA UABJOCL</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>EAB/FJP/TA UABJOCL</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim author="EAB/FJP/TA UABJOCL" contact="EAB/FJP/TA UABJOCL" correction="1" date="" docNo="" name="RsyncFrequencySyncIO" namespace="urn:com:ericsson:ecim:RsyncFrequencySyncIO" namespacePrefix="rsyncfrequencysyncio" organization="" release="0" revision="" version="3">
+    <description>ECIM Transport frequency SyncIO Model.</description>
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <enum name="PortDirection">
+      <description>The direction of the synchronization interface.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="5"/>
+        <extension name="originatingMimName" value="RsyncSyncLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="BIDIRECTION">
+        <description>The port can input and output signal.</description>
+        <value>3</value>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature PortDirection_literals</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="INPUT_ONLY">
+        <description>The port can only input signals.
+
+It cannot output any signals. </description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="OUTPUT_ONLY">
+        <description>The port can only output signals.
+
+It cannot input any signals. 
+</description>
+        <value>2</value>
+      </enumMember>
+    </enum>
+    <enum name="AvailStatus">
+      <description>The availability status is used to qualify the operational state.&#13;
+ It indicates why the operational state has changed its value. </description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="6"/>
+        <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="IN_TEST">
+        <description>The resource is undergoing a test procedure. &#13;
+If the administrative state is locked or  shutting down then normal users are precluded from using the resource.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="FAILED">
+        <description>The resource has an internal fault that prevents it from operating.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="POWER_OFF">
+        <description>The resource requires power to be applied and is not powered on.</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="OFF_LINE">
+        <description>The resource requires a routine operation to be performed.&#13;
+This routine operation is to place the resource online and make it available for use. The operation may be manual or automatic, or both. The operational state is disabled.</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="OFF_DUTY">
+        <description>The resource has been made inactive by an internal control process.</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY">
+        <description>The resource cannot operate because some other resource on which it depends is unavailable.</description>
+        <value>5</value>
+      </enumMember>
+      <enumMember name="DEGRADED">
+        <description>The service available from the resource is degraded in some respect.</description>
+        <value>6</value>
+      </enumMember>
+      <enumMember name="NOT_INSTALLED">
+        <description>The resource represented by the managed object is not present, or is incomplete.</description>
+        <value>7</value>
+      </enumMember>
+      <enumMember name="LOG_FULL">
+        <description>This indicates a log full condition.</description>
+        <value>8</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_LOCKED">
+        <description>The administrative state of a resource that this resource depends on is locked.&#13;
+ or the availability status of the other resource is dependency locked.  </description>
+        <value>9</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_FAILED">
+        <description>The availability status of a resource that this resource depends on is failed or dependency failed.</description>
+        <value>10</value>
+      </enumMember>
+      <enumMember name="DEPENDENCY_SHUTTINGDOWN">
+        <description>The administrative state of a resource that this resource depends on is shutting down.&#13;
+ or the availability status of the other resource is dependency shutting down. </description>
+        <value>11</value>
+      </enumMember>
+    </enum>
+    <enum name="SsmLocation">
+      <description>Where the SSM code is located.&#13;
+&#13;
+It is only available when syncIO works in 2MBits mode.</description>
+      <enumMember name="SA4">
+        <description>SSM code locates in SA4.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="SA5">
+        <description>SSM code locates in SA5.</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="SA6">
+        <description>SSM code locates in SA6.</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="SA7">
+        <description>SSM code locates in SA7.</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="SA8">
+        <description>SSM code locates in SA8.</description>
+        <value>5</value>
+      </enumMember>
+    </enum>
+    <enum name="SyncIOMode">
+      <description>Frequency mode of the synchronization IO port.&#13;
+</description>
+      <enumMember name="FREQUENCY_2048KHZ">
+        <description>Frequency SyncIO works in 2048KHz mode.</description>
+        <value>3</value>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIOMode2048KHZ</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="FREQUENCY_2MBITS">
+        <description>Frequency SyncIO works in 2MBits mode.</description>
+        <value>4</value>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIOMode2MBITS</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="FREQUENCY_1544KBITS">
+        <description>Frequency SyncIO works in 1.544MBits mode.</description>
+        <value>6</value>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIOMode1544KBITS</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="FREQUENCY_1_5MHZ">
+        <description>Frequency SyncIO works in 1.5MHz mode.</description>
+        <value>5</value>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIOMode1_5MHZ</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="FREQUENCY_6_3MHZ">
+        <description>Frequency SyncIO works in 6.3MHz mode.&#13;
+&#13;
+Optional to support - Flag : if-feature FequencySyncIOMode6_3MHZ</description>
+        <value>8</value>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIOMode6_3MHZ</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="FREQUENCY_64KHZ">
+        <description>Frequency SyncIO works in 64KHz mode.&#13;
+&#13;
+Optional to support - Flag : if-feature FequencySyncIOMode64KHZ</description>
+        <value>9</value>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIOMode64KHZ</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="UNKNOWN_MODE">
+        <description>Unknown mode.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="FREQUENCY_1PPS">
+        <description>Frequency synchronization IO works in 1PPS mode. </description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="FREQUENCY_2_MHZ">
+        <description>Frequency synchronization IO works in 2 MHz mode. </description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="FREQUENCY_25MHZ">
+        <description>Frequency SyncIO works in 25MHZ mode.&#13;
+&#13;
+Optional to support - Flag : if-feature FequencySyncIOMode25MHZ</description>
+        <value>12</value>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIOMode25MHZ</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="FREQUENCY_15MHZ">
+        <description>Frequency SyncIO works in 15MHZ mode.&#13;
+&#13;
+Optional to support - Flag : if-feature FequencySyncIOMode15MHZ</description>
+        <value>11</value>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIOMode15MHZ</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="FREQUENCY_10_MHZ">
+        <description>Frequency synchronization IO works in 10 MHz mode. </description>
+        <value>10</value>
+      </enumMember>
+      <enumMember name="FREQUENCY_1544KHZ">
+        <description>Frequency SyncIO works in 1544KHZ mode.</description>
+        <value>7</value>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIOMode1544KHZ</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+    </enum>
+    <enum name="LinkStatus">
+      <description>Link status.&#13;
+&#13;
+It is deceided by the physical status of underlying implementation.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="5"/>
+        <extension name="originatingMimName" value="RsyncSyncLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="LINK_UNKONWN">
+        <description>Indicates that can't get the status.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="LINK_UP">
+        <description>Indicates that link is up.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="LINK_DOWN">
+        <description>Indicates that link is down.</description>
+        <value>2</value>
+      </enumMember>
+    </enum>
+    <enum name="OperState">
+      <description>The operational states of a resource.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="6"/>
+        <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="DISABLED">
+        <description> The resource is  totally inoperable.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="ENABLED">
+        <description> The resource is partially or fully operable.</description>
+        <value>1</value>
+      </enumMember>
+    </enum>
+    <enum name="EnableStatus">
+      <description>Enable Status.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="5"/>
+        <extension name="originatingMimName" value="RsyncSyncLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="ENABLED">
+        <description>Function is enabled.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="DISABLED">
+        <description>Function is disabled.</description>
+        <value>2</value>
+      </enumMember>
+    </enum>
+    <enum name="AdmState">
+      <description>The administrative state of a resource. </description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="6"/>
+        <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="LOCKED">
+        <description>The resource is administratively prohibited from performing services for its users.</description>
+        <value>0</value>
+      </enumMember>
+      <enumMember name="UNLOCKED">
+        <description>The resource is administratively permitted to perform services for its users.&#13;
+This is independent of its inherent operability.</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="SHUTTINGDOWN">
+        <description>Use of the resource is administratively permitted to existing instances of use only.&#13;
+While the system remains in the shutting down state the manager may at any time cause the managed object to revert to the locked state.</description>
+        <value>2</value>
+      </enumMember>
+    </enum>
+    <class name="FrequencySyncIO">
+      <description>The MO class specifies that a physical synchronization port is used for frequency synchronization. </description>
+      <validationRules>
+        <rule exceptionText="" format="ECIM_Schematron_1.0" name="FrequencySyncIO"><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+	<pattern>
+		<rule>
+		<assert test='every $frequencySyncIOId in @frequencySyncIOId satisfies (every $encapsulation in @encapsulation satisfies ((count(../TimeSyncIO[($encapsulation eq @encapsulation)]) + count(../FrequencySyncIO[($frequencySyncIOId ne @frequencySyncIOId) and ($encapsulation eq @encapsulation)])) eq 0))'> <value-of select="."/> Two or more FrequencySyncIO/TimeSyncIO cannot refer to the same SyncPort in attribute encapsulation </assert>
+		<assert test='contains(@encapsulation, "SyncPort=")'> <value-of select="."/> Attribute encapsulation of a FrequencySyncIO can only refer to a SyncPort </assert>
+		<assert test='exists(@encapsulation)'> <value-of select="."/> MO in attribute encapsulation does not exist. </assert>
+		<assert test='(@adminPortDirection eq 1)'><value-of select="."/> Attribute adminPortDirection of a FrequencySyncIO can only support INPUT_ONLY. </assert>
+		</rule>
+	</pattern>
+</schema>]]></rule>
+      </validationRules>
+      <root/>
+      <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+	<pattern>
+		<rule>
+		<assert test='every $frequencySyncIOId in @frequencySyncIOId satisfies (every $encapsulation in @encapsulation satisfies ((count(../TimeSyncIO[($encapsulation eq @encapsulation)]) + count(../FrequencySyncIO[($frequencySyncIOId ne @frequencySyncIOId) and ($encapsulation eq @encapsulation)])) eq 0))'> <value-of select="."/> Two or more FrequencySyncIO/TimeSyncIO cannot refer to the same SyncPort in attribute encapsulation </assert>
+		<assert test='contains(@encapsulation, "SyncPort=")'> <value-of select="."/> Attribute encapsulation of a FrequencySyncIO can only refer to a SyncPort </assert>
+		<assert test='exists(@encapsulation)'> <value-of select="."/> MO in attribute encapsulation does not exist. </assert>
+		<assert test='(@adminPortDirection eq 1)'><value-of select="."/> Attribute adminPortDirection of a FrequencySyncIO can only support INPUT_ONLY. </assert>
+		</rule>
+	</pattern>
+</schema>]]></dependenciesScript>
+      <attribute name="frequencySyncIOId">
+        <description>The value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="linkStatus">
+        <description>Shows the link status of frequency SyncIO.</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="LinkStatus">
+            <mimName>RsyncFrequencySyncIO</mimName>
+          </enumRef>
+        </dataType>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIO_attributes</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="adminPortMode">
+        <description>Specifies the port mode of the frequency syncIO interface.&#13;
+&#13;
+adminPortMode is read-write attribute, used only when the port mode can be changed by user. If the mode of this syncIO is fixed, user can’t set adminPortMode, admin value should be equal to operPortMode.&#13;
+Products can implement part of the frequency mode.&#13;
+</description>
+        <mandatory/>
+        <dataType>
+          <enumRef name="SyncIOMode">
+            <mimName>RsyncFrequencySyncIO</mimName>
+          </enumRef>
+        </dataType>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIO_attributes</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="ssmLocation">
+        <description>Specifies the SSM code location when frequency SyncIO works in 2MBits mode.&#13;
+&#13;
+It is only used when frequency SyncIO works in 2MBits mode.&#13;
+The value shall be SA4 (default), SA5, SA6, SA7, SA8. Products could implement part of them.</description>
+        <dataType>
+          <enumRef name="SsmLocation">
+            <defaultValue>SA4</defaultValue>
+            <mimName>RsyncFrequencySyncIO</mimName>
+          </enumRef>
+        </dataType>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIO_attributes</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="squelch">
+        <description>Specifies if a Synchronization output  will be squelched or not when the clock generating the signal is not trusted anymore.</description>
+        <dataType>
+          <enumRef name="EnableStatus">
+            <defaultValue>DISABLED</defaultValue>
+            <mimName>RsyncFrequencySyncIO</mimName>
+          </enumRef>
+        </dataType>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIO_attributes</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="adminPortDirection">
+        <description>Specifies the port direction of the frequency synchronization IO port. </description>
+        <dataType>
+          <enumRef name="PortDirection">
+            <defaultValue>INPUT_ONLY</defaultValue>
+            <mimName>RsyncFrequencySyncIO</mimName>
+          </enumRef>
+        </dataType>
+        <deprecated/>
+        <dependencies>Attribute adminPortDirection of a FrequencySyncIO can only support INPUT_ONLY.</dependencies>
+      </attribute>
+      <attribute name="operPortDirection">
+        <description>Shows the direction of the frequency syncIO interface.&#13;
+&#13;
+operPortDirection is read-only attribute, decided by the physical status of frequency SyncIO hardware.</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="PortDirection">
+            <mimName>RsyncFrequencySyncIO</mimName>
+          </enumRef>
+        </dataType>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIO_attributes</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="operPortMode">
+        <description>Indicates the frequency mode of the frequency synchronization IO.&#13;
+</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <enumRef name="SyncIOMode">
+            <mimName>RsyncFrequencySyncIO</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+      <attribute name="inputSource">
+        <description>Specifies the input source of this Frequency syncIO instance.&#13;
+&#13;
+It is used when products implement the frequency SyncIO function as: user can select the input source to drive the output signal of syncIO directly.&#13;
+Products shall define which type could be used as the input sources.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIO_attributes</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="encapsulation">
+        <description>Reference to the underlying encapsulation, which must be a SyncPort MO. </description>
+        <mandatory/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+        <dependencies>Two or more FrequencySyncIO/TimeSyncIO cannot refer to the same SyncPort in attribute encapsulation.
+Attribute encapsulation of a FrequencySyncIO can only refer to a SyncPort.
+MO in attribute encapsulation does not exist.
+</dependencies>
+      </attribute>
+      <attribute name="availabilityStatus">
+        <description>The availability status.
+
+It contains details about operationalState. </description>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <enumRef name="AvailStatus">
+              <mimName>RsyncFrequencySyncIO</mimName>
+            </enumRef>
+            <minLength>0</minLength>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="operationalState">
+        <description>The operational state. </description>
+        <readOnly/>
+        <dataType>
+          <enumRef name="OperState">
+            <mimName>RsyncFrequencySyncIO</mimName>
+          </enumRef>
+        </dataType>
+      </attribute>
+      <attribute name="administrativeState">
+        <description>Specifies the administrative state of the MO.
+</description>
+        <dataType>
+          <enumRef name="AdmState">
+            <defaultValue>LOCKED</defaultValue>
+            <mimName>RsyncFrequencySyncIO</mimName>
+          </enumRef>
+        </dataType>
+        <obsolete/>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature FrequencySyncIO_attributes</decisionStatement>
+        </decisionPoint>
+      </attribute>
+      <attribute name="reservedBy">
+        <description>Contains a list of MO instances that reserve this MO instance.</description>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <moRef name="ManagedObject"/>
+            <minLength>0</minLength>
+          </sequence>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="FrequencySyncIO_encapsulation_to_SyncPort_reservedBy">
+      <biDirectionalAssociation>
+        <associationEnd name="encapsulation">
+          <hasClass name="SyncPort">
+            <mimName>ReqSyncPort</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="FrequencySyncIO">
+            <mimName>RsyncFrequencySyncIO</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+  </mim>
+  <interMim>
+    <relationship name="Synchronization_to_FrequencySyncIO">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="false"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Synchronization">
+            <mimName>RsyncSynchronization</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="FrequencySyncIO">
+            <mimName>RsyncFrequencySyncIO</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>8</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+        <noNotification/>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

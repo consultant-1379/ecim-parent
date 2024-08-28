@@ -1,0 +1,398 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:33:21 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ECIM_HwIM" {
+	namespace "urn:com:ericsson:ecim:ECIM_HwIM";
+	prefix "ECIM_HwIM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	organization "FLE/EU";
+	description "ECIM Hardware Inventory.";
+
+	revision "2014-10-21" {
+		ericsson:author "FLE/EU Vahagn Avedian";
+		ericsson:version "2";
+		ericsson:revision "A";
+		ericsson:release "0";
+		ericsson:correction "0";
+		ericsson:contact "FLE/EU Vahagn Avedian";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:SystemFunctions" {
+		list "HwInventory" {
+			key "hwInventoryId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "HwItem" {
+				key "hwItemId";
+				list "HwItem" {
+					key "hwItemId";
+					list "HwItem" {
+						key "hwItemId";
+						list "HwItem" {
+							key "hwItemId";
+							list "HwItem" {
+								key "hwItemId";
+								list "HwItem" {
+									key "hwItemId";
+									list "HwItem" {
+										key "hwItemId";
+										list "HwItem" {
+											key "hwItemId";
+											list "HwItem" {
+												key "hwItemId";
+												list "HwItem" {
+													key "hwItemId";
+													list "HwItem" {
+														key "hwItemId";
+														list "HwItem" {
+															key "hwItemId";
+															list "HwItem" {
+																key "hwItemId";
+																list "HwItem" {
+																	key "hwItemId";
+																	list "HwItem" {
+																		key "hwItemId";
+																		list "HwItem" {
+																			key "hwItemId";
+																			list "HwItem" {
+																				key "hwItemId";
+																				list "HwItem" {
+																					key "hwItemId";
+																					list "HwItem" {
+																						key "hwItemId";
+																						list "HwItem" {
+																							key "hwItemId";
+																							list "HwItem" {
+																								key "hwItemId";
+																								uses ECIM_HwIM:HwItem;
+																							}
+
+																							uses ECIM_HwIM:HwItem;
+																						}
+
+																						uses ECIM_HwIM:HwItem;
+																					}
+
+																					uses ECIM_HwIM:HwItem;
+																				}
+
+																				uses ECIM_HwIM:HwItem;
+																			}
+
+																			uses ECIM_HwIM:HwItem;
+																		}
+
+																		uses ECIM_HwIM:HwItem;
+																	}
+
+																	uses ECIM_HwIM:HwItem;
+																}
+
+																uses ECIM_HwIM:HwItem;
+															}
+
+															uses ECIM_HwIM:HwItem;
+														}
+
+														uses ECIM_HwIM:HwItem;
+													}
+
+													uses ECIM_HwIM:HwItem;
+												}
+
+												uses ECIM_HwIM:HwItem;
+											}
+
+											uses ECIM_HwIM:HwItem;
+										}
+
+										uses ECIM_HwIM:HwItem;
+									}
+
+									uses ECIM_HwIM:HwItem;
+								}
+
+								uses ECIM_HwIM:HwItem;
+							}
+
+							uses ECIM_HwIM:HwItem;
+						}
+
+						uses ECIM_HwIM:HwItem;
+					}
+
+					uses ECIM_HwIM:HwItem;
+				}
+
+				uses ECIM_HwIM:HwItem;
+			}
+
+			uses ECIM_HwIM:HwInventory;
+		}
+
+	}
+
+	typedef "HwDataEntry" {
+		type enumeration {
+			enum "PASSIVE" {
+				value 0;
+				description "Manual insertion of inventory data is required. ";
+			}
+
+			enum "ACTIVE" {
+				value 1;
+				description "Inventory data can be read from the hardware item.";
+			}
+
+		}
+
+		description "The mode used for handling the inventory data insertion. 
+Indicates whether the unit is passive, that is, manual insertion of inventory data is required, or active, that is, inventory data can be read from the unit.";
+	}
+
+	grouping "HwInventory" {
+		description "The HW Inventory.
+
+This MO is created by the system.";
+		leaf "timeOfLatestInvChange" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			config true;
+			description
+			"The time of the latest inventory change. An inventory change results in an AVC notification.";
+		}
+
+		leaf "hwInventoryId" {
+			type string;
+			mandatory true;
+			description "The unique identifier for this object instance. ";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			mandatory true;
+			description
+			"Label that is to be used by the operator or commissioning engineer to provide relevant information.";
+		}
+
+	}
+
+	grouping "HwItemAttribute" {
+		description
+		"The HwItemAttribute allows for the addition of attributes that are considered application specific.";
+		leaf "name" {
+			type string;
+			mandatory true;
+			description "Attribute name.";
+		}
+
+		leaf "value" {
+			type string;
+			mandatory true;
+			description "Attribute value.";
+		}
+
+	}
+
+	grouping "HwItem" {
+		description "HwItem represents any kind of Ericsson hardware that is present on the ME. 
+
+This MO is created by the system.";
+		leaf "hwItemId" {
+			type string;
+			mandatory true;
+			description "The unique identifier for this object instance.";
+			ericsson:restricted;
+		}
+
+		leaf "vendorName" {
+			type string;
+			mandatory true;
+			config true;
+			description
+			"The name of the hardware item vendor or the manufacturer's name provided by the vendor.";
+		}
+
+		leaf "hwModel" {
+			type string;
+			mandatory true;
+			config true;
+			description "The hardware configuration. 
+
+For example a standard HW unit or a variant that contains additional disk capacity. 
+Compared to hwName, this is yet a further specification of the HwItem, for example a DUG or GEP5.
+";
+		}
+
+		leaf "hwType" {
+			type string;
+			mandatory true;
+			config true;
+			description "The hardware item type. 
+
+Used for a general classification of the HwItem, for example, Blade or ReplaceableUnit. 
+The hwType must correspond to the MO Class of the corresponding MO in ECIM Equipment, for example, Blade or FieldReplaceableUnit. 
+If a managed element does not support ECIM Equipment, it can choose one of the ECIM Optional Constructs – Cabinet, Shelf , Rack, PluginUnit, Blade, Card, PhysicalConnector, FanModule – as appropriate
+";
+		}
+
+		leaf "hwName" {
+			type string;
+			mandatory true;
+			config true;
+			description "Mnemonic of HW inventory unit family type. 
+
+Compared to hwType, this is a more specific classification of the HwItem, for example, Fan, Digital Unit or Generic Processor.";
+		}
+
+		leaf "hwCapability" {
+			type string;
+			mandatory true;
+			config true;
+			description "A freetext description of the hardware capability, for example, capacity or size.
+";
+		}
+
+		leaf-list "equipmentMoRef" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description "Reference to a managed object from the Equipment model.";
+		}
+
+		leaf "additionalInformation" {
+			type string;
+			mandatory true;
+			config true;
+			description "Supplementary information about the inventory data, if any.";
+		}
+
+		leaf "hwUnitLocation" {
+			type string;
+			mandatory true;
+			config true;
+			description "The position of the hardware item. 
+
+Depending on the implementation of the unit in the managed system, the value and meaning of this attribute can vary. 
+For example, if a system has three levels and types of units that represents Rack, Shelf and Slot respectively, that is, the Managed Element contains multiple Rack inventory units, each Rack inventory unit contains multiple Shelf inventory units and each Shelf inventory unit contains multiple Slot inventory units. In this example: 
+
+- For the Inventory Unit that represents a Rack, the Frame Identification code can be used as the value of this attribute. 
+- For the Inventory Unit that represents a Shelf, the Rack Shelf code can be used as the value of this attribute. 
+- For the Inventory Unit that represents a Slot, the position code can be used as the value of this attribute.";
+		}
+
+		leaf "manualDataEntry" {
+			type ECIM_HwIM:HwDataEntry;
+			mandatory true;
+			config true;
+			description "The mode for handling the inventory data insertion.
+Indicates whether the unit is passive, that is, manual insertion of inventory data is needed, or active, that is, inventory data can be read from the unit.";
+		}
+
+		leaf "serialNumber" {
+			type string;
+			mandatory true;
+			config true;
+			description "The hardware serial number. 
+
+It consists of max 35 alphanumerical characters to accommodate support for foreign numbers as well as acquired companies' solutions. However, it typically consists of 13 characters grouped as 6 plus 7 characters. The first 6 characters are to be used for factory codes and the last 7 characters are used for an individual number or batch number. ";
+		}
+
+		leaf "dateOfLastService" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			config true;
+			description "The date of last service or repair of the hardware item.";
+		}
+
+		leaf "dateOfManufacture" {
+			type ECIM_CommonLibrary:DateTime;
+			mandatory true;
+			config true;
+			status deprecated;
+			description "The date of manufacture of the hardware item.
+DEPRECATED. Use productData:productionDate";
+		}
+
+		leaf-list "swInvMoRef" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description "Reference to a managed object from the SwIM model.";
+		}
+
+		leaf-list "licMgmtMoRef" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description
+			"Reference to a managed object from the Licence Management model.";
+		}
+
+		list "additionalAttributes" {
+			config true;
+			description
+			"Additional HwItem attributes that are considered application specific.";
+			uses ECIM_HwIM:HwItemAttribute;
+		}
+
+		list "productIdentity" {
+			key "productNumber";
+			min-elements 1;
+			max-elements 1;
+			config true;
+			status deprecated;
+			description "ProductIdentity contains product designation, number, and revision information.
+DEPRECATED. Use productData.
+
+The product designation, that is, productNumber + productRevision must correspond to the criteria defined in PRIM.";
+			uses ECIM_CommonLibrary:ProductIdentity;
+		}
+
+		list "productData" {
+			max-elements 1;
+			config true;
+			description "ProductData contains product name, type, number, revision, and production date.
+
+The product description i.e. productNumber + productRevision should correspond to what is defined in PRIM.
+
+productName is the mnemonic of HW inventory unit family type. 
+Compared to hwType, this is a more specific classification of the HwItem, for example, Fan, Digital Unit or Generic Processor.
+
+productNumber is the unique product number of the hardware in the Ericsson ABC format. See Ericsson Corporate Basic Standards for information.
+
+type is the hardware item type. 
+Used for a general classification of the HwItem, for example, Blade or ReplaceableUnit. 
+The hwType must correspond to the MO Class of the corresponding MO in ECIM Equipment, for example, Blade or FieldReplaceableUnit. 
+If a managed element does not support ECIM Equipment, it can choose one of the ECIM Optional Constructs – Cabinet, Shelf , Rack, PluginUnit, Blade, Card, PhysicalConnector, FanModule – as appropriate.
+
+productionDate is the manufacturing date of the hardware item.
+
+productRevision is in the format R[1-9][A-Z]. See the Ericsson Corporate Basic Standards for information.";
+			uses ECIM_CommonLibrary:ProductData;
+		}
+
+	}
+
+}

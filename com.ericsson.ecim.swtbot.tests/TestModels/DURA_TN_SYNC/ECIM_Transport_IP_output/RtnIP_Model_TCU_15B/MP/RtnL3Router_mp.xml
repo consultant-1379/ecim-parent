@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Oct 14, 2015 9:52:40 PM using:
+	* com.ericsson.ecim.m2m 3.0.2.qualifier
+	* com.ericsson.ecim.dsl 3.0.2.qualifier
+	* com.ericsson.ecim.edm 3.0.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+    <createdBy>
+      <signature>EAB/FJP/TA UABERPE</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>EAB/FJP/TA UABERPE</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="2" date="" docNo="" name="RtnL3Router" namespace="urn:com:ericsson:ecim:RtnL3Router" namespacePrefix="rtnl3router" organization="" release="14" revision="" variant="Model_TCU_15B" version="1">
+    <description>Base routing fragment.</description>
+    <domainExtension domain="ECIM">
+      <extension name="ecimMomName" value="ECIM_T_L3_Router"/>
+      <extension name="ecimMomVersion" value="1"/>
+      <extension name="ecimMomRelease" value="1"/>
+      <extension name="ecimMomCorrection" value="0"/>
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <implements correction="0" name="ECIM_T_L3_Router" release="1" version="1"/>
+    <derivedDataType name="RtnL3Router_Router_ttl">
+      <baseType>
+        <int32>
+          <range>
+            <min>1</min>
+            <max>255</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>1</min>
+              <max>255</max>
+            </subrange>
+          </ranges>
+        </int32>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="RtnL3Router_Router_userLabel">
+      <baseType>
+        <string>
+          <lengthRange>
+            <min>1</min>
+            <max>128</max>
+          </lengthRange>
+          <stringLength>
+            <subrange>
+              <min>1</min>
+              <max>128</max>
+            </subrange>
+          </stringLength>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <class name="Router">
+      <description>Represents an IP routing domain instance.&#13;
+&#13;
+It provides data plane isolation of routed traffic and control plane isolation of routing entities from other routing instances.&#13;
+&#13;
+It allows for further fragmentation of the routing domain.
+
+Dependencies: The maximum number of InterfaceIPv4 MO configured as loopback is 64.</description>
+      <validationRules>
+        <rule exceptionText="" format="ECIM_Schematron_1.0" name="Router"><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+	 <pattern>
+		<rule>
+		<assert test='count(InterfaceIPv4[@loopback]) le 64'><value-of select="."/> Maximum number of InterfaceIPv4 configured as loopback is 64</assert>
+		<assert test='count(../Router/InterfaceIPv4) le 256'><value-of select="."/> Maximum number of InterfaceIPv4 configured is 256</assert>
+		<assert test='count(../Router/InterfaceIPv6) le 256'><value-of select="."/> Maximum number of InterfaceIPv6 configured is 256</assert>
+		<assert test='count(../Router/RouteTableIPv4Static/Dst/NextHop) le 10000'><value-of select="."/>: Max number of NextHop MOs (10000 NextHops) under RouteTableIPv4Static exceeded.</assert>
+		<assert test='count(../Router/RouteTableIPv6Static/Dst/NextHop) le 10000'><value-of select="."/>: Max number of NextHop MOs (10000 NextHops) under RouteTableIPv6Static exceeded.</assert>
+		<assert test='count(../Router/DnsClient) le 1'><value-of select="."/> Maximum number of DnsClient configured is 1</assert>
+		</rule>
+	 </pattern>
+</schema>]]></rule>
+      </validationRules>
+      <root/>
+      <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+	 <pattern>
+		<rule>
+		<assert test='count(InterfaceIPv4[@loopback]) le 64'><value-of select="."/> Maximum number of InterfaceIPv4 configured as loopback is 64</assert>
+		<assert test='count(../Router/InterfaceIPv4) le 256'><value-of select="."/> Maximum number of InterfaceIPv4 configured is 256</assert>
+		<assert test='count(../Router/InterfaceIPv6) le 256'><value-of select="."/> Maximum number of InterfaceIPv6 configured is 256</assert>
+		<assert test='count(../Router/RouteTableIPv4Static/Dst/NextHop) le 10000'><value-of select="."/>: Max number of NextHop MOs (10000 NextHops) under RouteTableIPv4Static exceeded.</assert>
+		<assert test='count(../Router/RouteTableIPv6Static/Dst/NextHop) le 10000'><value-of select="."/>: Max number of NextHop MOs (10000 NextHops) under RouteTableIPv6Static exceeded.</assert>
+		<assert test='count(../Router/DnsClient) le 1'><value-of select="."/> Maximum number of DnsClient configured is 1</assert>
+		</rule>
+	 </pattern>
+</schema>]]></dependenciesScript>
+      <attribute name="routerId">
+        <description>The value component of the RDN. &#13;
+</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="ttl">
+        <description>Default value of Time-To-Live (TTL).
+
+The default value inserted into the TTL field of the IPv4 header of datagrams, originated from this instance, whenever a TTL value is not supplied by the transport layer protocol.</description>
+        <dataType>
+          <derivedDataTypeRef name="RtnL3Router_Router_ttl">
+            <defaultValue>64</defaultValue>
+            <mimName>RtnL3Router</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use. &#13;
+</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="RtnL3Router_Router_userLabel">
+            <mimName>RtnL3Router</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+    </class>
+  </mim>
+  <interMim>
+    <relationship name="Transport_to_Router">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="false"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Transport">
+            <mimName>ECIM_Top</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="Router">
+            <mimName>RtnL3Router</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>8</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

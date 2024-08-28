@@ -1,0 +1,16 @@
+This is a replicate repo of ssh://gerritforge.lmera.ericsson.se:29418/ecimtoolchain in ENM. To sync the code from ecimtoolchain, instruction as below.
+
+1. git reset --hard HEAD~<n>, the <n> is the number of commits you need to drop. We need to drop changes made by San Jose team first, so when we do step 2, we won't hit any merge conflicts.
+
+2. git pull ssh://gerritforge.lmera.ericsson.se:29418/ecimtoolchain master, type your Windows password. If you could not pull, that means you don't have permission to ecimtoolchain repo, contact Minna Hu.
+
+3. Build this repo, please check http://confluence-nam.lmera.ericsson.se/pages/viewpage.action?pageId=145852301 for how to build. Only proceed to next step if you see "BUILD SUCCESS".
+
+4. run regression test of yang-transformer, https://gerrit.ericsson.se/#/admin/projects/OSS/com.ericsson.oss.mediation.modeling.yangtools/yang-transformer, in yang-transformer/pom.xml, change <version.yang.parser>x.y.z</version.yang.parser> to the version that is built in step 3, and then run "mvn clean install". Only proceed to next step if you see "BUILD SUCCESS".
+
+5. Bump up the project version to new release version so it doesn't conflict with the existing release version in Nexus. This can easily be done using:
+   mvn versions:set -DnewVersion=<x.y.z> -DgenerateBackupPoms=false 
+   
+   commit above change.
+
+7. do "git merge -s ours remotes/origin/master", and then do "git push".

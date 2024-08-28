@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_RS_ServiceId" namespace="urn:com:ericsson:ecim:Epg_Pgw_RS_ServiceId" namespacePrefix="epg_pgw_rs_serviceid" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="2">
+        <description>HELP: "Service identifier settings"</description>
+        <enum name="Default">
+            <description>Default policy</description>
+            <enumMember name="not-allowed">
+                <description>Alternative service identifier reporting not allowed by default</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="allowed">
+                <description>Alternative service identifier reporting allowed by default</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString21">
+            <description>Must be an access control rule identifier or a range of access control rule identifiers</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>21</max>
+                    </lengthRange>
+                    <validValues>^[0-9]{1,10}([-][0-9]{1,10})?$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="ServiceId">
+            <description>Service identifier settings</description>
+            <root/>
+            <attribute name="serviceIdID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RS_ServiceId</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Map">
+            <description>Map of access control rules to a service identifier</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(../../@enableAccessControlRules)'><name path='.'/>: Must enable-access-control-rules for this rule-space!</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="mapId">
+                <description>Service identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="accessControlRule">
+                <description>Access control rule identifier or set of access control rule identifiers mapped to service identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RS_ServiceId</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>1</minLength>
+                        <maxLength>512</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Reporting">
+            <description>Alternative service identifier reporting settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @allowedAccessControlRule satisfies (not(@default eq 2))'><name path='.'/>,allowedAccessControlRule: Incompatible with default allowed</assert>]]>&#13;<![CDATA[
+
+            <assert id='set' test='every $attr in @notAllowedAccessControlRule satisfies (not(@default eq 1))'><name path='.'/>,notAllowedAccessControlRule: Incompatible with default not-allowed</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @allowedAccessControlRule satisfies (not(exists(@notAllowedAccessControlRule)))'><name path='.'/>,allowedAccessControlRule: The following attributes can not be combined: allowed-access-control-rule, not-allowed-access-control-rule</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @notAllowedAccessControlRule satisfies (not(exists(@allowedAccessControlRule)))'><name path='.'/>,notAllowedAccessControlRule: The following attributes can not be combined: allowed-access-control-rule, not-allowed-access-control-rule</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="reportingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_RS_ServiceId</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="default">
+                <description>Default policy</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Default">
+                        <mimName>Epg_Pgw_RS_ServiceId</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="allowedAccessControlRule">
+                <description>Access control rule allowed for alternative service identifier reporting</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RS_ServiceId</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>512</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="notAllowedAccessControlRule">
+                <description>Access control rule not allowed for alternative service identifier reporting</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_RS_ServiceId</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>512</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="ServiceId_to_Map">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceId">
+                        <mimName>Epg_Pgw_RS_ServiceId</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Map">
+                        <mimName>Epg_Pgw_RS_ServiceId</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>4095</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceId_to_Reporting">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceId">
+                        <mimName>Epg_Pgw_RS_ServiceId</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Reporting">
+                        <mimName>Epg_Pgw_RS_ServiceId</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="RuleSpace_to_ServiceId">
+            <containment>
+                <parent>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_RuleSpace</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceId">
+                        <mimName>Epg_Pgw_RS_ServiceId</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

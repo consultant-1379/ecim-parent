@@ -1,0 +1,139 @@
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * Copyright (C) 2009 by Ericsson AB                                       * -->
+<!-- * S - 126 25  STOCKHOLM                                                   * -->
+<!-- * SWEDEN, tel int + 46 8 719 0000                                         * -->
+<!-- *                                                                         * -->
+<!-- * This program may be used and/or copied only with the written permission * -->
+<!-- * from Ericsson AB, or in accordance with the terms and                   * -->
+<!-- * conditions stipulated in the agreement/contract under which the program * -->
+<!-- * has been supplied.                                                      * -->
+<!-- *                                                                         * -->
+<!-- * All rights reserved.                                                    * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+<!--
+  MIM rules for CMF in TSP 6.0
+  ============================
+
+  Revision info: 071115
+
+-->
+
+<!ELEMENT mim (description?, extension*, (jim | hideInLdap | hideInConfd)*, ldapObjectId?, confdTargetNamespace?,
+               dataType*, class*, relationship*)>
+<!ATTLIST mim name CDATA #REQUIRED
+              version CDATA #IMPLIED
+              release CDATA #IMPLIED>
+
+<!ELEMENT description (#PCDATA|extension)*>
+
+<!ELEMENT extension ANY>
+<!ATTLIST extension extender  CDATA   #REQUIRED
+                    name      CDATA   #IMPLIED
+                    version   CDATA   #REQUIRED
+                    release   CDATA   #REQUIRED>
+
+<!ELEMENT jim EMPTY>
+
+<!ELEMENT ldapObjectId (#PCDATA)>
+
+<!ELEMENT confdTargetNamespace (#PCDATA)>
+
+<!ELEMENT class (description?, extension*, baseClass?, abstract?, ldapObjectId?,
+                 (singleton | systemCreated | reducedLoggingAllowed)*,
+                 attribute*, action*)>
+<!ATTLIST class name CDATA #REQUIRED>
+
+<!ELEMENT baseClass EMPTY>
+<!ATTLIST baseClass name CDATA #REQUIRED>
+
+<!ELEMENT abstract EMPTY>
+
+<!ELEMENT singleton EMPTY>
+<!ELEMENT systemCreated EMPTY>
+<!ELEMENT reducedLoggingAllowed EMPTY>
+
+<!ELEMENT relationship (description?, extension*, parent, child)>
+
+<!ELEMENT parent (description?, extension*)>
+<!ATTLIST parent name CDATA #REQUIRED>
+
+<!ELEMENT child (description?, extension*)>
+<!ATTLIST child name CDATA #REQUIRED
+                min  CDATA #IMPLIED
+                max  CDATA #IMPLIED>
+
+<!ELEMENT sequence (description?, extension*, dataType, lengthRange?)>
+<!-- here, the dataType may not be struct or sequence! -->
+
+<!ELEMENT struct (description?, extension*, member+)>
+
+<!ELEMENT member (description?, extension*, dataType)>
+<!-- here, the dataType may not be struct or sequence! -->
+<!ATTLIST member name CDATA #REQUIRED>
+
+<!ELEMENT min (#PCDATA)>
+<!ELEMENT max (#PCDATA)>
+
+<!ELEMENT validValues (value)+>
+<!ELEMENT lengthRange ((min, max?) | max)>
+<!ELEMENT range ((min, max?) | max)>
+
+<!ELEMENT value (description?, extension*)>
+<!ATTLIST value name CDATA #REQUIRED>
+
+<!ELEMENT boolean (defaultValue?)>
+<!ELEMENT float (range?, defaultValue?)>
+<!ELEMENT integer (range?, (pattern|validValues)?, defaultValue?)>
+<!ELEMENT string (lengthRange?, (pattern|validValues)?, defaultValue?)>
+<!ELEMENT dateTime (range?, (pattern|validValues)?, defaultValue?)>
+
+<!ELEMENT defaultValue (#PCDATA)>
+
+<!ELEMENT pattern (#PCDATA)>
+
+<!ELEMENT dataType (description?, extension*,
+  (struct|string|boolean|integer|dateTime|float|sequence)?,
+  ldapTypeInfo?)>
+<!ATTLIST dataType name CDATA #IMPLIED
+                   name.ref CDATA #IMPLIED>
+
+<!ELEMENT ldapTypeInfo ((equality|substr|ordering|syntax)*)>
+
+<!ELEMENT equality (#PCDATA)>
+<!ELEMENT substr (#PCDATA)>
+<!ELEMENT ordering (#PCDATA)>
+<!ELEMENT syntax (#PCDATA)>
+
+<!ELEMENT attribute (description?, extension*, ldapObjectId?, dataType?,
+   (mandatory|restricted|key|initialValue|readOnly|nonPersistent|sensitive|hideInConfd|hideInLdap|systemMaintained|runtime|cached|deletable)*)>
+<!ATTLIST attribute name CDATA #REQUIRED
+                    from CDATA #IMPLIED>
+<!-- If datatype is missing, then 'name' and 'from' must point to a full
+     attribute definition. If datatype is present, then 'from' must not.  -->
+
+<!ELEMENT initialValue (#PCDATA)>
+<!ELEMENT key EMPTY>
+<!ELEMENT readOnly EMPTY>
+<!ELEMENT systemMaintained EMPTY>
+<!ELEMENT mandatory EMPTY>
+<!ELEMENT restricted EMPTY>
+<!ELEMENT nonPersistent EMPTY>
+<!ELEMENT sensitive EMPTY>
+<!ELEMENT hideInConfd EMPTY>
+<!ELEMENT hideInLdap EMPTY>
+<!ELEMENT runtime EMPTY>
+<!ELEMENT cached EMPTY>
+<!ELEMENT deletable EMPTY>
+
+<!ELEMENT action (description?, extension*, returnType, parameter*, (sensitive|reducedLoggingAllowed|hideInConfd|hideInLdap|systemMaintained)*)>
+<!ATTLIST action name CDATA #REQUIRED>
+
+<!ELEMENT returnType (void | dataType)>
+<!ELEMENT void EMPTY>
+
+<!ELEMENT parameter (description?, extension*, dataType, optional?)>
+<!ATTLIST parameter name CDATA #REQUIRED
+                    direction (in|out|inout) "in">
+
+<!ELEMENT optional EMPTY>

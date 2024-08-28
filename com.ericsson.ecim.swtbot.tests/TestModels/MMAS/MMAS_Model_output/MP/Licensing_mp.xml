@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Nov 20, 2015 2:32:34 PM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>huiping</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>huiping</signature>
+        </approvedBy>
+    </momMetaData>
+    <mim name="Licensing" namespace="urn:com:ericsson:ecim:Licensing" namespacePrefix="licensing" release="3" revision="1" version="2">
+        <description>Licensing MOM</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <class name="LicServerSentinel">
+            <description>The class LicServerSentinel is the Sentinel license server node.</description>
+            <attribute name="licServerSentinelId">
+                <description>This attribute defines the identity of the LicServerSentinel instance.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="host">
+                <description>This attribute defines the IP address of the license host.</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="port">
+                <description>This attribute defines the port to use on the license host.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <int32>
+                        <defaultValue>93</defaultValue>
+                    </int32>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="LicServer">
+            <description>The class LicServer is the license server node.</description>
+            <attribute name="licServerId">
+                <description>This attribute defines the identity of the LicServer instance.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="LicLicense">
+            <description>The class LicLicense defines one license.</description>
+            <attribute name="licLicenseId">
+                <description>This attribute defines the identity of the LicLicense</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Licensing">
+            <description>The Licensing MO represents the license management node.</description>
+            <root/>
+            <attribute name="licensingId">
+                <description>This attribute defines the identity of the Licensing instance.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="softLimitPercentage">
+                <description>This attribute defines the percentage, relative to the maximum license capacity. When the number of used licenses is above, or equal to, the given percentage, an alarm with severity Warning is issued.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <int32>
+                        <defaultValue>80</defaultValue>
+                    </int32>
+                </dataType>
+            </attribute>
+            <attribute name="alarmHysteresisPercentage">
+                <description>This attribute defines the percentage, relative to the softLimitPercentage. When the 
+number of used licenses is below softLimitPercentage - alarmHysteresisPercentage, the alarm with severity Warning ceases.
+The use of the hysteresis helps to avoid the alarm from going on and off too frequently, when the number of used licenses is close to the softLimitPercentage.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <int32>
+                        <defaultValue>10</defaultValue>
+                    </int32>
+                </dataType>
+            </attribute>
+            <attribute name="advanceWarningTimeSeconds">
+                <description>This attribute defines the time in seconds before an advance warning is issued. When 
+an absolute time limited license is about to expire, the operator will be alerted, advanceWarningTimeSeconds
+seconds in advance, in order to allow ordering and installation of a new license.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <int64>
+                        <defaultValue>86400</defaultValue>
+                    </int64>
+                </dataType>
+            </attribute>
+            <attribute name="syncIntervalSeconds">
+                <description>This attribute defines the interval in seconds between synchronization of the license cache and the license information on the license server.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <int32>
+                        <defaultValue>10</defaultValue>
+                    </int32>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Licensing_to_LicLicense">
+            <containment>
+                <parent>
+                    <hasClass name="Licensing">
+                        <mimName>Licensing</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="LicLicense">
+                        <mimName>Licensing</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="Licensing_to_LicServer">
+            <containment>
+                <parent>
+                    <hasClass name="Licensing">
+                        <mimName>Licensing</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <description>The class LicServer is the license server node.</description>
+                    <hasClass name="LicServer">
+                        <mimName>Licensing</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="LicServer_to_LicServerSentinel">
+            <containment>
+                <parent>
+                    <hasClass name="LicServer">
+                        <mimName>Licensing</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="LicServerSentinel">
+                        <mimName>Licensing</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </mim>
+    <interMim>
+        <relationship name="Mmas_to_Licensing">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="Mmas">
+                        <mimName>MMAS</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Licensing">
+                        <mimName>Licensing</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

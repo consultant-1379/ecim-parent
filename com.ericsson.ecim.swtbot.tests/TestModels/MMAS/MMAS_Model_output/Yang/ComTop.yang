@@ -1,0 +1,132 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 4:21:09 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "ComTop" {
+	namespace "urn:com:ericsson:ecim:ComTop";
+	prefix "ComTop";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	description "The COM Top Model.";
+
+	revision "2015-04-20" {
+		ericsson:revision "A";
+		ericsson:release "1";
+		ericsson:version "1";
+		ericsson:author "eraasc";
+	}
+
+	list "ManagedElement" {
+		key "managedElementId";
+		list "SystemFunctions" {
+			key "systemFunctionsId";
+			min-elements 1;
+			max-elements 1;
+			uses ComTop:SystemFunctions;
+		}
+
+		list "Equipment" {
+			key "equipmentId";
+			min-elements 1;
+			max-elements 1;
+			uses ComTop:Equipment;
+		}
+
+		list "Transport" {
+			key "transportId";
+			min-elements 1;
+			max-elements 1;
+			uses ComTop:Transport;
+		}
+
+		uses ComTop:ManagedElement;
+	}
+
+	grouping "ManagedElement" {
+		description
+		"This is the root class of the MOM. A ManagedElement MOC will be defined for this root class. A management application will communicate with the ManagedElement MO to monitor and control it.";
+		leaf "managedElementId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			default "";
+			description "Label for free use.";
+		}
+
+		leaf "siteLocation" {
+			type string;
+			default "";
+			description "The location of the site for this ManagedElement.";
+		}
+
+		leaf "productType" {
+			type string;
+			default "";
+			description "The type of product for this ME.";
+		}
+
+	}
+
+	grouping "SystemFunctions" {
+		description "This MO is used as a structural element for all generic functions. It serves as a mount point for system-wide common MOMs.
+The application models must be mounted directly under the root ManagedElement MO.";
+		leaf "systemFunctionsId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			default "";
+			description "Label for free use.";
+		}
+
+	}
+
+	grouping "Equipment" {
+		description
+		"This MO is used as a structural element for all the equipment classes.";
+		leaf "equipmentId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			default "";
+			description "Label for free use.";
+		}
+
+	}
+
+	grouping "Transport" {
+		description
+		"This MO is used as a structural element for all the transport classes.";
+		leaf "transportId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "Label for free use.";
+		}
+
+	}
+
+}

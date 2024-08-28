@@ -1,0 +1,463 @@
+-- /**
+-- * These helpers assist in the transformation from an ECIM complaint model (UML) to a Json compliant model.
+-- * 
+-- * Author: Ronan Barrett and Andreas Jakobik
+-- * Date: 23/08/2012
+-- */
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI JSON=http://www.ericsson.com/ecim/mgc/Json
+-- @nsURI PARAM=http://ericsson.com/ECIM/ParameterModel
+
+library HelperFunctions;
+
+--This helper will return the first, and only, paramater defining the package name. 
+helper def : getParameter() : String = 
+	PARAM!Parameter.allInstancesFrom('IN2')->first().name;
+
+helper def : getParameterValue(key : String) : String = 
+	PARAM!Parameter.allInstancesFrom('IN2')->select(e|e.name=key)->first().value;
+
+helper def : getDescription(classifier : UML!Classifier) : JSON!StringValue =
+	if(classifier.ownedComment.size() > 0)
+	then
+		thisModule.CreateJsonStringValue(classifier.ownedComment.first().body)
+	else
+		thisModule.CreateJsonStringValue('')
+	endif;
+
+helper def : getFileName(className : String) : String =
+	if (className.startsWith('Mo'))
+	then
+		className+'POT.json'
+	else
+		'Mo'+className+'POT.json'
+	endif;
+
+--Retrieve the keytype value
+helper def : getKeyType(classifier : UML!Classifier) : JSON!StringValue =
+	let ecimStereotype : UML!Stereotype = classifier.getEcimAppliedStereotype() in
+	if (ecimStereotype.name = 'EcimKeyAttribute')
+	then
+		thisModule.CreateJsonStringValue('ECIM_KEY')
+	else
+		let isRestricted : Boolean = classifier.getValue(ecimStereotype,'isRestricted') in
+		if(isRestricted)
+		then
+			thisModule.CreateJsonStringValue('MGC_KEY')
+		else
+			thisModule.CreateJsonStringValue('NONE_KEY')
+	 	endif
+	 endif;
+	
+--Retrieve the keytype value
+helper def : getKeyOrder(classifier : UML!Classifier) : JSON!StringValue =
+	let ecimStereotype : UML!Stereotype = classifier.getEcimAppliedStereotype() in
+	if (ecimStereotype.name = 'EcimKeyAttribute')
+	then
+		thisModule.CreateJsonStringValue('')
+	else
+		let isRestricted : Boolean = classifier.getValue(ecimStereotype,'isRestricted') in
+		if(isRestricted)
+		then
+			let mgcStereotype : UML!Stereotype = classifier.getMgcAppliedStereotype() in
+			let keyOrder : String = classifier.getValue(mgcStereotype,'keyOrder') in
+			thisModule.CreateJsonStringValue(keyOrder)
+		else
+			thisModule.CreateJsonStringValue('')
+	 	endif
+	 endif;
+
+
+--Retrieve the max entries, i.e. child cardinality
+helper def : getMaxEntries (classifier : UML!Classifier) : JSON!StringValue =
+	let containmentChildProps : Sequence(UML!Property) = classifier.getNearestPackage().allOwnedElements()
+	->select(e|e.oclIsTypeOf(UML!Class))
+	->collect(c|c.attribute)->flatten()->select(a|not a.association.oclIsUndefined())
+	->select(t|t.type.name=classifier.name) in
+	let contributionChildProps : Sequence(UML!Property) = UML!Association.allInstancesFrom('IN')
+		->select(e|e.hasStereotype('ECIM Base Profile::EcimContribution'))
+		->collect(a|a.ownedEnd)->flatten()->select(t|t.type.name=classifier.name) in
+	if (containmentChildProps->size() = 0) 
+	then
+		if (contributionChildProps->size() = 0)
+		then
+			thisModule.CreateJsonStringValue('1')
+		else
+			thisModule.CreateJsonStringValue(contributionChildProps->asSequence()->first().upperBound().toString())
+		endif
+	else
+		thisModule.CreateJsonStringValue(containmentChildProps->asSequence()->first().upperBound().toString())
+	endif;
+
+--Retrieve the visible value
+helper def : getVisible (classifier : UML!Classifier) : JSON!StringValue =
+	let ecimStereotype : UML!Stereotype = classifier.getEcimAppliedStereotype() in
+	if (ecimStereotype <> OclUndefined)
+	then
+		let hideGroupName : String = classifier.getValue(ecimStereotype,'hideGroupName') in
+		if(hideGroupName <> OclUndefined and hideGroupName <> '')
+		then
+			let visibleOrInvisibleString : String = if hideGroupName.indexOf('invisible') >= 0 then 'false' else 'true' endif in
+			thisModule.CreateJsonStringValue(visibleOrInvisibleString)
+		else
+			thisModule.CreateJsonStringValue('true')
+		endif
+	 else
+	 	OclUndefined 
+	 endif;
+
+--Retrieve the category
+helper def : getCategory (classifier : UML!Classifier) : JSON!StringValue =
+	let mgcStereotype : UML!Stereotype = classifier.getMgcAppliedStereotype() in
+	let imsUdmStereotype : UML!Stereotype = classifier.getImsUdmAppliedStereotype() in
+	if (imsUdmStereotype <> OclUndefined)
+	then
+		let category : String = classifier.getValue(imsUdmStereotype,'category').name in
+		if(category <> OclUndefined)
+		then
+			thisModule.CreateJsonStringValue(category)
+		else
+			thisModule.CreateJsonStringValue('')
+		endif
+	 else
+		if (mgcStereotype <> OclUndefined)
+		then
+			let category : String = classifier.getValue(mgcStereotype,'category') in
+			if(category <> OclUndefined)
+			then
+				thisModule.CreateJsonStringValue(category)
+			else
+				thisModule.CreateJsonStringValue('')
+			endif
+	 	else
+			thisModule.CreateJsonStringValue('')
+	 	endif
+	 endif;
+	
+
+--Retrieve the type 
+helper def : getType (p : UML!Property) : JSON!StringValue =
+	let isEnum : Boolean = p.type.oclIsTypeOf(UML!Enumeration) in
+	if isEnum
+	then
+		if thisModule.isCodecTC(p.type.name)
+		then
+			-- do not prefix type name when type is codecTC
+			thisModule.CreateJsonStringValue(p.type.name)
+		else
+			-- prefix type name with 'enum' string
+			thisModule.CreateJsonStringValue(thisModule.prefixString('enum',p.type.name))
+		endif
+	else
+		if thisModule.isEcimDerivedDatatype(p.type)
+		then
+			thisModule.CreateJsonStringValue('derived' + p.type.name)
+		else
+			thisModule.CreateJsonStringValue(p.type.name)
+		endif
+	endif;
+	
+--Retrieve the default 
+helper def : getDefault (p : UML!Property) : JSON!StringValue =
+	thisModule.CreateJsonStringValue(p.default);
+
+--Retrieve the max access 
+helper def : getMaxAccess(p : UML!Property) : JSON!StringValue =
+	if p.isReadOnly
+	then
+		thisModule.CreateJsonStringValue('read-only')
+	else
+		thisModule.CreateJsonStringValue('read-write')
+	endif;
+
+--Retrieve the admOpId value
+helper def : getAdmOpId (classifier : UML!Classifier) : JSON!StringValue =
+	let cmwStereotype : UML!Stereotype = classifier.getCmwAppliedStereotype() in
+	if (cmwStereotype <> OclUndefined)
+	then
+		let modid : Integer = classifier.getValue(cmwStereotype,'admOpId') in
+		thisModule.CreateJsonStringValue(modid.toString())
+	else
+		thisModule.CreateJsonStringValue('0')
+	endif;
+
+--Retrieve the range 
+helper def : getRange(p : UML!Property) : JSON!StringValue =
+	thisModule.getRangeFromDataType(p.type);
+
+--Retrieve the range 
+helper def : getRangeFromDataType(dt : UML!DataType) : JSON!StringValue =
+	if dt.hasStereotype('ECIM Base Profile::EcimDerivedInteger')
+	then
+		let range : String = dt.getValue(dt.getEcimAppliedStereotype(),'range') in
+		if(range <> OclUndefined and range <> '')
+		then
+			--let rangeSeq : Sequence(String) = range.split('[..]') in
+			--thisModule.CreateJsonStringValue(rangeSeq.at(1)+'..'+rangeSeq.at(3))
+			thisModule.CreateJsonStringValue(range)
+		else
+			thisModule.CreateJsonStringValue('')
+		endif
+	else
+		thisModule.CreateJsonStringValue('')
+	endif;
+
+--Retrieve the validc, i.e. pattern from EcimDerivedString 
+helper def : getValidc(p : UML!Property) : JSON!StringValue =
+	thisModule.getPattern(p.type);
+		
+--Retrieve the validc, i.e. pattern from EcimDerivedString 
+helper def : getPattern(dt : UML!DataType) : JSON!StringValue =
+	if dt.hasStereotype('ECIM Base Profile::EcimDerivedString')
+	then
+		let pattern : String = dt.getValue(dt.getEcimAppliedStereotype(),'pattern') in
+		if(pattern <> OclUndefined and pattern <> '')
+		then
+			thisModule.CreateJsonStringValue(pattern)
+		else
+			thisModule.CreateJsonStringValue('')
+		endif
+	else
+		thisModule.CreateJsonStringValue('')
+	endif;
+
+--Retrieve the validc, i.e. pattern from EcimDerivedString 
+helper def : getLength(dt : UML!DataType) : JSON!StringValue =
+	if dt.hasStereotype('ECIM Base Profile::EcimDerivedString')
+	then
+		let length : String = dt.getValue(dt.getEcimAppliedStereotype(),'length') in
+		if(length <> OclUndefined and length <> '')
+		then
+			thisModule.CreateJsonStringValue(length)
+		else
+			thisModule.CreateJsonStringValue('')
+		endif
+	else
+		thisModule.CreateJsonStringValue('')
+	endif;
+
+--Retrieve the ss7 value
+helper def : getSs7 (classifier : UML!Classifier) : JSON!StringValue =
+	let mgcStereotype : UML!Stereotype = classifier.getMgcAppliedStereotype() in
+	if (mgcStereotype <> OclUndefined)
+	then
+		let ss7 : Boolean = classifier.getValue(mgcStereotype,'ss7') in
+		if(ss7 <> OclUndefined)
+		then
+			let ss7String : String = if ss7 then true.toString() else false.toString() endif in
+			thisModule.CreateJsonStringValue(ss7String)
+		else
+			thisModule.CreateJsonStringValue(false.toString())
+		endif
+	 else
+	 	thisModule.CreateJsonStringValue(false.toString())
+	 endif;
+
+--Retrieve the modid value
+helper def : getModid (classifier : UML!Classifier) : JSON!StringValue =
+	let mgcStereotype : UML!Stereotype = classifier.getMgcAppliedStereotype() in
+	if (mgcStereotype <> OclUndefined)
+	then
+		let modid : Integer = classifier.getValue(mgcStereotype,'modid') in
+		thisModule.CreateJsonStringValue(modid.toString())
+	else
+		thisModule.CreateJsonStringValue('0')
+	endif;
+
+--Retrieve the changereq value
+helper def : getChangereq (classifier : UML!Classifier) : JSON!StringValue =
+	let mgcStereotype : UML!Stereotype = classifier.getMgcAppliedStereotype() in
+	if (mgcStereotype <> OclUndefined)
+	then
+		let changereq : Boolean = classifier.getValue(mgcStereotype,'changereq') in
+		if(changereq <> OclUndefined and changereq <> '')
+		then
+			let changereqString : String = if changereq then true.toString() else false.toString() endif in
+			thisModule.CreateJsonStringValue(changereqString)
+		else
+			thisModule.CreateJsonStringValue(true.toString())
+		endif
+	 else
+	 	thisModule.CreateJsonStringValue(false.toString())
+	 endif;
+
+--Retrieve the realtime value
+helper def : getRealtime (classifier : UML!Classifier) : JSON!StringValue =
+	let mgcStereotype : UML!Stereotype = classifier.getMgcAppliedStereotype() in
+	if (mgcStereotype <> OclUndefined)
+	then
+		let realtime : Boolean = classifier.getValue(mgcStereotype,'realtime') in
+		if(realtime <> OclUndefined and realtime <> '')
+		then -- coding may change to true/false
+			let realtimeString : String = if realtime then true.toString() else false.toString() endif in
+			thisModule.CreateJsonStringValue(realtimeString)
+		else
+			thisModule.CreateJsonStringValue(false.toString())
+		endif
+	 else
+	 	thisModule.CreateJsonStringValue(false.toString())
+	 endif;
+
+
+helper context UML!Element def : getImsUdmAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'IMSUDM').first()
+	else
+		OclUndefined
+	endif;
+
+
+helper context UML!Element def : getMgcAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'MGCProfile').first()
+	else
+		OclUndefined
+	endif;
+
+helper context UML!Element def : getCmwAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'CoreMW Profile').first()
+	else
+		OclUndefined
+	endif;
+
+helper context UML!Element def : getEcimAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'ECIM Base Profile').first()
+	else
+		OclUndefined
+	endif;
+                                  
+helper def : isEcimDerivedDatatype(dt : UML!DataType) : Boolean = 
+	if (not dt.oclIsUndefined())
+	then
+		if dt.hasStereotype('ECIM Base Profile::EcimDerivedString') or 
+		   dt.hasStereotype('ECIM Base Profile::EcimDerivedInteger') or
+		   dt.hasStereotype('ECIM Base Profile::EcimDerivedFloat')
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+helper def : isCodecTC(enum : UML!NamedElement) : Boolean =
+	if (not enum.oclIsUndefined())
+	then
+		if enum.toString().indexOf('CodecsTC') > 0
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+helper def : isEcimResult(p : UML!Parameter) : Boolean = 
+	if (not p.oclIsUndefined())
+	then
+		if p.hasStereotype('ECIM Base Profile::EcimResult')
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+helper def : isEcimParameter(p : UML!Parameter) : Boolean = 
+	if (not p.oclIsUndefined())
+	then
+		if p.hasStereotype('ECIM Base Profile::EcimParameter')
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+helper def : getDerivedDatatypeStereotypeName(dt : UML!DataType) : JSON!StringValue = 
+	if (not dt.oclIsUndefined())
+	then
+		let st : UML!Stereotype = dt.getEcimAppliedStereotype() in
+		thisModule.CreateJsonStringValue(st.name)
+	else
+		thisModule.CreateJsonStringValue('')
+	endif;
+
+helper def : getBaseType(dt : UML!DataType) : String = 
+	if (not dt.oclIsUndefined())
+	then
+		let st : UML!Stereotype = dt.getEcimAppliedStereotype() in
+		thisModule.CreateJsonStringValue(dt.general.first().name)
+	else
+		thisModule.CreateJsonStringValue('')
+	endif;
+
+--returns true if the element has at least one stereotype applied
+helper context UML!Element def: hasStereotypeApplied() : Boolean =
+	self.getAppliedStereotypes()->size() > 0;
+
+--returns true if the element to which the function is called has the specified stereotype applied
+helper context UML!Element def: hasStereotype(name : String) : Boolean =
+	not self.getAppliedStereotype(name).oclIsUndefined();
+
+--prefix a string with a given value
+--Note: Duplicated prefixes are not allowed
+helper def : prefixString (prefix : String, s : String) : String =
+	if s.startsWith(prefix) then s else prefix + s
+	endif;
+
+--creates and returns a codecs bitmap filled with default values
+helper def : createCodecsBitMap() : Map(Integer,JSON!Array) = 
+	Map{(1,thisModule.CreateEnumArray('reserved0','\n')),
+		(2,thisModule.CreateEnumArray('reserved1','\n')),
+		(3,thisModule.CreateEnumArray('reserved2','\n')),
+		(4,thisModule.CreateEnumArray('reserved3','\n')),
+		(5,thisModule.CreateEnumArray('reserved4','\n')),
+		(6,thisModule.CreateEnumArray('reserved5','\n')),
+		(7,thisModule.CreateEnumArray('reserved6','\n')),
+		(8,thisModule.CreateEnumArray('reserved7','\n')),
+		(9,thisModule.CreateEnumArray('reserved8','\n')),
+		(10,thisModule.CreateEnumArray('reserved9','\n')),
+		(11,thisModule.CreateEnumArray('reserved10','\n')),
+		(12,thisModule.CreateEnumArray('reserved11','\n')),
+		(13,thisModule.CreateEnumArray('reserved12','\n')),
+		(14,thisModule.CreateEnumArray('reserved13','\n')),
+		(15,thisModule.CreateEnumArray('reserved14','\n')),
+		(16,thisModule.CreateEnumArray('reserved15','\n')),
+		(17,thisModule.CreateEnumArray('reserved16','\n')),
+		(18,thisModule.CreateEnumArray('reserved17','\n')),
+		(19,thisModule.CreateEnumArray('reserved18','\n')),
+		(20,thisModule.CreateEnumArray('reserved19','\n')),
+		(21,thisModule.CreateEnumArray('reserved20','\n')),
+		(22,thisModule.CreateEnumArray('reserved21','\n')),
+		(23,thisModule.CreateEnumArray('reserved22','\n')),
+		(24,thisModule.CreateEnumArray('reserved23','\n')),
+		(25,thisModule.CreateEnumArray('reserved24','\n')),
+		(26,thisModule.CreateEnumArray('reserved25','\n')),
+		(27,thisModule.CreateEnumArray('reserved26','\n')),
+		(28,thisModule.CreateEnumArray('reserved27','\n')),
+		(29,thisModule.CreateEnumArray('reserved28','\n')),
+		(30,thisModule.CreateEnumArray('reserved29','\n')),
+		(31,thisModule.CreateEnumArray('reserved30','\n')),
+		(32,thisModule.CreateEnumArray('reserved31','\n'))};
+		
+--returns a list with all expected bits values, sorted according to MGC specifications.
+--the sequence of values must match the following bit sequence: (for example, 2^7=128 this value is in the 1st position)
+--7 6 5 4 3 2 1 0 15 14 13 12 11 10 9 8 23 22 21 20 19 18 17 16 31 30 29 28 27 26 25 24
+helper def : getCodecsBitMapSequence() : Sequence(String) = 
+		Sequence{'128','64','32','16','8','4','2','1', -- 1 to 8 bits
+			'32768','16384','8192','4096','2048','1024','512','256', -- 9 to 16 bits
+			'8388608','4194304','2097152','1048576','524288','262144','131072','65536', -- 17 to 24 bits
+			'2147483648','1073741824','536870912','268435456','134217728','67108864','33554432','16777216'}; -- 25 to 32 bits

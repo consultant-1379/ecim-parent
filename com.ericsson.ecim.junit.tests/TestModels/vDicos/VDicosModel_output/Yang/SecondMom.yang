@@ -1,0 +1,287 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-mar-17 19:41:44 using 
+    * com.ericsson.ecim.yang.m2m 2.10.0.qualifier
+*/
+module SecondMom {
+	namespace "urn:com:ericsson:ecim:SecondMom";
+	prefix SecondMom;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import DicosMom {
+		prefix DicosMom;
+	}
+
+	import ComTop {
+		prefix ComTop;
+	}
+
+	import LibraryOfStuff {
+		prefix LibraryOfStuff;
+	}
+
+	organization "Ericsson";
+	description "qwe";
+
+	revision "2014-03-17" {
+		ericsson:release 1;
+		ericsson:version 2;
+	}
+
+	augment "/ComTop:ManagedElement/DicosMom:FirstMoc/DicosMom:SecondMoc" {
+		list MyMoc {
+			key id;
+			max-elements 100;
+			status obsolete;
+			uses "SecondMom:MyMoc";
+			list Wclass {
+				key wClassId;
+				min-elements 1;
+				max-elements 1;
+				uses "SecondMom:Wclass";
+			}
+
+			list Qclass {
+				key qId;
+				min-elements 1;
+				max-elements 1;
+				uses "SecondMom:Qclass";
+			}
+
+		}
+
+	}
+
+	typedef Enumeration1 {
+		type enumeration {
+			enum ONE {
+				value 1;
+			}
+
+		}
+
+		description "qwe";
+	}
+
+	typedef MyDerivedFloatShared {
+		type decimal64 {
+			range "1..*";
+			fraction-digits 1;
+		}
+
+		description "qwe";
+	}
+
+	typedef MyMom2Boolean {
+		type boolean;
+		description "qwe";
+	}
+
+	typedef MyDerivedFloatNotShared {
+		type decimal64 {
+			fraction-digits 1;
+		}
+
+		description "qwe";
+	}
+
+	grouping MyMoc {
+		status obsolete;
+		description "qwe";
+		leaf id {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf enumAttr {
+			type "SecondMom:Enumeration1";
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf deletableAndRuntimeAttrInPDMFramework {
+			type int16;
+			config false;
+			description "qwe";
+		}
+
+		leaf emptyDefaultAttr {
+			type "LibraryOfStuff:SharedPatternX";
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf emptyDefaultString2 {
+			type string;
+			description "qwe";
+		}
+
+		leaf-list multiplicityUnlimited {
+			type int32;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list multiplicityLimitedMax {
+			type int32;
+			max-elements 8884;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list multiplicityLowerGtZero {
+			type int32;
+			min-elements 7;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list floatMultiplicityUnlimited {
+			type "SecondMom:MyDerivedFloatNotShared";
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list floatMultiplicityLimitedMax {
+			type "SecondMom:MyDerivedFloatNotShared";
+			max-elements 8884;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list floatMultiplicityLowerGtZero {
+			type "SecondMom:MyDerivedFloatNotShared";
+			min-elements 7;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list floatSharedMultiplicityUnlimited {
+			type "SecondMom:MyDerivedFloatShared";
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list floatSharedMultiplicityLimitedMax {
+			type "SecondMom:MyDerivedFloatShared";
+			max-elements 8884;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list floatSharedMultiplicityLowerGtZero {
+			type "SecondMom:MyDerivedFloatShared";
+			min-elements 7;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		ericsson:action aa1 {
+			description "qw";
+		}
+
+	}
+
+	grouping Qclass {
+		description "qwe";
+		leaf qId {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		container structAttribute {
+			presence "This Container points to a Struct which has no key.";
+			description "asd";
+			uses "SecondMom:MyStructX";
+		}
+
+		leaf moAttribute {
+			type string {
+				pattern "(.*=.*,)*Wclass=.*";
+			}
+
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf-list moAttributes {
+			type string {
+				pattern "(.*=.*,)*Wclass=.*";
+			}
+
+			min-elements 1;
+			max-elements 22;
+			description "qwe";
+		}
+
+		list structAttributes {
+			min-elements 1;
+			max-elements 22;
+			config false;
+			description "asd Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses "SecondMom:MyStructX";
+		}
+
+	}
+
+	grouping Wclass {
+		description "qwe";
+		leaf wClassId {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf attrWithDefault1 {
+			type boolean;
+			default true;
+		}
+
+		leaf attrWithDefault2 {
+			type string;
+			default hej;
+		}
+
+		leaf attrWithDefault3 {
+			type int16;
+			default 33;
+		}
+
+		leaf attrWithDefault4 {
+			type uint32;
+			default 66;
+		}
+
+		leaf attrWithDefault5 {
+			type decimal64 {
+				fraction-digits 1;
+			}
+
+			default "3.14";
+		}
+
+	}
+
+	grouping MyStructX {
+		description "qwe";
+		leaf structMember1 {
+			type int16;
+			mandatory true;
+			description "qwe";
+		}
+
+	}
+
+	grouping MyException {
+	}
+
+}

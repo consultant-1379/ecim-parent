@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_LogicalApn" namespace="urn:com:ericsson:ecim:Epg_Pgw_LogicalApn" namespacePrefix="epg_pgw_logicalapn" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="4">
+        <description>Logical access point name configuration</description>
+        <enum name="AccessType">
+            <description>User access to the APN</description>
+            <enumMember name="public">
+                <description>User does not need to be subscribed for APN</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="from-user">
+                <description>Can choose which APN to connect</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="from-network">
+                <description>Can connect to default APN for the MME/SGW/SGSN</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="restricted">
+                <description>Admit only users subscribed for APN</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="Creation">
+            <description>PDP context creation state</description>
+            <enumMember name="unblocked">
+                <description>No restrictions on PDP context creation</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="blocked">
+                <description>New PDP context creation fully blocked</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Profile">
+            <description>Name of charging characteristics profile</description>
+            <baseType>
+                <string>
+                    <validValues>^profile([0-9]|1[0-5])$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString100">
+            <description>Must be a string of 100 or fewer characters and may contain letters, numbers, decimals and dashes.</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>100</max>
+                    </lengthRange>
+                    <validValues>^[\.0-9A-Za-z-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="LogicalApn">
+            <description>Logical access point name configuration</description>
+            <root/>
+            <attribute name="logicalApnId">
+                <description>Logical access point name identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString100">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="fullUsername">
+                <description>Set full username in Radius attribute #1 when sending Access-Request, username = username@&lt;apn&gt;, default username = username</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="AccessRestrictions">
+            <description>Settings for APN access restrictions.</description>
+            <attribute name="accessRestrictionsID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="selectionMode">
+                <description>User access to the APN</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="AccessType">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="RadiusAssistedApnSelection">
+            <description>Enable RADIUS assisted APN selection</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(/ManagedElement/Epg/Pgw/License/@radiusAssistedApnSelection)'><name path='.'/>: RADIUS assisted APN selection must be licensed</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='@default = /ManagedElement/Epg/Pgw/Apn/@apnId'><name path='.'/>,default: Referenced APN must be defined</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="default">
+                <description>Default APN name for radius assisted APN selection</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString100">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="radiusAssistedApnSelectionID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Apn">
+            <description>APN selection configuration</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $apn in @default satisfies ($apn = /ManagedElement/Epg/Pgw/Apn/@apnId)'><name path='.'/>,default: Referenced APN must be defined</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="apnID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="default">
+                <description>APN used when not using cc-based or username-based apn selection</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString100">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Selectable">
+            <description>APNs that may be selected by the user</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='@selectableId = /ManagedElement/Epg/Pgw/Apn/@apnId'><name path='.'/>: Referenced APN must be defined</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="selectableId">
+                <description>Name of APN</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString100">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="CcBasedApn">
+            <description>APN selection based on charging characteristics</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $apn in @apnName satisfies ($apn = /ManagedElement/Epg/Pgw/Apn/@apnId)'><name path='.'/>,apnName: Referenced APN must be defined</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="ccBasedApnId">
+                <description>Name of charging characteristics profile: profile0|profile1|profile2|profile3|profile4|profile5|profile6|profile7|profile8|profile9|profile10|profile11|profile12|profile13|profile14|profile15</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="Profile">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="apnName">
+                <description>Name of APN</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString100">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="PdpContext">
+            <description>PDP context</description>
+            <attribute name="pdpContextID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="creation">
+                <description>PDP context creation state</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Creation">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ImsiBasedCharacteristics">
+            <description>Charging characteristic based on IMSI</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>
+            <assert id="set" test="every $attr in @disable satisfies (not(exists(@override)))"><name path="."/>,disable: The following attributes can not be combined: disable, override</assert>
+            <assert id="set" test="every $attr in @override satisfies (not(exists(@disable)))"><name path="."/>,override: The following attributes can not be combined: disable, override</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="imsiBasedCharacteristicsID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="override">
+                <description>Force IMSI-based selection of charging characteristics</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="disable">
+                <description>Disable IMSI-based selection of charging characteristics</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="LogicalApn_to_AccessRestrictions">
+            <containment>
+                <parent>
+                    <hasClass name="LogicalApn">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AccessRestrictions">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="LogicalApn_to_Apn">
+            <containment>
+                <parent>
+                    <hasClass name="LogicalApn">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Apn">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Apn_to_Selectable">
+            <containment>
+                <parent>
+                    <hasClass name="Apn">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Selectable">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Apn_to_CcBasedApn">
+            <containment>
+                <parent>
+                    <hasClass name="Apn">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CcBasedApn">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>16</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="LogicalApn_to_PdpContext">
+            <containment>
+                <parent>
+                    <hasClass name="LogicalApn">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="PdpContext">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="AccessRestrictions_to_RadiusAssistedApnSelection">
+            <containment>
+                <parent>
+                    <hasClass name="AccessRestrictions">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RadiusAssistedApnSelection">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Apn_to_ImsiBasedCharacteristics">
+            <containment>
+                <parent>
+                    <hasClass name="Apn">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Pgw_to_LogicalApn">
+            <containment>
+                <parent>
+                    <hasClass name="Pgw">
+                        <mimName>Epg_Pgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="LogicalApn">
+                        <mimName>Epg_Pgw_LogicalApn</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>200</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

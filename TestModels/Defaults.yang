@@ -1,0 +1,241 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-sep-04 14:47:38 using 
+    * com.ericsson.ecim.yang.m2m 2.11.2.qualifier
+*/
+module Defaults {
+	namespace "urn:com:ericsson:ecim:Defaults";
+	prefix Defaults;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import DefaultsLibrary {
+		prefix OtherModule;
+	}
+
+	organization "Ericsson";
+	description "asdf";
+
+	revision "2014-09-04" {
+		ericsson:correction 1;
+		ericsson:release 1;
+		ericsson:version 1;
+	}
+	
+	typedef TypeDefString
+	{
+		type string;
+		default "MyString";
+	}
+	
+	typedef TypeDefInteger
+	{
+		type int8;
+		default 99;
+	}	
+	
+	typedef TypeDefBoolean
+	{
+		type boolean;
+		default true;
+	}	
+	
+	identity c { base b;}
+	identity b { base a;}	
+	identity a {}	
+	
+	//enumerate all the different list min/max values
+    list A
+	{
+		key StringDefault;
+		leaf StringDefault {
+         	type string;
+         	default "MyString";
+ 		}
+ 	
+ 		leaf StringDefaultNoQuotes {
+         	type string;
+         	default MyString;
+ 		}
+ 		
+		leaf IntegerDefault {
+         	type int8;
+         	default 22;
+ 		}
+ 	
+ 		leaf Decimla64Default {
+         	type decimal64{fraction-digits 9;}
+         	default 22;
+ 		}
+ 	
+ 	 	leaf IntegerPositiveDefault {
+         	type int8;
+         	default +12;
+ 		}
+ 		
+ 		leaf IntegerNegativeDefault {
+         	type int8;
+         	default -12;
+ 		}
+ 		 		
+		leaf IntegerDefaultAsString {
+         	type int8;
+         	default "22";
+ 		}
+
+		leaf IntegerNegativeDefaultInQuotes {
+         	type int8;
+         	default "-22";
+ 		} 		
+ 		
+ 	 	 //this is valid yang but it breaks ATL today: ignore for the moment
+ 		/* 		
+		leaf IntegerDefaultAsPositiveHex {
+         	type int8;
+         	default 0xf00f;
+ 		} 	
+ 		*/ 		
+ 
+ 		 //this is valid yang but it breaks ATL today: ignore for the moment
+ 		/* 	
+ 		leaf IntegerDefaultAsNegativeHex {
+         	type int8;
+         	default -0xf;
+ 		} 
+		*/
+ 		leaf IntegerDefaultAsOctalValue {
+         	type int8;
+         	default 052;
+ 		} 
+ 		
+ 		leaf BooleanNoDefault {
+         	type boolean;
+ 		} 		
+ 			 		
+		leaf BooleanDefaultTrue {
+         	type boolean;
+         	default true;
+ 		}
+ 			    
+  		leaf BooleanDefaultFalse {
+         	type boolean;
+         	default false;
+ 		}
+ 		
+ 		//leafs with no default should use the default of the type they use
+ 		leaf NoDeafultUsingTypeWithDefault {
+         	type TypeDefString;
+ 		}
+ 		
+ 		leaf DeafultUsingTypeWithDefault {
+         	type TypeDefString;
+         	default "local";
+ 		}
+ 		
+ 		leaf NoDeafultUsingPrefixedTypeWithDefault {
+         	type Defaults:TypeDefString;
+ 		} 		
+
+ 		leaf NoDeafultUsingPrefixedRemoteTypeWithDefault {
+         	type OtherModule:TypeDefString;
+ 		} 		
+
+ 		leaf IdentityDefaultB
+ 		{
+  			type identityref { base a;}
+  			default b;
+ 		} 
+ 		
+ 		leaf enumerationLeaf {
+ 			default zero;
+         	type enumeration{
+				 enum zero;
+				 enum one;
+			}
+ 		}
+ 		
+ 		//TODO:Not supported yet
+ 		leaf leafRefLeaf {
+ 			default -11;
+         	type leafref
+			{
+				path "/A/IntegerNegativeDefault";
+			}
+ 		}
+
+ 		leaf bitLeaf {
+  			default bit1; 			
+  			type bits {
+				bit bit1 {
+					position 0;
+				}
+				bit bit2 {
+					position 1;
+				}
+ 				bit bit3 {
+					position 2;
+				}
+			}
+ 		}
+
+ 		leaf instanceIdentifierLeaf
+		{
+			default "instance default";
+			type instance-identifier{
+				require-instance false;
+			}
+		}
+ 		
+ 		//TODO:Not fully supported yet --TODO:InstanceIdentifier
+ 		//Support all default types *except* empty and leafref as stated in RFC6020
+ 		leaf unionLeaf {
+//			default zero;
+// 			default bit3;
+//			default true;
+//			default false;
+//			default abc;
+			default "abc";
+//			default 88;
+//			default Defaults:b;//this prefixed default is for the identityref
+//			default c;//this prefixed default is for the identityref			
+	 		type union
+			{
+	             type uint64;
+	             type int64;
+	             type string;
+	             type boolean;
+	             type binary;
+	             type enumeration{//working
+				 	enum zero;
+				 	enum one;
+				}
+				type bits {//working
+					bit bit1 {
+						position 0;
+					}
+					bit bit2 {
+						position 1;
+					}
+	 				bit bit3 {
+						position 2;
+					}
+				}
+				type identityref { base a;}	
+			}   
+ 		} 		
+ 		 
+ 
+ 		//empty types should not have a default
+ 		
+ 		leaf binaryLeaf {
+         	default "binary string";
+         	type binary;
+ 		}		
+	}
+	//Choices can have a default. This specifies the default case if none is selected. This isn't covered here as it is a different kind of default
+	
+	//It seems that leaf-lists cannot have defaults!?
+
+}

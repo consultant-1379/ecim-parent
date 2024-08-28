@@ -1,0 +1,466 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:14:52 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ComFm" {
+	namespace "urn:com:ericsson:ecim:ComFm";
+	prefix "ComFm";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ComTop {
+		prefix "ComTop";
+	}
+
+	organization "EAB/FLE/CB";
+	description "The ComFm model.";
+
+	revision "2013-11-18" {
+		ericsson:release "0";
+		ericsson:contact "EAB/FLE/CB Anders Carlsson";
+		ericsson:version "12";
+		ericsson:author "ERAASC";
+		ericsson:correction "0";
+	}
+
+	augment "/ComTop:ManagedElement/ComTop:SystemFunctions" {
+		list "Fm" {
+			key "fmId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "FmAlarmModel" {
+				key "fmAlarmModelId";
+				list "FmAlarmType" {
+					key "fmAlarmTypeId";
+					uses ComFm:FmAlarmType;
+				}
+
+				uses ComFm:FmAlarmModel;
+			}
+
+			list "FmAlarm" {
+				key "fmAlarmId";
+				uses ComFm:FmAlarm;
+			}
+
+			uses ComFm:Fm;
+		}
+
+	}
+
+	typedef "SeverityLevel" {
+		type enumeration {
+			enum "CRITICAL" {
+				value 3;
+				description "Aligned with ERICSSON-ALARM-MIB numbering.";
+			}
+
+			enum "MAJOR" {
+				value 4;
+				description "Aligned with ERICSSON-ALARM-MIB numbering.";
+			}
+
+			enum "MINOR" {
+				value 5;
+				description "Aligned with ERICSSON-ALARM-MIB numbering.";
+			}
+
+			enum "WARNING" {
+				value 6;
+				description "Aligned with ERICSSON-ALARM-MIB numbering.";
+			}
+
+		}
+
+		description "The possible alarm serverities.
+The values are aligned to the ERICSSON-ALARM-MIB which is compliant with the IETF understanding of the ITU X.733.
+SnmpItuAlarmPercSeverity:
+DESCRIPTION The perceived severity of the alarm as specified in [X.733] and [X.736].
+SYNTAX INTEGER {cleared (1), critical (3), major (4), minor (5), warning (6)}
+Note: ERICSSON-ALARM-MIB does not support severity indeterminate (2)";
+	}
+
+	typedef "EventType" {
+		type enumeration {
+			enum "OTHER" {
+				value 1;
+				description "Defined by ITU-T X.733 and X.736.";
+			}
+
+			enum "COMMUNICATIONSALARM" {
+				value 2;
+				description "Defined by ITU-T X.733 and X.736.";
+			}
+
+			enum "QUALITYOFSERVICEALARM" {
+				value 3;
+				description "Defined by ITU-T X.733 and X.736.";
+			}
+
+			enum "PROCESSINGERRORALARM" {
+				value 4;
+				description "Defined by ITU-T X.733 and X.736.";
+			}
+
+			enum "EQUIPMENTALARM" {
+				value 5;
+				description "Defined by ITU-T X.733 and X.736.";
+			}
+
+			enum "ENVIRONMENTALALARM" {
+				value 6;
+				description "Defined by ITU-T X.733 and X.736.";
+			}
+
+			enum "INTEGRITYVIOLATION" {
+				value 7;
+				description "Defined by ITU-T X.733 and X.736.";
+			}
+
+			enum "OPERATIONALVIOLATION" {
+				value 8;
+				description "Defined by ITU-T X.733 and X.736.";
+			}
+
+			enum "PHYSICALVIOLATION" {
+				value 9;
+				description "Defined by ITU-T X.733 and X.736.";
+			}
+
+			enum "SECURITYSERVICEORMECHANISMVIOLATION" {
+				value 10;
+				description "Defined by ITU-T X.733 and X.736.";
+			}
+
+			enum "TIMEDOMAINVIOLATION" {
+				value 11;
+				description "Defined by ITU-T X.733 and X.736.";
+			}
+
+		}
+
+		description
+		"The general category for the Alarm Type.
+The allowed values are defined by ITU-T X.733 and X.736.";
+	}
+
+	typedef "ProbableCause" {
+		type uint32;
+		description "Probable cause as specified in ITU and ETSI recommendations.
+The ITU recommendations are M.3100, X.733 and X.736 and the ETSI recommendation is GSM 12.11. 
+";
+	}
+
+	grouping "Fm" {
+		description "The root MOC of the Fault Management branch.";
+		leaf "fmId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "lastSequenceNo" {
+			type uint64;
+			config true;
+			description
+			"The last used sequence number for an alarm state change notification.
+The sequence numbers are consecutive. With this attribute, an external system can determine if a resynchronization operation is needed, such as following a loss and restore of a communications link.  ";
+		}
+
+		leaf "sumCritical" {
+			type uint32;
+			config true;
+			description
+			"Shows the number of active alarms with perceived severity 'critical'.";
+		}
+
+		leaf "sumMajor" {
+			type uint32;
+			config true;
+			description
+			"Shows the number of active alarms with perceived severity ‘major’.";
+		}
+
+		leaf "sumMinor" {
+			type uint32;
+			config true;
+			description
+			"Shows the number of active alarms with perceived severity ‘minor’.";
+		}
+
+		leaf "sumWarning" {
+			type uint32;
+			config true;
+			description
+			"Shows the number of active alarms with perceived severity ‘warning’.";
+		}
+
+		leaf "totalActive" {
+			type uint32;
+			config true;
+			description
+			"Shows the total number of currently active alarms.
+This corresponds to the the total number of instantiated FmAlarm objects.";
+		}
+
+		leaf "lastChanged" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description
+			"The timestamp of when any alarm was last changed.
+With this attribute, an external system can determine if a resynchronization operation is needed, such as following a loss and restore of a communications link.";
+		}
+
+		leaf "heartbeatInterval" {
+			type uint32;
+			default "60";
+			description
+			"The interval in seconds, with which a heartbeat notification is sent to all alarm consumers.";
+		}
+
+	}
+
+	grouping "FmAlarmModel" {
+		description "This is a container for grouping FM alarm types.
+";
+		leaf "fmAlarmModelId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "FmAlarmType" {
+		description
+		"A specific kind of alarm that can be reported, for example power failure.
+In an X.733 context it maps to event type, probable cause, and specific problem. The same principle is used for alert types as for alarm types.";
+		leaf "fmAlarmTypeId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "majorType" {
+			type uint32;
+			config true;
+			description
+			"The attributes majorType and minorType are the two key attributes used to identify the alarm type.";
+		}
+
+		leaf "minorType" {
+			type uint32;
+			config true;
+			description
+			"The attributes majorType and minorType are the two key attributes used to identify the alarm type.";
+		}
+
+		leaf "moClasses" {
+			type string;
+			default " ";
+			config true;
+			status deprecated;
+			description
+			"A list of the Managed Object classes that can raise this alarm type.
+This attribute contains a comma seperated list of Managed Object classes types that use this alarm type. It is for information only.";
+		}
+
+		leaf "specificProblem" {
+			type string;
+			config true;
+			description
+			"Provides further refinement to the information given by probableCause.";
+		}
+
+		leaf "eventType" {
+			type ComFm:EventType;
+			config true;
+			description "The general category for the alarm.
+The allowed values are defined by ITU-T X.733.
+";
+		}
+
+		leaf "probableCause" {
+			type ComFm:ProbableCause;
+			config true;
+			description
+			"Qualifies and provides further information on the reason for the event.
+A standard set of probableCause values is provided in the ERICSSON-ALARM-PC-MIB.";
+		}
+
+		leaf "isStateful" {
+			type boolean;
+			config true;
+			description
+			"Indicates whether the alarm type represents an alarm (has a state) or an alert (has no state).
+true indicates an alarm and false indicates an alert.";
+		}
+
+		leaf "additionalText" {
+			type string;
+			config true;
+			description
+			"Extra information that would not be contained by other FmAlarmType attributes. ";
+		}
+
+		leaf "configuredSeverity" {
+			type ComFm:SeverityLevel;
+			description
+			"Gives the possibility to configure the severity for a certain alarm type.
+If set, this value overrides the severity provided by the alarming object. Setting this attribute has no impact on existing alarms, only new and updated ones.";
+		}
+
+		leaf "defaultSeverity" {
+			type ComFm:SeverityLevel;
+			config true;
+			description
+			"The default severity of the alarm type.
+The value indicates the severity for all alarms of this type. No value indicates that there is no fixed severity and that the severity is decided by the alarming object depending on the fault.";
+		}
+
+	}
+
+	grouping "FmAlarm" {
+		description "An FmAlarm instance represents an active alarm.
+An alarm is a persistent indication of a fault that clears only when the triggering condition has been resolved.
+";
+		leaf "fmAlarmId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "source" {
+			type string;
+			config true;
+			description "The distinguished name of the alarming object.";
+		}
+
+		leaf "lastEventTime" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description
+			"The timestamp of when the alarm was last updated.
+This is set at alarm information change or severity change.";
+		}
+
+		leaf "sequenceNumber" {
+			type int64;
+			config true;
+			description
+			"A unique identity for every notification sent.
+This identity changes at every notification, that is, severity change and information change. It is not the same as the fmAlarmId as multiple notifications may be sent for one alarm instance.";
+		}
+
+		leaf "activeSeverity" {
+			type ComFm:SeverityLevel;
+			config true;
+			description "The perceived severity of the alarm.";
+		}
+
+		leaf "additionalText" {
+			type string;
+			config true;
+			description "Extra information about the alarm.";
+		}
+
+		leaf "majorType" {
+			type uint32;
+			config true;
+			description
+			"The attributes majorType and minorType are the two key attributes used to identify the alarm type.";
+		}
+
+		leaf "minorType" {
+			type uint32;
+			config true;
+			description
+			"The attributes majorType and minorType are the two key attributes used to identify the alarm type.  ";
+		}
+
+		leaf "specificProblem" {
+			type string;
+			config true;
+			description
+			"Provides further refinement to the information given by probableCause.";
+		}
+
+		leaf "eventType" {
+			type ComFm:EventType;
+			config true;
+			description
+			"The general category for the alarm.
+The allowed values are defined by ITU-T X.733.";
+		}
+
+		leaf "probableCause" {
+			type ComFm:ProbableCause;
+			config true;
+			description
+			"Qualifies and provides further information on the reason for the event.
+A standard set of probableCause values is provided in the ERICSSON-ALARM-PC-MIB.";
+		}
+
+		list "additionalInfo" {
+			config true;
+			description
+			"Further information about the problem.
+The information is represented as a set of data structures with two items of information, an identifier and a problem description. This is typically used to provide information referred to by the OPI.";
+			uses ComFm:AdditionalInformation;
+		}
+
+		leaf "originalEventTime" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description
+			"The timestamp when the alarm was raised.
+This attribute is set when the alarm is raised and will not change during the alarm's lifetime.";
+		}
+
+		leaf "originalSeverity" {
+			type ComFm:SeverityLevel;
+			config true;
+			description
+			"The perceived severity level set when the alarm was raised.
+This attribute is set when the alarm is raised and will not change during the alarm's lifetime.";
+		}
+
+		leaf "originalAdditionalText" {
+			type string;
+			config true;
+			description
+			"The additional text set when the alarm was raised.
+This attribute is set when the alarm is raised and will not change during the alarm's lifetime.";
+		}
+
+	}
+
+	grouping "AdditionalInformation" {
+		description
+		"A data structures that contains two items of information, an identifier and a problem description.";
+		leaf "name" {
+			type string;
+			mandatory true;
+			description "The identifier.";
+		}
+
+		leaf "value" {
+			type string;
+			mandatory true;
+			description "The value or description associated with the identifier.";
+		}
+
+	}
+
+}

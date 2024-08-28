@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Dec 7, 2015 9:34:27 AM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>07/10/2011</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="Vahagn Avedian" contact="ETXAVED" correction="0" date="10/3/2014" docNo="" name="ECIM_FileTPM" namespace="urn:com:ericsson:ecim:ECIM_FileTPM" namespacePrefix="ecim_filetpm" organization="EAB/FLE/EU" release="1" revision="A" version="1">
+        <description>This fragment supports configuration management of the file transfer protocols.&#13;
+</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_FileTPM"/>
+            <extension name="ecimMomVersion" value="1"/>
+            <extension name="ecimMomRelease" value="1"/>
+            <extension name="ecimMomCorrection" value="0"/>
+        </domainExtension>
+        <enum name="BasicAdmState">
+            <description>Basic administrative states for a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimRelease" value="0"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimVersion" value="2"/>
+            </domainExtension>
+            <enumMember name="LOCKED">
+                <description> The resource is administratively prohibited from performing services for its users.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="UNLOCKED">
+                <description>The resource is administratively permitted to perform services for its users.&#13;
+This is independent of its inherent operability.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <class name="FileTPM">
+            <description>The top class for server and client configuration of different protocols implementing file transfer.&#13;
+Lists the protocols supported by the ME by any file transfer client or server.</description>
+            <systemCreated/>
+            <root/>
+            <attribute name="fileTPMId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FtpTls">
+            <description>Represents the common configuration parameters of FTP over Transport Layer Security (TLS) on the ME.&#13;
+It also contains the common system configuration parameters for FTP over TLS based services.&#13;
+&#13;
+</description>
+            <systemCreated/>
+            <attribute name="ftpTlsId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="nodeCredential">
+                <description>The credential used for FTP over TLS based file transfer. &#13;
+Specifies the DN of a NodeCredential MO in Certificate Management.&#13;
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <moRef name="ManagedObject"/>
+                </dataType>
+            </attribute>
+            <attribute name="trustCategory">
+                <description>The set of certificates trusted by the FTP over TLS based file transfer. &#13;
+Specifies the DN of a TrustCategory MO in Certificate Management.&#13;
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <moRef name="ManagedObject"/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FtpTlsServer">
+            <description>Represents the FTP over Transport Layer Security (TLS) server of the ME.</description>
+            <systemCreated/>
+            <attribute name="ftpTlsServerId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="administrativeState">
+                <description>The administrative state for the FTP server.&#13;
+When LOCKED all on-going connections will immediately be terminated.</description>
+                <mandatory/>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <mimName>ECIM_FileTPM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Sftp">
+            <description>Represents any SSH File Transfer Protocol (SFTP) on the ME.</description>
+            <systemCreated/>
+            <attribute name="sftpId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SftpServer">
+            <description>Represents the SSH File Transfer Protocol (SFTP) server of the ME.</description>
+            <systemCreated/>
+            <attribute name="sftpServerId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="administrativeState">
+                <description>The administrative state for the SFTP server.&#13;
+When LOCKED all on-going connections will immediately be terminated.</description>
+                <mandatory/>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <mimName>ECIM_FileTPM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="FtpTls_to_FtpTlsServer">
+            <containment>
+                <parent>
+                    <hasClass name="FtpTls">
+                        <mimName>ECIM_FileTPM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FtpTlsServer">
+                        <mimName>ECIM_FileTPM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="FileTPM_to_Sftp">
+            <containment>
+                <parent>
+                    <hasClass name="FileTPM">
+                        <mimName>ECIM_FileTPM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Sftp">
+                        <mimName>ECIM_FileTPM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="FileTPM_to_FtpTls">
+            <containment>
+                <parent>
+                    <hasClass name="FileTPM">
+                        <mimName>ECIM_FileTPM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FtpTls">
+                        <mimName>ECIM_FileTPM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="Sftp_to_SftpServer">
+            <containment>
+                <parent>
+                    <hasClass name="Sftp">
+                        <mimName>ECIM_FileTPM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SftpServer">
+                        <mimName>ECIM_FileTPM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="SysM_to_FileM">
+            <containment>
+                <parent>
+                    <hasClass name="FileTPM">
+                        <mimName>ECIM_FileTPM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FileTPM">
+                        <mimName>ECIM_FileTPM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </mim>
+</models>

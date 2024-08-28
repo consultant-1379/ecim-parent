@@ -1,0 +1,922 @@
+-- /**
+-- * These helpers assist in the transformation from an ECIM complaint model (UML) to an imm.ecore compliant model.
+-- * 
+-- * Author: Ronan Barrett
+-- * Date: 27/04/2010
+-- */
+-- @path PARAM=/com.ericsson.ecim.core/model/ParameterModel.ecore
+
+library HelperFunctions;
+
+
+--Note: It is really important that only one Stereotype from the ECIM Base Profile is ever applied to a UML Element as the following
+--helper requires this to be true. Of course you can apply stereotypes from other profiles :)
+helper context UML!Element def : getEcimAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'ECIM Base Profile').first()
+	else
+		OclUndefined
+	endif;
+
+--Note: It is really important the only one Stereotype from the Core MW Profile is ever applied to a UML Element as the following
+--helper requires this to be true. Of course you can apply stereotypes from other profiles :)
+helper context UML!Element def : getCoreMWAppliedStereotype() : UML!Stereotype = 
+	if(self.hasStereotypeApplied())
+	then
+		self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'CoreMW Profile').first()
+	else
+		OclUndefined
+	endif;
+
+--Check to see if an Element has an Ecim Stereotype applied
+helper context UML!Element def : hasEcimAppliedStereotype() : Boolean = 
+	if(self.hasStereotypeApplied())
+	then
+			if(self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'ECIM Base Profile').size() > 0)
+			then
+				true
+			else
+				false
+			endif
+	else
+		false
+	endif;
+
+--Check to see if an Element has an Core MW Stereotype applied
+helper context UML!Element def : hasCoreMWAppliedStereotype() : Boolean = 
+	if(self.hasStereotypeApplied())
+	then
+			if(self.getAppliedStereotypes()->select(e|e.getProfile().getName() = 'CoreMW Profile').size() > 0)
+			then
+				true
+			else
+				false
+			endif
+	else
+		false
+	endif;
+
+--returns true if the element to which the function is called has the specified stereotype applied
+helper context UML!Element def: hasStereotype(name : String) : Boolean =
+	not self.getAppliedStereotype(name).oclIsUndefined();
+
+--returns true if the element to which the function is called does not have the specified stereotype applied
+helper context UML!Element def: hasNotGotStereotype(name : String) : Boolean =
+	self.getAppliedStereotype(name).oclIsUndefined();
+
+--returns true if the element has at least one stereotype applied
+helper context UML!Element def: hasStereotypeApplied() : Boolean =
+	self.getAppliedStereotypes()->size() > 0;
+
+--This helper navigates the stereotype hierarchy of a Class to see if it has a stereotype that extends EcimGeneralMoClass. if it
+--does then it is an MOC
+helper context UML!Class def : isEcimMOC() : Boolean =
+	if(self.hasEcimAppliedStereotype())
+	then
+		if(self.getEcimAppliedStereotype()->allParents()->select(e|e.name = 'EcimGeneralMoClass')->size() > 0)
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+helper def : isClassPartOfContribution(s : UML!Class) : Boolean =
+	s.getNearestPackage().allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->select(e|not e.getAppliedStereotype('ECIM Base Profile::EcimContribution').oclIsUndefined())->
+		collect(e|e.memberEnd->select(m|m.type=s))->flatten()->size() > 0;
+
+helper context UML!Class def : isRootMoc() : Boolean =
+	if(self.hasEcimAppliedStereotype())
+	then
+    	if self.hasStereotype('ECIM Base Profile::EcimMoClass')
+		then 
+			thisModule.isClassPartOfContribution(self) or self.getValue(self.getEcimAppliedStereotype(),'isLegacyRoot')
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+--This helper navigates the stereotype hierarchy of a Class to see if it has a stereotype that extends EcimGeneralMoClass. if it
+--does then it is an MOC
+helper context UML!Class def : isEcimStruct() : Boolean =
+	if(self.hasEcimAppliedStereotype())
+	then
+		self.hasStereotype('ECIM Base Profile::EcimStruct')
+    else
+    	false
+	endif;
+
+--This helper navigates the stereotype hierarchy of a Property to see if it has a stereotype that extends EcimReadOnlyAttribute. if it
+--does then it is EcimReadOnlyAttribute
+helper context UML!Property def : isEcimReadOnlyAttribute() : Boolean =
+	if(self.hasEcimAppliedStereotype())
+	then
+		if(self.getAppliedStereotypes()->select(e|e.name = 'EcimAttribute_RO')->size() > 0)
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+--This helper checks whether supplied UML Property has a CoreMW stereotype applied that has a 
+-- property "isConfigurable" which has been set.
+helper context UML!Property def : isCoreMWConfigurableAttribute() : Boolean =
+	if(self.hasCoreMWAppliedStereotype())
+	then
+		if(self.getValue(self.getCoreMWAppliedStereotype(),'isConfigurable'))
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;	
+
+--This helper checks whether supplied UML Property has a ECIM stereotype applied that has a 
+-- property "isPersistent" which has been set.
+helper context UML!Property def : isPersistentAttribute() : Boolean =
+	if(self.hasEcimAppliedStereotype())
+	then
+		if (not self.hasStereotype('ECIM Base Profile::EcimStructMember'))
+		then -- only EcimAttribute has isPersistent property
+			if(self.getValue(self.getCoreMWAppliedStereotype(),'isPersistent'))
+			then
+				true
+			else
+				false
+			endif
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+
+--This helper checks whether supplied UML Class has a CoreMW stereotype applied that has a 
+-- property "isConfigurable" which has been set.
+helper context UML!Classifier def : isCoreMWConfigurableClass() : Boolean =
+	if(self.hasCoreMWAppliedStereotype())
+	then
+		if(self.getValue(self.getCoreMWAppliedStereotype(),'isConfigurable'))
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;	
+
+--This helper navigates the stereotype hierarchy of a Class to see if it has a stereotype that extends EcimGeneralType. if it
+--does then it is a ECIM type that is not an MOC e.g. AlarmType or PMType
+helper context UML!Class def : isEcimType() : Boolean =
+	if(self.hasEcimAppliedStereotype())
+	then
+		if(self.getEcimAppliedStereotype()->allParents()->select(e|e.name = 'EcimGeneralType')->size() > 0)
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+--Read only classes map to runtime category on IMM class
+helper def : isRuntimeCategory(classifier : UML!Classifier) : Boolean =
+	if(classifier.hasStereotype('ECIM Base Profile::EcimRootMoClass_RO') or classifier.hasStereotype('ECIM Base Profile::EcimMoClass_RO'))
+	then
+		true
+	else
+		if ((classifier.hasStereotype('ECIM Base Profile::EcimRootMoClass') or classifier.hasStereotype('ECIM Base Profile::EcimMoClass') or classifier.hasStereotype('ECIM Base Profile::EcimStruct')) and not classifier.isCoreMWConfigurableClass())
+		then
+			true
+		else
+			false
+		endif
+	endif;
+
+--Name giving attributes are attributes marked with the EcimKeyAttribute stereotype
+helper context UML!Property def : isNameGiving() : Boolean =
+	if(self.hasStereotype('ECIM Base Profile::EcimKeyAttribute'))
+	then
+		true
+	else
+		false
+	endif;
+
+--Read only classes map to runtime category on IMM class
+helper def : selectCategory(classifier : UML!Classifier) : IMM!Category =
+	if(thisModule.isRuntimeCategory(classifier))
+	then
+		#SARUNTIME
+	else
+		#SACONFIG
+	endif;
+
+--Read only attributes must be marked as #SARUNTIME while read-write must be #SACONFIG
+helper def : selectAttributeCategory(classifier : UML!Classifier) : IMM!Category =
+	if(classifier.isEcimReadOnlyAttribute() and not classifier.isCoreMWConfigurableAttribute())
+	then
+		#SARUNTIME
+	else
+		#SACONFIG
+	endif;
+
+
+--Set the SA_CACHED flag if the attribute has the isCached profile property set to true
+helper def : isCached(classifier : UML!Classifier) : Sequence(IMM!AttrFlags) =
+	if(classifier.hasCoreMWAppliedStereotype())
+	then
+		if(classifier.getValue(classifier.getCoreMWAppliedStereotype(),'isCached'))
+		then
+			Sequence{#SA_CACHED}
+		else
+			Sequence{}
+		endif
+	else
+		Sequence{}
+	endif;	
+	
+	
+helper def : isPersistent(classifier : UML!Classifier) : Sequence(IMM!AttrFlags) =
+	if(classifier.hasCoreMWAppliedStereotype())
+	then
+		if(classifier.getValue(classifier.getCoreMWAppliedStereotype(),'isPersistent'))
+		then
+			Sequence{#SA_PERSISTENT}
+		else
+			Sequence{}
+		endif
+	else
+		Sequence{}
+	endif;
+	
+	
+--Set the SA_WRITABLE flag if the property is configurable
+helper def : isWritable(classifier : UML!Classifier) : Sequence(IMM!AttrFlags) =
+	if(classifier.isEcimReadOnlyAttribute() and not classifier.isCoreMWConfigurableAttribute())
+	then
+		Sequence{}
+	else
+		if (classifier.isEcimReadOnlyAttribute() and 
+			classifier.isCoreMWConfigurableAttribute() and 
+			thisModule.isRestricted(classifier))
+		then                                                           
+			Sequence{}
+		else
+			Sequence{#SA_WRITABLE}
+		endif
+	endif;
+		
+helper def : isRestricted(classifier : UML!Classifier) : Boolean =
+	if(classifier.hasStereotype('ECIM Base Profile::EcimStructMember'))
+	then
+		false
+	else
+		classifier.getValue(classifier.getEcimAppliedStereotype(),'isRestricted')
+	endif;	
+	
+--See if the property/attribute is multi valued based on the upper bounds of the class
+helper def : isMultiValue(classifier : UML!Property) : Sequence(IMM!AttrFlags) =
+	if(classifier.upper <> 1)
+	then
+		Sequence{#SA_MULTI_VALUE}
+	else
+		Sequence{}
+	endif;
+	
+--See if the property/attribute shall have SA_NO_DUPLICATES
+helper def : isNoDuplicates(classifier : UML!Property) : Sequence(IMM!AttrFlags) =
+	if (thisModule.isIMMR2())
+    then
+		if(classifier.upper <> 1 and classifier.isUnique)
+		then
+			Sequence{#SA_NO_DUPLICATES}
+		else
+			Sequence{}
+		endif
+	else
+		Sequence{}
+	endif;
+	
+--See if the property/attribute shall have SA_NOTIFY flag
+helper def : isNotify(classifier : UML!Property) : Sequence(IMM!AttrFlags) =
+	if (thisModule.isIMMR2())
+    then
+		if(classifier.hasStereotype('ECIM Base Profile::EcimKeyAttribute'))
+		then
+			Sequence{#SA_NOTIFY} -- always notify on key attributes!
+		else if (classifier.hasStereotype('ECIM Base Profile::EcimStructMember'))
+		then	
+			if (classifier.getValue(classifier.getCoreMWAppliedStereotype(),'isConfigurable') or
+				classifier.getValue(classifier.getCoreMWAppliedStereotype(),'isCached'))
+			then
+				Sequence{#SA_NOTIFY} -- notify on struct members if config or runtime and cached!
+			else
+				Sequence{}
+			endif
+		else if(classifier.getValue(classifier.getEcimAppliedStereotype(),'isNotifiable'))
+		then
+			if (classifier.getValue(classifier.getCoreMWAppliedStereotype(),'isConfigurable') or
+				classifier.getValue(classifier.getCoreMWAppliedStereotype(),'isCached'))
+			then
+				Sequence{#SA_NOTIFY} -- notify on attributes if config or runtime and cached!
+			else
+				Sequence{}
+			endif
+		else
+			Sequence{}
+		endif
+		endif
+		endif
+	else
+		Sequence{}
+	endif;
+
+--See if the property/attribute shall have SA_NO_DANGLING flag
+helper def : isNoDangling(classifier : UML!Property) : Sequence(IMM!AttrFlags) =
+	if (thisModule.isIMMR3())
+    then
+    	if (classifier.type.oclIsTypeOf(UML!Class))
+    	then
+			if (not classifier.hasStereotype('ECIM Base Profile::EcimStructMember'))
+			then
+			    -- If property is part of uni-dir association, then do NOT output NO_DANGLING otherwise
+			    -- it is assumed the property is part of a bi-dir association and then NO_DANGLING is outputted
+			   	let unidirAssociationsWithMatchingEndNames: Set(UML!Association) = classifier.getNearestPackage().allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->
+				select(e|not e.getAppliedStereotype('ECIM Base Profile::EcimUniDirAssociation').oclIsUndefined())->
+				select(e|e.ownedElement->one(f|f.name=classifier.name))->flatten() in
+				if (unidirAssociationsWithMatchingEndNames->size()=0)
+				then
+					-- For old MO refs that are not part of bi-dir associations, perhaps it is needed to be able to switch off no-dangling flag, 
+					-- that is why this condition is here.  
+					if (classifier.getValue(classifier.getEcimAppliedStereotype(),'isAssociationEnd'))			
+					then
+						Sequence{#SA_NO_DANGLING}
+					else 
+						Sequence{}
+					endif
+				else 
+					Sequence{}
+			    endif
+			else
+				Sequence{}
+			endif
+		else 
+			Sequence{}
+		endif
+	else
+		Sequence{}
+	endif;
+	
+
+	
+--Match an ECIM type with an IMM type and return
+helper def : convertEcimTypeToIMMType(classifier : UML!Property) : IMM!AttrValueType =
+	let typeMap : Map(String,IMM!AttrValueType) = 
+		Map
+		{
+			('EcimInt8',#SAINT32T),
+			('EcimInt16',#SAINT32T),
+			('EcimInt32',#SAINT32T),
+			('EcimUInt8',#SAUINT32T),
+			('EcimUInt16',#SAUINT32T),
+			('EcimUInt32',#SAUINT32T),
+			('EcimInt64',#SAINT64T),
+			('EcimUInt64',#SAUINT64T),
+			('EcimInteger',#SAINT64T),
+			('EcimString',#SASTRINGT),
+			('EcimBoolean',#SAINT32T),--There is no equivalent for booleans so use int32
+			('EcimFloat',#SADOUBLET)
+		} 
+	in
+	--check the classifier has been assigned a type
+	if(classifier.type <> OclUndefined)
+	then
+		--check to see if the type is an enumeration
+		if(classifier.type.oclIsTypeOf(UML!Enumeration))
+		then
+			--the type is an emueration so set the type to be #SAINT32T
+			#SAINT32T
+		else
+			--check to see if the type is another Class
+			if(classifier.type.oclIsTypeOf(UML!Class))
+			then
+				--the type is another class so set the type to be #SANAMET
+				#SANAMET
+			else
+				--check to see if the type is a derived string or numeric
+				if(classifier.type.hasEcimAppliedStereotype())
+				then
+					--get the generalized ECIM type of the applied derived type then use the map to resolve to IMM type
+					typeMap.get(classifier.type.general.first().name)
+				else		
+					--get the IMM type from the map based on the ECIM type
+					typeMap.get(classifier.type.name)
+				endif
+			endif
+		endif
+	else
+		--no type was specified
+		OclUndefined
+	endif;
+	
+--Set the default value on the attribute. If none is specified make it an empty string
+helper def : getDefault(classifier : UML!Property) : String =
+	let default : String = classifier.default in
+	if(classifier.defaultValue.oclIsTypeOf(UML!InstanceValue))--Catch a default that is an EnumerationLiteral or a MocInstance/StructIncstance
+	then
+		if(classifier.type.oclIsTypeOf(UML!Class))
+		then
+		    thisModule.dnBuilder(classifier.defaultValue.instance, classifier.defaultValue.instance.clientDependency.first(), '', true)
+		else -- this has got to be an enumeration literal 
+			classifier.defaultValue.instance.specification.stringValue()
+		endif
+	else
+		if(default <> OclUndefined)--Catch a default that is a regular EcimType
+		then 
+			if(default <> '')
+			then
+				--if the type is a boolean then change its value to 0 or 1
+				--TODO:Improve the type check below later. will need to include data type lib as input model for this to work
+				if(classifier.type.name = 'EcimBoolean')
+				then
+					if(default = '1' or default = 'true')--surprisingly if the default is set to true in RSA it comes out as 1. This code just makes sure of this
+					then
+						'1'
+					else
+						'0'
+					endif
+				else
+					-- only return default for non multi-valued attributes since IMM service cannot handle multiple defaults
+					-- TODO: check if there is only one multi-valued attribute defined, then this can be outputted
+					if(classifier.upper = 1)
+					then
+						--A default value shall only be provided for configuration and persistent runtime attributes				
+						if (classifier.isCoreMWConfigurableAttribute() or classifier.isPersistentAttribute())
+						then
+					    	if (default = '""')
+					    	then
+					        	''
+							else
+						    	--return the already set default value for types that are not boolean
+						    	thisModule.removeEscapeCommaCharacters(default)
+							endif
+						else
+							OclUndefined
+						endif
+					else
+						OclUndefined
+					endif
+				endif
+			else
+				OclUndefined
+			endif	
+		else
+			OclUndefined
+		endif
+	endif;
+	
+--This helper is used many times to build up the DN
+helper def : dnNameHelper(is : UML!InstanceSpecification, last : Boolean) : String = 
+	let separator : String = ',' in
+	--we assume that an InstanceSpecification can have only one classifier, a reasonable assumption
+	let keyAttribute : OclAny = is.classifier.first().getKeyAttribute() in
+	--check to see if this is the last piece of the DN or not
+	
+	if(not last)
+	then
+	    if (is.classifier.first().hasStereotype('ECIM Base Profile::EcimStruct') or is.classifier.first().keyCount() <> 1)
+	    then
+		   -- this is a struct and has an 'id' key that is not part of UML
+		   keyAttribute + '=' + is.name + separator
+		 else
+		    --build up the DN. the last part of the DN needs a separator
+		    thisModule.getRdnName(keyAttribute) + '=' + is.getSlotValue(keyAttribute) + separator
+		 endif
+	else
+	    if (is.classifier.first().hasStereotype('ECIM Base Profile::EcimStruct')  or is.classifier.first().keyCount() <> 1)
+	    then
+		   -- this is a struct and has an 'id' key that is not part of UML
+		   keyAttribute + '=' + is.name
+		 else
+		    --build up the DN. the last part of the DN needs no separator at the end of it
+		    thisModule.getRdnName(keyAttribute) + '=' + is.getSlotValue(keyAttribute)
+		 endif
+	endif;	
+
+-- Returns all package's EcimContribution with splitImmDn=true	
+helper def : lookupAllEcimContributions(p : UML!Package) : Set(UML!Association) = 
+	let result:Set(UML!Association) = p.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Association))->
+		select(e|e.hasCoreMWAppliedStereotype())->asSet()
+		->select(e|e.getValue(e.getCoreMWAppliedStereotype(), 'splitImmDn'))->asSet() in
+	if (result.oclIsUndefined())
+	then
+		Set{}
+	else
+		result
+	endif;
+
+-- Returns a set of class names that are connected to the set of supplied associations	
+helper def : lookupAllClasses(a:Set(UML!Association)) : Set(String) = 
+	if (a->size()=0)
+	then
+		Set{}
+	else
+		a->collect(e|e.getAllAttributes())
+			->flatten()->collect(e|e.type.name)->flatten()->asSet()
+	endif;
+
+-- Checks if the two classes are part of an EcimContribution with splitImmDn=true, if so return true otherwise false		
+helper def : isMocsPartOfSplittingContribution(a : UML!Class, b : UML!Class) : Boolean = 
+	-- precondition is that a and b are in different MOMs
+	let endClasses:Set(String) = Set{a.name,b.name} in
+	let momAcontributionAssociations:Set(UML!Association) = thisModule.lookupAllEcimContributions(a.getNearestPackage()) in
+	let momBcontributionAssociations:Set(UML!Association) = thisModule.lookupAllEcimContributions(b.getNearestPackage()) in
+	let momAcontributionClasses:Set(String) = thisModule.lookupAllClasses(momAcontributionAssociations) in
+	let momBcontributionClasses:Set(String) = thisModule.lookupAllClasses(momBcontributionAssociations) in
+	momAcontributionClasses->includesAll(endClasses)
+	or
+	momBcontributionClasses->includesAll(endClasses);
+
+-- Checks if the two classes belong to different packages
+helper def : isMocsCrossingMOM(a : UML!Class, b : UML!Class) : Boolean = 
+	if (a.isEcimMOC() and b.isEcimMOC())
+	then
+		if (a.owner <> b.owner)
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+	
+-- Checks if two classes should not be connected when building the dn
+helper def : isSplit(a : UML!Class, b : UML!Class) : Boolean = 
+	if (thisModule.isMocsCrossingMOM(a, b))
+	then
+		if (thisModule.isMocsPartOfSplittingContribution(a,b))
+		then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif;
+
+--This recursive helper builds up the DN based on the dependency links between UML InstanceSpecification
+--The DN is KeyAttributeName=KeyAttributeValue,(DependencyTarget)KeyAttributeName=KeyAttributeValue,(DependencyTarget)KeyAttributeName=KeyAttributeValue
+helper def : dnBuilder(is : UML!InstanceSpecification, d : UML!Dependency, dn : String, leaf : Boolean) : String = 
+	--match leafs
+	if(leaf)
+	then
+		--match leafs with no dependency links
+	 	if(is.clientDependency->size() = 0)
+	 	then
+			thisModule.dnNameHelper(is,true)
+		else
+			--check if dn should stop now because of MOM jump with splitting EcimContribution
+			if (thisModule.isSplit(is.classifier.first(), d.target.first().classifier.first()))
+			then
+				dn.concat(thisModule.dnNameHelper(is,true))
+			else
+				thisModule.dnBuilder(d.target.first(), d.target.first().clientDependency.first(), thisModule.dnNameHelper(d.client.first(), false), false)
+			endif		
+		endif			
+	else--non leafs
+		--match non leafs with no dependency links
+	 	if(is.clientDependency->size() = 0)
+	 	then
+			dn.concat(thisModule.dnNameHelper(is,true))
+		else--match non leafs with dependency links but do not traverse links which cross the MOM boundry
+--			if(is.classifier.first().owner <> d.target.first().classifier.first().owner)
+			if (thisModule.isSplit(is.classifier.first(), d.target.first().classifier.first()))
+			then
+				dn.concat(thisModule.dnNameHelper(is,true))
+			else
+				thisModule.dnBuilder(d.target.first(), d.target.first().clientDependency.first(), dn.concat(thisModule.dnNameHelper(d.client.first(),false)), false)
+			endif
+			
+		endif
+	endif;
+
+--Get the key attribute (naming attribute) from a class based on its stereotype
+helper context UML!Class def : getKeyAttribute() : OclAny = 
+	if(self.isEcimMOC() or self.hasStereotype('ECIM Base Profile::EcimFmAlarmType'))
+	then
+		-- get the real key or the generated key for zero/multikey classes
+		if (self.keyCount() = 1)
+		then
+			self.getAllAttributes()->select(e|e.hasEcimAppliedStereotype())->select(e|e.getValue(e.getEcimAppliedStereotype(),'isKey')).first()
+		else
+			thisModule.generateKeyName(self,'')
+		endif
+	else
+		if(self.isEcimStruct())
+		then
+			-- if struct the key attribute is named 'id' 
+			'id'
+		else
+			--there was no key attribute defined on the class note:this should not happen!
+			OclUndefined
+		endif
+	endif;
+
+--generate a name for a key for classes with 0 or multi keys
+helper def : generateKeyName(class : UML!Class, postFix : String) : String =
+	--the generated name is the name of the class with its first character lowered
+	let keyName : String = class.name.substring(1,1).toLower() + if class.name.size() > 1 then class.name.substring(2,class.name.size()) else '' endif + postFix + 'Id' in
+	
+	--check to see if this name clashes with existing attribute names. if it does suffix the name with an underscore, if even that causes
+	--a clash keep adding underscores till we have no clash
+	if (class.attribute->exists(e|e.name=keyName))
+	then
+		thisModule.generateKeyName(class,postFix.concat('_'))
+	else
+		keyName
+	endif;
+	
+helper context UML!Class def : keyCount() : Integer =
+	self.attribute->select(e|e.isNameGiving())->size();
+
+--Find a slot, matching a specific name, on an InstanceSpecification and return the slot value
+helper context UML!InstanceSpecification def : getSlotValue(property : UML!Property) : String = 
+	let matchingSlot : Sequence(UML!Slot) = self.slot->select(e|e.definingFeature->getName() = property.name) in
+	
+	--ensure there is a matching slot before trying to get the value
+	if(matchingSlot->size() > 0)
+	then
+		--ensure the slot actually has a value
+		if(matchingSlot->at(1).value->size() > 0)
+		then
+			--return the slot value
+			thisModule.assignDefaultValue(matchingSlot->at(1)).at(1)
+		else
+			--the slot had no value so return an empty string
+			''	
+		endif
+	else
+		--there was no slot having the name passed in
+		''
+	endif;
+
+
+
+helper def: convertBooleanTrueFalse(value : String) : String =
+	if (value = 'true')
+	then
+	   '1'
+	else
+		'0'
+	endif;
+
+
+--Every slot must have either a blank value or the value assigned to it in the the instance model
+--NOTE:Enumerations must have a value or the specification.stringValue() will break!
+helper def : assignDefaultValue(slot : UML!Slot) : Sequence(String) = 
+	let mySet : Sequence(String) = Sequence{} in
+	if(slot.value->size() < 1)
+	then
+		--every slot attribute must have a blank value if no value has been set
+		mySet.append('')
+	else
+		--get the slot value by filtering for only LiteralSpecification (i.e. StringLiteral, BooleanLiteral, IntergerLiteral)
+		--then convert this value to a string and append to the Sequence for returning to the caller
+		slot.value->select(e|e.oclIsKindOf(UML!LiteralInteger))->collect(e|mySet.append(e.value.toString()))
+		->union(
+			--match for string values
+			slot.value->select(e|e.oclIsKindOf(UML!LiteralString))->collect(e|mySet.append(thisModule.removeEscapeCommaCharacters(e.value.toString()))))
+		->union(
+			--match for literal nulls. we turn them into ''
+			slot.value->select(e|e.oclIsKindOf(UML!LiteralNull))->collect(e|mySet.append('')))			
+		->union(
+			-- booleans must be converted to 1/0
+			slot.value->select(e|e.oclIsKindOf(UML!LiteralBoolean))->collect(e|mySet.append(thisModule.convertBooleanTrueFalse(e.value.toString()))))	
+		->union(
+			-- this case is for string values entered via MMA menu which creates an opaque expression
+		    slot.value->select(e|e.oclIsKindOf(UML!OpaqueExpression))->collect(e|mySet.append(thisModule.removeEscapeCommaCharacters(e.stringValue()))))
+		->union(
+			--get the slot value by filtering for only InstanceValue (i.e. EnumerationLiteral values)
+			--then get the actual value of this Literal by navigating towards its specification and finally returning to the caller		
+			--note:The enumeration instance can only have one literal assigned to it
+			if (slot.definingFeature.isNameGiving()) then
+				slot.value->select(e|e.oclIsKindOf(UML!InstanceValue))->select(e|e.owner.definingFeature.type.oclIsKindOf(UML!Enumeration))->collect(e|mySet.append(e.instance.name))
+			else
+				slot.value->select(e|e.oclIsKindOf(UML!InstanceValue))->select(e|e.owner.definingFeature.type.oclIsKindOf(UML!Enumeration))->collect(e|mySet.append(e.instance.specification.stringValue()))
+			endif
+			
+		)		 
+		->union(
+			--get the slot value by filtering for only InstanceValue (i.e. Class values)
+			--then get the actual value of this Literal by navigating towards its specification and finally returning to the caller		
+			slot.value->select(e|e.oclIsKindOf(UML!InstanceValue))->select(e|e.type.oclIsKindOf(UML!Class))->collect(e|mySet.append(thisModule.dnBuilder(e.instance, e.instance.clientDependency.first(), '', true)))
+		)->flatten()
+	endif;
+		
+-- This is the new version to be uncommented as soon as problem with SDP 751 has been resolved!		
+helper def : getObjectClassName(instance : UML!InstanceSpecification) : String =
+	let class : UML!Class = instance.classifier.at(1) in
+	let mom : UML!Package = class.getNearestPackage() in
+	if(class <> OclUndefined)
+	then 
+		--if the class is an MOC or Struct simply get its name and return
+		if(class.isEcimMOC())
+		then
+			--return the class name
+			if (thisModule.hasMomPrefix(mom))
+		 	then
+				mom.name+class.name
+			else
+				class.name
+			endif
+		else 
+			if(class.isEcimStruct())
+			then
+				-- There must be a dependency here thanks to OCL constraint on the EcimStructInstance
+				let classUsingStruct : UML!Class = instance.clientDependency.at(1).target->at(1).classifier.at(1) in
+				let momUsingStruct : UML!Package = classUsingStruct.getNearestPackage() in
+				if (thisModule.hasMomPrefix(momUsingStruct))
+		 		then
+					-- If the immNamespace=MOM_NAME on the UML package that contains the class that is referring to the struct, 
+					-- then that UML package name is to be prefixed (and not the package name of the struct class)
+					-- See artf161138 : Remove runtime dependency to common modeling constructs (SDP2210 )
+					momUsingStruct.name+class.name
+				else
+					class.name
+				endif
+			else
+				--if the class is not a MOC nor Struct then it is an EcimType so gets its name from the ecimMOC property
+				if(instance.clientDependency->size() = 0)
+				then
+			   	--This should not happen for FmAlarmType instances! They must be 
+			   	--connected to a FmAlarmModel instance. So lets assume the instance
+			   	--is not an FmAlarmType instance and use its classifier
+					if (thisModule.hasMomPrefix(mom))
+		 			then
+						class.getNearestPackage().name+class.getValue(class.getEcimAppliedStereotype(),'ecimMOC')
+					else
+						class.getValue(class.getEcimAppliedStereotype(),'ecimMOC')
+					endif
+				else
+					-- ok we have a parent instance, follow it and use its nearest package
+			    	instance.clientDependency.at(1).target->at(1).classifier.at(1).getNearestPackage().name+class.getValue(class.getEcimAppliedStereotype(),'ecimMOC')
+				endif
+			endif
+		endif
+	else
+		''
+	endif;	
+		
+--This is the old version to be removed as soon as problem with SDP 751 has been resolved!		
+--Get the class name that this object is an instance of. If the object is an instance of an MOC then this works as expected by returning the class
+--name. However, if the object is an instance of an EcimType then the class name is swapped to the ecimMOC property that is defined on the stereotype.
+--helper def : getObjectClassName(class : UML!Class) : String =
+--	if(class <> OclUndefined)
+--	then 
+--		--if the class is an MOC or Struct simply get its name and return
+--		if(class.isEcimMOC() or class.isEcimStruct())
+--		then
+--			--return the class name
+--			class.name
+--		else 
+--			--if the class is not a MOC nor Struct then it is an EcimType so gets its name from the ecimMOC property
+--			class.getValue(class.getEcimAppliedStereotype(),'ecimMOC')
+--		endif
+--	else
+--		''
+--	endif;	
+		
+		
+helper def : getInstancePackageName(package : UML!Package) : String = 
+    	if (package.owner.oclIsKindOf(UML!Package))
+    	then
+			if (package.owner.hasStereotype('ECIM Base Profile::EcimMom'))
+			then
+				package.owner.name + package.name
+			else
+				package.name
+			endif
+		else
+			package.name
+		endif;
+
+helper def : getRdnName(p : UML!Property) : String = 
+	let class : UML!Class = p.owner in
+	let mom : UML!Package = class.getNearestPackage() in
+	if (class.isRootMoc() and thisModule.hasMomPrefix(mom))
+	then
+		mom.name + p.name
+	else
+		p.name
+	endif;
+
+-- This method is used where the class belong to another package, but
+-- it is still a specific package that governs mom prefix. 
+helper def : getClassNameWithPackage(c : UML!Class, mom : UML!Package) : String = 
+	if (thisModule.hasMomPrefix(mom))
+	then
+		mom.name + c.name
+	else
+		c.name
+	endif;
+
+helper def : getClassName(c : UML!Class) : String = 
+	let mom : UML!Package = c.getNearestPackage() in
+	if (thisModule.hasMomPrefix(mom))
+	then
+		mom.name + c.name
+	else
+		c.name
+	endif;
+	
+	
+helper def : hasMomPrefix(mom : UML!Package) : Boolean = 
+	if (mom.hasCoreMWAppliedStereotype())
+	then
+		mom.getValue(mom.getCoreMWAppliedStereotype(),'immNamespace').name = 'MOM_NAME'
+	else
+		false
+	endif;
+
+-- Replaces '\,' with ',''
+helper def : removeEscapeCommaCharacters(s : String) : String =
+	if(not s.oclIsUndefined()) then
+		let result : String = s.regexReplaceAll('\\\\,',',') in
+		if (result = '""') then
+			''
+		else
+			result
+		endif
+	else
+		s
+	endif;
+
+helper def : lookupAllTypes(s :UML!Package) : Sequence(UML!Type) = 
+	let typedElementsFromProperties : Sequence(UML!TypedElement)= 
+		s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->collect(e|e.attribute)->flatten()->collect(t|t.type)->flatten() in
+	let typedElementsFromParameters : Sequence(UML!TypedElement)= 
+		s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Class))->collect(e|e.ownedOperation)->flatten()->collect(o|o.ownedParameter)->flatten()->collect(t|t.type)->flatten() in
+	typedElementsFromProperties->union(typedElementsFromParameters).asSet();
+
+-- Returns all used structs in the supplied package
+helper def : lookupAllUsedStructs(s : UML!Package) : Sequence(UML!Class) =
+	thisModule.lookupAllTypes(s)->
+		select(e|e.oclIsTypeOf(UML!Class))->select(e|not e.isAbstract and e.hasStereotype('ECIM Base Profile::EcimStruct'));	
+	
+
+--This helper will return the first, and only, paramater defining the package name.
+--helper def : getParameter() : String = 
+--	PARAM!Parameter.allInstancesFrom('IN2')->first().name;
+
+helper def : getXmiId() : String = 
+	PARAM!Parameter.allInstancesFrom('IN2')->select(e|e.name='xmiId')->first().value;
+
+helper def : getImmSchemaName() : String = 
+	PARAM!Parameter.allInstancesFrom('IN2')->select(e|e.name='immSchemaName')->first().value;
+
+
+-- Tests if IMM schema version is at least R1
+helper def : isIMMR1() : Boolean = 
+	let immSchemaVersion : String = PARAM!Parameter.allInstancesFrom('IN2')->select(e|e.name='immSchemaVersion')->first().value in
+	if (immSchemaVersion = 'IMMR1')
+	then
+		true
+	else
+		false
+	endif;
+
+-- Tests if IMM schema version is at least R2	
+helper def : isIMMR2() : Boolean = 
+	let immSchemaVersion : String = PARAM!Parameter.allInstancesFrom('IN2')->select(e|e.name='immSchemaVersion')->first().value in
+	if (immSchemaVersion = 'IMMR2' or immSchemaVersion = 'IMMR3')
+	then
+		true
+	else
+		false
+endif;
+
+-- Tests if IMM schema version is R3
+helper def : isIMMR3() : Boolean = 
+	let immSchemaVersion : String = PARAM!Parameter.allInstancesFrom('IN2')->select(e|e.name='immSchemaVersion')->first().value in
+	if (immSchemaVersion = 'IMMR3')
+	then
+		true
+	else
+		false
+endif;
+
+

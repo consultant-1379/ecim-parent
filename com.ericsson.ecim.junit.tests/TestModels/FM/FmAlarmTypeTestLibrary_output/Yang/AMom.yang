@@ -1,0 +1,70 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Sep 23, 2014 4:48:35 PM using 
+    * com.ericsson.ecim.yang.m2m 2.11.2.qualifier
+*/
+module AMom {
+	namespace "urn:com:ericsson:ecim:AMom";
+	prefix AMom;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import FM {
+		prefix FM;
+	}
+
+	organization "Ericsson";
+
+	revision "2014-09-23" {
+		ericsson:release 1;
+		ericsson:version 1;
+	}
+
+	augment "/FM:Fm" {
+		list FmAlarmModel {
+			key fmAlarmModelId;
+			uses "AMom:FmAlarmModel";
+			list FmAlarmType {
+				key fmAlarmTypeId;
+				uses "AMom:FmAlarmType";
+			}
+
+		}
+
+	}
+
+	grouping TheRoot {
+		leaf theRootId {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+		leaf isGood {
+			type boolean;
+			default true;
+		}
+
+	}
+
+	grouping FmAlarmModel {
+		leaf fmAlarmModelId {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping FmAlarmType {
+		leaf fmAlarmTypeId {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+	}
+
+}

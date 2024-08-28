@@ -1,0 +1,116 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:45:41 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RtnIpsecProposalProfile" {
+	namespace "urn:com:ericsson:ecim:RtnIpsecProposalProfile";
+	prefix "RtnIpsecProposalProfile";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RtnL3Router {
+		prefix "RtnL3Router";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RtnL3Host {
+		prefix "RtnL3Host";
+	}
+
+	import RtnIpsec {
+		prefix "RtnIpsec";
+	}
+
+	description "IpSecProposalProfile package";
+
+	revision "2015-10-13" {
+		ericsson:contact "EAB/FJP/TA UABERPE";
+		ericsson:release "1";
+		ericsson:correction "0";
+		ericsson:author "EAB/FJP/TA UABERPE";
+		ericsson:version "1";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport/RtnL3Router:Router" {
+		list "IpsecProposalProfile" {
+			key "ipsecProposalProfileId";
+			uses RtnIpsecProposalProfile:IpsecProposalProfile;
+		}
+
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport" {
+		list "IpsecProposalProfile" {
+			key "ipsecProposalProfileId";
+			max-elements 1;
+			uses RtnIpsecProposalProfile:IpsecProposalProfile;
+		}
+
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport/RtnL3Host:Host" {
+		list "IpsecProposalProfile" {
+			key "ipsecProposalProfileId";
+			uses RtnIpsecProposalProfile:IpsecProposalProfile;
+		}
+
+	}
+
+	grouping "IpsecProposalProfile" {
+		description "Configuration information for Ipsec policies.";
+		leaf "ipsecProposalProfileId" {
+			type string;
+			mandatory true;
+			description "Value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		container "childSaLifetime" {
+			presence "This Container points to a Struct which has no key.";
+			description
+			"Lifetime for the negotiated ChildSAs. 
+In order for the node to have completed the rekeying process before the lifetime expires, the node will initiate re-rekeying according to a soft lifetime. The soft lifetime is calculated as (0.8+0.1*R)*childSaLifetime, where R is a random factor between 0 and 1. ";
+			uses RtnIpsec:ChildSaLifetime;
+			ericsson:restricted;
+		}
+
+		list "ipsecProposal" {
+			min-elements 1;
+			max-elements 2;
+			config true;
+			description "An ordered list of Ipsec proposals to be used for IKEv2 negotiation. 
+
+At least one Ipsec proposal must be specified. The first one in the list has the highest priority.
+ Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			ericsson:restricted;
+			uses RtnIpsecProposalProfile:ipsecProposal;
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use.";
+		}
+
+		leaf-list "reservedBy" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description
+			"Contains a list of MO instances that reserve this MO instance.";
+		}
+
+	}
+
+}

@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-03 18:30:23 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_SI_UriRedirectSet" namespace="urn:com:ericsson:ecim:Epg_Pgw_SI_UriRedirectSet" namespacePrefix="epg_pgw_si_uriredirectset" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="2">
+        <description>Define a set of URI redirect rules</description>
+        <derivedDataType name="Reason">
+            <description>Reason of redirection</description>
+            <baseType>
+                <string>
+                    <validValues>^(roaming|calendar-time|quality-of-service|user-defined-reason-1|user-defined-reason-2|user-defined-reason-3|user-defined-reason-4|user-defined-reason-5|blacklisted|unsubscribed|credit-control|unknown|terminal|qbau|default)$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="AuthorizedReason">
+            <description>Reason of redirection</description>
+            <baseType>
+                <string>
+                    <validValues>^(default)$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RuleSetName">
+            <description>Must be a string beginning with a number or letter and consisting of letters, numbers, dashes and underscores.</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>63</max>
+                    </lengthRange>
+                    <validValues>^[[:alnum:]][[:alnum:]_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString256">
+            <description>string up to 256 tokens</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>256</max>
+                    </lengthRange>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="UriRedirectSet">
+            <description>Define a set of URI redirect rules</description>
+            <root/>
+            <attribute name="uriRedirectSetId">
+                <description>URI redirect set name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RuleSetName">
+                        <mimName>Epg_Pgw_SI_UriRedirectSet</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Unauthorized">
+            <description>Redirect rules for unauthorized services</description>
+            <attribute name="unauthorizedId">
+                <description>Values: blacklisted|calendar-time|credit-control|default|qbau|quality-of-service|roaming|terminal|unknown|unsubscribed|user-defined-reason-1|user-defined-reason-2|user-defined-reason-3|user-defined-reason-4|user-defined-reason-5
+</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="Reason">
+                        <mimName>Epg_Pgw_SI_UriRedirectSet</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="uri">
+                <description>Redirect to this URI</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_UriRedirectSet</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Authorized">
+            <description>Redirect rules for authorized services</description>
+            <attribute name="authorizedId">
+                <description>Values: default </description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="AuthorizedReason">
+                        <mimName>Epg_Pgw_SI_UriRedirectSet</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="uri">
+                <description>Redirect to this URI</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString256">
+                        <mimName>Epg_Pgw_SI_UriRedirectSet</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="UriRedirectSet_to_Unauthorized">
+            <containment>
+                <parent>
+                    <hasClass name="UriRedirectSet">
+                        <mimName>Epg_Pgw_SI_UriRedirectSet</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Unauthorized">
+                        <mimName>Epg_Pgw_SI_UriRedirectSet</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>16</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="UriRedirectSet_to_Authorized">
+            <containment>
+                <parent>
+                    <hasClass name="UriRedirectSet">
+                        <mimName>Epg_Pgw_SI_UriRedirectSet</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Authorized">
+                        <mimName>Epg_Pgw_SI_UriRedirectSet</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>16</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="ServiceIdentification_to_UriRedirectSet">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceIdentification">
+                        <mimName>Epg_Pgw_ServiceIdentification</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="UriRedirectSet">
+                        <mimName>Epg_Pgw_SI_UriRedirectSet</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>128</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

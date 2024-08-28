@@ -1,0 +1,275 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 14, 2015 9:51:38 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RtnL3InterfaceIPv4" {
+	namespace "urn:com:ericsson:ecim:RtnL3InterfaceIPv4";
+	prefix "RtnL3InterfaceIPv4";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RtnL3Router {
+		prefix "RtnL3Router";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RtnL3Library {
+		prefix "RtnL3Library";
+	}
+
+	import RtnCommonLibrary {
+		prefix "RtnCommonLibrary";
+	}
+
+	description "Assigned IPv4 addresses.";
+
+	revision "2015-10-14" {
+		ericsson:author "EAB/FJP/TA UABJOCL";
+		ericsson:release "5";
+		ericsson:version "7";
+		ericsson:correction "0";
+		ericsson:contact "EAB/FJP/TA UABJOCL";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:Transport/RtnL3Router:Router" {
+		list "InterfaceIPv4" {
+			key "interfaceIPv4Id";
+			max-elements 256;
+			list "AddressIPv4" {
+				key "addressIPv4Id";
+				max-elements 1;
+				uses RtnL3InterfaceIPv4:AddressIPv4;
+			}
+
+			uses RtnL3InterfaceIPv4:InterfaceIPv4;
+		}
+
+	}
+
+	grouping "InterfaceIPv4" {
+		description
+		"IPv4-addressed termination point; interface on an IPv4 routing domain.";
+		leaf "mtu" {
+			type int32 {
+				range "576..9000";
+			}
+
+			mandatory true;
+			description "The maximum transmission unit (MTU) for IPv4.";
+		}
+
+		leaf "interfaceIPv4Id" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "bfdProfile" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			description
+			"BFD parameters used for BFD sessions from this IP interface. ";
+		}
+
+		leaf "loopback" {
+			type ECIM_CommonLibrary:EcimEmpty;
+			description "Specifies if the interface is an IP Loopback Interface. ";
+		}
+
+		leaf "bfdStaticRoutes" {
+			type RtnL3Library:BfdStaticRoutesInterfaceType;
+			mandatory true;
+			description
+			"Enables/disables BFD monitoring of static routing nexthops on this interface.
+
+bfdStaticRoutes works in conjunction with bfdProfile, so to enable BFD monitoring, bfdStaticRoutes must be ENABLED, and bfdProfile must be defined.
+When BFD monitoring is enabled, all static routing nexthops on subnets of this IP interface will be monitored, unless explicitly disabled on peer/nexthop.
+";
+		}
+
+		leaf "aclEgress" {
+			type string {
+				pattern "(.*=.*,)*AclIpv4=.*";
+			}
+
+			description
+			"A reference to an ACL MO applied in the egress direction. 
+If this attribute is empty, no ACL MO filtering will take place in the egress direction.";
+		}
+
+		leaf "aclIngress" {
+			type string {
+				pattern "(.*=.*,)*AclIpv4=.*";
+			}
+
+			description
+			"A reference to an ACL MO applied in the ingress direction. 
+If this attribute is empty, no ACL MO filtering will take place in the ingress direction.";
+		}
+
+		leaf "pcpArp" {
+			type RtnL3Library:EthPCP;
+			mandatory true;
+			description
+			"Specifies the PCP value for ARP packets using this interface (affects only VLAN interfaces).";
+		}
+
+		leaf "routesHoldDownTimer" {
+			type uint16 {
+				range "1..300";
+			}
+
+			description
+			"Specifies the holddown timer used for static and dynamic routes that use this interface.
+ 
+If this attribute is set, a holddown timer is started when the conditions for a static route to become available have been fulfilled. When the holddown timer expires, the route becomes available.
+ 
+Similarly, OSPFv2 uses this attribute to delay neighbor discovery on this interface (that is, until the interface is deemed reliably up) until routesHoldDownTimer has expired, counting from the time that the underlying L2 interface transitioned to an operational state of ENABLED.
+ 
+If this attribute is empty, there is no hold-down timer for routes.
+ 
+This attribute does NOT affect the operational state of the interface.";
+		}
+
+		leaf "trustDSCP" {
+			type boolean;
+			mandatory true;
+			description
+			"Replaces queue systems in ingress directions for policing/remarking.";
+		}
+
+		leaf-list "reservedBy" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description
+			"Contains a list of MO instances that reserve this MO instance.";
+		}
+
+		leaf "egressQosMarking" {
+			type string {
+				pattern "(.*=.*,)*DscpPcpMap=.*";
+			}
+
+			description
+			"The DSCP to PCP map used for marking DSCP tagged packets with a PCP value. The packets marked are either host originated or routed into the QoS domain.
+
+If empty, the DSCP values are mapped to PCP values according to the following:
+
+pcp0 = 0
+pcp1   (empty)
+pcp2 = 10,12,14
+pcp3 = 18,20,22
+pcp4 = 8,16,26,28
+pcp5 = 34,36,38,46
+pcp6 = 32,40,48
+pcp7 = 51,54";
+		}
+
+		leaf "routingPolicy" {
+			type string {
+				pattern "(.*=.*,)*RoutingPolicyIpv4=.*";
+			}
+
+			description
+			"A Routing Policy used for Policy Based Routing.
+
+The value is a reference to a Routing Policy. 
+
+If a reference is assigned, Policy Based Routing of incoming packets will be enabled.
+";
+		}
+
+		leaf "encapsulation" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			description
+			"Reference to the underlying encapsulation, which can be an EthernetPort MO or a VlanPort MO. 
+For InterfaceIPv4, this attribute can also refer to a Bridge MO or an IpsecTunnel MO.";
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use. 
+";
+		}
+
+		leaf "operationalState" {
+			type ECIM_CommonLibrary:OperState;
+			mandatory true;
+			config true;
+			description "The operational state. ";
+		}
+
+		leaf-list "availabilityStatus" {
+			type ECIM_CommonLibrary:AvailStatus;
+			config true;
+			description
+			"The availability status.
+It contains details about operationalState. ";
+		}
+
+	}
+
+	grouping "AddressIPv4" {
+		description
+		"Assigned IPv4 address including information about the subnet it resides on. 
+";
+		leaf "addressIPv4Id" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN. 
+";
+			ericsson:restricted;
+		}
+
+		leaf "address" {
+			type RtnCommonLibrary:Ipv4AddressAndPrefixLengthStr;
+			mandatory true;
+			description "IPv4 decimal address + / + prefix length <0-32>. 
+
+";
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "1..128";
+			}
+
+			description "Label for free use. 
+";
+		}
+
+		leaf-list "reservedBy" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description
+			"Contains a list of MO instances that reserve this MO instance.";
+		}
+
+	}
+
+}

@@ -1,0 +1,737 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 21, 2015 1:09:10 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "DicosMom" {
+	namespace "urn:com:ericsson:ecim:DicosMom";
+	prefix "DicosMom";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import SecondMom {
+		prefix "SecondMom";
+	}
+
+	import LibraryOfStuff {
+		prefix "LibraryOfStuff";
+	}
+
+	import ComTop {
+		prefix "ComTop";
+	}
+
+	import commonTypes_mim {
+		prefix "commonTypes_mim";
+	}
+
+	description "qwe";
+
+	revision "2015-04-21" {
+		ericsson:version "1";
+		ericsson:release "0";
+	}
+
+	augment "/ComTop:ManagedElement" {
+		list "FirstMoc" {
+			key "applicationName";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "SecondMoc" {
+				key "accessGroupId";
+				min-elements 17;
+				max-elements 4711;
+				uses DicosMom:SecondMoc;
+			}
+
+			uses DicosMom:FirstMoc;
+		}
+
+	}
+
+	augment "/ComTop:ManagedElement" {
+		list "TheVirtualContainer" {
+			key "theVirtualContainerId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			uses DicosMom:TheVirtualContainer;
+		}
+
+	}
+
+	typedef "MyString" {
+		type string {
+			length "0..*";
+			pattern "[0-9][0-9][0-9],[0-9][0-9][0-9],[0-9][0-9][0-9]";
+		}
+
+		description "qwe";
+	}
+
+	typedef "SharedInt" {
+		type int32 {
+			range "0..1000";
+		}
+
+		description "qwe";
+	}
+
+	typedef "NonSharedInt" {
+		type int64;
+		description "qwe";
+	}
+
+	typedef "MyString2" {
+		type string {
+			length "0..75";
+		}
+
+		description "qwe";
+	}
+
+	typedef "DerivedStringParamType" {
+		type string {
+			pattern "\b(bey|pasha|all)\b";
+		}
+
+		description "qwe";
+	}
+
+	typedef "MyDerivedFloat" {
+		type decimal64 {
+			range "0..234";
+			fraction-digits 1;
+		}
+
+		description "qwe";
+	}
+
+	typedef "MySharedDerivedFloat" {
+		type decimal64 {
+			range "123..23552";
+			fraction-digits 1;
+		}
+
+		description "eqw";
+	}
+
+	typedef "DerivedStringTypeWithCommas" {
+		type string {
+			pattern "[a-zA-z0-9]+,[a-zA-z0-9]";
+		}
+
+		description "qwe";
+	}
+
+	grouping "FirstMoc" {
+		description "qwe";
+		leaf "secondProp" {
+			type DicosMom:MyString;
+			default "123\,456\,789";
+			description "qwe";
+		}
+
+		leaf-list "sharedProperty" {
+			type DicosMom:SharedInt;
+			config true;
+			min-elements 1;
+			max-elements 5;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "usesCrossMomType" {
+			type SecondMom:MyMom2Boolean;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "booleanWithDefault" {
+			type boolean;
+			description "qwe";
+		}
+
+		leaf "aa1" {
+			type DicosMom:DerivedStringTypeWithCommas;
+			default "A,B";
+		}
+
+		leaf-list "aa2" {
+			type DicosMom:DerivedStringTypeWithCommas;
+			max-elements 2;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "aa3" {
+			type DicosMom:DerivedStringTypeWithCommas;
+			default "A\,B";
+		}
+
+		leaf-list "aa4" {
+			type DicosMom:DerivedStringTypeWithCommas;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "attr1FromMF" {
+			type string;
+		}
+
+		leaf "attr2FromMF" {
+			type string;
+		}
+
+		leaf "attr3FromMF" {
+			type string;
+		}
+
+		leaf "attr4FromMF" {
+			type string;
+		}
+
+		leaf "applicationName" {
+			type string;
+			mandatory true;
+			description
+			"The name of the application. The attribute name and value of is used in the applications RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "thedate" {
+			type commonTypes_mim:dateTime;
+		}
+
+		ericsson:TestAction {
+			description "qwe";
+			input {
+				leaf-list "TestParam1" {
+					type int16;
+					min-elements 1;
+					max-elements 9;
+					description "qwe";
+				}
+
+				leaf "derivedParam" {
+					type DicosMom:MyString;
+					mandatory true;
+				}
+
+			}
+
+			output {
+				leaf-list "returnValue" {
+					type int16;
+					min-elements 1;
+					max-elements 4;
+					description "qwe";
+				}
+
+			}
+
+		}
+
+		ericsson:voidReturn;
+		ericsson:GetNumOfSubordinates {
+			description "qwe";
+			input {
+				leaf "rank" {
+					type DicosMom:DerivedStringParamType;
+					mandatory true;
+					description "x";
+				}
+
+			}
+
+			output {
+				leaf "returnValue" {
+					type commonTypes_mim:integer;
+					mandatory true;
+					description "qwe";
+				}
+
+			}
+
+		}
+
+		ericsson:actionFromMF {
+			description "qwe";
+			input {
+				leaf "par1" {
+					type string;
+					mandatory true;
+					description "qqq";
+				}
+
+			}
+
+		}
+
+		ericsson:restart;
+	}
+
+	grouping "SecondMoc" {
+		description "qwe";
+		leaf-list "artf72873" {
+			type string;
+			max-elements 10;
+			description "qwe";
+		}
+
+		container "artf72875" {
+			presence "This Container points to a Struct which has no key.";
+			description "qwe";
+			uses DicosMom:artf72875;
+		}
+
+		list "aStructFromLibrary" {
+			key "keySm";
+			max-elements 1;
+			config true;
+			description "qwe";
+			uses DicosMom:aStructFromLibrary;
+		}
+
+		leaf "derStringFromLibrary" {
+			type LibraryOfStuff:SharedPatternX;
+			config true;
+			description "qwe";
+		}
+
+		leaf "deletableAndRuntimeAttrInCDMFramework" {
+			type int16;
+			config true;
+			description "qwe";
+		}
+
+		leaf "integerAttr" {
+			type commonTypes_mim:integer;
+			description "qwe";
+		}
+
+		leaf-list "integerSeqAttr" {
+			type commonTypes_mim:integer;
+			max-elements 5;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "integerKeyStringAttr" {
+			type commonTypes_mim:integerKeyString;
+			description "qwe";
+		}
+
+		leaf-list "integerKeyStringSeqAttr" {
+			type commonTypes_mim:integerKeyString;
+			max-elements 5;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "floatAttr" {
+			type commonTypes_mim:float;
+			description "qwe";
+		}
+
+		leaf-list "floatSeqAttr" {
+			type commonTypes_mim:float;
+			max-elements 5;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "attrWithFromArtf75643" {
+			type string;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "dateTimeAttr" {
+			type commonTypes_mim:dateTime;
+			description "qwe";
+		}
+
+		leaf-list "dateTimeSeqAttr" {
+			type commonTypes_mim:dateTime;
+			max-elements 5;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		container "structWithDefaultAttribute" {
+			presence "This Container points to a Struct which has no key.";
+			description "qwe";
+			uses DicosMom:structWithDefaultAttribute;
+		}
+
+		leaf "artf80146" {
+			type DicosMom:MyString;
+			description "qwe";
+		}
+
+		leaf "floatyfloaty" {
+			type DicosMom:MyDerivedFloat;
+			mandatory true;
+			config true;
+			description "qwe";
+		}
+
+		leaf "floatfloatyShared" {
+			type DicosMom:MySharedDerivedFloat;
+			mandatory true;
+			config true;
+			description "ert";
+		}
+
+		leaf "moRefAttr" {
+			type string {
+				pattern "(.*=.*,)*FirstMoc=.*";
+			}
+
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf-list "moRefAttrSeq" {
+			type string {
+				pattern "(.*=.*,)*FirstMoc=.*";
+			}
+
+			min-elements 1;
+			max-elements 100;
+			description "qwe";
+		}
+
+		leaf-list "ipAddresses" {
+			type ComTop:IpDNSAddress;
+			max-elements 17;
+			description "Several derived strings.";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "ipAddress" {
+			type ComTop:IpDNSAddress;
+			description "One derived string.";
+		}
+
+		leaf-list "daysToDoStuff" {
+			type commonTypes_mim:DaysOfWeek;
+			max-elements 7;
+			description
+			"artf179582 : DX ET 2.5.1 - Transformation error of multi-valued attributes' default values";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "qq1IsNotifiable" {
+			type int32;
+			max-elements 3;
+			description "qwe";
+		}
+
+		leaf-list "qq2IsNotifiable" {
+			type int32;
+			max-elements 3;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "accessGroupId" {
+			type commonTypes_mim:integerKeyString;
+			mandatory true;
+			description
+			"This attribute specifies the Assigned ID of the Access Group.";
+			ericsson:restricted;
+		}
+
+		leaf "accessGroupName" {
+			type string;
+			mandatory true;
+			description "This attribute specifies the name of the Access Group.";
+		}
+
+		leaf "linuxGidNumber" {
+			type commonTypes_mim:integer;
+			description "The linux group id number.";
+		}
+
+		leaf-list "linuxMemberUid" {
+			type string;
+			config true;
+			description "The linux uids which are members of the group.";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "linuxDescription" {
+			type string;
+		}
+
+		leaf "thedate" {
+			type commonTypes_mim:dateTime;
+		}
+
+		ericsson:artf72874  {
+			description "qwe";
+			output {
+				leaf "returnValue" {
+					type DicosMom:SharedInt;
+					mandatory true;
+					description "qwe";
+				}
+
+			}
+
+		}
+
+		ericsson:artf75700 {
+			description "qwe";
+			input {
+				leaf "p1" {
+					type DicosMom:SharedInt;
+					mandatory true;
+					description "qwe";
+				}
+
+				leaf "p2" {
+					type commonTypes_mim:integer;
+					mandatory true;
+					description "qwe";
+				}
+
+				leaf "p3" {
+					type commonTypes_mim:integerKeyString;
+					mandatory true;
+					description "qwe";
+				}
+
+				leaf "p4" {
+					type commonTypes_mim:float;
+					mandatory true;
+					description "qwe";
+				}
+
+				leaf "p5" {
+					type int32;
+					mandatory true;
+					description "qwe";
+				}
+
+				leaf-list "p1Seq" {
+					type DicosMom:SharedInt;
+					min-elements 1;
+					max-elements 7;
+					description "qwe";
+				}
+
+				leaf-list "p2Seq" {
+					type commonTypes_mim:integer;
+					min-elements 1;
+					max-elements 7;
+					description "qwe";
+				}
+
+				leaf-list "p3Seq" {
+					type commonTypes_mim:integerKeyString;
+					min-elements 1;
+					max-elements 7;
+					description "qwe";
+				}
+
+				leaf-list "p4Seq" {
+					type commonTypes_mim:float;
+					min-elements 1;
+					max-elements 7;
+					description "qwe";
+				}
+
+				leaf-list "p5Seq" {
+					type int32;
+					min-elements 1;
+					max-elements 7;
+					description "qwe";
+				}
+
+				leaf "p6" {
+					type DicosMom:NonSharedInt;
+					mandatory true;
+					description "qwe";
+				}
+
+				leaf-list "p6Seq" {
+					type DicosMom:NonSharedInt;
+					min-elements 1;
+					max-elements 7;
+					description "qwe";
+				}
+
+			}
+
+			output {
+				leaf "returnValue" {
+					type DicosMom:SharedInt;
+					mandatory true;
+					description "qwe";
+				}
+
+			}
+
+		}
+
+		ericsson:restart;
+	}
+
+	grouping "StructArtf72875" {
+		description "qwe";
+		leaf "sm1" {
+			type int16;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "sm2" {
+			type DicosMom:MyString;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "sm3" {
+			type DicosMom:SharedInt;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "sm4" {
+			type DicosMom:NonSharedInt;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "sm5" {
+			type DicosMom:MyString2;
+			mandatory true;
+			description "qwe";
+		}
+
+	}
+
+	grouping "StructWithDefaults" {
+		description "qwe";
+		leaf "floatSm" {
+			type commonTypes_mim:float;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "stringSm" {
+			type string;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "integerStringSm" {
+			type commonTypes_mim:integerKeyString;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "integerSm" {
+			type commonTypes_mim:integer;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "dateTimeSm" {
+			type commonTypes_mim:dateTime;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "noDefaultfloatSm" {
+			type commonTypes_mim:float;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "noDefaultstringSm" {
+			type string;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "noDefaultintegerStringSm" {
+			type commonTypes_mim:integerKeyString;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "noDefaultintegerSm" {
+			type commonTypes_mim:integer;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "noDefaultdateTimeSm" {
+			type commonTypes_mim:dateTime;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf-list "multiplefloatSm" {
+			type commonTypes_mim:float;
+			min-elements 1;
+			max-elements 10;
+			description "qwe";
+		}
+
+		leaf-list "multiplestringSm" {
+			type string;
+			min-elements 1;
+			max-elements 10;
+			description "qwe";
+		}
+
+		leaf-list "multipleintegerStringSm" {
+			type commonTypes_mim:integerKeyString;
+			min-elements 1;
+			max-elements 10;
+			description "qwe";
+		}
+
+		leaf-list "multipleintegerSm" {
+			type commonTypes_mim:integer;
+			min-elements 1;
+			max-elements 10;
+			description "qwe";
+		}
+
+		leaf-list "multipledateTimeSm" {
+			type commonTypes_mim:dateTime;
+			min-elements 1;
+			max-elements 10;
+			description "qwe";
+		}
+
+	}
+
+	grouping "TheVirtualContainer" {
+		description "A virtual container class.";
+		leaf "theVirtualContainerId" {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "FreeLikeABird" {
+		description
+		"This class is not connected, the class hierarchy checker should not be run since this model is profiled with VDicos.";
+		leaf "freeLikeABirdId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+	}
+
+}

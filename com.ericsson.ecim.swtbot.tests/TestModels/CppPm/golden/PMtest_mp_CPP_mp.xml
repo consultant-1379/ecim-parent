@@ -1,0 +1,1614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Apr 21, 2015 4:04:45 PM using:
+	* com.ericsson.ecim.m2m 3.0.0.qualifier
+	* com.ericsson.ecim.dsl 3.0.0.qualifier
+	* com.ericsson.ecim.edm 3.0.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle/>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum/>
+            <docLang>Uen</docLang>
+            <docRev>PA1</docRev>
+            <docDate>Tue Jan 29 14:52:07 CET 2013</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>erarolu</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="epetoma" contact="" date="Tue Jan 29 14:52:07 CET 2013" docNo="" name="PMtest" namespace="urn:com:ericsson:ecim:PMtest" namespacePrefix="pmtest" organization="" release="13" revision="PA1" version="1">
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <struct name="HealthCheckResultRO">
+            <structMember name="message">
+                <description>Provides additional results.
+
+The initial value is an emtpy string (""). Currently not used.</description>
+                <string/>
+            </structMember>
+            <structMember name="startTime">
+                <description>The time the health check starts.
+
+Format:  yyyy:MM:dd HH:mm
+
+The initial value is an empty string ("").
+</description>
+                <string/>
+            </structMember>
+            <structMember name="healthCheckResultCode">
+                <description>The result of the health check.
+</description>
+                <enumRef name="HealthCheckResultCode">
+                    <mimName>PMtest</mimName>
+                </enumRef>
+            </structMember>
+        </struct>
+        <struct name="ScheduleEntry">
+            <structMember name="time">
+                <description>The time of the day, when the action startHealthCheck starts.
+
+Format: hh:mm
+
+hh - hour
+mm - minutes
+</description>
+                <string>
+                    <lengthRange>
+                        <min>5</min>
+                        <max>5</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>5</min>
+                            <max>5</max>
+                        </subrange>
+                    </stringLength>
+                </string>
+            </structMember>
+            <structMember name="weekday">
+                <description>The weekday, when the action startHealthCheck starts.
+</description>
+                <enumRef name="Weekday">
+                    <mimName>PMtest</mimName>
+                </enumRef>
+            </structMember>
+        </struct>
+        <struct name="MimInfoRO">
+            <structMember name="mimName">
+                <string/>
+            </structMember>
+            <structMember name="mimVersion">
+                <string/>
+            </structMember>
+            <structMember name="mimRelease">
+                <string/>
+            </structMember>
+        </struct>
+        <struct name="MeApplicationConfigurationData">
+            <structMember name="name">
+                <description>The name of the attribute.
+</description>
+                <string/>
+            </structMember>
+            <structMember name="value">
+                <description>The value of the attribute.
+</description>
+                <string/>
+            </structMember>
+        </struct>
+        <enum name="IntegrationUnlockStatus">
+            <description>This enumeration specifies the different stages of the integration unlock state.</description>
+            <enumMember name="NEVER_USED">
+                <description>IntegrationUnlockStatus has not been activated.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ACTIVATED">
+                <description>IntegrationUnlockStatus goes from NEVER_USED to ACTIVATED when the node is integration-unlocked.
+The maximum time in this state is 21 days.
+After expiry, IntegrationUnlockStatus goes to USE_DISABLED.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="USE_DISABLED">
+                <description>The IntegrationUnlockStatus goes to USE_DISABLED when integration unlock expires or when an LKF is installed.
+All features and capacities are license-controlled in accordance with the installed LKF.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="AclActionTypes">
+            <enumMember name="BYPASS">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="DROP">
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="BatteryTestState">
+            <description>Current state of the battery test.</description>
+            <enumMember name="UNDEFINED">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="PENDING">
+                <description>On demand test is pending.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="IN_PROGRESS">
+                <description>Battery test is in progress.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="CertCategory">
+            <description>These certificate usage categories distinguish between different kinds of root certificates which can be installed as trusted certificates in the node.</description>
+            <enumMember name="LOCAL_AA_DB_FILE_SIGNERS">
+                <description>Trusted certificates for verifying signatures on local AA database and authorization files.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="AA_SERVERS">
+                <description>Trusted certificates for verifying authenticity of AA servers in the network.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="CORBA_PEERS">
+                <description>Trusted certificates for verifying the authenticity of CORBA peers in the network.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="ERICSSON_1">
+                <description>Trusted Ericsson certificate for verifying the classification files and the permission files. This certificate cannot be removed or changed.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="RestartReason">
+            <description>The restart reason.</description>
+            <enumMember name="PLANNED_RECONFIGURATION">
+                <description>Restart ordered to perform planned activities such as reconfigurations.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="UNPLANNED_NODE_EXTERNAL_PROBLEMS">
+                <description>Restart ordered to resolve node external problems.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="UNPLANNED_NODE_UPGRADE_PROBLEMS">
+                <description>Restart ordered to resolve upgrade problems.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="UNPLANNED_O_AND_M_ISSUE">
+                <description>Restart ordered to resolve O&amp;M issues.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="UNPLANNED_CYCLIC_RECOVERY">
+                <description>Restart ordered to stop further auto recovery attempts.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="UNPLANNED_LOCKED_RESOURCES">
+                <description>Restart ordered to release locked resources.</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="UNPLANNED_COLD_WITH_HW_TEST">
+                <description>Restart ordered to perform HW tests.</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="UNPLANNED_CALL_PROCESSING_DEGRADATION">
+                <description>Restart ordered to improve Call Set Up or Call Drop Rate.</description>
+                <value>7</value>
+            </enumMember>
+            <enumMember name="UNPLANNED_LOW_COVERAGE">
+                <description>Restart ordered to improve Cell Availability.</description>
+                <value>8</value>
+            </enumMember>
+            <enumMember name="UPGRADE_BOARD_RESTART">
+                <description>Restart ordered to effectuate autoconfiguration of a plug-in unit.
+
+This is only used for PlugInUnit MO.</description>
+                <value>30</value>
+            </enumMember>
+            <enumMember name="OPERATOR_CLASSIFIED_PROBLEMS">
+                <description>Restart ordered to resolve procedural errors or office environmental problems.
+Example: power, grounding, temperature, humidity or security problems.</description>
+                <value>31</value>
+            </enumMember>
+        </enum>
+        <enum name="EmergencyStatus">
+            <description>This enumeration specifies the different stages of the emergency state.</description>
+            <enumMember name="NEVER_USED">
+                <description>EmergencyStatus has not been activated since installation of the LKF.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ACTIVE">
+                <description>EmergencyStatus goes from NEVER_USED to ACTIVE, the first time the node is emergency-unlocked. The licenses are open for the emergency state as described in the documentation about licensing. The maximum time in this state is 7 days. After expiry, EmergencyStatus goes to USE_DEGRADED. EmergencyStatus goes from ACTIVE to NEVER_USED when the LKF is installed with emergency unlock reset.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="USE_DEGRADED">
+                <description>EmergencyStatus goes to USE_DEGRADED from ACTIVE. 
+All features and capacities are license-controlled in accordance with the installed LKF. 
+
+EmergencyStatus remains in USE_DEGRADED until:
+an emergency unlock of the node and EmergencyStatus goes to ACTIVE_AGAIN or,
+an LKF is installed with an entry, emergency unlock reset. Then EmergencyStatus goes to NEVER_USED. </description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="ACTIVE_AGAIN">
+                <description>The EmergencyStatus goes from USE_DEGRADED to ACTIVE_AGAIN at emergency unlock of  the node. The licenses are open for the emergency state as described in the documentation about licensing. The maximum time in this state is 7 days. After expiry the EmergencyStatus goes from ACTIVE_AGAIN to USE_DISABLED. The EmergencyStatus goes from ACTIVE_AGAIN to NEVER_USED at installation of an emergency unlock reset LKF.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="USE_DISABLED">
+                <description>The EmergencyStatus goes to USE_DISABLED from ACTIVE_AGAIN. 
+All features and capacities are license-controlled in accordance with the installed LKF. 
+The node remains in USE_DISABLED until an LKF with the entry, emergency unlock reset, is installed. Then it goes to NEVER_USED.</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="RestartRank">
+            <description>This is used in the manualRestart action for the MOs ManagedElement, PlugInUnit and PiuDevice.</description>
+            <enumMember name="RESTART_WARM">
+                <description>Restarts the MO with the same software. The software is not reloaded from the disk. The traffic is affected least.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="RESTART_REFRESH">
+                <description>Reloads the software from the disk, restarts the MO, and resets parts of the hardware. The traffic is affected more than for a warm restart.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="RESTART_COLD">
+                <description>Reloads the software from the disk, restarts the MO, and resets all hardware. The traffic is affected more than for a refresh restart.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="RESTART_COLDWTEST">
+                <description>Reloads the software from the disk, restarts the MO, and resets and tests the hardware. The traffic is affected most.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="ProtocolType">
+            <description>The protocol type.</description>
+            <enumMember name="ANY">
+                <description>Any IP protocol.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ICMP">
+                <description>ICMP</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="TCP">
+                <description>TCP</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="UDP">
+                <description>UDP</description>
+                <value>17</value>
+            </enumMember>
+            <enumMember name="SCTP">
+                <description>SCTP</description>
+                <value>132</value>
+            </enumMember>
+            <enumMember name="RAWIP">
+                <description>Raw IP sockets.</description>
+                <value>255</value>
+            </enumMember>
+        </enum>
+        <enum name="EthModSpeedDuplex">
+            <description>Ethernet module speed duplex</description>
+            <enumMember name="ETH_1_GB_FULL">
+                <description>Ethernet 1 GB Full Duplex</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="ETH_10_GB_FULL">
+                <description>Ethernet 10 GB Full Duplex</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="ETH_40_GB_FULL">
+                <description>Ethernet 40 GB Full Duplex
+
+Only allowed to set on CMXB3 board.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="SfpState">
+            <description>The state of the SFP port.</description>
+            <enumMember name="VALID">
+                <description>The SFP module is valid.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="INVALID">
+                <description>The SFP module is invalid and not approved to be used for this board.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="NOT_INSTALLED">
+                <description>There is no SFP module installed on this port.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="NOT_APPLICABLE">
+                <description>The port is no SFP port.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="EthernetSpeedDuplex">
+            <description>Ethernet speed duplex</description>
+            <enumMember name="ETH_10_MB_HALF">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="ETH_10_MB_FULL">
+                <value>2</value>
+            </enumMember>
+            <enumMember name="ETH_100_MB_HALF">
+                <value>3</value>
+            </enumMember>
+            <enumMember name="ETH_100_MB_FULL">
+                <value>4</value>
+            </enumMember>
+            <enumMember name="ETH_1000_MB_HALF">
+                <value>5</value>
+            </enumMember>
+            <enumMember name="ETH_1000_MB_FULL">
+                <value>6</value>
+            </enumMember>
+        </enum>
+        <enum name="NodeRestartType">
+            <enumMember name="COLD_AT_PIU_FAULT">
+                <description>Cold node restart at fault mark of the last PIU.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="WARM_AT_PIU_FAULT">
+                <description>Warm node restart at fault mark of the last PIU.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="COLD_AT_PIU_RESTART">
+                <description>Cold node restart at restart of the last PIU.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="WARM_AT_PIU_RESTART">
+                <description>Warm node restart at restart of the last PIU.</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="Weekday">
+            <enumMember name="SUNDAY">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="MONDAY">
+                <value>2</value>
+            </enumMember>
+            <enumMember name="TUESDAY">
+                <value>3</value>
+            </enumMember>
+            <enumMember name="WEDNESDAY">
+                <value>4</value>
+            </enumMember>
+            <enumMember name="THURSDAY">
+                <value>5</value>
+            </enumMember>
+            <enumMember name="FRIDAY">
+                <value>6</value>
+            </enumMember>
+            <enumMember name="SATURDAY">
+                <value>7</value>
+            </enumMember>
+        </enum>
+        <enum name="HealthCheckResultCode">
+            <enumMember name="INITIAL_VALUE">
+                <description>The health check has not been performed since the last node restart.</description>
+                <value>99</value>
+            </enumMember>
+            <enumMember name="OK">
+                <description>The health check has passed.
+
+All file systems, configuration versions and upgrade packages are OK.
+</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="NOT_OK">
+                <description>The health check has found one or more errors, see the alarms:
+- File System Diagnostic Error
+- Configuration Version Corrupt
+- Upgrade Package Corrupt
+
+One alarm per error and MO is raised.
+</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="ABORTED">
+                <description>The health check is aborted, since a PlugInUnit MO is not responding.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="ABORTED_NOT_OK">
+                <description>The health check is aborted, since a PlugInUnit MO is not responding.
+
+The health check has found one or more errors, see the alarms: 
+- File System Diagnostic Error
+- Configuration Version Corrupt
+- Upgrade Package Corrupt
+
+One alarm per error and MO is raised.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="HEALTH_CHECK_ONGOING">
+                <description>The health check is still in progress.</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="ModificationState">
+            <enumMember name="NOT_STARTED">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="STARTED">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="FINISHED">
+                <value>2</value>
+            </enumMember>
+            <enumMember name="FAILED">
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="AutoConfStatus">
+            <enumMember name="IDLE">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="IN_PROGRESS">
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="RouteType">
+            <description>The types of the routes found in the IP routing table.</description>
+            <enumMember name="INET_RTPROTO_OTHER">
+                <description>The source of information is unknown.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="INET_RTPROTO_LOCAL">
+                <description>Route created from local configuration data (both static and interface routes).
+Each interface created gets an entry in the routing table of the RO.
+</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="INET_RTPROTO_NETMGMT">
+                <description>Route added by SNMP.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="INET_RTPROTR_ICMP">
+                <description>Route added by ICMP redirect message.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="INET_RTPROTO_OSPF">
+                <description>Route added by OSPF.</description>
+                <value>13</value>
+            </enumMember>
+        </enum>
+        <class name="Equipment">
+            <description>This MO is used as a structural element for the network element, that is, it only acts as a container for other MOs. This MO structures the equipment of the network element.
+
+This MO is created automatically and cannot be deleted.
+
+The RDN of this MO is Equipment=1.
+</description>
+            <systemCreated/>
+            <attribute name="EquipmentId">
+                <description>The value component of the RDN.
+
+It is set automatically when the MO instance is created.
+</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>Label for free use.
+</description>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>0</min>
+                            <max>128</max>
+                        </lengthRange>
+                        <stringLength>
+                            <subrange>
+                                <min>0</min>
+                                <max>128</max>
+                            </subrange>
+                        </stringLength>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="lastHwPiChange">
+                <description>Indicates the timestamp when the last hardware product information is changed.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ManagedElement">
+            <description>Managed Element
+
+This MO is the top MO in the MOM. A management application will communicate with the ManagedElement MO for the purpose of monitoring and controlling it.
+
+This MO is created automatically and cannot be deleted.
+
+The RDN of this MO is ManagedElement=1.
+</description>
+            <systemCreated/>
+            <root/>
+            <action name="startHealthCheck">
+                <description>Initiates a health check. 
+
+The health check investigates consistency of the file systems, configuration versions and upgrade packages. 
+Alarms will be generated if a fault is found, see the alarms: 
+- File System Diagnostic Error 
+- Configuration Version Corrupt 
+- Upgrade Package Corrupt 
+
+Only one health check action at a time can be active. Further attempts to start the health check are rejected. If the attribute operationalState of a PlugInUnit MO instance is set to DISABLED, the corresponding plug-in unit is not checked.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="20292"/>
+                </domainExtension>
+                <returnType>
+                    <enumRef name="AclActionTypes">
+                        <mimName>PMtest</mimName>
+                    </enumRef>
+                </returnType>
+            </action>
+            <action name="manualRestart">
+                <description>Manual restart of the node.
+</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="16462"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="restartRank">
+                    <description>The restart rank.</description>
+                    <in/>
+                    <dataType>
+                        <enumRef name="RestartRank">
+                            <mimName>PMtest</mimName>
+                        </enumRef>
+                    </dataType>
+                </parameter>
+                <parameter name="restartReason">
+                    <description>The reason for the restart.</description>
+                    <in/>
+                    <dataType>
+                        <enumRef name="RestartReason">
+                            <mimName>PMtest</mimName>
+                        </enumRef>
+                    </dataType>
+                </parameter>
+                <parameter name="restartInfo">
+                    <description>A free text field where extra information can be added.</description>
+                    <in/>
+                    <dataType>
+                        <string>
+                            <lengthRange>
+                                <min>0</min>
+                                <max>80</max>
+                            </lengthRange>
+                            <stringLength>
+                                <subrange>
+                                    <min>0</min>
+                                    <max>80</max>
+                                </subrange>
+                            </stringLength>
+                        </string>
+                    </dataType>
+                </parameter>
+                <disturbances>manualRestart causes loss of traffic!</disturbances>
+            </action>
+            <attribute name="ManagedElementId">
+                <description>The value component of the RDN.
+
+It is set automatically when the MO instance is created.
+</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>Label for free use.
+</description>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>0</min>
+                            <max>128</max>
+                        </lengthRange>
+                        <stringLength>
+                            <subrange>
+                                <min>0</min>
+                                <max>128</max>
+                            </subrange>
+                        </stringLength>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="site">
+                <description>This attribute gives information about geographical location, for example place name.
+</description>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>0</min>
+                            <max>255</max>
+                        </lengthRange>
+                        <stringLength>
+                            <subrange>
+                                <min>0</min>
+                                <max>255</max>
+                            </subrange>
+                        </stringLength>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="logicalName">
+                <description>Specifies the logical name of a node.
+</description>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>0</min>
+                            <max>255</max>
+                        </lengthRange>
+                        <stringLength>
+                            <subrange>
+                                <min>0</min>
+                                <max>255</max>
+                            </subrange>
+                        </stringLength>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="productType">
+                <description>This attribute describes the product type and is always set to the value "Node".
+</description>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <string>
+                        <defaultValue>Node</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="productName">
+                <description>This attribute describes the implemented functionality.
+</description>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>0</min>
+                            <max>12</max>
+                        </lengthRange>
+                        <stringLength>
+                            <subrange>
+                                <min>0</min>
+                                <max>12</max>
+                            </subrange>
+                        </stringLength>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="productNumber">
+                <description>This attribute uniquely identifies the product, for example ROF123.
+</description>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>0</min>
+                            <max>24</max>
+                        </lengthRange>
+                        <stringLength>
+                            <subrange>
+                                <min>0</min>
+                                <max>24</max>
+                            </subrange>
+                        </stringLength>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="productRevision">
+                <description>This attribute identifies the version of the product, for example R2A.
+</description>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>0</min>
+                            <max>7</max>
+                        </lengthRange>
+                        <stringLength>
+                            <subrange>
+                                <min>0</min>
+                                <max>7</max>
+                            </subrange>
+                        </stringLength>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="mimName">
+                <description>The name and version of the MIM on the node.
+</description>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+                <deprecated/>
+                <statusInformation>Replaced by mimInfo</statusInformation>
+            </attribute>
+            <attribute name="faultTolerantCoreStates">
+                <description>Retrieves information of PIUs (maximum 2 PIUs) that are running Fault Tolerant Core (FTC). This attribute contains an array of strings, for example:
+
+ManagedElement=1,Equipment=1,Subrack=1,Slot=1,PlugInUnit=1;ftcState=Active
+ManagedElement=1,Equipment=1,Subrack=1,Slot=2,PlugInUnit=1;ftcState=PassiveReady
+
+The possible FTC states are Init, NotConfigured, Active, Unavailable, PassiveNotReady, PassiveReady.
+</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="applicationConfiguration">
+                <description>Specifies configuration data critical for an application.</description>
+                <dataType>
+                    <sequence>
+                        <structRef name="MeApplicationConfigurationData">
+                            <mimName>PMtest</mimName>
+                        </structRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="mimInfo">
+                <description>The name, version and release of the MIM.
+</description>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="MimInfoRO">
+                        <mimName>PMtest</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="healthCheckSchedule">
+                <description>The scheduled time and weekday, when the health check starts.
+</description>
+                <dataType>
+                    <sequence>
+                        <structRef name="ScheduleEntry">
+                            <mimName>PMtest</mimName>
+                        </structRef>
+                        <minLength>0</minLength>
+                        <maxLength>14</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="healthCheckResult">
+                <description>The result of the latest health check.
+</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="HealthCheckResultRO">
+                        <mimName>PMtest</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ManagedElementData">
+            <description>This object contains attributes and actions on node level.
+
+This MO is created automatically and cannot be deleted.
+
+The RDN of this MO is ManagedElementData=1.
+</description>
+            <systemCreated/>
+            <action name="createNtpPrimary">
+                <description>This action creates the primary Network Time Protocol (NTP).
+
+There must exist a primary NTP, and can exist a secondary and a third NTP.
+
+Once the NTP is created, it is then possible to change the attributes, such as the IP address, burst flag, max- and min poll, and also specify which NTP is active.
+
+The input format for an IPv4 address is four fields of digits, separated by a dot. Each field consists of one to three digits.
+
+The input format for an IPv6 address is as defined in specification RFC 4291, chapter 2.2, bullet 1 and 2.
+
+Domain names are supported.
+The input format for a domain name is as defined in specification RFC 952.
+When address resolution is requested and the DNS server responds with a list of resolved addresses, the first address presented by the DNS server is used by this action. Note that you need to configure a name-to-IP-address association in the DNS server, with an address that belongs to the correct address family. If the node is configured for OAM IP connectivity over IPv6, the address in the DNS association must be an IPv6 address.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="30002"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="ntpServerAddressPrimary">
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+                <parameter name="ntpMinPollPrimary">
+                    <in/>
+                    <dataType>
+                        <long/>
+                    </dataType>
+                </parameter>
+                <parameter name="ntpMaxPollPrimary">
+                    <in/>
+                    <dataType>
+                        <long/>
+                    </dataType>
+                </parameter>
+                <parameter name="ntpBurstFlagPrimary">
+                    <in/>
+                    <dataType>
+                        <boolean/>
+                    </dataType>
+                </parameter>
+                <parameter name="ntpServiceActivePrimary">
+                    <in/>
+                    <dataType>
+                        <boolean/>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="createNtpSecondary">
+                <description>This action creates the secondary/alternative Network Time Protocol (NTP).
+
+There must exist a primary NTP, and can exist a secondary and a third NTP.
+
+Once the NTP is created, it is then possible to change the attributes, such as the IP address, burst flag, max- and min poll, and also specify which NTP is active.
+
+The input format for an IPv4 address is four fields of digits, separated by a dot. Each field consists of one to three digits.
+
+The input format for an IPv6 address is as defined in specification RFC 4291, chapter 2.2, bullet 1 and 2.
+
+Domain names are supported.
+The input format for a domain name is as defined in specification RFC 952.
+When address resolution is requested and the DNS server responds with a list of resolved addresses, the first address presented by the DNS server is used by this action. Note that you need to configure a name-to-IP-address association in the DNS server, with an address that belongs to the correct address family. If the node is configured for OAM IP connectivity over IPv6, the address in the DNS association must be an IPv6 address.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="9177"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="ntpServerAddressSecondary">
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+                <parameter name="ntpMinPollSecondary">
+                    <in/>
+                    <dataType>
+                        <long/>
+                    </dataType>
+                </parameter>
+                <parameter name="ntpMaxPollSecondary">
+                    <in/>
+                    <dataType>
+                        <long/>
+                    </dataType>
+                </parameter>
+                <parameter name="ntpBurstFlagSecondary">
+                    <in/>
+                    <dataType>
+                        <boolean/>
+                    </dataType>
+                </parameter>
+                <parameter name="ntpServiceActiveSecondary">
+                    <in/>
+                    <dataType>
+                        <boolean/>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="deleteNtpPrimary">
+                <description>This action deletes the primary NTP.
+</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="9387"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <action name="deleteNtpSecondary">
+                <description>This action deletes the secondary NTP.
+</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="16268"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <action name="setNodeUniqueId">
+                <description>Used for setting the attribute nodeUniqueId.
+
+This action should only be used in the factory, it is not for general use by the operator.
+</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="20269"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="nodeUniqueId">
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="createNtpThird">
+                <description>This action creates the third alternative Network Time Protocol (NTP).
+
+There must exist a primary NTP, and can exist a secondary and a third NTP.
+
+Once the NTP is created, it is then possible to change the attributes, such as the IP address, burst flag, max- and min poll, and also specify which NTP is active.
+
+The input format for an IPv4 address is four fields of digits, separated by a dot. Each field consists of one to three digits.
+
+The input format for an IPv6 address is as defined in specification RFC 4291, chapter 2.2, bullet 1 and 2.
+
+Domain names are supported.
+The input format for a domain name is as defined in specification RFC 952.
+When address resolution is requested and the DNS server responds with a list of resolved addresses, the first address presented by the DNS server is used by this action. Note that you need to configure a name-to-IP-address association in the DNS server, with an address that belongs to the correct address family. If the node is configured for OAM IP connectivity over IPv6, the address in the DNS association must be an IPv6 address.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="20472"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="ntpServerAddressThird">
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+                <parameter name="ntpMinPollThird">
+                    <in/>
+                    <dataType>
+                        <long/>
+                    </dataType>
+                </parameter>
+                <parameter name="ntpMaxPollThird">
+                    <in/>
+                    <dataType>
+                        <long/>
+                    </dataType>
+                </parameter>
+                <parameter name="ntpBurstFlagThird">
+                    <in/>
+                    <dataType>
+                        <boolean/>
+                    </dataType>
+                </parameter>
+                <parameter name="ntpServiceActiveThird">
+                    <in/>
+                    <dataType>
+                        <boolean/>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="deleteNtpThird">
+                <description>This action deletes the third NTP.
+</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="6402"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <attribute name="ManagedElementDataId">
+                <description>The value component of the RDN.
+
+It is set automatically when the MO instance is created.
+</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="autoConfigurationAllowed">
+                <description>This attribute specifies if the system is allowed to automatically configure detected objects. 
+
+Autoconfiguration is supported for upgradable hardware connected to CPP Subrack and Slot.
+
+When setting this attribute from true to false the system creates a new CV.
+</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>true</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="documentServerAddress">
+                <description>The base URL for the documentation server.
+
+The attribute is read by the Element Management application to find the documentation server in the network. The URL shall contain the document server, for example:
+
+http://cpi2.al.sw.ericsson.se/alexserv
+
+The syntax "http://cpi.al.sw.ericsson.se/alexserv?LI=EN/LZN7450008R2A" is deprecated, and will not be supported in a future release. Please use the attribute docLibUserDefined if docLibSystemDefined is not available.</description>
+                <dataType>
+                    <string>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="logonServerAddress">
+                <description>A list of node names or IP addresses of the single logon servers (SLSs). The list uses commas to seperate the single logon server addresses, e.g. "https://SLS1,https://SLS2,https://SLS3", these addresses consists of the URLs to the concerned SLS servers. Maximum of 3 SLSs are supported. The attribute is read by Element Management application to find the single logon server in the network.
+
+The input format for an IPv4 address is four fields of digits, separated by a dot. Each field consists of one to three digits.
+
+The input format for an IPv6 address is as defined in specification RFC 4291, chapter 2.2, bullet 1 and 2.
+
+The input format for a domain name is as defined in specification RFC 952.
+When address resolution is requested and the DNS server responds with a list of resolved addresses, the first address presented by the DNS server is used by this attribute.
+Note that you need to configure a name-to-IP-address association in the DNS server, with an address that belongs to the correct address family. If the node is configured for OAM IP connectivity over IPv6, the address in the DNS association must be an IPv6 address.
+
+Complete URLs with the above examples:
+http://[2001:db8:0::1]:8080/cgi-bin/pkiclient.exe
+
+</description>
+                <dataType>
+                    <string>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="ntpServerAddressPrimary">
+                <description>This is the IP address to the NTP server.
+
+If this NTP server is not configured, this attribute responds with 0.0.0.0.
+
+The input format for an IPv4 address is four fields of digits, separated by a dot. Each field consists of one to three digits.
+
+The input format for an IPv6 address is as defined in specification RFC 4291, chapter 2.2, bullet 1 and 2.
+
+Domain names are supported.
+The input format for a domain name is as defined in specification RFC 952.
+When address resolution is requested and the DNS server responds with a list of resolved addresses, the first address presented by the DNS server is used by this attribute.
+Note that you need to configure a name-to-IP-address association in the DNS server, with an address that belongs to the correct address family. If the node is configured for OAM IP connectivity over IPv6, the address in the DNS association must be an IPv6 address.</description>
+                <dataType>
+                    <string>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="ntpServiceActivePrimary">
+                <description>Specifies if the node should poll the primary NTP server for information.
+
+Even if this NTP server is not configured, this attribute still responds with its default value.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>false</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="ntpMinPollPrimary">
+                <description>This value states the minimum interval (in seconds) for polling the primary NTP server.
+
+This value must be &gt; 0.
+
+Even if this NTP server is not configured, this attribute still responds with its default value.</description>
+                <dataType>
+                    <long>
+                        <range>
+                            <min>16</min>
+                            <max>131072</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>16</min>
+                                <max>131072</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>64</defaultValue>
+                    </long>
+                </dataType>
+            </attribute>
+            <attribute name="ntpMaxPollPrimary">
+                <description>This value states the maximum interval (in seconds) for polling the primary NTP server.
+
+This value must be &gt; 0.
+
+Even if this NTP server is not configured, this attribute still responds with its default value.</description>
+                <dataType>
+                    <long>
+                        <range>
+                            <min>16</min>
+                            <max>131072</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>16</min>
+                                <max>131072</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>1024</defaultValue>
+                    </long>
+                </dataType>
+            </attribute>
+            <attribute name="ntpBurstFlagPrimary">
+                <description>This is the burst flag used towards the primary NTP server.
+
+Even if this NTP server is not configured, this attribute still responds with its default value.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>false</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="ntpServerAddressSecondary">
+                <description>This is an alternative IP address to an NTP server.
+
+If this NTP server is not configured, this attribute responds with 0.0.0.0.
+
+The input format for an IPv4 address is four fields of digits, separated by a dot. Each field consists of one to three digits.
+
+The input format for an IPv6 address is as defined in specification RFC 4291, chapter 2.2, bullet 1 and 2.
+
+Domain names are supported.
+The input format for a domain name is as defined in specification RFC 952.
+When address resolution is requested and the DNS server responds with a list of resolved addresses, the first address presented by the DNS server is used by this attribute.
+Note that you need to configure a name-to-IP-address association in the DNS server, with an address that belongs to the correct address family. If the node is configured for OAM IP connectivity over IPv6, the address in the DNS association must be an IPv6 address.</description>
+                <dataType>
+                    <string>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="ntpServiceActiveSecondary">
+                <description>Specifies if the node should poll the secondary NTP server for information.
+
+Even if this NTP server is not configured, this attribute still responds with its default value.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>false</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="ntpMinPollSecondary">
+                <description>This value states the minimum interval (in seconds) for polling the secondary NTP server.
+
+This value must be &gt; 0.
+
+Even if this NTP server is not configured, this attribute still responds with its default value.</description>
+                <dataType>
+                    <long>
+                        <range>
+                            <min>16</min>
+                            <max>131072</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>16</min>
+                                <max>131072</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>64</defaultValue>
+                    </long>
+                </dataType>
+            </attribute>
+            <attribute name="ntpMaxPollSecondary">
+                <description>This value states the maximum interval (in seconds) for polling the secondary NTP server.
+
+This value must be &gt; 0.
+
+Even if this NTP server is not configured, this attribute still responds with its default value.</description>
+                <dataType>
+                    <long>
+                        <range>
+                            <min>16</min>
+                            <max>131072</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>16</min>
+                                <max>131072</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>1024</defaultValue>
+                    </long>
+                </dataType>
+            </attribute>
+            <attribute name="ntpBurstFlagSecondary">
+                <description>This is the burst flag used towards the secondary NTP server.
+
+Even if this NTP server is not configured, this attribute still responds with its default value.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>false</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="nodeUTCTime">
+                <description>This attribute specifies the UTC time used in the node.
+
+It is the number of milliseconds elapsed since the epoch time (January 1, 1970, 00:00:00 GMT).
+
+To set this attribute, all the three attributes, ntpServiceActive for Primary, Secondary and Third, must be false.
+</description>
+                <dataType>
+                    <longlong>
+                        <defaultValue>0</defaultValue>
+                    </longlong>
+                </dataType>
+            </attribute>
+            <attribute name="nodeLocalTimeZone">
+                <description>Specifies the time zone of the node. This attribute is needed by management application to convert UTC time from a log or NTP service to local time. 
+It will not change the real time clock on the node.
+
+Choose a time zone abbreviation, three characters, in the list below, or specify a node local time in the format "+/-" and "hh:mm", where "hh" is hours and "mm" is minutes. 
+Example: GMT or +01:30
+
+Time zone and its offset in hours:
+
+GMT (Greenwich Mean Time) 0
+UTC (Coordinated Universal Time) 0
+ECT (Central European Standard Time) + 1
+EET (Eastern European Time) + 2
+ART (Eastern European Time) + 2
+EAT (Eastern African Time) + 3
+MET (Iran Time) + 3.5
+NET (Armenia Time) + 4
+PLT (Pakistan Time) + 5
+IST (India Standard Time) + 5.5
+BST (Bangladesh Time) + 6
+VST (Indochina Time) + 7
+CTT (China Standard Time) + 8
+JST (Japan Standard Time) + 9
+CST (Central Standard Time) + 9.5
+EST (Eastern Standard Time) + 10
+AET (Eastern Standard Time) + 10
+SST (Solomon Is. Time) + 11
+NST (New Zealand Standard Time) + 12
+CAT (Central Alaska Time) - 1
+AGT (Argentina Time) - 3
+BET (Brazil Time) - 3
+CNT (Newfoundland Standard Time) - 3.5
+PRT (Atlantic Standard Time) - 4
+IET (Eastern Standard Time) - 5
+ACT (Central Standard Time) - 6
+PNT (Mountain Standard Time) - 7
+MST (Mountain Standard Time) - 7
+PST (Pacific Standard Time) - 8
+AST (Alaska Standard Time) - 9
+HST (Hawaii Standard Time) - 10
+MIT (West Saoma Time) - 11
+--
+
+Reference: http://www.greenwichmeantime.com
+</description>
+                <dataType>
+                    <string>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="daylightSavingTime">
+                <description>This attribute states if daylight saving time is used on this node. It is used by the node, and will not change the real time clock on the node.
+</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>false</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="hdVolumeCSize">
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <long/>
+                </dataType>
+                <deprecated/>
+                <statusInformation>Replaced by hdVolumeCExt.</statusInformation>
+            </attribute>
+            <attribute name="hdVolumeCFreespace">
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <long/>
+                </dataType>
+                <deprecated/>
+                <statusInformation>Replaced by hdVolumeCFreespaceExt.</statusInformation>
+            </attribute>
+            <attribute name="nodeUniqueID">
+                <description>This is a unique node identity to be set only in the factory.
+</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="swServerUrlList">
+                <description>A comma-separated list of URLs, ending with the folder name containing CXC folders.
+
+Example:
+Entering URL "http://111.222.333.444:8080/Ericsson" makes the node look for files located in "http://111.222.333.444:8080/Ericsson/CXC112233/Rxxx/jarfile.jar"
+
+For downloading of software for system upgrade, see the attribute ftpServerIpAddress in MO UpgradePackage.
+
+The input format for an IPv4 address is four fields of digits, separated by a dot. Each field consists of one to three digits.
+
+The input format for an IPv6 address is as defined in specification RFC 4291, chapter 2.2, bullet 1 and 2.
+
+The input format for a domain name is as defined in specification RFC 952.
+When address resolution is requested and the DNS server responds with a list of resolved addresses, the first address presented by the DNS server is used by this attribute.
+Note that you need to configure a name-to-IP-address association in the DNS server, with an address that belongs to the correct address family. If the node is configured for OAM IP connectivity over IPv6, the address in the DNS association must be an IPv6 address.
+
+Complete URLs with the above examples:
+http://[2001:db8:0::1]:8080/cgi-bin/pkiclient.exe</description>
+                <dataType>
+                    <string>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="piuGroupEscalationType">
+                <description>The type of node restart when it is a problem with the last PIU in a PIU group.
+</description>
+                <dataType>
+                    <enumRef name="NodeRestartType">
+                        <defaultValue>WARM_AT_PIU_RESTART</defaultValue>
+                        <mimName>PMtest</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="minimumHdVolumeCFreespace">
+                <description>Minimum number of Megabytes of free space on C volume before an alarm is issued. 0 means that no alarm will be sent.
+
+It is used as a threshold that triggers alarms when the C volume is about to be full (i.e. when the attribute hdVolumeCFreespaceExt exceeds this value).
+
+The value should be set large enough so that an alarm is raised when the C volume is starting to have too little space for the new files of the next upgrade package.
+
+The value should be small enough, so that the alarm is not sent unnecessarily when there is a lot of free space.
+
+Alarm is raised if the value of hdVolumeCFreespaceExt becomes less than or equal to this value. But in order to cease the alarm, the free space must become at least 1 Megabyte larger than this value. To free space on the C volume, some old UpgradePackage MOs should be deleted.</description>
+                <dataType>
+                    <long>
+                        <range>
+                            <min>0</min>
+                            <max>999</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>0</min>
+                                <max>999</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>0</defaultValue>
+                        <unit>MB</unit>
+                        <multiplicationFactor>1</multiplicationFactor>
+                    </long>
+                </dataType>
+            </attribute>
+            <attribute name="docLibSystemDefined">
+                <description>The identity of the ALEX document library defined for this node type and version, set by the system.
+
+The attribute is read by the Element Management application to find the documentation library.
+The value must contain the used library identity, without spaces, for example:
+EN/LZN7450008R2A
+</description>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="docLibUserDefined">
+                <description>The identity of an ALEX document library that can be defined by the user.
+
+Use this attribute to set the library identity, if the attribute docLibSystemDefined is not available, or if the system-defined ALEX library is not available on the document server. If this attribute is set, it is used by the Element Manager to indentify the documentation library, instead of the value of docLibSystemDefined.
+
+The value contains the library identity, without spaces, for example:
+EN/LZN7450008R2A
+</description>
+                <dataType>
+                    <string>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="ntpBurstFlagThird">
+                <description>This is the burst flag used towards the third NTP server.
+
+Even if this NTP server is not configured, this attribute still responds with its default value.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>false</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="ntpMaxPollThird">
+                <description>This value states the maximum interval (in seconds) for polling the third NTP server.
+
+This value must be &gt; 0.
+
+Even if this NTP server is not configured, this attribute still responds with its default value.</description>
+                <dataType>
+                    <long>
+                        <range>
+                            <min>16</min>
+                            <max>131072</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>16</min>
+                                <max>131072</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>1024</defaultValue>
+                    </long>
+                </dataType>
+            </attribute>
+            <attribute name="ntpMinPollThird">
+                <description>This value states the minimum interval (in seconds) for polling the third NTP server.
+
+This value must be &gt; 0.
+
+Even if this NTP server is not configured, this attribute still responds with its default value.</description>
+                <dataType>
+                    <long>
+                        <range>
+                            <min>16</min>
+                            <max>131072</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>16</min>
+                                <max>131072</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>64</defaultValue>
+                    </long>
+                </dataType>
+            </attribute>
+            <attribute name="ntpServerAddressThird">
+                <description>This is an alternative IP address to an NTP server.
+
+If this NTP server is not configured, this attribute responds with 0.0.0.0.
+
+The input format for an IPv4 address is four fields of digits, separated by a dot. Each field consists of one to three digits.
+
+The input format for an IPv6 address is as defined in specification RFC 4291, chapter 2.2, bullet 1 and 2.
+
+Domain names are supported.
+The input format for a domain name is as defined in specification RFC 952.
+When address resolution is requested and the DNS server responds with a list of resolved addresses, the first address presented by the DNS server is used by this attribute.
+Note that you need to configure a name-to-IP-address association in the DNS server, with an address that belongs to the correct address family. If the node is configured for OAM IP connectivity over IPv6, the address in the DNS association must be an IPv6 address.</description>
+                <dataType>
+                    <string>
+                        <defaultValue/>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="ntpServiceActiveThird">
+                <description>Specifies if the node should poll the third NTP server for information.
+
+Even if this NTP server is not configured, this attribute still responds with its default value.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>false</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="autoConfigurationStatus">
+                <description>Displays if autoconfiguration is in progress or not.</description>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="AutoConfStatus">
+                        <mimName>PMtest</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="hdVolumeCSizeExt">
+                <description>The total size of the C volume on the node. The C volume may be replicated on several hard disks.</description>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <longlong>
+                        <unit>MB</unit>
+                        <multiplicationFactor>1</multiplicationFactor>
+                    </longlong>
+                </dataType>
+            </attribute>
+            <attribute name="hdVolumeCFreespaceExt">
+                <description>The amount of freespace available on the C volume. The C volume may be replicated on several hard disks in a node.</description>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <longlong>
+                        <unit>MB</unit>
+                        <multiplicationFactor>1</multiplicationFactor>
+                    </longlong>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="ManagedElement_to_Equipment">
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>PMtest</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Equipment">
+                        <mimName>PMtest</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="ManagedElement_to_ManagedElementData">
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>PMtest</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ManagedElementData">
+                        <mimName>PMtest</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </mim>
+</models>

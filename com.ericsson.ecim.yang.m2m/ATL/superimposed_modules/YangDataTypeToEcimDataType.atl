@@ -1,0 +1,410 @@
+-- /**
+-- * This transform takes a YANG model as input and generates a ECIM compliant model (UML) as output.
+-- * NOTE: All restrictions should be noted here
+-- * 
+-- * superimposition-dependencies: 
+-- * library-dependencies: HelperFunctions.atl
+-- * Yang Model Dependencies: ericsson-yang-extensions.yang
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 22/08/2014
+-- */
+
+-- ECIMMM must be pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml in launcher
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI YANG=http://www.ericsson.com/2010/Yang
+
+module YangDataTypeToEcimDataType;
+
+--Note:IN2 is for the augments model. One must be present if we do it like this. We could alternatively write a HOT to allow many augment files in. We also need to
+--think about how this will be called via the GUI/CLI
+create OUT : UML from IN : YANG, ECIM_MM : UML, YANG_MM : UML, ECIM_DT : UML, ECIM : UML, YANG_GM : UML, IN2 : YANG,-- IN3 : YANG
+	IN3: YANG, IN4: YANG, IN5: YANG, IN6: YANG, IN7: YANG, IN8: YANG, IN9: YANG, IN10: YANG, 
+	IN11: YANG, IN12: YANG, IN13: YANG, IN14: YANG, IN15: YANG, IN16: YANG, IN17: YANG, IN18: YANG, IN19: YANG, IN20: YANG, 
+	IN21: YANG, IN22: YANG, IN23: YANG, IN24: YANG, IN25: YANG, IN26: YANG, IN27: YANG, IN28: YANG, IN29: YANG, IN30: YANG, 
+	IN31: YANG, IN32: YANG, IN33: YANG, IN34: YANG, IN35: YANG, IN36: YANG, IN37: YANG, IN38: YANG, IN39: YANG, IN40: YANG, 
+	IN41: YANG, IN42: YANG, IN43: YANG, IN44: YANG, IN45: YANG, IN46: YANG, IN47: YANG, IN48: YANG, IN49: YANG, IN50: YANG, 
+	IN51: YANG, IN52: YANG, IN53: YANG, IN54: YANG, IN55: YANG, IN56: YANG, IN57: YANG, IN58: YANG, IN59: YANG, IN60: YANG, 
+	IN61: YANG, IN62: YANG, IN63: YANG, IN64: YANG, IN65: YANG, IN66: YANG, IN67: YANG, IN68: YANG, IN69: YANG, IN70: YANG, 
+	IN71: YANG, IN72: YANG, IN73: YANG, IN74: YANG, IN75: YANG, IN76: YANG, IN77: YANG, IN78: YANG, IN79: YANG, IN80: YANG, 
+	IN81: YANG, IN82: YANG, IN83: YANG, IN84: YANG, IN85: YANG, IN86: YANG, IN87: YANG, IN88: YANG, IN89: YANG, IN90: YANG, 
+	IN91: YANG, IN92: YANG, IN93: YANG, IN94: YANG, IN95: YANG, IN96: YANG, IN97: YANG, IN98: YANG, IN99: YANG, IN100: YANG; 
+
+uses HelperFunctions;
+
+--Match String DataTypes to ECIM Strings
+rule StringDataTypeToDatatype(s : YANG!Type, sourceElement : OclAny)
+{
+	using
+	{
+		st : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimDerivedString')->first();
+	}	
+	to dt : UML!DataType 
+	(
+		name <- s.eContainer().name,
+		ownedComment <- thisModule.hasDescription(s),		
+		general <- UML!DataType.allInstancesFrom('ECIM_DT')->select(e|e.name='EcimString')->first(),
+		package <- thisModule.resolveTemp(thisModule.getModule(sourceElement),'package')
+	)	
+	do
+	{
+		dt.applyStereotype(st);
+		dt.setValue(st, 'pattern', thisModule.getStringValue(s.pattern->first()));
+		dt.setValue(st, 'length', thisModule.getStringValue(thisModule.parseLength(s.length)));	
+		dt;
+	}
+}
+
+rule IntegerDataTypeToDatatype(s : YANG!Type, sourceElement : OclAny)
+{
+	using
+	{
+		st : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimDerivedInteger')->first();
+	}	
+	to dt : UML!DataType 
+	(
+		name <- s.eContainer().name,
+		ownedComment <- thisModule.hasDescription(s),		
+--		general <- UML!DataType.allInstancesFrom('ECIM_DT')->select(e|e.name='EcimInteger')->first(),
+		general <- UML!DataType.allInstancesFrom('ECIM_DT')->select(e|e.name=thisModule.typesMap.get(s.name))->first(),
+		package <- thisModule.resolveTemp(thisModule.getModule(sourceElement),'package')
+	)	
+	do
+	{
+		dt.applyStereotype(st);
+		dt.setValue(st, 'range', thisModule.getStringValue(s.range));	
+		dt;
+	}
+}
+
+rule BooleanDataTypeToDatatype(s : YANG!Type, sourceElement : OclAny)
+{
+	using
+	{
+		st : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimDerivedBoolean')->first();
+	}	
+	to dt : UML!DataType 
+	(
+		name <- s.eContainer().name,
+		ownedComment <- thisModule.hasDescription(s),		
+		general <- UML!DataType.allInstancesFrom('ECIM_DT')->select(e|e.name='EcimBoolean')->first(),
+		package <- thisModule.resolveTemp(thisModule.getModule(sourceElement),'package')
+	)	
+	do
+	{
+		dt.applyStereotype(st);	
+		dt;		
+	}
+}
+
+rule Decimal64DataTypeToDatatype(s : YANG!Type, sourceElement : OclAny)
+{
+	using
+	{
+		st : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimDerivedFloat')->first();
+	}	
+	to dt : UML!DataType 
+	(
+		name <- s.eContainer().name,
+		ownedComment <- thisModule.hasDescription(s),		
+		general <- UML!DataType.allInstancesFrom('ECIM_DT')->select(e|e.name='EcimFloat')->first(),
+		package <- thisModule.resolveTemp(thisModule.getModule(sourceElement),'package')	
+	)	
+	do
+	{
+		dt.applyStereotype(st);
+		dt.setValue(st, 'fractionDigits', s.fractionDigits);
+		dt.setValue(st, 'range', thisModule.getStringValue(s.range));
+		dt;		
+	}
+}
+
+--Match Empty types
+rule EmptyDataTypeToDatatype(s : YANG!Type, sourceElement : OclAny)
+{
+	using
+	{
+		st : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimDerivedBoolean')->first();
+	}	
+	to dt : UML!DataType 
+	(
+		name <- 'EcimEmpty',
+		ownedComment <- thisModule.hasDescription(s),		
+		general <- UML!DataType.allInstancesFrom('ECIM_DT')->select(e|e.name='EcimBoolean')->first(),
+		package <- thisModule.resolveTemp(thisModule.getModule(sourceElement),'package')
+	)	
+	do
+	{
+		dt.applyStereotype(st);	
+		dt;
+	}
+}
+
+--Match InstanceIdentifier Datatypes
+rule InstanceIdentifierDataTypeToDatatype(s : YANG!Type, sourceElement : OclAny)
+{
+	using
+	{
+		st : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimDerivedString')->first();
+	}	
+	to dt : UML!DataType 
+	(
+		name <- 'EcimInstanceIdentifier',
+		ownedComment <- thisModule.hasDescription(s),		
+		general <- UML!DataType.allInstancesFrom('ECIM_DT')->select(e|e.name='EcimString')->first(),
+		package <- thisModule.resolveTemp(thisModule.getModule(sourceElement),'package')
+	)	
+	do
+	{
+		dt.applyStereotype(st);	
+		dt;
+	}
+}
+
+
+
+--Match Binary DataTypes to ECIM Strings
+rule BinaryDataTypeToDatatype(s : YANG!Type, sourceElement : OclAny)
+{
+	using
+	{
+		st : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimDerivedString')->first();
+	}	
+	to dt : UML!DataType 
+	(
+		name <- 'EcimBinary',
+		ownedComment <- thisModule.hasDescription(s),		
+		general <- UML!DataType.allInstancesFrom('ECIM_DT')->select(e|e.name='EcimString')->first(),
+		package <- thisModule.resolveTemp(thisModule.getModule(sourceElement),'package')
+	)	
+	do
+	{
+		dt.applyStereotype(st);
+		dt.setValue(st, 'length', thisModule.getStringValue(thisModule.parseLength(s.length)));	
+		dt;
+	}
+}
+
+--Map Identities to EnumMembers
+lazy rule IdentityToEnumerationLiteral
+{
+	from s : YANG!Identity
+	using
+	{
+		st : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimEnumerationLiteral')->first();
+	}	
+	to dt : UML!EnumerationLiteral 
+	(		
+		name <- s.name,
+		ownedComment <- thisModule.hasDescription(s),
+		specification <- spec
+	),
+	spec : UML!LiteralInteger
+	(
+		--automatically generate a value based on the position of the identity in the set of all identities
+		value <- YANG!Identity.allInstances()->indexOf(s)
+	)		
+	do
+	{
+		dt.applyStereotype(st);
+	}
+}
+
+--Match enumeration types
+rule EnumerationToEnumeration(s : YANG!Type, sourceElement : OclAny)
+{
+	to enumeration : UML!Enumeration 
+	(
+		name <- thisModule.getFullPathNameOfElement(s,''),
+		ownedLiteral <- s.enumLiterals->collect(e|thisModule.EnumLiteralToEnumerationLiteral(e)),
+		ownedComment <- thisModule.hasDescription(s),
+		package <- thisModule.resolveTemp(thisModule.getModule(sourceElement),'package')
+	)	
+	do
+	{
+		enumeration.applyStereotype(UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimEnumeration')->first());
+		enumeration;		
+	}
+}
+
+
+--Match enumeration literal types
+lazy rule EnumLiteralToEnumerationLiteral
+{
+	from s : YANG!EnumLiteral
+	to el : UML!EnumerationLiteral
+	(
+		name <- s.name,
+		specification <- spec,
+		ownedComment <- thisModule.hasDescription(s)
+	),
+	spec : UML!LiteralInteger
+	(
+		--If no value is provided automatically generate one based on the position of the literal in the enum's collection
+		value <- if s.value.oclIsUndefined() then s.eContainer().enumLiterals->indexOf(s) else s.value.value endif
+	)
+	do
+	{
+		el.applyStereotype(UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimEnumerationLiteral')->first());		
+	}	
+}
+
+--Map Bits to Enumeration
+rule BitsToEnumeration(s : YANG!Type, sourceElement : OclAny)
+{
+	using
+	{
+		st : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimEnumeration')->first();
+	}	
+	to dt : UML!Enumeration 
+	(
+		name <- thisModule.getFullPathNameOfElement(s,''),
+		ownedLiteral <- s.bit->collect(e|thisModule.BitToEnumerationLiteral(e)),
+		package <- thisModule.resolveTemp(thisModule.getModule(sourceElement),'package')
+	)	
+	do
+	{
+		dt.applyStereotype(st);
+		dt;
+	}
+}
+
+--Map bit types to EnumerationLiterals
+lazy rule BitToEnumerationLiteral
+{
+	from s : YANG!Bit
+	using
+	{
+		st : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimEnumerationLiteral')->first();
+	}	
+	to dt : UML!EnumerationLiteral 
+	(		
+		name <- s.name,
+		ownedComment <- thisModule.hasDescription(s),
+		specification <- thisModule.createBitSpec(s)
+	)	
+	do
+	{
+		dt.applyStereotype(st);
+	}
+}
+--Create a LiteralInteger or a LiteralString in the case where the value is too large for a UML Integer.
+rule createBitSpec(s : YANG!Bit)
+{
+	using
+	{
+		--automatically generate a value or use a position if one was provided
+		value : Real = s.getPosition();
+		li : UML!LiteralInteger = OclUndefined;
+		ls : UML!LiteralString = OclUndefined;
+	}
+	do
+	{
+
+			if(s.isBigIntegerValue(value))
+			{
+				ls <- UML!LiteralString.newInstance();
+				ls.value <- s.convertBigIntegerValueToString(value);
+				ls;
+			}
+			else
+			{
+				li <- UML!LiteralInteger.newInstance();
+				li.value <- s.convertBigIntegerValueToInteger(value);
+				li;	
+			}
+	}	
+}
+	
+--Compute the position. Note:We must use doubles everywhere and return a Real as the values sre too large for ints
+helper context YANG!Bit def : getPosition() : Real =
+	if self.position.oclIsUndefined()
+	then
+		--see if this is the first bit
+		if self.eContainer().bit->indexOf(self) = 1
+		then
+			0.doubleValue()--.toString().toReal()--a bit that is the first and has no explicit position is set to 0
+		else
+			if self.eContainer().bit->at(self.eContainer().bit->indexOf(self)-1).position.oclIsUndefined()--a bit that is *not* first and has no explicit position is set to 1 greater than the current max position
+			then
+				--check to see if there is no position set anywhere
+				if self.eContainer().bit->asOrderedSet()->subOrderedSet(1,self.eContainer().bit->indexOf(self))->select(e|not e.position.oclIsUndefined())->size() = 0
+				then
+					0.doubleValue()--no position is set anywhere so far
+				else
+					--the previous bit had no position value explicitly set so get the value of the last explicitly set position and add to it the number of bits gap between it and this bit
+					self.eContainer().bit->asOrderedSet()->subOrderedSet(1,self.eContainer().bit->indexOf(self))->select(e|not e.position.oclIsUndefined())->collect(e|e.position)->last().doubleValue() + (self.eContainer().bit->indexOf(self) - self.eContainer().bit->indexOf(self.eContainer().bit->asOrderedSet()->subOrderedSet(1,self.eContainer().bit->indexOf(self))->select(e|not e.position.oclIsUndefined())->last())).doubleValue()
+				endif
+			else
+				--add one to the position of the previous bit
+				self.eContainer().bit->at(self.eContainer().bit->indexOf(self)-1).position.doubleValue()+1.doubleValue()
+			endif
+		endif
+	else
+		self.position.doubleValue()
+	endif;
+		
+--Map Unions to Structs
+rule UnionDataTypeToStruct(s : YANG!Type, sourceElement : OclAny)
+{
+	using
+	{
+		st : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimStruct')->first();
+	}	
+	to dt : UML!Class 
+	(
+		name <- thisModule.getFullPathNameOfElement(s.eContainer(),''),
+		ownedComment <- thisModule.hasDescription(s.eContainer()),
+		ownedAttribute <- s.unionOf->collect(e|thisModule.UnionMemberToStructMember(e,sourceElement)),
+		package <- thisModule.resolveTemp(thisModule.getModule(sourceElement),'package')
+	)	
+	do
+	{
+		--unions result in an exclusive struct
+		dt.setValue(st,'isExclusive', true);
+		dt.applyStereotype(st);
+		dt;
+	}
+}
+
+--Map Union members to StructMembers
+rule UnionMemberToStructMember(s : YANG!TypeDefinition,  sourceElement : OclAny)
+{
+	using
+	{
+		st : UML!Stereotype = UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimStructMember')->first();
+	}	
+	to dt : UML!Property 
+	(		
+		type <- thisModule.mapType(s,sourceElement),
+		name <- thisModule.getFullPathNameOfElement(s,'')
+		
+		--ownedComment <- thisModule.hasDescription(s.eContainer()
+	)	
+	do
+	{
+		dt.applyStereotype(st);
+		dt;
+	}
+}
+
+--Map the usage of an Identity to an Enumeration
+rule IdentityRefToEnumeration(s : YANG!Type, sourceElement : OclAny)
+{
+	using
+	{
+		identity : YANG!Identity = YANG!Identity.allInstances()->select(e|thisModule.getPrefixedName(e)=sourceElement.convertLocalPathToOriginalPath(thisModule.getPrefixedName(s.base)))->first();
+	}		
+	to enumeration : UML!Enumeration 
+	(
+		name <- thisModule.getFullPathNameOfElement(s,'')+identity.name,
+		ownedComment <- thisModule.hasDescription(identity),
+		ownedLiteral <- thisModule.getIdentityBases(identity,OrderedSet{},sourceElement)->flatten()->collect(e|thisModule.IdentityToEnumerationLiteral(e)),
+		package <- thisModule.resolveTemp(thisModule.getModule(sourceElement),'package')
+	)	
+	do
+	{		
+		enumeration.applyStereotype(UML!Stereotype.allInstancesFrom('ECIM_MM')->select(e|e.name='EcimEnumeration')->first());
+		enumeration;	
+	}
+}

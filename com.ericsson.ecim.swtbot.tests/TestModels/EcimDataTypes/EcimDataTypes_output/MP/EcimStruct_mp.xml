@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Apr 20, 2015 4:08:56 PM using:
+	* com.ericsson.ecim.m2m 3.0.0.qualifier
+	* com.ericsson.ecim.dsl 3.0.0.qualifier
+	* com.ericsson.ecim.edm 3.0.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+  </momMetaData>
+  <mim author="" contact="" date="" docNo="" name="EcimStruct" namespace="urn:com:ericsson:ecim:EcimStruct" namespacePrefix="ecimstruct" organization="" release="3" revision="" version="4">
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <enum name="equipmentList">
+      <description>Equipment List</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="2"/>
+        <extension name="originatingMimName" value="EcimEnum"/>
+        <extension name="originatingMimVersion" value="4"/>
+      </domainExtension>
+      <enumMember name="router">
+        <description>router</description>
+        <value>1</value>
+      </enumMember>
+      <enumMember name="switchL2">
+        <description>switchL2</description>
+        <value>2</value>
+      </enumMember>
+      <enumMember name="switchL3">
+        <description>switchL3</description>
+        <value>3</value>
+      </enumMember>
+      <enumMember name="SBG">
+        <description>SBG</description>
+        <value>4</value>
+      </enumMember>
+      <enumMember name="slotMachine">
+        <description>slotMachine</description>
+        <value>6</value>
+      </enumMember>
+    </enum>
+    <derivedDataType name="DerivedString">
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="22"/>
+        <extension name="originatingMimName" value="EcimString"/>
+        <extension name="originatingMimVersion" value="2"/>
+      </domainExtension>
+      <baseType>
+        <string>
+          <validValues>[a-zA-z0-9]+,[a-zA-z0-9]</validValues>
+        </string>
+      </baseType>
+      <validationRules>
+        <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[[a-zA-z0-9]+,[a-zA-z0-9]]]></rule>
+      </validationRules>
+    </derivedDataType>
+    <derivedDataType name="MyDerivedFloat(negativeRange)">
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="1"/>
+        <extension name="originatingMimName" value="EcimFloat"/>
+        <extension name="originatingMimVersion" value="23"/>
+      </domainExtension>
+      <baseType>
+        <double>
+          <range>
+            <min>-50</min>
+            <max>456</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>-50</min>
+              <max>456</max>
+            </subrange>
+          </ranges>
+        </double>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="MyDerivedInteger(negativeRange)">
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="1"/>
+        <extension name="originatingMimName" value="EcimInt"/>
+        <extension name="originatingMimVersion" value="23"/>
+      </domainExtension>
+      <baseType>
+        <int8>
+          <range>
+            <min>-128</min>
+            <max>-5</max>
+          </range>
+        </int8>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="EcimStruct_complexStruct_ecimIntegerSm">
+      <baseType>
+        <int64>
+          <range>
+            <min>0</min>
+            <max>15</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>0</min>
+              <max>15</max>
+            </subrange>
+          </ranges>
+        </int64>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="EcimStruct_complexStruct_ecimIntegerSmMulti">
+      <baseType>
+        <int64>
+          <range>
+            <min>0</min>
+            <max>15</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>0</min>
+              <max>15</max>
+            </subrange>
+          </ranges>
+        </int64>
+      </baseType>
+    </derivedDataType>
+    <class name="structs">
+      <root/>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+  </mim>
+  <interMim>
+    <relationship name="Root_to_structs">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="true"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>RootMom</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="structs">
+            <mimName>EcimStruct</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

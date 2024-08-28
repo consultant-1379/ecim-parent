@@ -1,0 +1,1168 @@
+-- /**
+-- * Map a CPP MIM, compliant to Rev E, to an ECIM UML Model
+-- * 
+-- * Note you must have the http://ericsson.com/ECIM/MP DSL installed for this transform to work. 
+-- * Also the input file must be called *.mp to invoke the right model handler.
+-- * 
+-- * assumptions: We assume here there is only one package.
+-- * 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 09/01/2013
+-- */
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI MP=http://ericsson.com/ECIM/MP
+
+module CPPtoECIM;
+ 
+create OUT : UML from IN : MP, PRO : UML, CoreMwPRO : UML, CppPRO : UML, ECIM : UML, CPP : UML, DATATYPES : UML, DEFAULT : UML;
+
+uses HelperFunctions;
+
+rule ModelsTypeToModel {
+	from
+		s : MP!ModelsType
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}			
+	to
+		t : UML!Model
+		(
+			name <- thisModule.getModelName(),
+			nestedPackage <-s.mim,
+			packagedElement <- cd,
+			packageImport <- pi
+		),
+		cd : UML!Dependency
+		(
+			--assign the CoreMw Guidelines as a dependency to the new model
+			name <- 'CPP Guidelines',
+			client <- t,
+			supplier <- UML!Model.allInstancesFrom('CPP')->select(e|e.oclIsTypeOf(UML!Model))->first()
+		),
+		pi : UML!PackageImport
+		(
+			--assign the ECIM Datatypes as an import to the new model
+			importedPackage <- UML!Model.allInstancesFrom('DATATYPES')->select(e|e.oclIsTypeOf(UML!Model))->first()
+		)
+	do 
+	{
+		--Apply the Profiles
+		t.applyProfile(UML!Profile.allInstancesFrom('PRO')->select(p | p.name = 'ECIM Base Profile')->first());
+		t.applyProfile(UML!Profile.allInstancesFrom('CoreMwPRO')->select(p | p.name = 'CoreMW Profile')->first());
+		t.applyProfile(UML!Profile.allInstancesFrom('CppPRO')->select(p | p.name = 'CppProfile')->first());
+		
+		--Apply the UML Default profile for documentation usage
+		--t.applyProfile(UML!Profile.allInstancesFrom('DEFAULT')->select(p | p.name = 'Default')->first()); 
+		stereotype <- thisModule.getEcimStereotype('EcimModel');
+		t.setValue(stereotype, 'approvedBy', thisModule.getStringValue(s.momMetaData.approvedBy.signature));
+		t.setValue(stereotype, 'createdBy', thisModule.getStringValue(s.momMetaData.createdBy.signature));
+		t.setValue(stereotype, 'docDate', thisModule.getStringValue(s.momMetaData.momIdentity.docDate));
+		t.setValue(stereotype, 'docLang', thisModule.getStringValue(s.momMetaData.momIdentity.docLang));	
+		t.setValue(stereotype, 'docNo', thisModule.getStringValue(s.momMetaData.momIdentity.docNum));
+		t.setValue(stereotype, 'docRev', thisModule.getStringValue(s.momMetaData.momIdentity.docRev));	
+		t.setValue(stereotype, 'subTitle', thisModule.getStringValue(s.momMetaData.momSubTitle));	
+		t.setValue(stereotype, 'title', thisModule.getStringValue(s.momMetaData.momTitle));			
+		
+	}		
+}
+
+rule MimTypeToPackage {
+	from
+		s : MP!MimType
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}		
+	to
+		t : UML!Package
+		(
+			name <- s.name,
+			ownedComment <- thisModule.hasComment(s.description),
+			ownedType <- s.enum,
+			ownedType <- s.struct,
+			ownedType <- s.exception,
+			ownedType <- s.class,
+			ownedType <- s.relationship
+		)
+	do 
+	{
+		stereotype <- thisModule.getEcimStereotype('EcimMom');
+		t.applyStereotype(stereotype);			
+
+		--set some useful values to the profile
+		t.setValue(stereotype, 'version', thisModule.getSimpleStringValue(s.version));
+		t.setValue(stereotype, 'release', thisModule.getSimpleStringValue(s.release));
+		t.setValue(stereotype, 'revision', thisModule.getSimpleStringValue(s.revision));
+		t.setValue(stereotype, 'author', thisModule.getSimpleStringValue(s.author));	
+		t.setValue(stereotype, 'contact', thisModule.getSimpleStringValue(s.contact));	
+		t.setValue(stereotype, 'date', thisModule.getSimpleStringValue(s.date));	
+		t.setValue(stereotype, 'docNo', thisModule.getSimpleStringValue(s.docNo));
+		t.setValue(stereotype, 'organization', thisModule.getSimpleStringValue(s.organization));			
+		t.setValue(stereotype, 'statusInformation', thisModule.getStatusInformation(s.deprecated,s.obsolete,s.preliminary));
+		stereotype <- thisModule.getCoreMwStereotype('CmwMom');
+		t.applyStereotype(stereotype);
+	}
+}
+
+rule EnumTypetoEnumeration
+{
+	from 
+		s: MP!EnumType
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}		
+	to 
+		t : UML!Enumeration
+		(
+			name <- s.name,
+			ownedLiteral <- s.enumMember->collect(e|thisModule.CreateEnumerationLiteral(t,e)),
+			ownedComment <- thisModule.hasComment(s.description)
+		)
+	do
+	{
+		stereotype <- thisModule.getEcimStereotype('EcimEnumeration');
+		t.applyStereotype(stereotype);		
+	}		
+}
+
+rule CreateEnumerationLiteral(enum : UML!Enumeration, enumMember: MP!EnumMemberType)
+{
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}			
+	to 
+		t : UML!EnumerationLiteral
+		(
+			name <- enumMember.name,
+			classifier <- enum,
+			specification <- vs,
+			ownedComment <- thisModule.hasComment(enumMember.description)
+		),
+		vs : UML!LiteralInteger
+		(
+			value <- thisModule.getEnumMemberValue(enumMember.value)
+		)
+	do
+	{
+		stereotype <- thisModule.getEcimStereotype('EcimEnumerationLiteral');
+		t.applyStereotype(stereotype);
+		t.setValue(stereotype, 'dependencies', thisModule.getStringValue(enumMember.dependencies));
+		t.setValue(stereotype, 'disturbances', thisModule.getStringValue(enumMember.disturbances));
+		t.setValue(stereotype, 'precondition', thisModule.getStringValue(enumMember.precondition));
+		t.setValue(stereotype, 'sideEffects', thisModule.getStringValue(enumMember.sideEffects));
+		t.setValue(stereotype, 'takesEffect', thisModule.getStringValue(enumMember.takesEffect));
+		t.setValue(stereotype, 'specification', thisModule.getStringValue(enumMember.specification));		
+		t.setValue(stereotype, 'status', thisModule.getStatus(enumMember.deprecated,enumMember.obsolete,enumMember.preliminary));
+		t.setValue(stereotype, 'statusInformation', thisModule.getStatusInformation(enumMember.deprecated,enumMember.obsolete,enumMember.preliminary));
+		t.setValue(stereotype, 'hideGroupName', thisModule.getStringValue(enumMember.visibility));		
+		t;
+	}		
+}
+
+--Map only the special MOC called ManagedObject
+rule ManagedObjectClassTypeToAbstractClass {
+	from
+		s : MP!ClassType(s.name = 'ManagedObject')
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}
+	to
+		t : UML!Class
+		(
+			name <- s.name,
+			isAbstract <- true,
+			ownedComment <- thisModule.hasComment(s.description)
+		)
+	do
+	{	
+		stereotype <- thisModule.getEcimStereotype('EcimAbstractMoClass');
+		t.applyStereotype(stereotype);
+		t.setValue(stereotype, 'hideGroupName', thisModule.getStringValue(s.visibility));	
+	}
+}
+
+--Map all classes except the special one called ManagedObject
+rule ClassTypeToClass {
+	from
+		s : MP!ClassType(s.name <> 'ManagedObject')
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}
+	to
+		t : UML!Class
+		(
+			name <- s.name,
+			ownedComment <- thisModule.hasComment(s.description),
+			ownedOperation <- s.action,
+--			ownedAttribute <- s.attribute->reject(e|e.name.startsWith('pm')),--pm attributes are not real attributes so filter them out
+			ownedAttribute <- s.attribute,
+			--The class will hold the parent end whose type is the opposite child end
+			ownedAttribute <- MP!RelationshipType.allInstances()->select(e|not e.containment.oclIsUndefined())->select(e|s.name=e.containment.parent.hasClass.name)->collect(e|thisModule.CreateRelationshipProperty(e))	
+		)
+	do
+	{		
+		--Run the algorithm to see if the class is a root or not.
+		if(s.isRoot)
+		{
+			stereotype <- thisModule.getEcimStereotype('EcimMoClass');
+			t.applyStereotype(stereotype);
+		}
+		else
+		{		
+			stereotype <- thisModule.getEcimStereotype('EcimMoClass');
+			t.applyStereotype(stereotype);
+		}
+		t.setValue(stereotype, 'specification', thisModule.getStringValue(s.specification));		
+		t.setValue(stereotype, 'status', thisModule.getStatus(s.deprecated,s.obsolete,s.preliminary));
+		t.setValue(stereotype, 'statusInformation', thisModule.getStatusInformation(s.deprecated,s.obsolete,s.preliminary));
+		t.setValue(stereotype, 'isSystemCreated', if s.systemCreated.oclIsUndefined() then false else true endif);
+		t.setValue(stereotype, 'hideGroupName', thisModule.getStringValue(s.visibility));	
+		
+		--TODO:Add CoreMw properties like isConfigurable
+
+		stereotype <- thisModule.getCoreMwStereotype('CmwClass');
+		t.applyStereotype(stereotype);
+		
+		stereotype <- thisModule.getCppStereotype('CppClass');
+		t.applyStereotype(stereotype);
+	}		
+}
+
+ rule StructTypeToClass {
+	from
+		s : MP!StructType
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}		
+	to
+		t : UML!Class
+		(
+			name <- s.name,
+			package <- thisModule.resolveTemp(s.eContainer(),'t'),
+			ownedAttribute <- s.structMember->reject(e|e.name.startsWith('pm'))->collect(e|thisModule.StructMemberTypeToProperty_RW(e))--pm attributes are not real attributes so filter them out
+		),
+		t2 : UML!Class
+		(	
+			name <- s.name+'RO',
+			package <- thisModule.resolveTemp(s.eContainer(),'t'),
+			ownedAttribute <- s.structMember->reject(e|e.name.startsWith('pm'))->collect(e|thisModule.StructMemberTypeToProperty_RO(e))--pm attributes are not real attributes so filter them out
+		)
+	do
+	{
+		stereotype <- thisModule.getEcimStereotype('EcimStruct');
+		t.applyStereotype(stereotype);	
+		t2.applyStereotype(stereotype);	
+		
+		stereotype <- thisModule.getCoreMwStereotype('CmwStruct');
+		t.applyStereotype(stereotype);
+		t2.applyStereotype(stereotype);
+		t2.setValue(stereotype, 'isConfigurable', false);
+	}		
+}
+
+lazy rule CreateRelationshipProperty {
+	from
+		s : MP!RelationshipType
+	to
+		t : UML!Property
+		(
+			name <- s.containment.child->collect(e|e.hasClass)->first().name,
+			lower <- s.getMin(),
+			upper <- s.getMax(),
+			isComposite <- true,
+			association <- s,
+			type <- thisModule.resolveTemp(MP!ClassType.allInstances()->select(e|e.name=t.name)->first(),'t')
+		)
+}
+
+lazy rule StructMemberTypeToProperty_RO {
+	from
+		s : MP!StructMemberType
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+		cmwstereotype : UML!Stereotype	= OclUndefined;
+		cppstereotype : UML!Stereotype	= OclUndefined;
+		dataType : OclAny = s.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first();
+		sequenceDataType : OclAny = if (not s.sequence.oclIsUndefined()) then s.sequence.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first() else OclUndefined endif; 
+	}		
+	to
+		t : UML!Property
+		(
+			name <- s.name,
+			lower <- if s.sequence.oclIsUndefined() then 0 else s.sequence.getMin() endif,
+			upper <- if s.sequence.oclIsUndefined() then 1 else s.sequence.getMax() endif,
+			ownedComment <- thisModule.hasComment(s.description),
+			type <- thisModule.CreateDataType(s,s.eContainer().name+'_'+s.name),
+			isOrdered <- if s.sequence.oclIsUndefined() then false else not s.sequence.ordered.oclIsUndefined() endif,
+			isUnique <- if s.sequence.oclIsUndefined() then false else s.sequence.nonUnique.oclIsUndefined() endif		
+		)	
+	do
+	{
+		stereotype <- thisModule.getEcimStereotype('EcimStructMember');
+		t.applyStereotype(stereotype);		
+		t.setValue(stereotype, 'dependencies', thisModule.getStringValue(s.dependencies));
+		t.setValue(stereotype, 'disturbances', thisModule.getStringValue(s.disturbances));
+		t.setValue(stereotype, 'precondition', thisModule.getStringValue(s.precondition));
+		t.setValue(stereotype, 'sideEffects', thisModule.getStringValue(s.sideEffects));
+		t.setValue(stereotype, 'takesEffect', thisModule.getStringValue(s.takesEffect));
+		t.setValue(stereotype, 'specification', thisModule.getStringValue(s.specification));		
+		t.setValue(stereotype, 'statusInformation', thisModule.getStringValue(s.statusInformation));
+		t.setValue(stereotype, 'status', thisModule.getStatus(s.deprecated,s.obsolete,s.preliminary));		
+		t.setValue(stereotype, 'hideGroupName', thisModule.getStringValue(s.visibility));
+		
+		cmwstereotype <- thisModule.getCoreMwStereotype('CmwStructMember');
+		t.applyStereotype(cmwstereotype);	
+		-- See artf239872 : Mismatching isConfigurable property 
+		t.setValue(cmwstereotype, 'isConfigurable', false);
+		
+		cppstereotype <- thisModule.getCppStereotype('CppStructMember');
+		t.applyStereotype(cppstereotype);	
+		
+		if (dataType.oclIsTypeOf(MP!LongType) or dataType.oclIsTypeOf(MP!LonglongType) or dataType.oclIsTypeOf(MP!Int64Type) or 
+			dataType.oclIsTypeOf(MP!ShortType) or dataType.oclIsTypeOf(MP!Int8Type) or dataType.oclIsTypeOf(MP!Uint8Type) or 
+			dataType.oclIsTypeOf(MP!Uint16Type) or dataType.oclIsTypeOf(MP!Uint32Type) or dataType.oclIsTypeOf(MP!Uint64Type) or 
+			dataType.oclIsTypeOf(MP!Int16Type) or dataType.oclIsTypeOf(MP!Int32Type)) 
+		{		
+			if (not dataType.unit.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'unit', thisModule.getStringValue(dataType.unit));	
+			}
+			if (not dataType.multiplicationFactor.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'multiplicationFactor', thisModule.getStringValue(dataType.multiplicationFactor));	
+			}
+			if (not dataType.range.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'range', thisModule.getRange(dataType));	
+			}
+			if (not dataType.resolution.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'resolution', thisModule.getStringValue(dataType.resolution));	
+			}
+		}
+		if (not sequenceDataType.oclIsUndefined()) 
+		{
+			if (sequenceDataType.oclIsTypeOf(MP!LongType) or sequenceDataType.oclIsTypeOf(MP!LonglongType) or sequenceDataType.oclIsTypeOf(MP!Int64Type) or 
+			sequenceDataType.oclIsTypeOf(MP!ShortType) or sequenceDataType.oclIsTypeOf(MP!Int8Type) or sequenceDataType.oclIsTypeOf(MP!Uint8Type) or 
+			sequenceDataType.oclIsTypeOf(MP!Uint16Type) or sequenceDataType.oclIsTypeOf(MP!Uint32Type) or sequenceDataType.oclIsTypeOf(MP!Uint64Type) or 
+			sequenceDataType.oclIsTypeOf(MP!Int16Type) or sequenceDataType.oclIsTypeOf(MP!Int32Type)) 
+			{		
+			if (not sequenceDataType.unit.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'unit', thisModule.getStringValue(sequenceDataType.unit));	
+			}
+			if (not sequenceDataType.multiplicationFactor.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'multiplicationFactor', thisModule.getStringValue(sequenceDataType.multiplicationFactor));	
+			}
+			if (not sequenceDataType.range.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'range', thisModule.getRange(sequenceDataType));	
+			}
+			if (not sequenceDataType.resolution.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'resolution', thisModule.getStringValue(sequenceDataType.resolution));	
+			}
+			}
+			if (sequenceDataType.oclIsTypeOf(MP!StringType) or sequenceDataType.oclIsTypeOf(MP!WstringType))
+			{
+				if (not sequenceDataType.validValues.oclIsUndefined())
+				{
+					t.setValue(stereotype, 'pattern', thisModule.getStringValue(sequenceDataType.validValues));
+				}
+				if (not sequenceDataType.lengthRange.oclIsUndefined())
+				{
+					t.setValue(stereotype, 'length', thisModule.getLengthRange(sequenceDataType));
+				}		
+			}
+		}
+		if (dataType.oclIsTypeOf(MP!StringType) or dataType.oclIsTypeOf(MP!WstringType))
+		{
+			if (not dataType.validValues.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'pattern', thisModule.getStringValue(dataType.validValues));
+			}
+			if (not dataType.lengthRange.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'length', thisModule.getLengthRange(dataType));
+			}		
+		}
+	}
+}
+
+lazy rule StructMemberTypeToProperty_RW {
+	from
+		s : MP!StructMemberType
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+		cmwstereotype : UML!Stereotype	= OclUndefined;
+		cppstereotype : UML!Stereotype	= OclUndefined;
+		dataType : OclAny = s.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first();
+		sequenceDataType : OclAny = if (not s.sequence.oclIsUndefined()) then s.sequence.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first() else OclUndefined endif; 
+	}		
+	to
+		t : UML!Property
+		(
+			name <- s.name,
+			lower <- if s.sequence.oclIsUndefined() then 0 else s.sequence.getMin() endif,
+			upper <- if s.sequence.oclIsUndefined() then 1 else s.sequence.getMax() endif,
+			ownedComment <- thisModule.hasComment(s.description),
+			type <- thisModule.CreateDataType(s,s.eContainer().name+'_'+s.name),
+			defaultValue <- thisModule.CreateDefault(s),
+			isOrdered <- if s.sequence.oclIsUndefined() then false else not s.sequence.ordered.oclIsUndefined() endif,
+			isUnique <- if s.sequence.oclIsUndefined() then false else s.sequence.nonUnique.oclIsUndefined() endif		
+		)	
+	do
+	{
+		stereotype <- thisModule.getEcimStereotype('EcimStructMember');
+		t.applyStereotype(stereotype);		
+		t.setValue(stereotype, 'dependencies', thisModule.getStringValue(s.dependencies));
+		t.setValue(stereotype, 'disturbances', thisModule.getStringValue(s.disturbances));
+		t.setValue(stereotype, 'precondition', thisModule.getStringValue(s.precondition));
+		t.setValue(stereotype, 'sideEffects', thisModule.getStringValue(s.sideEffects));
+		t.setValue(stereotype, 'takesEffect', thisModule.getStringValue(s.takesEffect));
+		t.setValue(stereotype, 'specification', thisModule.getStringValue(s.specification));		
+		t.setValue(stereotype, 'status', thisModule.getStatus(s.deprecated,s.obsolete,s.preliminary));		
+		t.setValue(stereotype, 'statusInformation', thisModule.getStatusInformation(s.deprecated,s.obsolete,s.preliminary));
+		t.setValue(stereotype, 'hideGroupName', thisModule.getStringValue(s.visibility));
+		
+		cmwstereotype <- thisModule.getCoreMwStereotype('CmwStructMember');
+		t.applyStereotype(cmwstereotype);	
+		-- See artf239872 : Mismatching isConfigurable property 
+		t.setValue(cmwstereotype, 'isConfigurable', true);
+		
+		cppstereotype <- thisModule.getCppStereotype('CppStructMember');
+		t.applyStereotype(cppstereotype);	
+		
+		if (dataType.oclIsTypeOf(MP!LongType) or dataType.oclIsTypeOf(MP!LonglongType) or dataType.oclIsTypeOf(MP!Int64Type) or 
+			dataType.oclIsTypeOf(MP!ShortType) or dataType.oclIsTypeOf(MP!Int8Type) or dataType.oclIsTypeOf(MP!Uint8Type) or 
+			dataType.oclIsTypeOf(MP!Uint16Type) or dataType.oclIsTypeOf(MP!Uint32Type) or dataType.oclIsTypeOf(MP!Uint64Type) or 
+			dataType.oclIsTypeOf(MP!Int16Type) or dataType.oclIsTypeOf(MP!Int32Type)) 
+		{		
+			if (not dataType.unit.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'unit', thisModule.getStringValue(dataType.unit));	
+			}
+			if (not dataType.multiplicationFactor.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'multiplicationFactor', thisModule.getStringValue(dataType.multiplicationFactor));	
+			}
+			if (not dataType.range.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'range', thisModule.getRange(dataType));	
+			}
+			if (not dataType.resolution.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'resolution', thisModule.getStringValue(dataType.resolution));	
+			}
+		}
+		if (not sequenceDataType.oclIsUndefined()) 
+		{
+			if (sequenceDataType.oclIsTypeOf(MP!LongType) or sequenceDataType.oclIsTypeOf(MP!LonglongType) or sequenceDataType.oclIsTypeOf(MP!Int64Type) or 
+			sequenceDataType.oclIsTypeOf(MP!ShortType) or sequenceDataType.oclIsTypeOf(MP!Int8Type) or sequenceDataType.oclIsTypeOf(MP!Uint8Type) or 
+			sequenceDataType.oclIsTypeOf(MP!Uint16Type) or sequenceDataType.oclIsTypeOf(MP!Uint32Type) or sequenceDataType.oclIsTypeOf(MP!Uint64Type) or 
+			sequenceDataType.oclIsTypeOf(MP!Int16Type) or sequenceDataType.oclIsTypeOf(MP!Int32Type)) 
+			{		
+			if (not sequenceDataType.unit.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'unit', thisModule.getStringValue(sequenceDataType.unit));	
+			}
+			if (not sequenceDataType.multiplicationFactor.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'multiplicationFactor', thisModule.getStringValue(sequenceDataType.multiplicationFactor));	
+			}
+			if (not sequenceDataType.range.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'range', thisModule.getRange(sequenceDataType));	
+			}
+			if (not sequenceDataType.resolution.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'resolution', thisModule.getStringValue(sequenceDataType.resolution));	
+			}
+			}
+			if (sequenceDataType.oclIsTypeOf(MP!StringType) or sequenceDataType.oclIsTypeOf(MP!WstringType))
+			{
+				if (not sequenceDataType.validValues.oclIsUndefined())
+				{
+					t.setValue(stereotype, 'pattern', thisModule.getStringValue(sequenceDataType.validValues));
+				}
+				if (not sequenceDataType.lengthRange.oclIsUndefined())
+				{
+					t.setValue(stereotype, 'length', thisModule.getLengthRange(sequenceDataType));
+				}		
+			}
+		}
+		if (dataType.oclIsTypeOf(MP!StringType) or dataType.oclIsTypeOf(MP!WstringType))
+		{
+			if (not dataType.validValues.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'pattern', thisModule.getStringValue(dataType.validValues));
+			}
+			if (not dataType.lengthRange.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'length', thisModule.getLengthRange(dataType));
+			}		
+		}
+	}
+}
+
+helper def : hasDefault(s : OclAny) : Boolean = 
+	let dt : OclAny = s.eContents()->first() in
+	if (dt.oclIsTypeOf(MP!MoRefType) or dt.oclIsTypeOf(MP!StructRefType)) then
+		false
+	else
+		not dt.defaultValue.oclIsUndefined()
+	endif;
+
+rule AttributeTypeToProperty {
+	from
+		--s : MP!AttributeType(not s.name.startsWith('pm'))--pm attributes are not real attributes so filter them out		
+		s : MP!AttributeType	
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+		cmwstereotype : UML!Stereotype	= OclUndefined;
+		cppstereotype : UML!Stereotype	= OclUndefined;
+		dataType : OclAny = s.dataType.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first();
+		sequenceDataType : OclAny = if (not s.dataType.sequence.oclIsUndefined()) then s.dataType.sequence.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first() else OclUndefined endif; 
+		isReadOnly : Boolean = if not s.readOnly.oclIsUndefined() then true else false endif;
+	}		
+	to
+		t : UML!Property
+		(
+			name <- if(s.name.toLower() = t.owner.name.toLower()+'id') then s.name else thisModule.toInitialLowerCase(s.name) endif,		
+			lower <- if s.dataType.sequence.oclIsUndefined() then if (s.mandatory.oclIsUndefined() and not thisModule.hasDefault(s.dataType)) then 0 else 1 endif else s.dataType.sequence.getMin() endif,
+			upper <- if s.dataType.sequence.oclIsUndefined() then 1 else s.dataType.sequence.getMax()  endif,
+			isReadOnly <- isReadOnly,
+			ownedComment <- thisModule.hasComment(s.description),			
+			defaultValue <- thisModule.CreateDefault(s),
+			type <- thisModule.CreateDataType(s.dataType,s.eContainer().name+'_'+s.name),
+			isOrdered <- if s.dataType.sequence.oclIsUndefined() then false else not s.dataType.sequence.ordered.oclIsUndefined() endif,
+			isUnique <- if s.dataType.sequence.oclIsUndefined() then false else s.dataType.sequence.nonUnique.oclIsUndefined() endif
+		)	
+	do
+	{
+		--The key is identified as an attribute with the class name suffixed with 'id'
+		if(s.name.toLower() = t.owner.name.toLower()+'id')
+		{
+			--CPP key attributes use the naming convention '*Id'
+			stereotype <- thisModule.getEcimStereotype('EcimKeyAttribute');
+			t.applyStereotype(stereotype);
+			t.setValue(stereotype, 'isPersistent', if s.nonPersistent.oclIsUndefined() then true else false endif);
+			cmwstereotype <- thisModule.getCoreMwStereotype('CmwAttribute');
+			t.applyStereotype(cmwstereotype);
+			t.setValue(cmwstereotype, 'isPersistent', if s.nonPersistent.oclIsUndefined() then true else false endif);
+			--Set some default key properties
+			t.lower <- 1;
+			t.isReadOnly <- true;
+		}
+		else
+		{
+			cmwstereotype <- thisModule.getCoreMwStereotype('CmwAttribute');
+			t.applyStereotype(cmwstereotype);
+			
+			cppstereotype <- thisModule.getCppStereotype('CppAttribute');
+			t.applyStereotype(cppstereotype);			
+			
+			if(s.readOnly.oclIsUndefined())
+			{
+				stereotype <- thisModule.getEcimStereotype('EcimAttribute_RW');
+				t.applyStereotype(stereotype);		
+				
+				--RW attributes are always configurable
+				t.setValue(cmwstereotype, 'isConfigurable', true);
+			}
+			else
+			{
+				stereotype <- thisModule.getEcimStereotype('EcimAttribute_RO');
+				t.applyStereotype(stereotype);
+				t.setValue(stereotype, 'isPersistent', if s.nonPersistent.oclIsUndefined() then true else false endif);	
+				if (s.name.startsWith('pm'))
+				{
+		  			t.setValue(cppstereotype, 'condition', thisModule.getStringValue(s.condition));	
+		  			t.setValue(cppstereotype, 'counterType', thisModule.getStringValue(s.counterType));	
+		  			t.setValue(cppstereotype, 'counterReset', thisModule.getStringValue(s.counterReset));	
+		  			t.setValue(cppstereotype, 'counterContext', thisModule.getStringValue(s.counterContext));	
+		  			t.setValue(cppstereotype, 'samplingRate', thisModule.getStringValue(s.samplingRate));	
+		  			t.setValue(cppstereotype, 'scanner', thisModule.getStringValue(s.scanner));	
+				}	
+			}
+			t.setValue(stereotype, 'isRestricted', if s.restricted.oclIsUndefined() then false else true endif);
+		}
+		if (dataType.oclIsTypeOf(MP!LongType) or dataType.oclIsTypeOf(MP!LonglongType) or dataType.oclIsTypeOf(MP!Int64Type) or 
+			dataType.oclIsTypeOf(MP!ShortType) or dataType.oclIsTypeOf(MP!Int8Type) or dataType.oclIsTypeOf(MP!Uint8Type) or 
+			dataType.oclIsTypeOf(MP!Uint16Type) or dataType.oclIsTypeOf(MP!Uint32Type) or dataType.oclIsTypeOf(MP!Uint64Type) or 
+			dataType.oclIsTypeOf(MP!Int16Type) or dataType.oclIsTypeOf(MP!Int32Type)) 
+		{		
+			if (not dataType.unit.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'unit', thisModule.getStringValue(dataType.unit));	
+			}
+			if (not dataType.multiplicationFactor.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'multiplicationFactor', thisModule.getStringValue(dataType.multiplicationFactor));	
+			}
+			if (not dataType.range.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'range', thisModule.getRange(dataType));	
+			}
+			if (not dataType.resolution.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'resolution', thisModule.getStringValue(dataType.resolution));	
+			}
+		}
+		if (not sequenceDataType.oclIsUndefined()) 
+		{
+			if (sequenceDataType.oclIsTypeOf(MP!LongType) or sequenceDataType.oclIsTypeOf(MP!LonglongType) or sequenceDataType.oclIsTypeOf(MP!Int64Type) or 
+			sequenceDataType.oclIsTypeOf(MP!ShortType) or sequenceDataType.oclIsTypeOf(MP!Int8Type) or sequenceDataType.oclIsTypeOf(MP!Uint8Type) or 
+			sequenceDataType.oclIsTypeOf(MP!Uint16Type) or sequenceDataType.oclIsTypeOf(MP!Uint32Type) or sequenceDataType.oclIsTypeOf(MP!Uint64Type) or 
+			sequenceDataType.oclIsTypeOf(MP!Int16Type) or sequenceDataType.oclIsTypeOf(MP!Int32Type)) 
+			{		
+			if (not sequenceDataType.unit.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'unit', thisModule.getStringValue(sequenceDataType.unit));	
+			}
+			if (not sequenceDataType.multiplicationFactor.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'multiplicationFactor', thisModule.getStringValue(sequenceDataType.multiplicationFactor));	
+			}
+			if (not sequenceDataType.range.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'range', thisModule.getRange(sequenceDataType));	
+			}
+			if (not sequenceDataType.resolution.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'resolution', thisModule.getStringValue(sequenceDataType.resolution));	
+			}
+			}
+			if (sequenceDataType.oclIsTypeOf(MP!StringType) or sequenceDataType.oclIsTypeOf(MP!WstringType))
+			{
+				if (not sequenceDataType.validValues.oclIsUndefined())
+				{
+					t.setValue(stereotype, 'pattern', thisModule.getStringValue(sequenceDataType.validValues));
+				}
+				if (not sequenceDataType.lengthRange.oclIsUndefined())
+				{
+					t.setValue(stereotype, 'length', thisModule.getLengthRange(sequenceDataType));
+				}		
+			}
+		}
+		if (dataType.oclIsTypeOf(MP!StringType) or dataType.oclIsTypeOf(MP!WstringType))
+		{
+			if (not dataType.validValues.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'pattern', thisModule.getStringValue(dataType.validValues));
+			}
+			if (not dataType.lengthRange.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'length', thisModule.getLengthRange(dataType));
+			}		
+		}
+		
+		t.setValue(stereotype, 'dependencies', thisModule.getStringValue(s.dependencies));
+		t.setValue(stereotype, 'disturbances', thisModule.getStringValue(s.disturbances));
+		t.setValue(stereotype, 'precondition', thisModule.getStringValue(s.precondition));
+		t.setValue(stereotype, 'sideEffects', thisModule.getStringValue(s.sideEffects));
+		t.setValue(stereotype, 'takesEffect', thisModule.getStringValue(s.takesEffect));
+		t.setValue(stereotype, 'specification', thisModule.getStringValue(s.specification));		
+		t.setValue(stereotype, 'status', thisModule.getStatus(s.deprecated,s.obsolete,s.preliminary));
+		t.setValue(stereotype, 'isNotifiable', if s.noNotification.oclIsUndefined() then true else false endif);
+		t.setValue(stereotype, 'statusInformation', thisModule.getStatusInformation(s.deprecated,s.obsolete,s.preliminary));
+		t.setValue(stereotype, 'hideGroupName', thisModule.getStringValue(s.visibility));
+	}
+}
+
+rule ActionTypeToOperation {
+	from
+		s : MP!ActionType	
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}
+	to
+		t : UML!Operation
+		(
+			name <- s.name,
+			ownedComment <- thisModule.hasComment(s.description),
+			ownedParameter <- s.parameter,
+			ownedParameter <- thisModule.createReturnParameterIfNotVoid(s.returnType),
+			raisedException <- s.raisesException->collect(e|thisModule.resolveTemp(MP!ExceptionType.allInstances()->select(f|f.name=e.name)->first(),'t'))
+		)
+	do
+	{
+		stereotype <- thisModule.getEcimStereotype('EcimAction');
+		t.applyStereotype(stereotype);				
+		t.setValue(stereotype, 'dependencies', thisModule.getStringValue(s.dependencies));
+		t.setValue(stereotype, 'disturbances', thisModule.getStringValue(s.disturbances));
+		t.setValue(stereotype, 'precondition', thisModule.getStringValue(s.precondition));
+		t.setValue(stereotype, 'sideEffects', thisModule.getStringValue(s.sideEffects));
+		t.setValue(stereotype, 'takesEffect', thisModule.getStringValue(s.takesEffect));
+		t.setValue(stereotype, 'specification', thisModule.getStringValue(s.specification));		
+		t.setValue(stereotype, 'status', thisModule.getStatus(s.deprecated,s.obsolete,s.preliminary));
+		t.setValue(stereotype, 'statusInformation', thisModule.getStatusInformation(s.deprecated,s.obsolete,s.preliminary));
+		t.setValue(stereotype, 'hideGroupName', thisModule.getStringValue(s.visibility));
+		
+		stereotype <- thisModule.getCoreMwStereotype('CmwAction');
+		t.applyStereotype(stereotype);
+		t.setValue(stereotype, 'admOpId', s.getId(s.eContainer().name));
+		
+		stereotype <- thisModule.getCppStereotype('CppAction');
+		t.applyStereotype(stereotype);		
+	}
+}
+
+
+helper def : createReturnParameterIfNotVoid(s : MP!ReturnTypeType) : UML!Parameter =
+	if (not s.oclIsUndefined()) then
+		if (s.void.oclIsUndefined()) then
+			thisModule.CreateReturnParameter(s)
+		else
+			OclUndefined
+		endif
+	else
+		OclUndefined
+	endif;
+
+	
+rule CreateReturnParameter(s : MP!ReturnTypeType)
+{  
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+		dataType : OclAny = s.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first();
+		sequenceDataType : OclAny = if (not s.sequence.oclIsUndefined()) then s.sequence.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first() else OclUndefined endif; 
+	}			
+	to
+		t : UML!Parameter
+		(
+			name <- 'returnType',
+			lower <- if s.sequence.oclIsUndefined() then 1 else s.sequence.getMin() endif,
+			upper <- if s.sequence.oclIsUndefined() then 1 else s.sequence.getMax() endif,
+			type <- thisModule.CreateDataType(s, s.eContainer().eContainer().name+'_'+s.eContainer().name),
+			isOrdered <- if s.sequence.oclIsUndefined() then false else not s.sequence.ordered.oclIsUndefined() endif,
+			isUnique <- if s.sequence.oclIsUndefined() then false else s.sequence.nonUnique.oclIsUndefined() endif
+		)			
+	do 
+	{
+		stereotype <- thisModule.getEcimStereotype('EcimResult');
+		
+		t.applyStereotype(stereotype);	
+		
+		t.direction <- #return;
+		
+		if (dataType.oclIsTypeOf(MP!LongType) or dataType.oclIsTypeOf(MP!LonglongType) or dataType.oclIsTypeOf(MP!Int64Type) or 
+			dataType.oclIsTypeOf(MP!ShortType) or dataType.oclIsTypeOf(MP!Int8Type) or dataType.oclIsTypeOf(MP!Uint8Type) or 
+			dataType.oclIsTypeOf(MP!Uint16Type) or dataType.oclIsTypeOf(MP!Uint32Type) or dataType.oclIsTypeOf(MP!Uint64Type) or 
+			dataType.oclIsTypeOf(MP!Int16Type) or dataType.oclIsTypeOf(MP!Int32Type)) 
+		{		
+			if (not dataType.unit.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'unit', thisModule.getStringValue(dataType.unit));	
+			}
+			if (not dataType.multiplicationFactor.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'multiplicationFactor', thisModule.getStringValue(dataType.multiplicationFactor));	
+			}
+			if (not dataType.range.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'range', thisModule.getRange(dataType));	
+			}
+			if (not dataType.resolution.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'resolution', thisModule.getStringValue(dataType.resolution));	
+			}
+		}
+		if (not sequenceDataType.oclIsUndefined()) 
+		{
+			if (sequenceDataType.oclIsTypeOf(MP!LongType) or sequenceDataType.oclIsTypeOf(MP!LonglongType) or sequenceDataType.oclIsTypeOf(MP!Int64Type) or 
+			sequenceDataType.oclIsTypeOf(MP!ShortType) or sequenceDataType.oclIsTypeOf(MP!Int8Type) or sequenceDataType.oclIsTypeOf(MP!Uint8Type) or 
+			sequenceDataType.oclIsTypeOf(MP!Uint16Type) or sequenceDataType.oclIsTypeOf(MP!Uint32Type) or sequenceDataType.oclIsTypeOf(MP!Uint64Type) or 
+			sequenceDataType.oclIsTypeOf(MP!Int16Type) or sequenceDataType.oclIsTypeOf(MP!Int32Type)) 
+			{		
+			if (not sequenceDataType.unit.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'unit', thisModule.getStringValue(sequenceDataType.unit));	
+			}
+			if (not sequenceDataType.multiplicationFactor.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'multiplicationFactor', thisModule.getStringValue(sequenceDataType.multiplicationFactor));	
+			}
+			if (not sequenceDataType.range.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'range', thisModule.getRange(sequenceDataType));	
+			}
+			if (not sequenceDataType.resolution.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'resolution', thisModule.getStringValue(sequenceDataType.resolution));	
+			}
+			}
+			if (sequenceDataType.oclIsTypeOf(MP!StringType) or sequenceDataType.oclIsTypeOf(MP!WstringType))
+			{
+				if (not sequenceDataType.validValues.oclIsUndefined())
+				{
+					t.setValue(stereotype, 'pattern', thisModule.getStringValue(sequenceDataType.validValues));
+				}
+				if (not sequenceDataType.lengthRange.oclIsUndefined())
+				{
+					t.setValue(stereotype, 'length', thisModule.getLengthRange(sequenceDataType));
+				}		
+			}
+		}
+		if (dataType.oclIsTypeOf(MP!StringType) or dataType.oclIsTypeOf(MP!WstringType))
+		{
+			if (not dataType.validValues.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'pattern', thisModule.getStringValue(dataType.validValues));
+			}
+			if (not dataType.lengthRange.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'length', thisModule.getLengthRange(dataType));
+			}		
+		}
+		t;
+	}
+}	
+
+rule ParameterTypeToParameter {
+	from
+		s : MP!ParameterType	
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+		cppstereotype : UML!Stereotype	= OclUndefined;	
+		dataType : OclAny = s.dataType.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first();
+		sequenceDataType : OclAny = if (not s.dataType.sequence.oclIsUndefined()) then s.dataType.sequence.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first() else OclUndefined endif; 
+	}			
+	to
+		t : UML!Parameter
+		(
+			name <- s.name,
+			lower <- if s.dataType.sequence.oclIsUndefined() then 1 else s.dataType.sequence.getMin() endif,
+			upper <- if s.dataType.sequence.oclIsUndefined() then 1 else s.dataType.sequence.getMax() endif,
+			ownedComment <- thisModule.hasComment(s.description),
+			type <- thisModule.CreateDataType(s.dataType,s.eContainer().eContainer().name+'_'+s.eContainer().name+'_'+s.name),
+			isOrdered <- if s.dataType.sequence.oclIsUndefined() then false else not s.dataType.sequence.ordered.oclIsUndefined() endif,
+			isUnique <- if s.dataType.sequence.oclIsUndefined() then false else s.dataType.sequence.nonUnique.oclIsUndefined() endif
+		)			
+	do 
+	{
+		stereotype <- thisModule.getEcimStereotype('EcimParameter');
+		t.applyStereotype(stereotype);	
+		
+		cppstereotype <- thisModule.getCppStereotype('CppParameter');
+		t.applyStereotype(cppstereotype);	
+		
+		if (dataType.oclIsTypeOf(MP!LongType) or dataType.oclIsTypeOf(MP!LonglongType) or dataType.oclIsTypeOf(MP!Int64Type) or 
+			dataType.oclIsTypeOf(MP!ShortType) or dataType.oclIsTypeOf(MP!Int8Type) or dataType.oclIsTypeOf(MP!Uint8Type) or 
+			dataType.oclIsTypeOf(MP!Uint16Type) or dataType.oclIsTypeOf(MP!Uint32Type) or dataType.oclIsTypeOf(MP!Uint64Type) or 
+			dataType.oclIsTypeOf(MP!Int16Type) or dataType.oclIsTypeOf(MP!Int32Type)) 
+		{		
+			if (not dataType.unit.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'unit', thisModule.getStringValue(dataType.unit));	
+			}
+			if (not dataType.multiplicationFactor.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'multiplicationFactor', thisModule.getStringValue(dataType.multiplicationFactor));	
+			}
+			if (not dataType.range.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'range', thisModule.getRange(dataType));	
+			}
+			if (not dataType.resolution.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'resolution', thisModule.getStringValue(dataType.resolution));	
+			}
+		}
+		if (not sequenceDataType.oclIsUndefined()) 
+		{
+			if (sequenceDataType.oclIsTypeOf(MP!LongType) or sequenceDataType.oclIsTypeOf(MP!LonglongType) or sequenceDataType.oclIsTypeOf(MP!Int64Type) or 
+			sequenceDataType.oclIsTypeOf(MP!ShortType) or sequenceDataType.oclIsTypeOf(MP!Int8Type) or sequenceDataType.oclIsTypeOf(MP!Uint8Type) or 
+			sequenceDataType.oclIsTypeOf(MP!Uint16Type) or sequenceDataType.oclIsTypeOf(MP!Uint32Type) or sequenceDataType.oclIsTypeOf(MP!Uint64Type) or 
+			sequenceDataType.oclIsTypeOf(MP!Int16Type) or sequenceDataType.oclIsTypeOf(MP!Int32Type)) 
+			{		
+			if (not sequenceDataType.unit.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'unit', thisModule.getStringValue(sequenceDataType.unit));	
+			}
+			if (not sequenceDataType.multiplicationFactor.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'multiplicationFactor', thisModule.getStringValue(sequenceDataType.multiplicationFactor));	
+			}
+			if (not sequenceDataType.range.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'range', thisModule.getRange(sequenceDataType));	
+			}
+			if (not sequenceDataType.resolution.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'resolution', thisModule.getStringValue(sequenceDataType.resolution));	
+			}
+			}
+			if (sequenceDataType.oclIsTypeOf(MP!StringType) or sequenceDataType.oclIsTypeOf(MP!WstringType))
+			{
+				if (not sequenceDataType.validValues.oclIsUndefined())
+				{
+					t.setValue(stereotype, 'pattern', thisModule.getStringValue(sequenceDataType.validValues));
+				}
+				if (not sequenceDataType.lengthRange.oclIsUndefined())
+				{
+					t.setValue(stereotype, 'length', thisModule.getLengthRange(sequenceDataType));
+				}		
+			}
+		}
+		if (dataType.oclIsTypeOf(MP!StringType) or dataType.oclIsTypeOf(MP!WstringType))
+		{
+			if (not dataType.validValues.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'pattern', thisModule.getStringValue(dataType.validValues));
+			}
+			if (not dataType.lengthRange.oclIsUndefined())
+			{
+				t.setValue(stereotype, 'length', thisModule.getLengthRange(dataType));
+			}		
+		}
+	}
+}	
+
+rule ExceptionTypeToClass {
+	from
+		s : MP!ExceptionType
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}		
+	to
+		t : UML!Class
+		(
+			name <- s.name,
+			ownedComment <- thisModule.hasComment(s.description),
+			ownedAttribute <- s.exceptionParameter
+		)
+	do
+	{
+		stereotype <- thisModule.getEcimStereotype('EcimException');
+		t.applyStereotype(stereotype);
+		t.setValue(stereotype, 'status', thisModule.getStatus(s.deprecated,OclUndefined,OclUndefined));
+		t.setValue(stereotype, 'statusInformation', thisModule.getStatusInformation(s.deprecated,OclUndefined,OclUndefined));
+	}		
+}
+
+rule ExceptionParameterTypeToProperty {
+	from
+		s : MP!ExceptionParameterType
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}
+	to
+		t : UML!Property
+		(
+			name <- s.name,
+			ownedComment <- thisModule.hasComment(s.description),
+			type <- thisModule.CreateDataType(s.dataType,s.eContainer().name+'_'+s.name)
+		)
+	do
+	{
+		stereotype <- thisModule.getEcimStereotype('EcimExceptionParameter');
+		t.applyStereotype(stereotype);
+	}		
+}
+
+--Map containment relationships
+rule RelationshipTypeToCompositionAssociation {
+	from
+		s : MP!RelationshipType(not s.containment.oclIsUndefined())
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}			
+	to
+		t : UML!Association
+		(
+			name <- s.name,
+			ownedComment <- thisModule.hasComment(s.description),
+			ownedEnd <- ownedProp
+		),
+		ownedProp : UML!Property
+		(
+			lower <- 1,
+			upper <- 1,
+			type <- UML!Class.allInstances()->select(e|e.name=s.containment.parent.hasClass.name)->first(),
+			isComposite <- false, -- As this is a containment this end must be the composite
+			name <- if (not ownedProp.type.oclIsUndefined()) then ownedProp.type.name else '' endif
+		)	
+	do
+	{
+		stereotype <- thisModule.getEcimStereotype('EcimContainment');
+		t.applyStereotype(stereotype);
+		t.setValue(stereotype, 'specification', thisModule.getStringValue(s.specification));		
+		t.setValue(stereotype, 'status', thisModule.getStatus(s.deprecated,s.obsolete,s.preliminary));	
+		t.setValue(stereotype, 'statusInformation', thisModule.getStatusInformation(s.deprecated,s.obsolete,s.preliminary));	
+		t.setValue(stereotype, 'hideGroupName', thisModule.getStringValue(s.visibility));	
+		-- Set this to true so that we are compliant with old MP output where <noNotification/> tag is not outputted 
+		t.setValue(stereotype, 'isNotifiable', true);	
+	}		
+}
+
+--Map bi-directional relationships
+rule RelationshipTypeToBiDirAssociation {
+	from
+		s : MP!RelationshipType(not s.biDirectionalAssociation.oclIsUndefined())
+	to
+		t : UML!Association
+		(
+			name <- s.name,
+			ownedComment <- thisModule.hasComment(s.description),
+			ownedEnd <- s.biDirectionalAssociation.associationEnd
+		)	
+	do
+	{
+		t.applyStereotype(thisModule.getEcimStereotype('EcimBiDirAssociation_CS'));
+	}		
+}
+
+rule AssociationEndTypeToProperty
+{
+	from s : MP!AssociationEndType(s.eContainer().oclIsTypeOf(MP!BiDirectionalAssociationType))
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}
+	to t : UML!Property
+	(
+		name <- s.name,
+		ownedComment <- thisModule.hasComment(s.description),
+		type <- UML!Class.allInstances()->select(e|e.name=s.hasClass.name)->first(),
+		lower <- s.cardinality.getMin(),
+		upper <- s.cardinality.getMax()
+	)
+	do
+	{
+		stereotype <- if (s.name.toString().startsWith('reservedBy')) then thisModule.getEcimStereotype('EcimServerAssociationEnd') else thisModule.getEcimStereotype('EcimClientAssociationEnd') endif;
+		t.applyStereotype(stereotype);
+		if (s.name.toString().startsWith('reservedBy')) then t.setValue(stereotype, 'isReserving', false) else t.setValue(stereotype, 'isReserving', true) endif;
+	}
+}
+
+
+
+--create a sequence datatype
+rule CreateComment(description : String)
+{
+	to 	t : UML!Comment
+	(
+		--only set documentation if the value isn't an empty string or isn't a bunch of empty characters(we use trim to test for these)
+		body <- if description.trim() = '' then OclUndefined else description endif
+	)	
+	do
+	{
+		--the UML documentation comment needs a special stereotype identifier from the UML default profile 
+		t;
+	}
+}
+
+rule LongToDerivedInteger(s : MP!LongType, name : String)
+{
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}		
+	to
+		t : UML!DataType
+		(
+			name <- 'DerivedInteger'+'_'+name+'_'+'Type',
+			package <- UML!Package.allInstancesFrom('OUT')->select(e|e.oclIsTypeOf(UML!Package))->first(),
+			general <- UML!DataType.allInstances()->select(e|e.name='EcimUInt64')->first()
+		)
+	do
+	{	
+		stereotype <- thisModule.getEcimStereotype('EcimDerivedInteger');
+		t.applyStereotype(stereotype);
+		t.setValue(stereotype, 'unit', thisModule.getStringValue(s.unit));
+		t.setValue(stereotype, 'resolution', thisModule.getStringValue(s.resolution));
+		t.setValue(stereotype, 'range', thisModule.getRange(s));
+		t.setValue(stereotype, 'multiplicationFactor', thisModule.getStringValue(s.multiplicationFactor));
+		t;
+	}		
+}
+
+rule StringToDerivedString(s : OclAny, name : String)
+{
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}		
+	to
+		t : UML!DataType
+		(
+			name <- 'DerivedString'+'_'+name+'_'+'Type',
+			package <- UML!Package.allInstancesFrom('OUT')->select(e|e.oclIsTypeOf(UML!Package))->first(),
+			general <- UML!DataType.allInstances()->select(e|e.name='EcimString')->first()
+		)
+	do
+	{	
+		stereotype <- thisModule.getEcimStereotype('EcimDerivedString');
+		t.applyStereotype(stereotype);
+		t.setValue(stereotype, 'pattern', thisModule.getStringValue(s.validValues));
+		t.setValue(stereotype, 'length', thisModule.getLengthRange(s));
+		t;
+	}		
+}
+
+rule CharToDerivedString(s : MP!CharType, name : String)
+{
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}		
+	to
+		t : UML!DataType
+		(
+			name <- 'CharString'+'_'+name+'_'+'Type',
+			package <- UML!Package.allInstancesFrom('OUT')->select(e|e.oclIsTypeOf(UML!Package))->first(),
+			general <- UML!DataType.allInstances()->select(e|e.name='EcimString')->first()
+		)
+	do
+	{	
+		stereotype <- thisModule.getEcimStereotype('EcimDerivedString');
+		t.applyStereotype(stereotype);
+		t.setValue(stereotype, 'length', thisModule.getRange(s));
+		t;
+	}		
+}
+
+--Create a DerivedInteger for all sorts of differnt types of integers
+rule IntToDerivedInteger(s : OclAny, ecimType : String, name : String) {
+	using
+	{
+		stereotype : UML!Stereotype	= OclUndefined;
+	}			
+	to
+		t : UML!DataType
+		(
+			name <- 'DerivedInteger'+'_'+name+'_'+'Type',
+			package <- UML!Package.allInstancesFrom('OUT')->select(e|e.oclIsTypeOf(UML!Package))->first(),
+			general <- UML!DataType.allInstances()->select(e|e.name=ecimType)->first()
+		)
+	do
+	{	
+		stereotype <- thisModule.getEcimStereotype('EcimDerivedInteger');
+		t.applyStereotype(stereotype);
+		t.setValue(stereotype, 'unit', thisModule.getStringValue(s.unit));
+		t.setValue(stereotype, 'resolution', thisModule.getStringValue(s.resolution));
+		t.setValue(stereotype, 'range', thisModule.getRange(s));
+		t.setValue(stereotype, 'multiplicationFactor', thisModule.getStringValue(s.multiplicationFactor));
+		t;
+	}		
+}

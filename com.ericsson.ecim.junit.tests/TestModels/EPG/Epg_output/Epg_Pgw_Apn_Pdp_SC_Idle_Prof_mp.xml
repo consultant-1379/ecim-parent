@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_Apn_Pdp_SC_Idle_Prof" namespace="urn:com:ericsson:ecim:Epg_Pgw_Apn_Pdp_SC_Idle_Prof" namespacePrefix="epg_pgw_apn_pdp_sc_idle_prof" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="2">
+        <description>Idle timeout settings</description>
+        <enum name="MeasurementType">
+            <description>Point of reference for time measurement</description>
+            <enumMember name="since-creation">
+                <description>Relative to the PDP context creation time</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="since-update">
+                <description>Relative to the last PDP context update time</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Timeout">
+            <description>Maximum continuous idle time for a context</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>1</min>
+                        <max>525600</max>
+                    </range>
+                    <unit>minutes</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <class name="ChargingProfile">
+            <description>Timeout settings based on charging profile</description>
+            <root/>
+            <attribute name="chargingProfileID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="measurementType">
+                <description>Point of reference for time measurement</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="MeasurementType">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="noSupervision">
+                <description>Don't allow session supervision based on charging profile</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile0">
+            <description>Profile 0</description>
+            <attribute name="profile0ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile1">
+            <description>Profile 1</description>
+            <attribute name="profile1ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile10">
+            <description>Profile 10</description>
+            <attribute name="profile10ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile11">
+            <description>Profile 11</description>
+            <attribute name="profile11ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile12">
+            <description>Profile 12</description>
+            <attribute name="profile12ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile13">
+            <description>Profile 13</description>
+            <attribute name="profile13ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile14">
+            <description>Profile 14</description>
+            <attribute name="profile14ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile15">
+            <description>Profile 15</description>
+            <attribute name="profile15ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile2">
+            <description>Profile 2</description>
+            <attribute name="profile2ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile3">
+            <description>Profile 3</description>
+            <attribute name="profile3ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile4">
+            <description>Profile 4</description>
+            <attribute name="profile4ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile5">
+            <description>Profile 5</description>
+            <attribute name="profile5ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile6">
+            <description>Profile 6</description>
+            <attribute name="profile6ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile7">
+            <description>Profile 7</description>
+            <attribute name="profile7ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile8">
+            <description>Profile 8</description>
+            <attribute name="profile8ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile9">
+            <description>Profile 9</description>
+            <attribute name="profile9ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum consecutive idle minutes for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="ChargingProfile_to_Profile0">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile0">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile1">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile1">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile10">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile10">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile11">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile11">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile12">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile12">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile13">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile13">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile14">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile14">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile15">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile15">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile2">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile2">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile3">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile3">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile4">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile4">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile5">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile5">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile6">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile6">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile7">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile7">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile8">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile8">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingProfile_to_Profile9">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile9">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="apn-idletimeout-to-profile">
+            <containment>
+                <parent>
+                    <hasClass name="IdleTimeout">
+                        <mimName>Epg_Pgw_Apn</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_Apn_Pdp_SC_Idle_Prof</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

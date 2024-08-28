@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension
+         point="com.ericsson.ecim.transformations">
+      <transformation
+            checkedByDefault="false"
+            enabledForCmwModelMerge="false"
+            transformationClass="com.ericsson.ecim.yang.launcher.extension.YangTransform"
+            transformationId="yang"
+            transformationName="YANG">
+         <requiredProfiles>
+            <profile
+                  name="ECIM Base Profile">
+            </profile>
+         </requiredProfiles>
+      </transformation>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:com.ericsson.ecim.launcher.ecimmenu?after=generateartifacts">
+         <command
+               commandId="com.ericsson.ecim.yang.ConvertYangToUml"
+               mnemonic="Y"
+               style="push"
+               tooltip="Converts a YANG model to an ECIM MM compliant UML model">
+            <visibleWhen>
+               <iterate>
+                  <test
+                        forcePluginActivation="true"
+                        property="com.ericsson.ecim.launcher.isYangFile">
+                  </test>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.ericsson.ecim.yang.launcher.GenerateYangDiagram"
+               mnemonic="Y"
+               style="push"
+               tooltip="Generate a Plant UML diagram from Yang module">
+            <visibleWhen>
+               <iterate>
+                  <test
+                        forcePluginActivation="true"
+                        property="com.ericsson.ecim.launcher.isYangFile">
+                  </test>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="com.ericsson.ecim.launcher.ecimcategory"
+            defaultHandler="com.ericsson.ecim.yang.launcher.extension.YangReAction"
+            id="com.ericsson.ecim.yang.ConvertYangToUml"
+            name="Transform to ECIM MetaModel UML">
+      </command>
+      <command
+            categoryId="com.ericsson.ecim.launcher.ecimcategory"
+            defaultHandler="com.ericsson.ecim.yang.launcher.extension.GenerateYangUmlAction"
+            id="com.ericsson.ecim.yang.launcher.GenerateYangDiagram"
+            name="Generate Yang Uml Diagram">
+      </command>
+   </extension>
+   <extension
+         point="com.ericsson.ecim.reverse">
+      <reverse
+            reverseTransformationClass="com.ericsson.ecim.yang.launcher.extension.YangReverseTransformation"
+            reverseTransformationId="reyang"
+            reverseTransformationName="Yang to UML">
+      </reverse>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.ericsson.ecim.yang.launcher.StartupHook">
+      </startup>
+   </extension>
+   <extension
+         id="com.ericsson.ecim.yang.launcher.validator"
+         name="YangValidator"
+         point="org.eclipse.wst.validation.validatorV2">
+      <validator
+            build="false"
+            class="com.ericsson.ecim.yang.launcher.extension.YangValidator"
+            manual="true">
+         <include>
+            <rules>
+               <fileext
+                     caseSensitive="false"
+                     ext="yang">
+               </fileext>
+            </rules>
+         </include>
+      </validator>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.ericsson.ecim.yang.launcher.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="com.ericsson.yang.Yang"
+            class="com.ericsson.ecim.yang.launcher.preferences.PyangPreferencePage"
+            id="com.ericsson.ecim.yang.launcher.preferences.PyangPreferencePage"
+            name="Pyang">
+      </page>
+   </extension>
+</plugin>

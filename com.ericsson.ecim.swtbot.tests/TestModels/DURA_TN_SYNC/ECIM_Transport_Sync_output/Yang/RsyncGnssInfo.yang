@@ -1,0 +1,205 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:23:52 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RsyncGnssInfo" {
+	namespace "urn:com:ericsson:ecim:RsyncGnssInfo";
+	prefix "RsyncGnssInfo";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RsyncTimeSyncIO {
+		prefix "RsyncTimeSyncIO";
+	}
+
+	import RsyncSynchronization {
+		prefix "RsyncSynchronization";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RsyncSyncLibrary {
+		prefix "RsyncSyncLibrary";
+	}
+
+	description "Indicates key data from the satellite receiver.";
+
+	revision "2015-10-13" {
+		ericsson:contact "EAB/FJP/TA UABJOCL";
+		ericsson:version "1";
+		ericsson:release "5";
+		ericsson:correction "3";
+		ericsson:author "EAB/FJP/TA UABJOCL";
+	}
+
+	augment
+	"/ECIM_Top:ManagedElement/ECIM_Top:Transport/RsyncSynchronization:Synchronization/RsyncTimeSyncIO:TimeSyncIO"
+	{
+		list "GnssInfo" {
+			key "gnssInfoId";
+			max-elements 1;
+			uses RsyncGnssInfo:GnssInfo;
+		}
+
+	}
+
+	typedef "GnssRefState" {
+		type enumeration {
+			enum "HW_FAULT" {
+				value 0;
+				description "Hardware fault reported from the receiver.";
+			}
+
+			enum "OK" {
+				value 1;
+				description "Indicates fully operational GNSS receiver.";
+			}
+
+			enum "NO_TIME" {
+				value 2;
+				description "No time reported.";
+			}
+
+			enum "NO_MESSAGES" {
+				value 3;
+				description "No messages received.";
+			}
+
+			enum "PROTOCOL_NOT_RECOGNIZED" {
+				value 4;
+				description "The protocol used by the receiver is not recognised.";
+			}
+
+			enum "LOSS_OF_1PPS_SIGNAL" {
+				value 5;
+				description "1PPS synchronization signal lost.";
+			}
+
+			enum "SYNCHRONIZED" {
+				value 6;
+				description "The GNSS receiver is synchronized to satellites.";
+			}
+
+			enum "NOT_SYNCHRONIZED" {
+				value 7;
+				description "The GNSS receiver is NOT synchronized to satellites.";
+			}
+
+			enum "UNKNOWN" {
+				value 8;
+				description "No contact with the GNSS receiver.";
+			}
+
+		}
+
+		description "The status of the GNSS receiver.";
+	}
+
+	typedef "GnssInfoObservationPointMode" {
+		type enumeration {
+			enum "UNKNOWN" {
+				value 0;
+				description "The observation point mode is not known. ";
+			}
+
+			enum "SURVEY" {
+				value 1;
+				description
+				"The GNSS receiver is in survey mode, and the time and position are continuously calculated.";
+			}
+
+			enum "POSITION_HOLD" {
+				value 2;
+				description
+				"The GNSS receiver has locked to a fixed position which is used to calculate the time.";
+			}
+
+		}
+
+		description "The observation point of the GNSS receiver.";
+	}
+
+	grouping "GnssInfo" {
+		description "Indicates key data from the satellite receiver.";
+		leaf "gnssInfoId" {
+			type string;
+			mandatory true;
+			description "Value component of the RDN.
+";
+			ericsson:restricted;
+		}
+
+		leaf "gnssReceiverStatus" {
+			type RsyncGnssInfo:GnssRefState;
+			mandatory true;
+			config true;
+			description "The status of the GNSS receiver/data.";
+		}
+
+		leaf "altitude" {
+			type string;
+			mandatory true;
+			config true;
+			description "The altitude of the GNSS receiver antenna.";
+		}
+
+		leaf "hdop" {
+			type string;
+			mandatory true;
+			config true;
+			description
+			"The horizontal dilution of precision of the GNSS receiver antenna.";
+		}
+
+		leaf "latitude" {
+			type string;
+			mandatory true;
+			config true;
+			description "The latitude of the GNSS receiver antenna.";
+		}
+
+		leaf "longitude" {
+			type string;
+			mandatory true;
+			config true;
+			description "The longitude of the GNSS receiver antenna.";
+		}
+
+		leaf "noOfSatellitesInView" {
+			type int32;
+			mandatory true;
+			config true;
+			description "The number of satellites in view.";
+		}
+
+		leaf "observationPointMode" {
+			type RsyncGnssInfo:GnssInfoObservationPointMode;
+			mandatory true;
+			config true;
+			description "The mode of observation point of the GNSS receiver.";
+		}
+
+		list "satelliteInformation" {
+			max-elements 72;
+			config true;
+			description "Information about the satellites in view.";
+			uses RsyncSyncLibrary:SatelliteInfo;
+		}
+
+		leaf "vdop" {
+			type string;
+			mandatory true;
+			config true;
+			description
+			"The vertical dilution of precision of the GNSS receiver antenna.
+";
+		}
+
+	}
+
+}

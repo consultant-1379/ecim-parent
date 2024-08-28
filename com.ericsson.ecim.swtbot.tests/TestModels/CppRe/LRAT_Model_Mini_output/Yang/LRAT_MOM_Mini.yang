@@ -1,0 +1,1633 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Jun 26, 2015 10:05:02 AM using 
+    * com.ericsson.ecim.yang.m2m 3.0.1.qualifier
+*/
+module "LRAT_MOM_Mini" {
+	namespace "urn:com:ericsson:ecim:LRAT_MOM_Mini";
+	prefix "LRAT_MOM_Mini";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	revision "2015-06-26" {
+		ericsson:revision "3";
+		ericsson:release "2";
+		ericsson:version "1";
+		ericsson:author "emjmjmj";
+	}
+
+	typedef "DnsLookup" {
+		type enumeration {
+			enum "OFF" {
+				value 0;
+			}
+
+			enum "ON" {
+				value 1;
+			}
+
+		}
+
+	}
+
+	typedef "SchedulingStrategy" {
+		type enumeration {
+			enum "STRICT_PRIORITY" {
+				value 0;
+				description "Deprecated: Since L12A.";
+			}
+
+			enum "ROUND_ROBIN" {
+				value 1;
+				description "Deprecated: Since L12A.";
+			}
+
+			enum "RESOURCE_FAIR" {
+				value 3;
+				description "Deprecated: Since L12A.";
+			}
+
+			enum "PROPORTIONAL_FAIR_MEDIUM" {
+				value 4;
+				description "Deprecated: Since L12A.";
+			}
+
+			enum "PROPORTIONAL_FAIR_LOW" {
+				value 5;
+				description "Deprecated: Since L12A.";
+			}
+
+			enum "PROPORTIONAL_FAIR_HIGH" {
+				value 6;
+				description "Deprecated: Since L12A.";
+			}
+
+			enum "MAXIMUM_CQI" {
+				value 7;
+				description "Deprecated: Since L12A.";
+			}
+
+			enum "EQUAL_RATE" {
+				value 8;
+				description "Deprecated: Since L12A.";
+			}
+
+		}
+
+		description "Deprecated: Since L12A.";
+	}
+
+	typedef "Rat" {
+		type enumeration {
+			enum "UTRAN" {
+				value 0;
+			}
+
+			enum "GERAN" {
+				value 1;
+			}
+
+		}
+
+	}
+
+	typedef "OrderCode" {
+		type enumeration {
+			enum "RETAIN_EXISTING" {
+				value 0;
+			}
+
+			enum "RENEW_ALL_EXISTING" {
+				value 2;
+			}
+
+		}
+
+	}
+
+	grouping "PlmnIdentity" {
+		leaf "mcc" {
+			type int32 {
+				range "0..999";
+			}
+
+			description
+			"The MCC part of a PLMN identity used in the radio
+					network.
+";
+		}
+
+		leaf "mnc" {
+			type int32 {
+				range "0..999";
+			}
+
+			description
+			"The MNC part of a PLMN identity used in the radio
+					network.
+";
+		}
+
+		leaf "mncLength" {
+			type int32 {
+				range "2..3";
+			}
+
+			description
+			"The length of the MNC part of a PLMN identity used in
+					the radio network.
+";
+		}
+
+		leaf-list "sequenceStructMember1" {
+			type int32 {
+				range "-133..2554";
+			}
+
+			max-elements 64;
+			description "Struct member is ordered, unique sequence";
+		}
+
+		leaf-list "sequenceStructMember2" {
+			type int32;
+			max-elements 64;
+			description "Struct member is non-ordered, non-unique sequence";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "sequenceStructMember3" {
+			type string {
+				length "0..255";
+				pattern "[ABCD]*";
+			}
+
+			max-elements 10660;
+			description "This is a sequence parameter.";
+			ericsson:non-unique-leaf-list;
+		}
+
+	}
+
+	grouping "PerformedOperation" {
+		leaf "ldn" {
+			type string;
+		}
+
+		leaf "operation" {
+			type string;
+		}
+
+		leaf "success" {
+			type boolean;
+		}
+
+		leaf "reasonForFailure" {
+			type string;
+			description "ReasonForFailure is CardinalityViolation or other.";
+		}
+
+	}
+
+	grouping "GlobalEnbId" {
+		leaf "mcc" {
+			type int32 {
+				range "0..999";
+			}
+
+			default "1";
+			description
+			"Mobile Country Code (a part of the PLMN identity) for a
+					cell that is served by a neighbor eNB.
+";
+		}
+
+		leaf "mnc" {
+			type int32 {
+				range "0..999";
+			}
+
+			default "1";
+			description
+			"Mobile Network Code (a part of the PLMN identity) for a
+					cell that is served by a neighbor eNB.
+";
+		}
+
+		leaf "mncLength" {
+			type int32 {
+				range "2..3";
+			}
+
+			default "2";
+			description
+			"This parameter defines the number of digits for the
+					Mobile Network Code (a part of the PLMN identity) for a cell that
+					is served by a neighbor eNB.
+
+					The PLMN identity combines the
+					following two parts:
+					1. MobileCountryCode, MCC, 3 digits
+					2.
+					MobileNetworkCode, MNC, 2 or 3 digits
+
+					Example: If MCC=125 and
+					MNC=46, then plmnId=12546.
+";
+		}
+
+		leaf "enbId" {
+			type int32 {
+				range "0..1048575";
+			}
+
+			default "0";
+			description "ENodeB Id
+";
+		}
+
+	}
+
+	grouping "DynamicCellStatusException" {
+		description "Will be thrown if Dynamic Cell Status cannot be
+				returned.";
+	}
+
+	grouping "MoAccessException" {
+	}
+
+	grouping "Root" {
+		leaf "timeAndPhaseSynchCritical" {
+			type boolean;
+			mandatory true;
+			description
+			"Indicates if the cell can operate as an asynchronous
+					cell under error conditions.";
+		}
+
+		leaf "RootId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.
+";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string {
+				length "0..128";
+			}
+
+			mandatory true;
+			description "Label for free use.
+";
+		}
+
+		leaf "sctpRef" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			description
+			"Refers to the SCTP instance that is used to configure
+					the SCTP host for S1 and X2 connections.";
+		}
+
+		leaf "classARef" {
+			type string {
+				pattern "(.*=.*,)*ClassA=.*";
+			}
+
+			description "Reference to class that is not part of this file.";
+		}
+
+		leaf-list "classBRef" {
+			type string {
+				pattern "(.*=.*,)*ClassB=.*";
+			}
+
+			description "Reference to class that is not part of this file.";
+		}
+
+		leaf "dnsLookupOnTai" {
+			type LRAT_MOM_Mini:DnsLookup;
+			mandatory true;
+			description
+			"Controls if the Tracking Area Identity (TAI) is used to
+					get IP addresses of MME nodes from the Domain Name System (DNS).
+
+					The RBS uses TAI to automatically obtain all MME IP addresses from
+					the DNS when dnsLookupOnTai is switched on, or at RBS start or
+					restart.
+
+					The MME IP address list is refreshed periodically and MME
+					connections
+					released and setup according to the new list. The MME IP
+					address
+					list can also be refreshed from OSS-RC.";
+		}
+
+		leaf "dnsLookupTimer" {
+			type int32 {
+				range "0..1000";
+			}
+
+			mandatory true;
+			description
+			"The interval to perform DNS Lookup to get potential new
+					IP addresses of MME nodes. DNS lookup is performed for the TAI
+					domain name. If the value is set to zero, then no periodic DNS
+					Lookup is done.";
+		}
+
+		list "structAttrQ1" {
+			max-elements 64;
+			config true;
+			description
+			"Static mapping of DiffServ label for control messages,
+					Performance Management (PM), and Non-Access Stratum (NAS).";
+			uses LRAT_MOM_Mini:GlobalEnbIdRO;
+		}
+
+		leaf "dscpLabel" {
+			type int32 {
+				range "0..63";
+			}
+
+			mandatory true;
+			description
+			"Static mapping of DiffServ label for control messages,
+					Performance Management (PM), and Non-Access Stratum (NAS).";
+		}
+
+		leaf "eNBId" {
+			type int32 {
+				range "-1..1048575";
+			}
+
+			mandatory true;
+			description
+			"The ENodeB ID that forms part of the Cell Global
+					Identity, and is also used to identify the node over the S1
+					interface.";
+		}
+
+		list "attrQ" {
+			max-elements 1;
+			config true;
+			description "This is a readonly attribute
+";
+			uses LRAT_MOM_Mini:StructQRO;
+		}
+
+		container "eNodeBPlmnId" {
+			presence "This Container points to a Struct which has no key.";
+			description
+			"The ENodeB Public Land Mobile Network (PLMN) ID that
+					forms part of the ENodeB Global ID used to identify the node over
+					the S1 interface. 
+";
+			uses LRAT_MOM_Mini:PlmnIdentity;
+		}
+
+		leaf "oaMLinkSuperVisionActive" {
+			type boolean;
+			mandatory true;
+			status deprecated;
+			description
+			"Controls enabling and disabling the supervision
+					function that restarts the RBS when the O&M link is disabled.";
+		}
+
+		list "x2BlackList" {
+			max-elements 64;
+			config true;
+			description
+			"A list of blacklisted RBS IDs. X2 may not be set up to
+					any neighbor RBS in the blacklist. Attribute is ordered, unique
+					sequence Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses LRAT_MOM_Mini:x2BlackList;
+		}
+
+		leaf-list "sequenceAttributeX" {
+			type string {
+				length "0..255";
+				pattern "[ABCDE]*";
+			}
+
+			description "This is a sequence attribute.";
+		}
+
+		leaf-list "sequenceAttributeY" {
+			type boolean;
+			description "This is a sequence attribute.";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "sequenceAttributeZ" {
+			type int32 {
+				range "1..100000";
+			}
+
+			description "This is a sequence attribute.";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "x2retryTimerMaxAuto" {
+			type int32 {
+				range "0..60000";
+			}
+
+			mandatory true;
+			description "See attribute x2RetryTimerStart.";
+		}
+
+		leaf "x2retryTimerStart" {
+			type int32 {
+				range "0..1000";
+			}
+
+			mandatory true;
+			description
+			"After failed X2 setup and after X2 link break the
+					x2RetryTimer is used to control the time till next retry.
+					x2RetryTimer is used for DNS, SCTP, X2AP retries and x2IpAddrViaS1.
+
+					After first failed setup or missing IP address from DNS,
+					x2RetryTimer = max(x2RetryTimerStart,W), where W is the timeToWait
+					received in x2SetupFail. If W is not received, W=0.
+
+					After link
+					break, x2RetryTimer = random(0,x2RetryTimerStart). If the
+					first
+					setup after link break fails, the timer values according to
+					the
+					above and below paragraphs shall apply as for failed inital
+					setup.
+
+					After 2nd and following fails, if the X2 connection is not being
+					setup
+					by ANR in the S-RBS, x2RetryTimer = max(x2RetryTimerStart,W).
+
+					After 2nd and following fails, if the X2 connection is being setup
+					by
+					ANR in the S-RBS, x2RetryTimer =
+					max(min[2^(n-2)*x2RetryTimerStart,
+					x2retryTimerMaxAuto], W), where n
+					is failure number.
+
+					Each W is only used in the first retry after it
+					is received.";
+		}
+
+		list "x2WhiteList" {
+			max-elements 64;
+			config true;
+			description
+			"The list of whitelisted RBS IDs. Automated Neighbor
+					Relations (ANR) is not allowed to disconnect X2 for any neighbor
+					RBS in the whitelist. Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses LRAT_MOM_Mini:x2WhiteList;
+		}
+
+		leaf-list "pmHwUtilDl" {
+			type int32;
+			config true;
+			status deprecated;
+			max-elements 20;
+			description
+			"PDF for hardware utilization in the downlink direction.
+
+					PDF ranges:
+					[0]: [0..5]%,
+					[1]: ]5..10]%,
+					[2]: ]10..15]%,
+					[3]:
+					]15..20]%,
+					[4]: ]20..25]%,
+					[5]: ]25..30]%,
+					[6]: ]30..35]%,
+					[7]:
+					]35..40]%,
+					[8]: ]40..45]%,
+					[9]: ]45..50]%,
+					[10]: ]50..55]%,
+					[11]:
+					]55..60]%,
+					[12]: ]60..65]%,
+					[13]: ]65..70]%,
+					[14]: ]70..75]%,
+					[15]:
+					]75..80]%,
+					[16]: ]80..85]%,
+					[17]: ]85..90]%,
+					[18]: ]90..95]%,
+					[19]:
+					]95..100]% ";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "pmHwUtilUl" {
+			type int32;
+			config true;
+			status deprecated;
+			max-elements 20;
+			description
+			"PDF for hardware utilization in the uplink direction.
+
+					PDF ranges:
+					[0]: [0..5]%,
+					[1]: ]5..10]%,
+					[2]: ]10..15]%,
+					[3]:
+					]15..20]%,
+					[4]: ]20..25]%,
+					[5]: ]25..30]%,
+					[6]: ]30..35]%,
+					[7]:
+					]35..40]%,
+					[8]: ]40..45]%,
+					[9]: ]45..50]%,
+					[10]: ]50..55]%,
+					[11]:
+					]55..60]%,
+					[12]: ]60..65]%,
+					[13]: ]65..70]%,
+					[14]: ]70..75]%,
+					[15]:
+					]75..80]%,
+					[16]: ]80..85]%,
+					[17]: ]85..90]%,
+					[18]: ]90..95]%,
+					[19]:
+					]95..100]% ";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "s1RetryTimer" {
+			type int32 {
+				range "1..300";
+			}
+
+			mandatory true;
+			description
+			"Defines the frequency to perform re-establishment of
+					SCTP and S1-AP connection,
+					when the connection to a MME is lost.
+";
+		}
+
+		leaf "tHODataFwdReordering" {
+			type int32 {
+				range "1..3000";
+			}
+
+			mandatory true;
+			status deprecated;
+			description
+			"Target eNodeB supervision of the DL data forwarding
+					activity.
+					The timer is started when DL data on S1-U is received. At
+					expiry the
+					tunnel end-point for DL forwarding is locally released.
+";
+		}
+
+		leaf "ulSchedulerDynamicBWAllocationEnabled" {
+			type boolean;
+			mandatory true;
+			description "Specifies if the advanced UL scheduler is enabled
+
+";
+		}
+
+		leaf "upIpAccessHostRef" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			status deprecated;
+			description
+			"Refers to the IpAccessHostEt instance to use for
+					configuring the IP access host for S1 and X2 user plane
+					connections. This attribute must contain a valid MO reference if
+					the IPsec function is used.";
+		}
+
+		leaf "x2IpAddrViaS1Active" {
+			type boolean;
+			mandatory true;
+			description
+			"Indicates if the function X2 IP addresses over S1 is
+					active in the RBS.";
+		}
+
+		leaf "dlTransNwBandwidth" {
+			type int32 {
+				range "0..1000";
+			}
+
+			mandatory true;
+			status deprecated;
+			description "Downlink transport network bandwidth for LTE.";
+		}
+
+		leaf "ulTransNwBandwidth" {
+			type int32 {
+				range "0..1000";
+			}
+
+			mandatory true;
+			status deprecated;
+			description "Uplink transport network bandwidth for LTE.";
+		}
+
+		leaf "dlAccGbrAdmThresh" {
+			type int32 {
+				range "0..1000";
+			}
+
+			mandatory true;
+			status deprecated;
+			description
+			"Admission threshold on accumulated Guaranteed Bit Rate
+					(GBR) in the downlink, expressed as a fraction of the downlink
+					transport network bandwidth for LTE.";
+		}
+
+		leaf "ulAccGbrAdmThresh" {
+			type int32 {
+				range "0..1000";
+			}
+
+			mandatory true;
+			status deprecated;
+			description
+			"Admission threshold on accumulated Guaranteed Bit Rate
+					(GBR) in the uplink, expressed as a fraction of the uplink
+					transport network bandwidth for LTE.";
+		}
+
+		leaf "ipAddress" {
+			type string {
+				length "2..39";
+			}
+
+			config true;
+			description
+			"The IP address of the host. This is a mirrored value of
+					the attribute ipAddress, MO IpAccessHostEt or
+					AddressIPv4/AddressIPv6.";
+		}
+
+		leaf "pmPdcpPktDiscDlEth" {
+			type int32;
+			config true;
+			status deprecated;
+			description
+			"Total number of downlink DRB packets (PDCP SDUs)
+					discarded in the Ethernet part of the eNB.";
+		}
+
+		leaf "schedulingStrategy" {
+			type LRAT_MOM_Mini:SchedulingStrategy;
+			mandatory true;
+			status deprecated;
+			description "The scheduling strategy that is used in the RBS.";
+		}
+
+		leaf "rrcConnReestActive" {
+			type boolean;
+			mandatory true;
+			description
+			"Indicates if the feature RRC Connection Reestablishment
+					is ACTIVATED or DEACTIVATED.";
+		}
+
+		leaf "zzzTemporary1" {
+			type string;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary2" {
+			type string;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary3" {
+			type string;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary4" {
+			type string;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary5" {
+			type string;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary6" {
+			type string;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary7" {
+			type string;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary8" {
+			type string;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary9" {
+			type int32;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary10" {
+			type int32;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary11" {
+			type int32;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary12" {
+			type int32;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "pmZtemporary34" {
+			type int32;
+			config true;
+			description
+			"Normally this counter is not used, it can however
+					sometimes be temporarily used for very late additions in a release.
+					If so, for description see Network Impact Report in the CPI.";
+		}
+
+		leaf "pmZtemporary35" {
+			type int32;
+			config true;
+			description
+			"Normally this counter is not used, it can however
+					sometimes be temporarily used for very late additions in a release.
+					If so, for description see Network Impact Report in the CPI.";
+		}
+
+		leaf "x2SetupTwoWayRelations" {
+			type boolean;
+			mandatory true;
+			description
+			"This parameter indicates if two way relations shall be
+					setup during X2 setup and eNB configuration. The RBS creates a
+					two-way relation for each entry in the received neighbour
+					information that contains a relation to a source cell. Neighbour
+					information is sent in X2 setup and eNB configuration. Neighbour
+					information is eUtranCellRelations per source cell from the sending
+					node.";
+		}
+
+		leaf "technicianPresent" {
+			type boolean;
+			config true;
+			status deprecated;
+			description
+			"Indicates that a technician on site has pushed the
+					Maintenance Button.
+					Persistently stored attribute not handled by CV.";
+		}
+
+		leaf "alarmSuppressed" {
+			type boolean;
+			mandatory true;
+			status deprecated;
+			description
+			"Indicates that all alarms in the node are suppressed.
+					Alarm suppression can be started on site via a push on the
+					Maintenance Button or off site via OSS-RC.
+					Persistently stored
+					attribute not handled by CV.";
+		}
+
+		leaf "timePhaseMaxDeviation" {
+			type int32 {
+				range "9..100";
+			}
+
+			mandatory true;
+			description
+			"Defines the maximum allowed time/phase deviation for
+					time/phase synchronization of the eNodeB.";
+		}
+
+		leaf "pmRohcCidDlSum" {
+			type int32;
+			config true;
+			status deprecated;
+			description
+			"Sum of all downlink sample values recorded for the
+					number of Robust Header Compression context IDs";
+		}
+
+		leaf "pmRohcCidDlSamp" {
+			type int32;
+			config true;
+			status deprecated;
+			description
+			"Counts the number of times the corresponding downlink
+					Sum counters has been incremented.
+					Associated ACC pmCounter
+					pmRohcCidDlSum.";
+		}
+
+		leaf "pmRohcCidUlSum" {
+			type int32;
+			config true;
+			status deprecated;
+			description
+			"Sum of all uplink sample values recorded for the number
+					of Robust Header Compression context IDs";
+		}
+
+		leaf "pmRohcCidUlSamp" {
+			type int32;
+			config true;
+			status deprecated;
+			description
+			"Counts the number of times the corresponding uplink Sum
+					counters has been incremented.
+					Associated ACC pmCounter
+					pmRohcCidUlSum.";
+		}
+
+		leaf "pmPagS1Received" {
+			type int32;
+			config true;
+			description
+			"This counter counts the number of received S1AP Paging
+					messages in the RBS.";
+		}
+
+		leaf "pmPagS1Discarded" {
+			type int32;
+			config true;
+			description
+			"The number of S1AP Paging messages that are discarded
+					(and not routed to any cell) due to that the maximum number of
+					incoming S1AP Paging messages during a certain time interval is
+					reached. This counter is a subset of pmPagS1Received.";
+		}
+
+		leaf "s1HODirDataPathAvail" {
+			type boolean;
+			mandatory true;
+			description
+			"S1 Handover data forwarding can be of two types, direct
+					and indirect. Direct forwarding requires direct connectivity
+					between source and target eNodeB. This parameter is used to
+					indicate if such direct connectivity exist.";
+		}
+
+		leaf "randCdma20001xRtt" {
+			type int32;
+			config true;
+			description
+			"Rand initial value used for authentication input to the
+					RAND generation algorithm in eNodeB
+					The RAND-CDMA2000 concerns a
+					random value, generated by the eNodeB, to
+					be passed to the UE and
+					MME.";
+		}
+
+		leaf "minRandc" {
+			type int32 {
+				range "1..254";
+			}
+
+			mandatory true;
+			description
+			"Rand range datatype is the eight most significant bits
+					(MSB) of the Rand used for authentication.
+					This attribute controls
+					the minimum random number value that can be
+					generated. Typically a
+					range of random numbers is allocated to each
+					system using this
+					attribute.";
+		}
+
+		leaf "maxRandc" {
+			type int32 {
+				range "2..255";
+			}
+
+			mandatory true;
+			description
+			"Rand range datatype is the eight most significant bits
+					(MSB) of the Rand used for authentication.
+					This attribute controls
+					the maximum random number value that can be
+					generated. Typically a
+					range of random numbers is allocated to each
+					system using this
+					attribute.";
+		}
+
+		leaf "randUpdateInterval" {
+			type int32 {
+				range "15..1440";
+			}
+
+			mandatory true;
+			description
+			"Random number update interval
+					This attribute specifies
+					the time interval in minutes between random
+					number generation. When
+					this interval expires, the eNodeB generates
+					a new random number
+					between MinRandc and MaxRandc.";
+		}
+
+		leaf "zzzTemporary13" {
+			type int32;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary14" {
+			type int32;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary15" {
+			type int32;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary16" {
+			type int32;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "zzzTemporary17" {
+			type int32;
+			mandatory true;
+			description
+			"Temporary attributes are intended for temporary
+					solutions, and their usage may vary depending on the installed
+					software. It is strongly recommended to only set the attributes
+					that correspond to a desired functionality and leave all other
+					temporary attributes set to default value. Information in the
+					descriptions about what attributes are in use may be overridden by
+					the information in CPI Info documents. Note that a later release
+					may use another attribute to control the functionality previously
+					provided by a temporary attribute, or may remove the functionality
+					altogether. In these cases, the change is documented in the NIR.";
+		}
+
+		leaf "mfbiSupport" {
+			type boolean;
+			config true;
+			description
+			"Specifies whether the feature Multiple Frequency Band
+					Indicators is supported in the eNB.";
+		}
+
+		leaf "pmMoFootprintMax" {
+			type int32;
+			config true;
+			description
+			"This counter specifies the current footprint in the eNB
+					from the configured MO instances for all different Cell Relations
+					and External Cells in relation to the MO system limit. The higher
+					the value, the more internal memory is consumed in the eNB for MO
+					instances for the different types of Cell Relations and External
+					Cells. The value is the highest sampled value during a ROP period.
+					When the value reaches 100, further creation attempts for MO
+					instances are rejected.";
+		}
+
+		leaf "upIpAddressRef" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			description
+			"Refers to the IpAccessHostEt or AddressIPv4/AddressIPv6
+					instance to use for configuring the IP address for S1 and X2 user
+					plane connections.";
+		}
+
+		leaf-list "mmeCodeListLTERelated" {
+			type int32 {
+				range "-1..255";
+			}
+
+			config true;
+			max-elements 256;
+			description "MME code for LTE.";
+			ericsson:non-unique-leaf-list;
+		}
+
+		ericsson:updateMMEConnection {
+			description
+			"This action shall make it possible to order the RBS to
+					make a new DNS lookup to get possible new MME Pool addresses. The
+					orderCode has two different options:
+
+					- Retain: This option will
+					retain all connections that were included
+					in DNS response and the
+					connections that weren�??t included in the
+					response will be removed.
+					For the IP addresses that were unknown
+					for the RBS, the RBS will
+					establish connections to those MMEs.
+
+
+					- Renew All existing: The RBS
+					performs a DNS lookup. Release all S1
+					connections to the MMEs and
+					connect to the MMEs that are included
+					in the DNS response.
+
+					This
+					action should be used only when dnsLookupOnTai has the value ON.
+					The action is rejected if dnsLookupState has the value OFF.";
+			input {
+				leaf "orderCode" {
+					type LRAT_MOM_Mini:OrderCode;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:collectTraces {
+			description
+			"Starts traces collection. Log files from the RBS node
+					are collected and stored into a gzipped file,
+					/c/logfiles/CollectTraces.log.zip.
+					The same file is used every time,
+					that is if a result file exists it
+					is overwritten. If the action is
+					started when a trace collection is
+					already
+					ongoing a
+					ActionAlreadyInProgressException is thrown.
+					Attribute
+					collectTraceStatus shows the status of this operation.
+";
+			output {
+				leaf "returnValue" {
+					type int64;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:createIratCellAndRel {
+			description
+			"This MO action is used for creation of
+					ExternalUtranCellFDD/ExternalUtranCellTDD/UtranCellRelation or
+					ExternalGeranCell/GeranCellRelation. The returnType is struct with
+					the name; performedOperation.";
+			input {
+				leaf "arfcn" {
+					type int32 {
+						range "0..16383";
+					}
+
+					mandatory true;
+					description
+					"Arfcn is arfcnValueUtranDl for Utran. Arfcn is
+						arfcnValueGeranDl for Geran.";
+				}
+
+				leaf "pci" {
+					type int32 {
+						range "0..511";
+					}
+
+					mandatory true;
+					description
+					"Indicates the physical layer identity of the cell.
+						That is, the primary scrambling code for Utran. For Geran, pci is
+						bcc and ncc.";
+				}
+
+				container "sourcePlmnId" {
+					presence "This Container points to a Struct which has no key.";
+					description "The plmnId of the source cell.";
+					uses LRAT_MOM_Mini:sourcePlmnId;
+				}
+
+				leaf "sourceEnbId" {
+					type int32 {
+						range "0..1048576";
+					}
+
+					mandatory true;
+					description "The eNBId of the source cell.";
+				}
+
+				leaf "sourceCellid" {
+					type int32 {
+						range "0..256";
+					}
+
+					mandatory true;
+					description "The cellId of the source cell.";
+				}
+
+				container "targetPlmnId" {
+					presence "This Container points to a Struct which has no key.";
+					description "The plmnId of the target cell.";
+					uses LRAT_MOM_Mini:targetPlmnId;
+				}
+
+				leaf "targetRncId" {
+					type int32 {
+						range "0..1048576";
+					}
+
+					mandatory true;
+					description "The eNBId of the target cell.";
+				}
+
+				leaf "targetCellid" {
+					type int32 {
+						range "0..65535";
+					}
+
+					mandatory true;
+					description "The cellId of the target cell.";
+				}
+
+				leaf "rat" {
+					type LRAT_MOM_Mini:Rat;
+					mandatory true;
+					description
+					"ExternalUtranCellFdds and UtranCellRelation are
+						requested to be created if RAT is equal to UTRAN.
+						ExternalGeranCellFdds and GeranCellRelation are requested to be
+						created if RAT is equal to GERAN.  ";
+				}
+
+				leaf "locationAreaCode" {
+					type int32 {
+						range "0..65533|65535";
+					}
+
+					mandatory true;
+					description
+					"The Location Area Code of the external UTRAN cell and
+						external Geran cell.";
+				}
+
+				leaf "routingAreaCode" {
+					type int32 {
+						range "-1..255";
+					}
+
+					mandatory true;
+					description
+					"The Routing Area Code of the external UTRAN cell and
+						external Geran cell.";
+				}
+
+			}
+
+			output {
+				list "returnType" {
+					min-elements 1;
+					config true;
+					ericsson:keyless-config-list;
+					uses LRAT_MOM_Mini:returnType;
+				}
+
+			}
+
+		}
+
+		ericsson:collectAutIntLogs {
+			description
+			"Starts collection log files that are relevant to
+					autointegration. The action runs COLI commands to produce a set of
+					log files in the RBS node. The log files are collected and stored
+					into the directory /c/logfiles/autointegration.
+					For each log file,
+					the same filename is used every time which means
+					that old files are
+					overwritten.
+					If the action is started when a trace collection is
+					already ongoing a
+					ActionAlreadyInProgressException is thrown.
+					Note
+					that other logs and traces that are already filebased are not
+					covered by this action. Attribute collectLogsStatus shows the
+					status of this operation.";
+		}
+
+		ericsson:collectDynamicCellStatus {
+			description
+			"Returns a snapshot of the traffic status of the node
+					divided per cell, in the form; number of attached UEs and set up
+					radio bearers.";
+			output {
+				leaf "returnValue" {
+					type string;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:actionSequenceStringReturnAndParams {
+			description "Bla bla bla.";
+			input {
+				leaf-list "p1" {
+					type string {
+						length "0..255";
+						pattern "[ABC]*";
+					}
+
+					min-elements 5;
+					max-elements 100;
+					description "This is a sequence parameter.";
+				}
+
+				leaf-list "p2" {
+					type int32 {
+						range "-300..366500";
+					}
+
+					min-elements 5;
+					max-elements 100;
+					description "This is a sequence parameter.";
+				}
+
+			}
+
+			output {
+				leaf-list "returnValue" {
+					type string {
+						length "0..2556";
+						pattern "[ABC]*";
+					}
+
+					min-elements 1;
+					max-elements 1005;
+				}
+
+			}
+
+		}
+
+		ericsson:clearTechnicianPresent {
+			description "Resets the attribute technicianPresent to false.";
+		}
+
+	}
+
+	grouping "AnrFunction" {
+		description
+		"Contains parameters and constraints for Automatic
+				Neighbor Relations (ANR) functions, such as adding or removing
+				neighbor cells.
+";
+		leaf "AnrFunctionId" {
+			type string;
+			mandatory true;
+			description
+			"The value component of the Relative Distinguished Name
+					(RDN).";
+			ericsson:restricted;
+		}
+
+		leaf "cellAddRankLimitEutran" {
+			type int32 {
+				range "0..100";
+			}
+
+			mandatory true;
+			status deprecated;
+			description
+			"Threshold value for reported rank for a cell to be
+					automatically added as neighbor.
+";
+		}
+
+		leaf "cellAddRsrpOffsetEutran" {
+			type int32 {
+				range "-300..300";
+			}
+
+			mandatory true;
+			status deprecated;
+			description
+			"Threshold offset value for reported power for a cell to
+					be automatically added as neighbor.
+";
+		}
+
+		leaf "cellAddRsrpThresholdEutran" {
+			type int32 {
+				range "-1440..0";
+			}
+
+			mandatory true;
+			status deprecated;
+			description
+			"Threshold value for reported power for a cell to be
+					automatically added as neighbor.
+";
+		}
+
+		leaf "cellAddRsrqOffsetEutran" {
+			type int32 {
+				range "-300..300";
+			}
+
+			mandatory true;
+			status deprecated;
+			description
+			"Threshold offset value for reported quality for a cell
+					to be automatically added as neighbor.
+";
+		}
+
+	}
+
+	grouping "StructQRO" {
+		leaf "sm1" {
+			type int32 {
+				range "0..999";
+			}
+
+			description "Blabla.";
+		}
+
+		leaf "sm2" {
+			type int32 {
+				range "0..999";
+			}
+
+			description "Blabla.";
+		}
+
+		leaf "sm3" {
+			type string;
+			description "Blabla.";
+		}
+
+	}
+
+	grouping "GlobalEnbIdRO" {
+		leaf "mcc" {
+			type int32 {
+				range "0..999";
+			}
+
+			description
+			"Mobile Country Code (a part of the PLMN identity) for a
+					cell that is served by a neighbor eNB.
+";
+		}
+
+		leaf "mnc" {
+			type int32 {
+				range "0..999";
+			}
+
+			description
+			"Mobile Network Code (a part of the PLMN identity) for a
+					cell that is served by a neighbor eNB.
+";
+		}
+
+		leaf "mncLength" {
+			type int32 {
+				range "2..3";
+			}
+
+			description
+			"This parameter defines the number of digits for the
+					Mobile Network Code (a part of the PLMN identity) for a cell that
+					is served by a neighbor eNB.
+
+					The PLMN identity combines the
+					following two parts:
+					1. MobileCountryCode, MCC, 3 digits
+					2.
+					MobileNetworkCode, MNC, 2 or 3 digits
+
+					Example: If MCC=125 and
+					MNC=46, then plmnId=12546.
+";
+		}
+
+		leaf "enbId" {
+			type int32 {
+				range "0..1048575";
+			}
+
+			description "ENodeB Id
+";
+		}
+
+	}
+
+}

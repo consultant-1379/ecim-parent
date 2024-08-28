@@ -1,0 +1,122 @@
+-- /**
+-- * This transform maps EcimInstances to an MP ObjectType 
+-- *
+-- * superimposition-dependencies: ECIMtoMP 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Andreas Jakobik
+-- * Date: 2011-06-17
+-- */
+
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module ObjectMappingRules;
+create OUT : MP from IN : UML;
+
+--Map EcimInstance(s) to MP ObjectType(s)
+rule InstanceSpecificationToObjectType 
+{
+	from s: UML!InstanceSpecification(s.oclIsTypeOf(UML!InstanceSpecification) and not thisModule.isEcimStruct(s))
+	to t: MP!ObjectType
+	(
+		hasClass <- hasClassType,
+		slot <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Slot))->collect(e|thisModule.SlotToSlotType(e)),
+		parentDn <- thisModule.getParentDn(s)
+		
+		--Unused properties are as follows
+		--description <- 
+		--domainExtension <- 
+	),
+	hasClassType: MP!HasClassType
+	(
+		name <- s.classifier.first().name,
+		mimName <- thisModule.hasMimNameType(s.classifier.first().owner),
+		mimVersion <- thisModule.hasMimVersionType(s.classifier.first().owner)
+	)	
+}
+
+
+-- rule is lazy in order to be able to share slots values between different objects
+lazy abstract rule SlotToSlotType
+{
+	from s: UML!Slot(s.oclIsTypeOf(UML!Slot)) 
+	to t: MP!SlotType
+	(
+		name <- s.definingFeature.name
+	)
+}
+
+lazy abstract rule SlotToSingleValuedSlotType extends SlotToSlotType
+{
+	from s: UML!Slot(s.value->size()<=1)
+	to t: MP!SlotType
+	(
+	)
+}
+
+lazy rule SlotToSingleSimpleValuedSlotType extends SlotToSingleValuedSlotType
+{
+	from s: UML!Slot(not s.definingFeature.type.isEcimStruct())
+	to t: MP!SlotType
+	(
+		value <- thisModule.getSlotValues(s)->first()
+	)
+}
+
+lazy rule SlotToSingleComplexValuedSlotType extends SlotToSingleValuedSlotType
+{
+	from s: UML!Slot(s.definingFeature.type.isEcimStruct())
+	to t: MP!SlotType
+	(
+		complexValue <- thisModule.CreateComplexValueType(s.value->first().instance)
+	)
+}
+
+lazy abstract rule SlotToMultiValuedSlotType extends SlotToSlotType
+{
+	from s: UML!Slot(s.value->size()>1) 
+	to t: MP!SlotType
+	(
+	)
+}
+
+lazy rule SlotToMultipleSimpleValuedSlotType extends SlotToMultiValuedSlotType
+{
+	from s: UML!Slot(not s.definingFeature.type.isEcimStruct())
+	to t: MP!SlotType
+	(
+		seqValue <- seqValueType
+	),
+	seqValueType: MP!SeqValueType
+	(
+		value <- thisModule.getSlotValues(s)	
+	)
+}
+
+lazy rule SlotToMultipleComplexValuedSlotType extends SlotToMultiValuedSlotType
+{
+	from s: UML!Slot(s.definingFeature.type.isEcimStruct())
+	to t: MP!SlotType
+	(
+		complexSeqValue <- complexSeqValueType
+	),
+	complexSeqValueType: MP!ComplexSeqValueType
+	(
+		complexValue <- s.value->collect(e|thisModule.CreateComplexValueType(e.instance))
+	)
+}
+
+rule CreateComplexValueType(s: UML!InstanceSpecification)
+{
+	to t: MP!ComplexValueType
+	(
+		slot <- s.allOwnedElements()->select(e|e.oclIsTypeOf(UML!Slot))->collect(e|thisModule.SlotToSlotType(e))
+	)
+	do 
+	{
+		t;
+	}
+}

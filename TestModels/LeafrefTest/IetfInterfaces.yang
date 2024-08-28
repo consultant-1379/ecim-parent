@@ -1,0 +1,37 @@
+module IetfInterfaces {
+	yang-version 1;
+	namespace "urn:ietf:params:xml:ns:yang:IetfInterfaces";
+	prefix if;
+	
+	import ComTop {
+		prefix Top;
+		revision-date "2015-03-01";
+	}
+
+	import ericsson-yang-extensions {
+		prefix eric;
+	}
+
+	revision 2014-10-11 {
+		description "Initial revision.";
+		reference "draft-clemm-i2rs-yang-network-topo-01";
+		eric:correction 1;
+		eric:release 1;
+		eric:version 1;
+	}
+
+	augment "/Top:ManagedElement/Top:SystemFunctions" {
+		eric:ecim-contribution;
+		container interfaces {
+			list interface {
+				key "name";
+				leaf name {
+					type string;
+				}
+
+			}
+
+		} 
+	} 
+} 
+

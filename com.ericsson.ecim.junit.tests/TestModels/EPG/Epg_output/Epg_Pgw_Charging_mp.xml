@@ -1,0 +1,2684 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_Charging" namespace="urn:com:ericsson:ecim:Epg_Pgw_Charging" namespacePrefix="epg_pgw_charging" organization="Ericsson EAB, NDO EPG" release="1" revision="" version="3">
+        <description>Charging and CDR configuration</description>
+        <enum name="ChargingFormat">
+            <description>Format of charging records</description>
+            <enumMember name="97">
+                <description>Version 97</description>
+                <value>97</value>
+            </enumMember>
+            <enumMember name="98">
+                <description>Version 98</description>
+                <value>98</value>
+            </enumMember>
+            <enumMember name="99">
+                <description>Version 99</description>
+                <value>99</value>
+            </enumMember>
+            <enumMember name="4">
+                <description>Version 4</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="5">
+                <description>Version 5</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="6">
+                <description>Version 6</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="7">
+                <description>Version 7</description>
+                <value>7</value>
+            </enumMember>
+            <enumMember name="8">
+                <description>Version 8</description>
+                <value>8</value>
+            </enumMember>
+        </enum>
+        <enum name="Version">
+            <description>GTP Prime version</description>
+            <enumMember name="v0-20">
+                <description>Use GTP Prime version v0 with 20 bytes header</description>
+                <value>20</value>
+            </enumMember>
+            <enumMember name="v0-6">
+                <description>Use GTP Prime version v0 with 6 bytes header</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="v2">
+                <description>Use GTP Prime version v2</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="ReportingLevel">
+            <description>Level for service data reporting</description>
+            <enumMember name="rating-group">
+                <description>Report service data on rating-group level</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="service-id">
+                <description>Report service data on service-identifier level</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="Diffserv">
+            <description>DiffServ DSCP for GTP packets</description>
+            <enumMember name="af11">
+                <description>Assured forwarding class 1, low drop precedence</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="af12">
+                <description>Assured forwarding class 1, medium drop precedence</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="af32">
+                <description>Assured forwarding class 3, medium drop precedence</description>
+                <value>8</value>
+            </enumMember>
+            <enumMember name="af33">
+                <description>Assured forwarding class 3, high drop precedence</description>
+                <value>9</value>
+            </enumMember>
+            <enumMember name="af41">
+                <description>Assured forwarding class 4, low drop precedence</description>
+                <value>10</value>
+            </enumMember>
+            <enumMember name="af42">
+                <description>Assured forwarding class 4, medium drop precedence</description>
+                <value>11</value>
+            </enumMember>
+            <enumMember name="af43">
+                <description>Assured forwarding class 4, high drop precedence</description>
+                <value>12</value>
+            </enumMember>
+            <enumMember name="ef">
+                <description>Expedited forwarding</description>
+                <value>13</value>
+            </enumMember>
+            <enumMember name="be">
+                <description>Best effort forwarding</description>
+                <value>14</value>
+            </enumMember>
+            <enumMember name="af31">
+                <description>Assured forwarding class 3, low drop precedence</description>
+                <value>7</value>
+            </enumMember>
+            <enumMember name="af13">
+                <description>Assured forwarding class 1, high drop precedence</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="af21">
+                <description>Assured forwarding class 2, low drop precedence</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="af22">
+                <description>Assured forwarding class 2, medium drop precedence</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="af23">
+                <description>Assured forwarding class 2, high drop precedence</description>
+                <value>6</value>
+            </enumMember>
+        </enum>
+        <enum name="ApnEncoding">
+            <description>Method of ASN.1 encoding of the APN field in G-CDR</description>
+            <enumMember name="dot-notation">
+                <description>Encode dot as '.'</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="digit-notation">
+                <description>Encode dot as digit</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString64">
+            <description>Must contain only letters, numbers, underscores or dashes</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>64</max>
+                    </lengthRange>
+                    <validValues>^[\.0-9A-Za-z\_-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="TariffIndex">
+            <description>Tariff time index</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>2</max>
+                    </lengthRange>
+                    <validValues>^([1-9]|1[0-9]|2[0-4])$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MaximumAge">
+            <description>Maximum age of charging log file</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>5</min>
+                        <max>1440</max>
+                    </range>
+                    <unit>minutes</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MaxUriLength">
+            <description>URI longer than this will be truncated</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>10</min>
+                        <max>1025</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="N3Requests">
+            <description>Total number of transmissions allowed for a control message</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>8</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString21">
+            <description>Must be a service identifier or a range of service identifiers</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>21</max>
+                    </lengthRange>
+                    <validValues>^[0-9]{1,10}([-][0-9]{1,10})?$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="CdrDataRate">
+            <description>Average CDR data transfer rate </description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>147</min>
+                        <max>512</max>
+                    </range>
+                    <unit>kilobytes</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="CheckaliveInterval">
+            <description>Seconds between sending checkalive messages to an unavailable CGF</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>60</min>
+                        <max>600</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="KeepaliveInterval">
+            <description>Seconds between sending keepalive messages on an idle path</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>60</min>
+                        <max>200</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MaximumSize">
+            <description>Maximum size of charging log file</description>
+            <baseType>
+                <uint64>
+                    <range>
+                        <min>1024</min>
+                        <max>102400</max>
+                    </range>
+                    <unit>kilobytes</unit>
+                </uint64>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="TransactionTimeout">
+            <description>Seconds a GTP response entry is stored</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>5</min>
+                        <max>60</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Starts">
+            <description>Must be a twenty-four hour local time given in 15-minute increments</description>
+            <baseType>
+                <string>
+                    <validValues>^(((0|1)[0-9])|(2[0-3])):(00|15|30|45)$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="T3ResponseTime">
+            <description>Seconds between control message retries</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>30</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <class name="Charging">
+            <description>Charging and CDR configuration</description>
+            <root/>
+            <attribute name="chargingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noInitialCdr">
+                <description>Suppress the initial charging record generation</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="use31bitsChargingId">
+                <description>Use 31 bits charging id instead of default 32 bits</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noEmptyCdr">
+                <description>Do not close CDR at time limit if volume is zero</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="chargingFormat">
+                <description>Format of charging records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="ChargingFormat">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TimeLimitMeasurement">
+            <description>Time limit measurement</description>
+            <attribute name="timeLimitMeasurementID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ctxCreation">
+                <description>Time limits the CDR generation to prevent high cpu peaks when collecting CDRs</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="CdrAttribute">
+            <description>Attributes in charging data records</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @noMsisdn satisfies (not(exists(@msisdnAlways)))'><name path='.'/>,noMsisdn: The following attributes can not be combined: no-msisdn, msisdn-always</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @msisdnAlways satisfies (not(exists(@noMsisdn)))'><name path='.'/>,msisdnAlways: The following attributes can not be combined: no-msisdn, msisdn-always</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @noPdpAddressIpv4 satisfies (not(exists(../@chargingFormat)) or (not (../@chargingFormat eq 8)))'><name path='.'/>,noPdpAddressIpv4: No support for chargingFormat 8</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @noPdpPdnAddressIpv4 satisfies (exists(../@chargingFormat) and (../@chargingFormat eq 8))'><name path='.'/>,noPdpPdnAddressIpv4: Only charging-format 8 is supported</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @noPdpAddressIpv6 satisfies (not(exists(../@chargingFormat)) or (not (../@chargingFormat eq 8)))'><name path='.'/>,noPdpAddressIpv6: No support for chargingFormat 8</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @noPdpPdnAddressIpv6 satisfies (exists(../@chargingFormat) and (../@chargingFormat eq 8))'><name path='.'/>,noPdpPdnAddressIpv6: Only charging-format 8 is supported</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @noTrafficVolumes satisfies (not(exists(./TrafficVolumes)))'><name path='.'/>,noTrafficVolumes: The following attributes can not be combined: no-traffic-volumes, traffic-volumes</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @serviceDataInMgmtExtension satisfies (exists(../@chargingFormat) and (../@chargingFormat eq 99))'><name path='.'/>,serviceDataInMgmtExtension: Only charging-format 99 is supported</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @serviceDataInMgmtExtension satisfies (exists(@noNodeIdentifier))'><name path='.'/>,serviceDataInMgmtExtension: CDR attribute no-node-identifier must be configured for this feature</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @serviceDataInMgmtExtension satisfies (exists(@noSgsnPlmnId))'><name path='.'/>,serviceDataInMgmtExtension: CDR attribute no-sgsn-plmn-id must be configured for this feature</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @serviceDataInMgmtExtension satisfies (not(exists(@recordExtension)))'><name path='.'/>,serviceDataInMgmtExtension: record-extension is incompatible with this feature</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @serviceDataInMgmtExtension satisfies (exists(/ManagedElement/Epg/Pgw/License/@adaptionOfRecordExtensions))'><name path='.'/>,serviceDataInMgmtExtension: Feature is licensed</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="cdrAttributeID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noReducedPartial">
+                <description>Generate fully qualified partial CDRs only</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noNodeIdentifier">
+                <description>Don't include node identifier</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noDynamicAddressFlag">
+                <description>Don't include indication if served PDP address is dynamic</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPdnConnectionId">
+                <description>Don't include pDNConnectionID</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noServNodePlmnId">
+                <description>Don't include servingNodePLMNIdentifier</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noTrafficVolumes">
+                <description>Don't include list of traffic data volumes</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noApnSelectionMode">
+                <description>Don't include index indicating how the APN was selected</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCcSelectionMode">
+                <description>Don't include information about how charging characteristics were selected</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="recordExtension">
+                <description>Include record extension</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noSgsnPlmnId">
+                <description>Don't include the SGSN PLMN identifier</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noLocalRecordSequenceNumber">
+                <description>Don't include local record sequence number</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noMsisdn">
+                <description>Don't include MSISDN</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="msisdnAlways">
+                <description>Always include MSISDN even if there is no change</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noApnNetworkIdentifier">
+                <description>Don't include network identifier of APN</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPdpType">
+                <description>Don't include PDP type</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPdpPdnType">
+                <description>Don't include cdr attribute pdpPDNType</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPdpAddressIpv4">
+                <description>Don't include IPv4 PDP address</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPdpPdnAddressIpv4">
+                <description>Don't include IPv4 servedPDPPDNAddress</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPgwPlmnId">
+                <description>Don't include p-GWPLMNIdentifier</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noStartTime">
+                <description>Don't include startTime</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noStopTime">
+                <description>Don't include stopTime</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noUserLocationInformation">
+                <description>Don't include user location information</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noImsSignalingContext">
+                <description>Don't include IMS signaling context</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noRatType">
+                <description>Don't include radio access technology (RAT) type</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noImeiSv">
+                <description>Don't include IMEI and software version</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="serviceDataInMgmtExtension">
+                <description>Enable service data in management extensions</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="includeNewSgsnAddress">
+                <description>Enable inclusion of new SGSN address in CDR generated because of SGSN change</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noMsTimeZone">
+                <description>Don't include ms time zone</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="apnEncoding">
+                <description>Method of ASN.1 encoding of the APN field in G-CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="ApnEncoding">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="noThreegpp2Uli">
+                <description>Don't include 3GPP2 user location information</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPdpAddressIpv6">
+                <description>Don't include IPv6 PDP address</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPdpPdnAddressIpv6">
+                <description>Don't include IPv6 servedPDPPDNAddress</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TrafficVolumes">
+            <description>Include list of traffic data volumes</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='not(exists(../@noTrafficVolumes))'><name path='.'/>: The following attributes can not be combined: no-traffic-volumes, traffic-volumes</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="trafficVolumesID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="qosAlways">
+                <description>Always include QoS information even if there is no change</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noUserLocationInformation">
+                <description>Don't include user location information</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="RecordExtensionAttributes">
+            <description>Record extension CDR attributes</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(../@recordExtension)'><name path='.'/>: record-extension inclusion must be enabled</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="recordExtensionAttributesID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="userCategory">
+                <description>Include user category</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="bearerControl">
+                <description>Include bearer control</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="IncludeUri">
+            <description>Include URI level information</description>
+            <attribute name="includeUriID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="count">
+                <description>Include URI event count</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="identifier">
+                <description>Include numerical URI identifier</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volume">
+                <description>Include URI volume data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timestamp">
+                <description>Include URI event timestamp</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="maxUriLength">
+                <description>URI longer than this will be truncated</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MaxUriLength">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="EnhancedCdr">
+            <description>Attribute settings for enhanced CDR</description>
+            <attribute name="enhancedCdrID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPsFurnishChargingInformation">
+                <description>Don't include PS furnish charging information</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noTrafficVolume">
+                <description>Don't include traffic-volume</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noServiceData">
+                <description>Don't include service data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ServiceDataAttributes">
+            <description>Settings for service data attributes</description>
+            <attribute name="serviceDataAttributesID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noRatType">
+                <description>Don't include radio access technology (RAT) type</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noSgsnAddress">
+                <description>Don't include SGSN address</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noSgsnPlmnId">
+                <description>Don't include SGSN PLMN ID</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noServNodeAddress">
+                <description>Don't include serving node address</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noQosInformation">
+                <description>Don't include QoS information</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noUserLocationInformation">
+                <description>Don't include user location information</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="allowZero">
+                <description>Allow inclusion of service data with zero usage</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="reportingLevel">
+                <description>Level for service data reporting</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="ReportingLevel">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="RuleSpace">
+            <description>Setting for enhanced CDRs handling in rule-space</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='@ruleSpaceId = /ManagedElement/Epg/Pgw/RuleSpace/@ruleSpaceId'><name path='.'/>: Rule space must be configured under [managed-element epg pgw]</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="ruleSpaceId">
+                <description>Apply setting to rule space</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString64">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="serviceIdLevelReporting">
+                <description>Report on service identifier level</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="RangedString21">
+                            <mimName>Epg_Pgw_Charging</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                        <maxLength>64</maxLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="GtpPrime">
+            <description>GTP Prime settings</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(../../Cpb/@gomAddressRange)'><name path='.'/>: cpb gom-address-range must be configured</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="gtpPrimeID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="keepaliveInterval">
+                <description>Seconds between sending keepalive messages on an idle path</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="KeepaliveInterval">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="t3ResponseTime">
+                <description>Seconds between control message retries</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="T3ResponseTime">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="n3Requests">
+                <description>Total number of transmissions allowed for a control message</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="N3Requests">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="pathManagement">
+                <description>Use path management</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="diffserv">
+                <description>DiffServ DSCP for GTP packets</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Diffserv">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="version">
+                <description>GTP Prime version</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Version">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="chargingFormat">
+                <description>Format of charging records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="ChargingFormat">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="checkaliveInterval">
+                <description>Seconds between sending checkalive messages to an unavailable CGF</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="CheckaliveInterval">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="transactionTimeout">
+                <description>Seconds a GTP response entry is stored</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TransactionTimeout">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DuplicatePrevention">
+            <description>Use duplicate-prevention</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='exists(../@version) and (../@version eq 2)'><name path='.'/>: GTP Prime version 2 must be enabled</assert>]]>&#13;<![CDATA[
+            <assert id='set' test='every $attr in @instantRelease satisfies (exists(@partial))'><name path='.'/>,instantRelease: Duplicate prevention partial must be enabled</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="duplicatePreventionID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="partial">
+                <description>Use partial</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="instantRelease">
+                <description>Use instant-release</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ChargingDataFile">
+            <description>Charging records saved on node</description>
+            <attribute name="maximumSize">
+                <description>Maximum size of charging data file</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MaximumSize">
+                        <defaultValue>102400</defaultValue>
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="maximumAge">
+                <description>Maximum age of charging data file</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MaximumAge">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="compression">
+                <description>Compress all CDR data files</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="cdrDataRate">
+                <description>Average CDR data transfer rate between GTPCD and FSAD</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="CdrDataRate">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="chargingDataFileID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="LocalDataFile">
+            <description>CDRs meant for normal offline transfer</description>
+            <attribute name="localDataFileID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="forceEmptyFiles">
+                <description>Generate empty CDR data files if no CDRs are received</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="GtpPrimeDataFile">
+            <description>GTP Prime CDRs logged to disk on failure in reaching charging gateways</description>
+            <attribute name="gtpPrimeDataFileID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="activateOnFailure">
+                <description>Store GTP Prime CDRs on disk if all charging gateways are down</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="TariffActivation">
+            <description>Local times when new tariffs apply</description>
+            <attribute name="tariffActivationId">
+                <description>Tariff time index</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="TariffIndex">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="starts">
+                <description>Local time that the new tariff is activated</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Starts">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ImsiBasedCharacteristics">
+            <description>Select charging characteristic based on IMSI</description>
+            <attribute name="imsiBasedCharacteristicsID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile0">
+            <description>Profile 0 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile0ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile1">
+            <description>Profile 1 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile1ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile2">
+            <description>Profile 2 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile2ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile3">
+            <description>Profile 3 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile3ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile4">
+            <description>Profile 4 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile4ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile5">
+            <description>Profile 5 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile5ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile6">
+            <description>Profile 6 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile6ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile7">
+            <description>Profile 7 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile7ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile8">
+            <description>Profile 8 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile8ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile9">
+            <description>Profile 9 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile9ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile10">
+            <description>Profile 10 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile10ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile11">
+            <description>Profile 11 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile11ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile12">
+            <description>Profile 12 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile12ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile13">
+            <description>Profile 13 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile13ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile14">
+            <description>Profile 14 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile14ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile15">
+            <description>Profile 15 clients</description>
+            <attribute name="imsi">
+                <description>Specify IMSI patterns using regular expressions</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="profile15ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Charging_to_TimeLimitMeasurement">
+            <containment>
+                <parent>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TimeLimitMeasurement">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Charging_to_CdrAttribute">
+            <containment>
+                <parent>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CdrAttribute">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="CdrAttribute_to_TrafficVolumes">
+            <containment>
+                <parent>
+                    <hasClass name="CdrAttribute">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TrafficVolumes">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="CdrAttribute_to_RecordExtensionAttributes">
+            <containment>
+                <parent>
+                    <hasClass name="CdrAttribute">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RecordExtensionAttributes">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="RecordExtensionAttributes_to_IncludeUri">
+            <containment>
+                <parent>
+                    <hasClass name="RecordExtensionAttributes">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="IncludeUri">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="CdrAttribute_to_EnhancedCdr">
+            <containment>
+                <parent>
+                    <hasClass name="CdrAttribute">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="EnhancedCdr">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="EnhancedCdr_to_ServiceDataAttributes">
+            <containment>
+                <parent>
+                    <hasClass name="EnhancedCdr">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ServiceDataAttributes">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ServiceDataAttributes_to_RuleSpace">
+            <containment>
+                <parent>
+                    <hasClass name="ServiceDataAttributes">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RuleSpace">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Charging_to_GtpPrime">
+            <containment>
+                <parent>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="GtpPrime_to_DuplicatePrevention">
+            <containment>
+                <parent>
+                    <hasClass name="GtpPrime">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DuplicatePrevention">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Charging_to_ChargingDataFile">
+            <containment>
+                <parent>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ChargingDataFile">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingDataFile_to_LocalDataFile">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingDataFile">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="LocalDataFile">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingDataFile_to_GtpPrimeDataFile">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingDataFile">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="GtpPrimeDataFile">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Charging_to_TariffActivation">
+            <containment>
+                <parent>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TariffActivation">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Charging_to_ImsiBasedCharacteristics">
+            <containment>
+                <parent>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile0">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile0">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile1">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile1">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile2">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile2">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile3">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile3">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile4">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile4">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile5">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile5">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile6">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile6">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile7">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile7">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile8">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile8">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile9">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile9">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile10">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile10">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile11">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile11">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile12">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile12">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile13">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile13">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile14">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile14">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ImsiBasedCharacteristics_to_Profile15">
+            <containment>
+                <parent>
+                    <hasClass name="ImsiBasedCharacteristics">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile15">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Pgw_to_Charging">
+            <containment>
+                <parent>
+                    <hasClass name="Pgw">
+                        <mimName>Epg_Pgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Pgw_Charging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

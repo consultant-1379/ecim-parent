@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Dec 7, 2015 9:32:05 AM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="ERAANEE" contact="EAB/FLE/TL Anders S-O Eriksson" correction="1" date="2015-10-28" docNo="" name="ECIM_SwIM" namespace="urn:com:ericsson:ecim:ECIM_SwIM" namespacePrefix="ecim_swim" organization="EAB/FLE/GB" release="2" revision="A" version="1">
+        <description>This is the software inventory model. &#13;
+It contains the software versions installed on the managed element. For each software version, the software items that constitute the software version are listed.</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_SwIM"/>
+            <extension name="ecimMomVersion" value="1"/>
+            <extension name="ecimMomRelease" value="2"/>
+            <extension name="ecimMomCorrection" value="0"/>
+        </domainExtension>
+        <class name="SwInventory">
+            <description>A singleton class, the purpose of which is only structural.</description>
+            <systemCreated/>
+            <root/>
+            <attribute name="swInventoryId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>A label for free usage.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="active">
+                <description>A reference to the active software version of a software domain. &#13;
+The software of a managed element can be structured into more than one software domain. The active software versions control the behavior of the managed element .</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="SwVersion">
+                            <mimName>ECIM_SwIM</mimName>
+                        </moRef>
+                        <minLength>1</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SwVersion">
+            <description>An MO of this class represents the software version of a domain of the software.&#13;
+If there is only one software domain, the MO represents the overall version of the managed element.</description>
+            <systemCreated/>
+            <attribute name="swVersionId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>A label for free usage.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="administrativeData">
+                <description>The software version product identification.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="ProductData">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeOfInstallation">
+                <description>Indicates the time the software version was installed.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeOfActivation">
+                <description>Indicates the time when the software version was activated. &#13;
+If no time is shown, the current software version is not activated.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeOfDeactivation">
+                <description>Indicates the time when the software version was deactivated. &#13;
+If no time is shown, the current software version is not deactivated.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="consistsOf">
+                <description>List of references to the software items of which the software version consists.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="SwItem">
+                            <mimName>ECIM_SwIM</mimName>
+                        </moRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SwItem">
+            <description>A software item holds information about an executable software product.&#13;
+A software item can also represent a container product that contains other software items, which represent a subordinate container and/or executable software products.</description>
+            <systemCreated/>
+            <attribute name="swItemId">
+                <description>The value component of RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>A label for free usage.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="administrativeData">
+                <description>The software item product identification.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="ProductData">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="additionalInfo">
+                <description>Describes any additional relevant aspects of the software item.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="consistsOf">
+                <description>Describes a hierarchical relationship between software items.&#13;
+An empty value indicates that the current software item is not a container that includes subordinate software items.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="SwItem">
+                            <mimName>ECIM_SwIM</mimName>
+                        </moRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="SwInventory_to_SwItem">
+            <description>The software inventory can contain software items.</description>
+            <containment>
+                <parent>
+                    <hasClass name="SwInventory">
+                        <mimName>ECIM_SwIM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SwItem">
+                        <mimName>ECIM_SwIM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="SwInventory_to_SwVersion">
+            <description>The software inventory can contain software versions.</description>
+            <containment>
+                <parent>
+                    <hasClass name="SwInventory">
+                        <mimName>ECIM_SwIM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SwVersion">
+                        <mimName>ECIM_SwIM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="SwInventory_active_to_SwVersion">
+            <uniDirectionalAssociation>
+                <hasClass name="SwInventory">
+                    <mimName>ECIM_SwIM</mimName>
+                </hasClass>
+                <associationEnd name="active">
+                    <hasClass name="SwVersion">
+                        <mimName>ECIM_SwIM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                    </cardinality>
+                </associationEnd>
+            </uniDirectionalAssociation>
+        </relationship>
+        <relationship name="SwVersion_consistsOf_to_SwItem">
+            <uniDirectionalAssociation>
+                <hasClass name="SwVersion">
+                    <mimName>ECIM_SwIM</mimName>
+                </hasClass>
+                <associationEnd name="consistsOf">
+                    <hasClass name="SwItem">
+                        <mimName>ECIM_SwIM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </uniDirectionalAssociation>
+        </relationship>
+        <relationship name="SwItem_consistsOf_to_SwItem">
+            <uniDirectionalAssociation>
+                <hasClass name="SwItem">
+                    <mimName>ECIM_SwIM</mimName>
+                </hasClass>
+                <associationEnd name="consistsOf">
+                    <hasClass name="SwItem">
+                        <mimName>ECIM_SwIM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </uniDirectionalAssociation>
+        </relationship>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="SystemFunctions_to_SwInventory">
+            <containment>
+                <parent>
+                    <hasClass name="SystemFunctions">
+                        <mimName>ECIM_Top</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SwInventory">
+                        <mimName>ECIM_SwIM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

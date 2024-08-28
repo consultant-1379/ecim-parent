@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.ericsson.ecim.launcher" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="com.ericsson.ecim.launcher" id="com.ericsson.ecim.transformations" name="DX ECIM Tool-chain Transformation Extension Point"/>
+      </appinfo>
+      <documentation>
+         This Extension Point is used to registrer Transformations for the DX ECIM Tool-chain Transformation Engine.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="transformation" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="transformation">
+      <annotation>
+         <documentation>
+            A Transformation, that will be made available when Transforming an ECIM Model.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice minOccurs="0" maxOccurs="1">
+            <element ref="requiredProfiles"/>
+         </choice>
+         <attribute name="transformationId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the tranformationId should be unique
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="transformationName" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of this Transformation, should be short and descriptive
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="transformationClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  this Class should extend the Abstract Class com.ericsson.ecim.launcher.transformations.Transformation. For full implementation details see Developer Documentation of DX ECIM Tool-chain User Guide
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="com.ericsson.ecim.launcher.transformations.Transformation:"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="checkedByDefault" type="boolean">
+            <annotation>
+               <documentation>
+                  Indicated whether this transformation is checked in the transformation dialog by default.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="enabledForCmwModelMerge" type="boolean">
+            <annotation>
+               <documentation>
+                  Indicated whether this transformation is to be used on a model that has a CmwModelMerge stereotyped Package Merge relation.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="requiredProfiles">
+      <annotation>
+         <documentation>
+            If this Transformation requires specific Profiles to be applied, this sequence should contain the names of all of them.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="profile" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+      </complexType>
+   </element>
+
+   <element name="profile">
+      <annotation>
+         <documentation>
+            A Profile, specified by it&apos;s name.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the exact name of the required Profile. If this Profile name isn&apos;t found on the Model to be Transformed, the Transformation will not be runnable
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         1.0.0
+      </documentation>
+   </annotation>
+
+
+
+
+
+</schema>

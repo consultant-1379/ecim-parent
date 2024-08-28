@@ -1,0 +1,2169 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Pgw_PdpContext" namespace="urn:com:ericsson:ecim:Epg_Pgw_PdpContext" namespacePrefix="epg_pgw_pdpcontext" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="2">
+        <description>PDP context settings</description>
+        <enum name="Creation">
+            <description>PDP context creation state</description>
+            <enumMember name="unblocked">
+                <description>No restrictions on PDP context creation</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="blocked">
+                <description>New PDP context creation fully blocked</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="PdpType">
+            <description>PDP context type</description>
+            <enumMember name="ipv4">
+                <description>IPv4 PDP context type</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="ipv6">
+                <description>IPv6 PDP context type</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="ipv4-ipv6">
+                <description>IPv4 and IPv6 PDP contexts</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="ipv4v6">
+                <description>IPv4v6 PDP contexts</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="MeasurementType">
+            <description>Point of reference for time measurement</description>
+            <enumMember name="since-creation">
+                <description>Relative to the PDP context creation time</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="since-update">
+                <description>Relative to the last PDP context update time</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="HostRouteLimit">
+            <description>Limitation on number of host routes when address range is received from Radius</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>0</min>
+                        <max>1000000</max>
+                    </range>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="CreatesPerSecond">
+            <description>Contexts per second</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>50</min>
+                        <max>5000</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString20">
+            <description>PLMN name consists of up to 20 letters, numbers, periods and dashes</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>20</max>
+                    </lengthRange>
+                    <validValues>^[A-Za-z.0-9-]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Nsapi">
+            <description>Network layer service access point identifier</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>15</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="BurstTime">
+            <description>Burst time window</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>100</min>
+                        <max>5000</max>
+                    </range>
+                    <unit>milliseconds</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MaximumBandwidth">
+            <description>Maximum bandwidth</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>64</min>
+                        <max>256000</max>
+                    </range>
+                    <unit>kbps</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Imsi">
+            <description>IMSI must be 5 to 15 digits.</description>
+            <baseType>
+                <string>
+                    <validValues>^[0-9]{5,15}$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="CreateRequestWindowSize">
+            <description>Maximum number of outstanding create requests from SGSN</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>0</min>
+                        <max>5000</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Msisdn">
+            <description>Mobile Station Integrated Services Digital Network</description>
+            <baseType>
+                <string>
+                    <validValues>^[0-9]{1,18}$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Limit">
+            <description>Maximum active PDP contexts</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>1</min>
+                        <max>4294967295</max>
+                    </range>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Timeout">
+            <description>Maximum duration for a context</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>15</min>
+                        <max>1440</max>
+                    </range>
+                    <unit>minutes</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MinimumBurstValue">
+            <description>Minimum burst value</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>4000</min>
+                        <max>64000</max>
+                    </range>
+                    <unit>bytes</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Ipv6Limit">
+            <description>Maximum active IPv6 PDP contexts</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>1</min>
+                        <max>4294967295</max>
+                    </range>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="PayloadLimit">
+            <description>Maximum active payload</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>10000</min>
+                        <max>100000000</max>
+                    </range>
+                    <unit>pps</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedUint10">
+            <description>ranged uint 0..10</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>10</max>
+                    </range>
+                    <unit>seconds</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Percent">
+            <description>percent</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>100</max>
+                    </range>
+                    <unit>percent</unit>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="DeletesPerSecond">
+            <description>GGSN-initiated deletions per second per session controller</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>50</min>
+                        <max>50000</max>
+                    </range>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="InterfaceName">
+            <description>Interface name</description>
+            <baseType>
+                <string>
+                    <validValues>\(gc\|gu\).*</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MaximumBurstValue">
+            <description>Maximum burst value</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>128</min>
+                        <max>6000</max>
+                    </range>
+                    <unit>kilobytes</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedUint5">
+            <description>ranged uint 0..5</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>5</max>
+                    </range>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <class name="PdpContext">
+            <description>PDP context settings</description>
+            <root/>
+            <action name="terminateImsi">
+                <description>Terminate context for Identifier for International Mobile Subscriber Identity</description>
+                <returnType>
+                    <string/>
+                </returnType>
+                <parameter name="imsi">
+                    <description>Identifier for International Mobile Subscriber Identity</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="Imsi">
+                            <mimName>Epg_Pgw_PdpContext</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="terminateImsiNsapi">
+                <description>Terminate context for Identifier for International Mobile Subscriber Identity and Network layer service access point identifier</description>
+                <returnType>
+                    <string/>
+                </returnType>
+                <parameter name="imsi">
+                    <description>Identifier for International Mobile Subscriber Identity</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="Imsi">
+                            <mimName>Epg_Pgw_PdpContext</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+                <parameter name="naspi">
+                    <description>Network layer service access point identifier</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="Nsapi">
+                            <mimName>Epg_Pgw_PdpContext</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="terminateMsisdn">
+                <description>Terminate context for Mobile Station Integrated Services Digital Network</description>
+                <returnType>
+                    <string/>
+                </returnType>
+                <parameter name="msisdn">
+                    <description>Identifier for MSISDN</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="Msisdn">
+                            <mimName>Epg_Pgw_PdpContext</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="terminate">
+                <description>Terminate all PDP contexts on the node</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <attribute name="pdpContextID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="limit">
+                <description>Maximum active PDP contexts</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Limit">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="updateThroughCreate">
+                <description>Enables update of PDP context through create</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="hostRouteLimit">
+                <description>Limitation on number of host routes when address range is received from Radius</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="HostRouteLimit">
+                        <defaultValue>100000</defaultValue>
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="tftRatio">
+                <description>Number of PDP contexts subject to TFT handling</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Percent">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="payloadLimit">
+                <description>Maximum active payload</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="PayloadLimit">
+                        <defaultValue>50000</defaultValue>
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="reservedSecondaryCapacity">
+                <description>Reserved secondary PDP context capacity</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedUint5">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="allowSecondary">
+                <description>Allow secondary contexts</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="multiSim">
+                <description>Enables support for multiple SIM cards</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="pdpType">
+                <description>PDP context type</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="PdpType">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="ipv6Limit">
+                <description>Maximum active Ipv6 PDP contexts</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Ipv6Limit">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Policing">
+            <description>Policing settings</description>
+            <attribute name="policingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="burstTime">
+                <description>Burst time window</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="BurstTime">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="minimumBurstValue">
+                <description>Minimum burst value</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MinimumBurstValue">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="maximumBurstValue">
+                <description>Maximum burst value</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MaximumBurstValue">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="maximumBandwidthUplink">
+                <description>Maximum bandwidth uplink</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MaximumBandwidth">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="maximumBandwidthDownlink">
+                <description>Maximum bandwidth</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MaximumBandwidth">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noPolicing">
+                <description>Turn policing off</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SessionControl">
+            <description>Session control settings</description>
+            <attribute name="sessionControlID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="dedicatedSignalingPdp">
+                <description>Enable session management for dedicated signaling PDP context</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="modifyDeleteCause">
+                <description>Add proprietary delete-cause to delete request message and modify its value in the CDR</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Interfaces">
+            <description>Interface-specific PDP context creation settings</description>
+            <attribute name="interfacesId">
+                <description>Interface name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="InterfaceName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="creation">
+                <description>PDP context creation state</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="Creation">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Signaling">
+            <description>PDP context signaling settings</description>
+            <attribute name="signalingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ggsnDeletesPerSecond">
+                <description>GGSN-initiated deletions per second per session controller</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="DeletesPerSecond">
+                        <defaultValue>10000</defaultValue>
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnCreatesPerSecond">
+                <description>Maximum SGSN creates per second per session controller</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="CreatesPerSecond">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgwCreatesPerSecond">
+                <description>Maximum SGW creates per second per session controller</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="CreatesPerSecond">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgsnCreateRequestWindowSize">
+                <description>Maximum number of outstanding create requests from SGSN</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="CreateRequestWindowSize">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgwCreateRequestWindowSize">
+                <description>Maximum number of outstanding create requests from SGW</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="CreateRequestWindowSize">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="IdleTimeout">
+            <description>Idle timeout settings</description>
+            <attribute name="idleTimeoutID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SessionTimeout">
+            <description>Session timeout settings</description>
+            <attribute name="sessionTimeoutID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Radius">
+            <description>Timeout settings based on RADIUS</description>
+            <attribute name="radiusID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="useTimeout">
+                <description>Use idle timeout received from RADIUS</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="measurementType">
+                <description>Point of reference for time measurement</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="MeasurementType">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SgsnPlmnId">
+            <description>Timeout settings based on SGSN PLMN IDs</description>
+            <attribute name="sgsnPlmnIdID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Roaming">
+            <description>Timeout settings based on roaming</description>
+            <attribute name="roamingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="measurementType">
+                <description>Point of reference for time measurement</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="MeasurementType">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ChargingProfile">
+            <description>Timeout settings based on charging profile</description>
+            <attribute name="chargingProfileID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="measurementType">
+                <description>Point of reference for time measurement</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="MeasurementType">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Default">
+            <description>Default timeout settings</description>
+            <attribute name="defaultID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="measurementType">
+                <description>Point of reference for time measurement</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="MeasurementType">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Plmn">
+            <description>Timeout settings based on SGSN PLMN</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='@plmnId = /ManagedElement/Epg/Pgw/Plmn/@plmnId'><name path='.'/>: plmn must be configured under [managed-element epg pgw]</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="plmnId">
+                <description>Public land mobile network name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString20">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="PlmnId">
+            <description>PLMN ID of the SGSN</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='some $plmnId in ../@plmnId satisfies (@plmnIdId = /ManagedElement/Epg/Pgw/Plmn[@plmnId eq $plmnId]/PlmnId/@plmnIdId)'><name path='.'/>: plmn-id must be configured under [managed-element epg pgw plmn]</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="plmnIdId">
+                <description>SGSN public land mobile network identifier</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="measurementType">
+                <description>Point of reference for time measurement</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="MeasurementType">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile0">
+            <description>Profile 0</description>
+            <attribute name="profile0ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile1">
+            <description>Profile 1</description>
+            <attribute name="profile1ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile2">
+            <description>Profile 2</description>
+            <attribute name="profile2ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile3">
+            <description>Profile 3</description>
+            <attribute name="profile3ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile4">
+            <description>Profile 4</description>
+            <attribute name="profile4ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile5">
+            <description>Profile 5</description>
+            <attribute name="profile5ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile6">
+            <description>Profile 6</description>
+            <attribute name="profile6ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile7">
+            <description>Profile 7</description>
+            <attribute name="profile7ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile8">
+            <description>Profile 8</description>
+            <attribute name="profile8ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile9">
+            <description>Profile 9</description>
+            <attribute name="profile9ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile10">
+            <description>Profile 10</description>
+            <attribute name="profile10ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile11">
+            <description>Profile 11</description>
+            <attribute name="profile11ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile12">
+            <description>Profile 12</description>
+            <attribute name="profile12ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile13">
+            <description>Profile 13</description>
+            <attribute name="profile13ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile14">
+            <description>Profile 14</description>
+            <attribute name="profile14ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile15">
+            <description>Profile 15</description>
+            <attribute name="profile15ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeout">
+                <description>Maximum duration for a context</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Timeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="NetworkInitiated">
+            <description>Network requested secondary PDP context configuration</description>
+            <attribute name="networkInitiatedID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="delaySecondary">
+                <description>Delay network initiated secondary PDP context request</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedUint10">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ranReadyTimer">
+                <description>Timer for RAN procedure ready</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedUint5">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="profile1">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile1">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile2">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile2">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile3">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile3">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile4">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile4">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile5">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile5">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile6">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile6">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile7">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile7">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile8">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile8">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile9">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile9">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile10">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile10">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile11">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile11">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile12">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile12">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile13">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile13">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile14">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile14">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile15">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile15">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="profile0">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile0">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="PdpContext_to_Policing">
+            <containment>
+                <parent>
+                    <hasClass name="PdpContext">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Policing">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="PdpContext_to_SessionControl">
+            <containment>
+                <parent>
+                    <hasClass name="PdpContext">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SessionControl">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="PdpContext_to_Interfaces">
+            <containment>
+                <parent>
+                    <hasClass name="PdpContext">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Interfaces">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="PdpContext_to_Signaling">
+            <containment>
+                <parent>
+                    <hasClass name="PdpContext">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Signaling">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="SessionControl_to_IdleTimeout">
+            <containment>
+                <parent>
+                    <hasClass name="SessionControl">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="IdleTimeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="SessionControl_to_SessionTimeout">
+            <containment>
+                <parent>
+                    <hasClass name="SessionControl">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SessionTimeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="SessionTimeout_to_SgsnPlmnId">
+            <containment>
+                <parent>
+                    <hasClass name="SessionTimeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SgsnPlmnId">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="SessionTimeout_to_Roaming">
+            <containment>
+                <parent>
+                    <hasClass name="SessionTimeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Roaming">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="SessionTimeout_to_ChargingProfile">
+            <containment>
+                <parent>
+                    <hasClass name="SessionTimeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ChargingProfile">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="SgsnPlmnId_to_Plmn">
+            <containment>
+                <parent>
+                    <hasClass name="SgsnPlmnId">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Plmn">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Plmn_to_PlmnId">
+            <containment>
+                <parent>
+                    <hasClass name="Plmn">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="PlmnId">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="PdpContext_to_NetworkInitiated">
+            <containment>
+                <parent>
+                    <hasClass name="PdpContext">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="NetworkInitiated">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="SessionTimeout_to_Default">
+            <containment>
+                <parent>
+                    <hasClass name="SessionTimeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Default">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="SessionTimeout_to_Radius">
+            <containment>
+                <parent>
+                    <hasClass name="SessionTimeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Radius">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="IdleTimeout_to_Radius">
+            <containment>
+                <parent>
+                    <hasClass name="IdleTimeout">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Radius">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Pgw_to_PdpContext">
+            <containment>
+                <parent>
+                    <hasClass name="Pgw">
+                        <mimName>Epg_Pgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="PdpContext">
+                        <mimName>Epg_Pgw_PdpContext</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

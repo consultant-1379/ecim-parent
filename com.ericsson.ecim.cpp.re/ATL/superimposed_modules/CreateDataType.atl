@@ -1,0 +1,127 @@
+-- /**
+-- * Map CPP types to ECIM types.
+-- * Note: This files takes a long time to compile ebcuase of the large number of nested ifs. It works just fine though.
+-- * 
+-- * Note you must have the http://ericsson.com/ECIM/MP DSL installed for this transform to work. 
+-- * Also the input file must be called *.mp to invoke the right model handler.
+-- * 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 23/01/2013
+-- */
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI MP=http://ericsson.com/ECIM/MP
+
+module CreateDataType;
+ 
+create OUT : UML from IN : MP, PRO : UML, ECIM : UML, DATATYPES : UML, DEFAULT : UML;
+
+--Map a CPP DataType to an ECIM Datatype
+rule CreateDataType(dt : OclAny, name : String)
+{
+	using
+	{
+		--A better approach than a big load of ifs is to see which type is actually set. We figure this
+		--out by reflectively looking at the datatype and seeing which eAttribute has a value (via eContents)	
+		dataType : OclAny = dt.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first();
+		
+		--Prepare a bunch of types. We only assign and return the type that matches the datatype		
+		t : UML!DataType = OclUndefined; 
+		et : UML!EnumType = OclUndefined;
+		ct : UML!ClassType = OclUndefined;
+		srt : UML!StructRefType = OclUndefined;	
+		container : OclAny = OclUndefined;
+	}
+	do
+	{
+		--TODO:No support yet for matching IpV4AddressType, IpV6AddressType, macAddress, date, time inside strings
+		if(not dataType.oclIsUndefined())
+		{
+			if(dataType.oclIsTypeOf(MP!EnumRefType))
+			{
+				et <- thisModule.resolveTemp(MP!EnumType.allInstances()->select(e|e.name=dataType.name)->first(),'t');
+				et;
+			}
+			else if(dataType.oclIsTypeOf(MP!VoidType))
+			{
+				--Void maps to OclUndefined
+				t;			
+			}
+			else if(dataType.oclIsTypeOf(MP!MoRefType))
+			{
+				ct <- thisModule.resolveTemp(MP!ClassType.allInstances()->select(e|e.name=dataType.name)->first(),'t');
+				ct;			
+			}	
+			else if(dataType.oclIsTypeOf(MP!StructRefType))
+			{
+				if (dataType.eContainer().oclIsTypeOf(MP!SequenceType)) {
+					container <- dataType.eContainer().eContainer().eContainer();
+				} else {
+					container <- dataType.eContainer().eContainer();
+				}				
+				if (container.oclIsTypeOf(MP!AttributeType)) {
+					 if (container.readOnly.oclIsUndefined()) { 
+								srt <-thisModule.resolveTemp(MP!StructType.allInstances()->select(e|e.name=dataType.name)->first(),'t');
+					 } 
+					 else {
+								srt <- thisModule.resolveTemp(MP!StructType.allInstances()->select(e|e.name=dataType.name)->first(),'t2');	
+					 }
+				}
+				else {
+					srt <-thisModule.resolveTemp(MP!StructType.allInstances()->select(e|e.name=dataType.name)->first(),'t');
+				}
+				srt;			
+			}	
+			else if(dataType.oclIsTypeOf(MP!StringType) or dataType.oclIsTypeOf(MP!WstringType))
+			{
+				t <- UML!DataType.allInstances()->select(e|e.name='EcimString')->first();
+				t;
+			}
+			else if(dataType.oclIsTypeOf(MP!BooleanType))
+			{
+				t <- UML!DataType.allInstances()->select(e|e.name='EcimBoolean')->first();
+				t;			
+			}		
+			else if(dataType.oclIsTypeOf(MP!CharType))
+			{
+				t <- thisModule.CharToDerivedString(dataType,name);
+				t;			
+			}			
+			else if(dataType.oclIsTypeOf(MP!OctetType) or dataType.oclIsTypeOf(MP!DerivedDataTypeRefType))
+			{
+				--No mapping as agreed with LTE
+				OclUndefined;			
+			}
+			else if(dataType.oclIsTypeOf(MP!FloatType) or dataType.oclIsTypeOf(MP!DoubleType))
+			{
+				if(dataType.unit.oclIsUndefined() and dataType.range.oclIsUndefined() and dataType.multiplicationFactor.oclIsUndefined() and dataType.resolution.oclIsUndefined())
+				{
+					t <- UML!DataType.allInstances()->select(e|e.name='EcimFloat')->first();
+					t;
+				}
+				else
+				{
+					t <-thisModule.FloatToDerivedFloat(dataType,name);
+					t;				
+				}		
+			}
+			else if(dataType.oclIsTypeOf(MP!SequenceType))
+			{
+				--call this rule again to find out what type the sequence is. fancy!
+				t <- thisModule.CreateDataType(dataType,name);
+				t;			
+			}		
+			else
+			{
+				t <- UML!DataType.allInstances()->select(e|e.name=thisModule.typesMap.get(dataType.oclType().name))->first();
+				t;
+			}
+		}
+		else
+		{
+			--This should never happen but it means no datatype was set
+			OclUndefined;
+		}
+	}
+}

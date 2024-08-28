@@ -1,0 +1,205 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 12, 2015 5:01:16 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "SubMom" {
+	namespace "urn:com:ericsson:ecim:SubMom";
+	prefix "SubMom";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RootMom {
+		prefix "RootMom";
+	}
+
+	import DukeNukemLibrary {
+		prefix "DukeNukemLibrary";
+	}
+
+	description
+	"This is a mom that hangs under the RootMom. It also references MOC, enum, struct and derived types from RootMom.";
+
+	revision "2015-10-12" {
+		ericsson:author "erajaik";
+		ericsson:version "1";
+		ericsson:release "0";
+	}
+
+	augment "/RootMom:Root" {
+		list "SubRoot" {
+			key "subRootId";
+			list "Bar" {
+				key "barId";
+				uses SubMom:Bar;
+			}
+
+			list "Foo2" {
+				key "foo2Id";
+				uses SubMom:Foo2;
+			}
+
+			uses SubMom:SubRoot;
+		}
+
+	}
+
+	typedef "SpecialRangeType" {
+		type uint16 {
+			range "17..4711";
+		}
+
+		description
+		"A numeric derived type with a range defined that must show in CPI output.";
+	}
+
+	grouping "SubRoot" {
+		description "The root in SubMom.";
+		leaf "subRootId" {
+			type string;
+			mandatory true;
+			description "The key attribute.";
+			ericsson:restricted;
+		}
+
+		leaf "attrX" {
+			type DukeNukemLibrary:OneToThree;
+			default "2";
+			description "Bla bla.";
+		}
+
+		container "attrY" {
+			presence "This Container points to a Struct which has no key.";
+			description "Struct attribute.";
+			uses DukeNukemLibrary:StructFromLibrary;
+		}
+
+	}
+
+	grouping "Foo2" {
+		description
+		"This is a read-only class in SubMom. The read-only property should show in CPI output!";
+		leaf "foo2Id" {
+			type string;
+			mandatory true;
+			description "The key attribute";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "Bar" {
+		description "The Bar class.";
+		leaf "barId" {
+			type string;
+			mandatory true;
+			description "The key attribute.";
+			ericsson:restricted;
+		}
+
+		container "person" {
+			presence "This Container points to a Struct which has no key.";
+			description "Holds person info.";
+			uses RootMom:PersonData;
+		}
+
+		leaf "myAbc" {
+			type RootMom:AbcType;
+			description "An attribute of a derived string type.";
+		}
+
+		leaf "administrativeState" {
+			type RootMom:AdmState;
+			description "The adm state.";
+		}
+
+		leaf "range" {
+			type RootMom:RangeType;
+			default "7";
+			description "Holds a range.";
+		}
+
+		leaf "foo2InRootMomRef" {
+			type string {
+				pattern "(.*=.*,)*Foo2=.*";
+			}
+
+			description "Reference to a Foo2 instance in RootMom.";
+		}
+
+		leaf "foo2InSubMomRef" {
+			type string {
+				pattern "(.*=.*,)*Foo2=.*";
+			}
+
+			description "Reference to the Foo2 in same Mom.";
+		}
+
+		leaf "specialRange" {
+			type SubMom:SpecialRangeType;
+			default "444";
+			description "Holds a special range value.";
+		}
+
+		leaf-list "mySeqAbc" {
+			type RootMom:AbcType;
+			description "qwe";
+		}
+
+		list "seqPerson" {
+			config true;
+			description "Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+			uses SubMom:seqPerson;
+		}
+
+		leaf-list "seqRange" {
+			type RootMom:RangeType;
+			max-elements 22;
+		}
+
+		leaf-list "seqMoRef" {
+			type string {
+				pattern "(.*=.*,)*Foo=.*";
+			}
+
+			max-elements 4;
+		}
+
+		container "structAttr" {
+			presence "This Container points to a Struct which has no key.";
+			uses SubMom:SubStruct;
+		}
+
+	}
+
+	grouping "SubStruct" {
+		description "This struct's members reference types in the root mom.";
+		leaf "smMoRef" {
+			type string {
+				pattern "(.*=.*,)*Root=.*";
+			}
+
+			mandatory true;
+		}
+
+		leaf "smEnum" {
+			type RootMom:AdmState;
+			mandatory true;
+		}
+
+		leaf "smDerivedString" {
+			type RootMom:AbcType;
+			mandatory true;
+		}
+
+		leaf "smDerivedNumeric" {
+			type RootMom:RangeType;
+			mandatory true;
+		}
+
+	}
+
+}

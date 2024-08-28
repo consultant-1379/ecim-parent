@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Apr 20, 2015 10:51:01 AM using:
+	* com.ericsson.ecim.m2m 3.0.0.qualifier
+	* com.ericsson.ecim.dsl 3.0.0.qualifier
+	* com.ericsson.ecim.edm 3.0.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+    <createdBy>
+      <signature>ecreate</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>eapprov</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim author="" contact="" date="" docNo="" name="MomB" namespace="urn:com:ericsson:ecim:MomB" namespacePrefix="momb" organization="" release="1" revision="" version="1">
+    <description>MomB</description>
+    <domainExtension domain="ECIM">
+      <extension name="ecimMomName" value="HejHopp"/>
+      <extension name="ecimMomVersion" value="17"/>
+      <extension name="ecimMomRelease" value="4711"/>
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <implements name="HejHopp" release="4711" version="17"/>
+    <modelFeatures modelType="Template">
+      <modelFeature featureType="basic" name="F17"/>
+    </modelFeatures>
+    <deprecated/>
+    <statusInformation>This is deprecated  because blablabla.</statusInformation>
+    <struct name="EcimPassword">
+      <description>The password struct!</description>
+      <structMember name="password">
+        <description>The password.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isKey" value="true"/>
+        </domainExtension>
+        <string/>
+      </structMember>
+      <structMember name="cleartext">
+        <description>Indicates if password is entered in cleartext or not.</description>
+        <derivedDataTypeRef name="EcimEmpty">
+          <mimName>MomB</mimName>
+        </derivedDataTypeRef>
+      </structMember>
+      <structMember name="seqDerivedBoolMember">
+        <description>123</description>
+        <sequence>
+          <derivedDataTypeRef name="MyBoolean">
+            <mimName>MomB</mimName>
+          </derivedDataTypeRef>
+          <minLength>1</minLength>
+          <maxLength>20</maxLength>
+        </sequence>
+      </structMember>
+    </struct>
+    <exception name="AnotherException">
+      <description>Another exception documentation.</description>
+    </exception>
+    <exception name="MyVeryFirstException">
+      <description>An exception is an exception is an exception.&#13;
+</description>
+    </exception>
+    <derivedDataType name="IpAddress">
+      <description>qwe</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="11"/>
+        <extension name="originatingMimName" value="LibC"/>
+        <extension name="originatingMimVersion" value="22"/>
+      </domainExtension>
+      <baseType>
+        <string>
+          <lengthRange>
+            <min>0</min>
+            <max>20</max>
+          </lengthRange>
+          <stringLength>
+            <subrange>
+              <min>0</min>
+              <max>20</max>
+            </subrange>
+          </stringLength>
+          <validValues>[1234567890.]+</validValues>
+        </string>
+      </baseType>
+      <validationRules>
+        <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[[1234567890.]+]]></rule>
+      </validationRules>
+    </derivedDataType>
+    <derivedDataType name="MyBoolean">
+      <description>qwe</description>
+      <baseType>
+        <boolean/>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="EcimEmpty">
+      <description>This is the special super duper important EcimEmpty data type requested by SSR/EPG.</description>
+      <baseType>
+        <boolean/>
+      </baseType>
+    </derivedDataType>
+    <class name="BRoot">
+      <description>qwe</description>
+      <systemCreated/>
+      <validationRules>
+        <rule exceptionText="" format="ECIM_Schematron_1.0" name="CDataTest"><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron"> 
+  <pattern>
+    <rule>
+      <assert id='set' test='@anInt64Attr gt 17'> BasicThing=<value-of select='@basicThingId'/>, Attribute anIntAttr=<value-of select='@anInt64Attr'/> must be greater than 17 </assert>
+    </rule>
+  </pattern> 
+</schema>]]></rule>
+      </validationRules>
+      <root/>
+      <obsolete/>
+      <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron"> 
+  <pattern>
+    <rule>
+      <assert id='set' test='@anInt64Attr gt 17'> BasicThing=<value-of select='@basicThingId'/>, Attribute anIntAttr=<value-of select='@anInt64Attr'/> must be greater than 17 </assert>
+    </rule>
+  </pattern> 
+</schema>]]></dependenciesScript>
+      <action name="actionP">
+        <description>123</description>
+        <domainExtension domain="CoreMW">
+          <extension name="admOpId" value="11"/>
+        </domainExtension>
+        <returnType>
+          <void/>
+        </returnType>
+        <raisesException name="MyVeryFirstException"/>
+        <raisesException name="AnotherException"/>
+      </action>
+      <attribute name="brootId">
+        <description>qwe</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="ham">
+        <description>Indicates if set that the pizza must have ham.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="EcimEmpty">
+            <mimName>MomB</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="mySecretPassword">
+        <description>You must not know the password.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <structRef name="EcimPassword">
+            <mimName>MomB</mimName>
+          </structRef>
+        </dataType>
+      </attribute>
+      <attribute name="seqDerivedBoolAttr">
+        <description>qwe</description>
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <derivedDataTypeRef name="MyBoolean">
+              <mimName>MomB</mimName>
+            </derivedDataTypeRef>
+            <minLength>0</minLength>
+            <maxLength>10</maxLength>
+            <seqDefaultValue>
+              <defaultValue>false</defaultValue>
+              <defaultValue>true</defaultValue>
+              <defaultValue>true</defaultValue>
+              <defaultValue>false</defaultValue>
+            </seqDefaultValue>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="isRestrictedAttr">
+        <description>A restricted attribute this is.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <restricted/>
+        <isNillable/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="isNotifiableAttr">
+        <description>This attribute may output notifications.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="isNillableAttr">
+        <description>This is an isNillable attibute.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="obsoleteAttribute">
+        <description>wqe</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <int16/>
+        </dataType>
+        <obsolete/>
+      </attribute>
+      <attribute name="abstractRef">
+        <description>Reference to an abstract type with single value</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <moRef name="ManagedObject"/>
+        </dataType>
+      </attribute>
+      <attribute name="abstractRefSequence">
+        <description>Reference to an abstract type with multi-value</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <moRef name="ManagedObject"/>
+            <minLength>1</minLength>
+            <maxLength>8</maxLength>
+            <nonUnique/>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="preliminaryAttribute">
+        <description>qwe</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <int64/>
+        </dataType>
+        <preliminary/>
+      </attribute>
+      <attribute name="deprecatedAttribute">
+        <description>ert</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <uint32/>
+        </dataType>
+        <deprecated/>
+        <statusInformation>Was deprecated 20110502</statusInformation>
+      </attribute>
+      <attribute name="attrI">
+        <description>a</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint32>
+            <defaultValue>46545</defaultValue>
+          </uint32>
+        </dataType>
+      </attribute>
+      <attribute name="attrH">
+        <description>Huh?</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint32>
+            <defaultValue>654</defaultValue>
+          </uint32>
+        </dataType>
+      </attribute>
+      <attribute name="attrG">
+        <description>qwe</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint32>
+            <defaultValue>321</defaultValue>
+          </uint32>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="BMoc">
+      <description>rty</description>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature NOT F17</decisionStatement>
+      </decisionPoint>
+      <action name="actionP">
+        <description>123</description>
+        <domainExtension domain="CoreMW">
+          <extension name="admOpId" value="11"/>
+        </domainExtension>
+        <returnType>
+          <void/>
+        </returnType>
+        <raisesException name="MyVeryFirstException"/>
+        <raisesException name="AnotherException"/>
+      </action>
+      <attribute name="uniqueOrderedAttr">
+        <description>a</description>
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <int16/>
+            <minLength>0</minLength>
+            <maxLength>5</maxLength>
+            <ordered/>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="nonUniqueOrderedAttr">
+        <description>a</description>
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <int16/>
+            <minLength>0</minLength>
+            <maxLength>5</maxLength>
+            <nonUnique/>
+            <ordered/>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="uniqueNonOrderedAttr">
+        <description>a</description>
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <int16/>
+            <minLength>0</minLength>
+            <maxLength>5</maxLength>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="nonUniqueNonOrderedAttr">
+        <description>a</description>
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <int16/>
+            <minLength>0</minLength>
+            <maxLength>5</maxLength>
+            <nonUnique/>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="rwL1withDefault">
+        <description>qwe</description>
+        <noNotification/>
+        <dataType>
+          <string>
+            <defaultValue>Yeah!</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="roAttr1">
+        <description>isCached=false
+isPersistent=false
+default value=""</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <string>
+            <defaultValue>NotToBeOutputtedInImmXmlSincePersistentRuntime</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="roAttr2">
+        <description>isCached=true
+isPersistent=true
+default value=""</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <string>
+            <defaultValue/>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="roAttr3">
+        <description>isCached=true
+isPersistent=true
+default value=&lt;NO VALUE&gt;</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="roAttr4">
+        <description>isCached=true
+isPersistent=true
+default value=Troll</description>
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <string>
+            <defaultValue>Troll</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="rwAttrWithQuoteQuoteDefault">
+        <description>Default Value:""</description>
+        <noNotification/>
+        <dataType>
+          <string>
+            <defaultValue/>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="ipAddress">
+        <description>qwe</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <derivedDataTypeRef name="IpAddress">
+            <mimName>MomB</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="theKeyFromAT">
+        <description>qweqwe</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="attrH">
+        <description>Huh?</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint32>
+            <defaultValue>654</defaultValue>
+          </uint32>
+        </dataType>
+      </attribute>
+      <attribute name="attrG">
+        <description>qwe</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <uint32>
+            <defaultValue>321</defaultValue>
+          </uint32>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="BRoot_to_BMoc">
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature NOT F17</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="BRoot">
+            <mimName>MomB</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="BMoc">
+            <mimName>MomB</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </mim>
+  <interMim>
+    <relationship name="Root_to_BRoot">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="true"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>MomA</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="BRoot">
+            <mimName>MomB</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="false"/>
+          <extension name="canDelete" value="false"/>
+        </domainExtension>
+        <notCreatable/>
+        <notDeleteable/>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

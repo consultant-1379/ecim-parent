@@ -1,0 +1,1900 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/" xmlns:Documentation="http://www.eclipse.org/papyrus/documentation" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CoreMWProfile/ pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw http:///schemas/ECIMBaseProfile/ pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ">
+  <uml:Model xmi:id="_NRAMoAwOEdmFcaeZXPdWAQ" name="RtnTDM">
+    <ownedComment xmi:id="_BZyFYErZEeSMzJQrhvNJaA">
+      <body>TDM model for Abis over IP feature </body>
+    </ownedComment>
+    <packageImport xmi:id="_uWHKUIXbEd-Id79DLfNphQ">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_iT7qACCSEd-Egr3-YAWs7Q?EcimDataType?"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_17LJgErXEeSMzJQrhvNJaA" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.uml#_5vlRYnhQEd-OM9oMWC6jJQ?ECIM%20Core%20MW%20Guidelines?"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_U-2LAEraEeSMzJQrhvNJaA" name="RtnTdmE1T1Port">
+      <ownedComment xmi:id="_U_BKIUraEeSMzJQrhvNJaA">
+        <body>E1T1 port.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_U_Ie4EraEeSMzJQrhvNJaA" name="E1T1Port">
+        <ownedComment xmi:id="_U_OlgkraEeSMzJQrhvNJaA">
+          <body>The MO represents an interface to an E1/T1 communications medium. It handles the basic TDM configuration such as mode and mapping to the physical ET port and part of port as well as legacy block and bit error counters.
+
+Dependencies: A maximum of one SuperChannel MO can reserve this port. 
+</body>
+        </ownedComment>
+        <ownedRule xmi:id="_TtXHYP33EeSHYrPPcWe7bA" name="E1T1Port" constrainedElement="_U_Ie4EraEeSMzJQrhvNJaA">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_TtXucP33EeSHYrPPcWe7bA">
+            <language>Schematron</language>
+            <body>&lt;schema xmlns=&quot;http://purl.oclc.org/dsdl/schematron&quot;>
+                &lt;pattern>
+                               &lt;rule>
+                               &lt;assert test='every $portInterfaceNumber in @portInterfaceNumber satisfies (every $encapsulation in @encapsulation satisfies (count(../E1T1Port[($portInterfaceNumber eq @portInterfaceNumber) and ($encapsulation eq @encapsulation)]) eq 1))'>&lt;value-of select=&quot;.&quot;/> The combination of portInterfaceNumber and encapsulation must be unique.&lt;/assert>
+                               &lt;assert test='contains(@encapsulation, &quot;,EtPort=&quot;)'>&lt;value-of select=&quot;.&quot;/>: Encapsulation must refer to EtPort.&lt;/assert>
+                               &lt;/rule>
+                &lt;/pattern>
+&lt;/schema></body>
+          </specification>
+        </ownedRule>
+        <ownedAttribute xmi:id="_U_SP4UraEeSMzJQrhvNJaA" name="e1T1PortId" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_U_V6QEraEeSMzJQrhvNJaA">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_U_Y9kUraEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_U_Y9kkraEeSMzJQrhvNJaA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_HxrUMErcEeSMzJQrhvNJaA" name="encapsulation" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_HxwMsErcEeSMzJQrhvNJaA">
+            <body>Reference to the underlying encapsulation, which is an EtPort MO. </body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/EcimManagedObject?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_IVhQkJcZEeSGNp4K-_c-og" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Hx0eIkrcEeSMzJQrhvNJaA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_49eDkErcEeSMzJQrhvNJaA" name="portInterfaceNumber" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_49i8EUrcEeSMzJQrhvNJaA">
+            <body>The EtPort interface number to which this E1T1Port MO is mapped. </body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxXDECCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt8?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zbpngErhEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_49sGAUrcEeSMzJQrhvNJaA" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_49re8UrcEeSMzJQrhvNJaA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Nqly4ErdEeSMzJQrhvNJaA" name="administrativeState" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_Nqu80UrdEeSMzJQrhvNJaA">
+            <body>The administrative state. </body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#__jC9IJdbEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/AdmState?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aFIEIErhEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Nq24oErdEeSMzJQrhvNJaA" value="1"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_R0avAErdEeSMzJQrhvNJaA" name="LOCKED">
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_CommonLibrary.uml#__jC9IpdbEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/AdmState/LOCKED?"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_46EU0ErdEeSMzJQrhvNJaA" name="admOperatingMode" visibility="public" type="_yCjqcErdEeSMzJQrhvNJaA" isUnique="false">
+          <ownedComment xmi:id="_46M3sUrdEeSMzJQrhvNJaA">
+            <body>Specifies the administrative operating mode of the interface.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gS7qMErhEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_46UzgUrdEeSMzJQrhvNJaA" value="1"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_46UMcUrdEeSMzJQrhvNJaA" name="E1" instance="_yCs0YUrdEeSMzJQrhvNJaA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_JgmCMEreEeSMzJQrhvNJaA" name="availabilityStatus" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_Jgq6sUreEeSMzJQrhvNJaA">
+            <body>The availability status.
+
+It contains details about operationalState.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#_k2VdcDrxEeOzd4qf6-nnMQ?ECIM_CommonLibrary/ECIM_CommonLibrary/AvailStatus?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_JgvMIEreEeSMzJQrhvNJaA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_2ldYcEreEeSMzJQrhvNJaA" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_T9fe4EreEeSMzJQrhvNJaA" name="operationalState" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_T9jwUUreEeSMzJQrhvNJaA">
+            <body>The operational state. </body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#__lAE8JdbEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/OperState?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_yKdscErhEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_T9naskreEeSMzJQrhvNJaA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_1IuUsEreEeSMzJQrhvNJaA" name="reservedBy" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_1I4swUreEeSMzJQrhvNJaA">
+            <body>Contains a list of MO instances that reserve this MO instance. </body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/EcimManagedObject?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1JAokUreEeSMzJQrhvNJaA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1JAokkreEeSMzJQrhvNJaA" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_KThXIEriEeSMzJQrhvNJaA" name="userLabel" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_KTrIIUriEeSMzJQrhvNJaA">
+            <body>Label for free use. </body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KTvZkUriEeSMzJQrhvNJaA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KTwAoEriEeSMzJQrhvNJaA" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_yCjqcErdEeSMzJQrhvNJaA" name="E1T1PortOperatingMode">
+        <ownedComment xmi:id="_yCn74UrdEeSMzJQrhvNJaA">
+          <body>E1T1 Port OperatingMode</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_yCs0YUrdEeSMzJQrhvNJaA" name="E1">
+          <ownedComment xmi:id="_yCxF0UrdEeSMzJQrhvNJaA">
+            <body>E1 operating mode</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_yC0wMUrdEeSMzJQrhvNJaA" value="1"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_iZqioErgEeSMzJQrhvNJaA" name="Transport_to_E1T1Port" memberEnd="_iZrJsErgEeSMzJQrhvNJaA _iZrwwErgEeSMzJQrhvNJaA">
+        <ownedEnd xmi:id="_iZrJsErgEeSMzJQrhvNJaA" name="toTransport" visibility="public" association="_iZqioErgEeSMzJQrhvNJaA">
+          <type xmi:type="uml:Class" href="ECIM_Top.uml#_kvudoJ7vEd-VobSz_ngLSA?ECIM_Top/ECIM_Top/Transport?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iZ_SwUrgEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iZ_SwErgEeSMzJQrhvNJaA" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_iZrwwErgEeSMzJQrhvNJaA" name="e1t1port " visibility="public" type="_U_Ie4EraEeSMzJQrhvNJaA" aggregation="composite" association="_iZqioErgEeSMzJQrhvNJaA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iaDkMkrgEeSMzJQrhvNJaA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iaDkMUrgEeSMzJQrhvNJaA" value="8"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_H64P8IUmEeSGLIQSQ-4Ovg" name="E1T1Port_encapsulation_to_EtPort_reservedBy" memberEnd="_ICmBgIUmEeSGLIQSQ-4Ovg _ICn2sIUmEeSGLIQSQ-4Ovg">
+        <ownedEnd xmi:id="_ICmBgIUmEeSGLIQSQ-4Ovg" name="encapsulation" visibility="public" association="_H64P8IUmEeSGLIQSQ-4Ovg">
+          <type xmi:type="uml:Class" href="REQ_EtPort.uml#_6X_fQoUQEeShx7XrX2zKPA?ReqEtPort/ReqEtPort/EtPort?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_IDVBUIUmEeSGLIQSQ-4Ovg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_IDTzMIUmEeSGLIQSQ-4Ovg" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_ICn2sIUmEeSGLIQSQ-4Ovg" name="reservedBy" visibility="public" type="_U_Ie4EraEeSMzJQrhvNJaA" association="_H64P8IUmEeSGLIQSQ-4Ovg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nzAksNhgEeS22s_Y5Qw08w"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ny_9oNhgEeS22s_Y5Qw08w" value="2"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_FwYGoErjEeSMzJQrhvNJaA" name="RtnTDM_">
+      <ownedComment xmi:id="_FwgCcErjEeSMzJQrhvNJaA">
+        <body>Decision MOM for SCTP.
+
+Shall not be visible.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_FwpMYErjEeSMzJQrhvNJaA" name="Root" isAbstract="true">
+        <ownedComment xmi:id="_FwwhIUrjEeSMzJQrhvNJaA">
+          <body>Decision MO for RtnE1T1Port.
+
+Shall not be visible.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_xLG2UErjEeSMzJQrhvNJaA" name="DURA">
+        <packagedElement xmi:type="uml:Class" xmi:id="_xLMV4ErjEeSMzJQrhvNJaA" name="Model"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_ZLbF4ErqEeSMzJQrhvNJaA" name="RtnTdmTgTransport">
+      <ownedComment xmi:id="_ZLf-YUrqEeSMzJQrhvNJaA">
+        <body>Tg Transport</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_ZLld8ErqEeSMzJQrhvNJaA" name="TgTransport">
+        <ownedComment xmi:id="_ZLq9gUrqEeSMzJQrhvNJaA">
+          <body>The MO represents the transport function between a BSC and one TG in a BTS. 
+
+Dependencies: All TgTransport MOs must refer to the same AddressIPv4 MO.
+</body>
+        </ownedComment>
+        <ownedRule xmi:id="_G-FUQL3AEeS22s_Y5Qw08w" name="TgTransport" constrainedElement="_ZLld8ErqEeSMzJQrhvNJaA">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_G-F7UL3AEeS22s_Y5Qw08w">
+            <language>Schematron</language>
+            <body>&lt;schema xmlns=&quot;http://purl.oclc.org/dsdl/schematron&quot;>
+                &lt;pattern>
+                               &lt;rule>
+                               &lt;assert test='every $encapsulation in @encapsulation satisfies (count(../TgTransport[($encapsulation eq @encapsulation)]) eq count(../TgTransport))'>&lt;value-of select=&quot;.&quot;/>: All instances of TgTransport must refer to the same AddressIPv4 MO.&lt;/assert>
+                               &lt;assert test='every $overloadReportInterval in @ overloadReportInterval satisfies ($overloadReportInterval eq 1)'> Invalid value for overloadReportInterval =&quot;&lt;value-of select=&quot;@ overloadReportInterval &quot;/>&quot;. The value of overloadReportInterval must be 1.&lt;/assert>                            
+                               &lt;assert test='(@stnPgwL2TpRetransCap ge @stnPgwL2TpInitalRetransPeriod)'>&lt;value-of select=&quot;.&quot;/>: The value of stnPgwL2TpInitalRetransPeriod must be less than or equal to the value of attribute stnPgwL2TpRetransCap.&lt;/assert>
+                               &lt;assert test='matches(@tgTransportId, &quot;\w{1,18}-[0-5]&quot;)'>&lt;value-of select=&quot;.&quot;/> The name of the TgTransport MO must be in string format BSC:STN name(1-18 characters)-BSC:PSTU number[0..5].&lt;/assert>
+                               &lt;/rule>
+                &lt;/pattern>
+&lt;/schema></body>
+          </specification>
+        </ownedRule>
+        <ownedAttribute xmi:id="_usiH0ErzEeSMzJQrhvNJaA" name="superChannel" visibility="public" type="_e7G90ErwEeSMzJQrhvNJaA" aggregation="composite" association="_ushgwErzEeSMzJQrhvNJaA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RfFMcE0zEeSkC7TQpCsjnQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RfFzgE0zEeSkC7TQpCsjnQ" value="4"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ZLv2AUrqEeSMzJQrhvNJaA" name="tgTransportId" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_ZL0ugErqEeSMzJQrhvNJaA">
+            <body>The value component of the RDN. 
+
+For a working configuration, the value of tgTransportId must be identical to the network-unique name for the RadioTNode as stated in the BSC (attribute PSTU) which is restricted to 20 characters. The recommended naming of PSTU in the BSC is a concatenated string with the syntax &quot;BSC:STN name-BSC:PSTU number[0..5]&quot;.
+Example: &quot;NewYorkCentral-1&quot;.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ZL5nAUrqEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ZL5nAkrqEeSMzJQrhvNJaA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_lNUxgErqEeSMzJQrhvNJaA" name="availabilityStatus" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_lNaREUrqEeSMzJQrhvNJaA">
+            <body>The availability status.
+
+It contains details about operationalState.
+</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#_k2VdcDrxEeOzd4qf6-nnMQ?ECIM_CommonLibrary/ECIM_CommonLibrary/AvailStatus?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lNkCEErqEeSMzJQrhvNJaA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lNkCEUrqEeSMzJQrhvNJaA" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_4jswUErqEeSMzJQrhvNJaA" name="operationalState" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_4jy28UrqEeSMzJQrhvNJaA">
+            <body>The operational state. 
+
+In addition to general rules for ENABLED:
+	- The value of stnPgwLinkStatus must be UP.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#__lAE8JdbEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/OperState?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4j4WgUrqEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4j49kErqEeSMzJQrhvNJaA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_E7bskErsEeSMzJQrhvNJaA" name="encapsulation" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_E7jBUErsEeSMzJQrhvNJaA">
+            <body>Encapsulates the source IP address of the RadioTNode, which must be an AddressIPv4 MO. Used as a source IP address in the L2TP tunnel.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/EcimManagedObject?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Gga_oKFrEeSJhPEBAvuH2g" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_E7n50UrsEeSMzJQrhvNJaA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_qFJxMErsEeSMzJQrhvNJaA" name="stnPgwLinkStatus" visibility="public" type="_ZEz1oErsEeSMzJQrhvNJaA" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_qFPQwUrsEeSMzJQrhvNJaA">
+            <body>Status of primary control channel.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_HS8NkIUjEeShx7XrX2zKPA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_HS8NkYUjEeShx7XrX2zKPA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_ut958ErtEeSMzJQrhvNJaA" name="dscpL2tpCp" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_uuCycUrtEeSMzJQrhvNJaA">
+            <body>DSCP code for L2TP control connection between the TCU and the BSC.
+
+</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxXDECCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt8?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_uuISAErtEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_uuISAUrtEeSMzJQrhvNJaA" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_1mzIwIRuEeShx7XrX2zKPA" value="46"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_E4PjwEruEeSMzJQrhvNJaA" name="stnPgwKeepAlivePeriod" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_E4VDUUruEeSMzJQrhvNJaA">
+            <body>Number of seconds between keepalive messages sent from the RadioTNode to the BSC.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxXDECCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt8?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_E4ai4kruEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_E4ai40ruEeSMzJQrhvNJaA" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_E4ai4UruEeSMzJQrhvNJaA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_pq8PgEruEeSMzJQrhvNJaA" name="stnPgwL2TpMaxTransmissions" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_prBIAUruEeSMzJQrhvNJaA">
+            <body>Maximum number of retransmissions of L2TP control messages, including the original transmission, in accordance with the L2TP control message retransmission mechanism. This value applies to all control messages, including the Setup Control Connection Request message (SCCRQ) and the keepalive Hello message, for example.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxXDECCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt8?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_prFZcEruEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_prFZcUruEeSMzJQrhvNJaA" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_prEyYUruEeSMzJQrhvNJaA" value="5"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_6yp-YEruEeSMzJQrhvNJaA" name="stnPgwL2TpRetransCap" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_6yzvYUruEeSMzJQrhvNJaA">
+            <body>Specifies the cap on the exponentially increasing interval between retransmission of L2TP control messages (in seconds), in accordance with the L2TP control message retransmission mechanism. This value applies to all control messages, including the SCCRQ and the keepalive Hello message, for example.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxXDECCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt8?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6y5O8UruEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6y5O8kruEeSMzJQrhvNJaA" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_6y5O8EruEeSMzJQrhvNJaA" value="4"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_C4utoErvEeSMzJQrhvNJaA" name="stnPgwL2TpInitalRetransPeriod" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_C42CYUrvEeSMzJQrhvNJaA">
+            <body>Initial period from the original transmission to the first retransmission of L2TP control messages (in seconds), in accordance with the L2TP control message retransmission mechanism. This value applies to all control messages, including the SCCRQ and the keepalive Hello message, for example.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxXDECCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt8?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_C47h8UrvEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_C47h8krvEeSMzJQrhvNJaA" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_C47h8ErvEeSMzJQrhvNJaA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_mxxG0IRxEeShx7XrX2zKPA" name="bscBrokerIpAddress" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_mx6QwYRxEeShx7XrX2zKPA">
+            <body>The BSC IP address toward which the RadioTNode makes initial contact.
+
+The address is specified in dotted-quad decimal notation in accordance with RFC791, without leading zeros. </body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_CommonLibrary.uml#_2UW_sBVBEeGWfsxmoyV2wg?RtnCommonLibrary/RtnCommonLibrary/Ipv4UnicastAddressStr?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_myF28YRxEeShx7XrX2zKPA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_myGeAIRxEeShx7XrX2zKPA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Lbc5IIR1EeShx7XrX2zKPA" name="peerIpAddress" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_LbhKkYR1EeShx7XrX2zKPA">
+            <body>Indicates the IP address that eL2TP is connected to. The value is different from bscBrokerAddress, if the connection has been redirected.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="ECIM_Transport_CommonLibrary.uml#_2UW_sBVBEeGWfsxmoyV2wg?RtnCommonLibrary/RtnCommonLibrary/Ipv4UnicastAddressStr?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Lbk08YR1EeShx7XrX2zKPA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Lbk08oR1EeShx7XrX2zKPA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5XmOQNE4EeS22s_Y5Qw08w" name="overloadThreshold" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_5XqfstE4EeS22s_Y5Qw08w">
+            <body>Threshold for reporting packet loss, measured in hundredths of one percent. The attribute reflects the configuration made by the BSC.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxWcACCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt16?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RTv0MNaxEeS22s_Y5Qw08w" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_68dCENawEeS22s_Y5Qw08w" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Zm8qoNE5EeS22s_Y5Qw08w" name="overloadReportInterval" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_ZnEmcNE5EeS22s_Y5Qw08w">
+            <body>Number of seconds between overload reports sent to the BSC, if packet loss exceeds overloadThreshold value.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_DxXDECCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt8?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_vVpywNE5EeS22s_Y5Qw08w" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ZnL7MdE5EeS22s_Y5Qw08w" value="1"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_ZnLUIdE5EeS22s_Y5Qw08w" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_ZEz1oErsEeSMzJQrhvNJaA" name="StnPgwLinkStatus">
+        <ownedComment xmi:id="_ZE8_kUrsEeSMzJQrhvNJaA">
+          <body>STN PGW Link Status.
+Status of primary control channel.
+</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_ZFE7YUrsEeSMzJQrhvNJaA" name="UP">
+          <ownedComment xmi:id="_ZFPTcUrsEeSMzJQrhvNJaA">
+            <body>Connection established.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_LLphcFLDEeSkC7TQpCsjnQ" value="1"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_dPRD4ErsEeSMzJQrhvNJaA" name="DOWN">
+          <ownedComment xmi:id="_dPVVUUrsEeSMzJQrhvNJaA">
+            <body>Connection not established since last reset.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_MX8VcFLDEeSkC7TQpCsjnQ" value="2"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_gRjwMErsEeSMzJQrhvNJaA" name="LOST">
+          <ownedComment xmi:id="_gRoBoUrsEeSMzJQrhvNJaA">
+            <body>Connection established since last reset, but not currently established</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_NT_uAFLDEeSkC7TQpCsjnQ" value="3"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_sQC0EErvEeSMzJQrhvNJaA" name="Transport_to_TgTransport" memberEnd="_sQDbIErvEeSMzJQrhvNJaA _sQECMkrvEeSMzJQrhvNJaA">
+        <ownedEnd xmi:id="_sQDbIErvEeSMzJQrhvNJaA" name="toTransport" visibility="public" association="_sQC0EErvEeSMzJQrhvNJaA">
+          <type xmi:type="uml:Class" href="ECIM_Top.uml#_kvudoJ7vEd-VobSz_ngLSA?ECIM_Top/ECIM_Top/Transport?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sQFQUUrvEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sQFQUErvEeSMzJQrhvNJaA" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_sQECMkrvEeSMzJQrhvNJaA" name="tgTransport" visibility="public" type="_ZLld8ErqEeSMzJQrhvNJaA" aggregation="composite" association="_sQC0EErvEeSMzJQrhvNJaA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sQKv4UrvEeSMzJQrhvNJaA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sQKv4ErvEeSMzJQrhvNJaA" value="6"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_e7G90ErwEeSMzJQrhvNJaA" name="SuperChannel">
+        <ownedComment xmi:id="_e7SkAErwEeSMzJQrhvNJaA" annotatedElement="_e7G90ErwEeSMzJQrhvNJaA">
+          <body>The MO represents a super channel, which is a set of several contiguous time slots on an E1T1port, used together as a wideband connection on the Abis lower interface. 
+
+</body>
+        </ownedComment>
+        <ownedRule xmi:id="_0G2-UNFBEeS22s_Y5Qw08w" name="SuperChannel" constrainedElement="_e7G90ErwEeSMzJQrhvNJaA">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_0G3lYNFBEeS22s_Y5Qw08w">
+            <language>Schematron</language>
+            <body>&lt;schema xmlns=&quot;http://purl.oclc.org/dsdl/schematron&quot;>
+                &lt;pattern>
+                               &lt;rule>
+                               &lt;assert test='every $superChannelId in @superChannelId satisfies (($superChannelId eq &quot;0&quot;) or ($superChannelId eq &quot;1&quot;) or ($superChannelId eq &quot;2&quot;) or ($superChannelId eq &quot;3&quot;))'> Invalid superChannelId for superChannelId =&quot;&lt;value-of select=&quot;@ superChannelId &quot;/>&quot;. The value of superChannelId must be 0, 1, 2 or 3 &lt;/assert>
+                               &lt;/rule>
+                &lt;/pattern>
+&lt;/schema></body>
+          </specification>
+        </ownedRule>
+        <ownedAttribute xmi:id="_e7Z4wErwEeSMzJQrhvNJaA" name="superChannelId" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_e7gmcUrwEeSMzJQrhvNJaA">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_e7oiQErwEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_e7oiQUrwEeSMzJQrhvNJaA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_EP7-4Er0EeSMzJQrhvNJaA" name="availabilityStatus" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_EQCskEr0EeSMzJQrhvNJaA">
+            <body>The availability status.
+
+It contains details about operationalState.
+</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#_k2VdcDrxEeOzd4qf6-nnMQ?ECIM_CommonLibrary/ECIM_CommonLibrary/AvailStatus?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EQIMIEr0EeSMzJQrhvNJaA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_IGxaoEsBEeSMzJQrhvNJaA" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_PtfnUEr0EeSMzJQrhvNJaA" name="operationalState" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_PtzwYEr0EeSMzJQrhvNJaA">
+            <body>The operational state. 
+
+</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ECIM_CommonLibrary.uml#__lAE8JdbEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/OperState?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_UZcGIEsBEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Pt-vgEr0EeSMzJQrhvNJaA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_8oHPgE0wEeSkC7TQpCsjnQ" name="encapsulation" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_8oOkQU0wEeSkC7TQpCsjnQ">
+            <body>Reference to the underlying encapsulation, which can be an E1T1Port MO.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/EcimManagedObject?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_DWcuAKIbEeSJhPEBAvuH2g" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_8oWgEE0wEeSkC7TQpCsjnQ" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_ushgwErzEeSMzJQrhvNJaA" name="TgTransport_to_SuperChannel" memberEnd="_usiH0ErzEeSMzJQrhvNJaA _usjV8ErzEeSMzJQrhvNJaA">
+        <ownedEnd xmi:id="_usjV8ErzEeSMzJQrhvNJaA" name="tgTransport" visibility="public" type="_ZLld8ErqEeSMzJQrhvNJaA" association="_ushgwErzEeSMzJQrhvNJaA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_usxYYErzEeSMzJQrhvNJaA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_uswKQUrzEeSMzJQrhvNJaA" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_Yl8vIFBtEeSkC7TQpCsjnQ" name="SuperChannel_encapsulation_to_E1T1Port_reservedBy" memberEnd="_YmCOsFBtEeSkC7TQpCsjnQ _YmED4VBtEeSkC7TQpCsjnQ">
+        <ownedEnd xmi:id="_YmCOsFBtEeSkC7TQpCsjnQ" name="encapsulation" visibility="public" type="_U_Ie4EraEeSMzJQrhvNJaA" association="_Yl8vIFBtEeSkC7TQpCsjnQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YmLYoVBtEeSkC7TQpCsjnQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YmLYoFBtEeSkC7TQpCsjnQ" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_YmED4VBtEeSkC7TQpCsjnQ" name="reservedBy" visibility="public" type="_e7G90ErwEeSMzJQrhvNJaA" association="_Yl8vIFBtEeSkC7TQpCsjnQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Ym1f8VBtEeSkC7TQpCsjnQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Ym1f8FBtEeSkC7TQpCsjnQ" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_FJfrkIFDEeShx7XrX2zKPA" name="TgTransport_encapsulation_to_AddressIPv4_reservedBy" memberEnd="_FJgSoIFDEeShx7XrX2zKPA _FJg5sYFDEeShx7XrX2zKPA">
+        <ownedEnd xmi:id="_FJgSoIFDEeShx7XrX2zKPA" name="encapsulation" visibility="public" association="_FJfrkIFDEeShx7XrX2zKPA">
+          <type xmi:type="uml:Class" href="ECIM_Transport_IP.uml#_7MG50HRnEeSSBcEazp-x2w?RtnIP/RtnL3InterfaceIPv4/AddressIPv4?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FJlLIoFDEeShx7XrX2zKPA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FJlLIYFDEeShx7XrX2zKPA" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_FJg5sYFDEeShx7XrX2zKPA" name="reservedBy" visibility="public" type="_ZLld8ErqEeSMzJQrhvNJaA" association="_FJfrkIFDEeShx7XrX2zKPA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FJu8IIFDEeShx7XrX2zKPA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FJuVEYFDEeShx7XrX2zKPA" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_ldWdoEsCEeSMzJQrhvNJaA" name="RtnE1T1PortStatistics">
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_7PEdgEsCEeSMzJQrhvNJaA" name="E1T1PortStatsPmGroup">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_uKLt8MABEd-FYKAm2tRASg"/>
+        <slot xmi:id="_7RjJwEsCEeSMzJQrhvNJaA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_uOfmMMABEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_leZUkEsEEeSMzJQrhvNJaA" value="E1T1Port"/>
+        </slot>
+        <slot xmi:id="_H1RJAEsDEeSMzJQrhvNJaA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_ib3pkNBQEd-v0N0F4ib9BA"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_IzXwAEsDEeSMzJQrhvNJaA" value="true"/>
+        </slot>
+        <slot xmi:id="_wfaAYEsDEeSMzJQrhvNJaA">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_PYCOcPo5EeCitcJoAgEPYQ"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_1gWKsEsDEeSMzJQrhvNJaA" value="E1T1 Port statistics"/>
+        </slot>
+        <slot xmi:id="_c7ROMEsKEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_sHLJ4OQ0EeC4FPW5luT0gw"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_HMO5cEsLEeSkC7TQpCsjnQ" instance="_joqvwEsJEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Class" href="ECIM_PM.uml#_cKJiUNq5EeCclon5NRd6Fw?ECIM_PM/ECIM_PM/ManagedObjectClass?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_joqvwEsJEeSkC7TQpCsjnQ" name="E1T1PortStats">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_cKJiUNq5EeCclon5NRd6Fw"/>
+        <slot xmi:id="_jv6AMEsJEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_cLEvYNq5EeCclon5NRd6Fw"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_4FYEgEsJEeSkC7TQpCsjnQ" value="E1T1Port"/>
+        </slot>
+        <slot xmi:id="_jv6nQEsJEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_p-W5ENq5EeCclon5NRd6Fw"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_0hV9EEsJEeSkC7TQpCsjnQ" value="RtnE1T1PortStatistics"/>
+        </slot>
+        <slot xmi:id="_jv7OUEsJEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_wh9wANq5EeCclon5NRd6Fw"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_r65EoEsJEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_jv7OUUsJEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_fe53QOQzEeC4FPW5luT0gw"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_qNOo8EsJEeSkC7TQpCsjnQ"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_VZzA0EsKEeSkC7TQpCsjnQ" name="pmInstance">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_WHBeoL_7Ed-FYKAm2tRASg"/>
+        <slot xmi:id="_VagLcEsKEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_WHeKkL_7Ed-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_aSQkkEsKEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_9WnfMEsKEeSkC7TQpCsjnQ" client="_7PEdgEsCEeSMzJQrhvNJaA" supplier="_VZzA0EsKEeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_SKjBIEsLEeSkC7TQpCsjnQ" client="_joqvwEsJEeSkC7TQpCsjnQ" supplier="_7PEdgEsCEeSMzJQrhvNJaA"/>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_2lBaIEsLEeSkC7TQpCsjnQ" name="erroredBlocksHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_aSyBoEsNEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_ccCNIEsNEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_dCUKAEsNEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_eBwNwEsNEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_fKvPEEsNEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_gcULsEsNEeSkC7TQpCsjnQ" value="The number of blocks received containing bit errors."/>
+        </slot>
+        <slot xmi:id="_hzJbwEsNEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_jVtasEsNEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_lRP6UEsNEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_lv3wAEsNEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_mEIv0EsNEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_mkDmAEsNEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_norEsEsNEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_oXAxYEsNEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_0WDPsE1REeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_3x-kAE1REeSkC7TQpCsjnQ" value="erroredBlocksHC"/>
+        </slot>
+        <slot xmi:id="_4iT0wE1REeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_5aDVEE1REeSkC7TQpCsjnQ" value="erroredBlocksHC"/>
+        </slot>
+        <slot xmi:id="_Aup-4KF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_LmxicOG2EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_2iymUE1MEeSkC7TQpCsjnQ" name="erroredSeconds">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_LZNmIE1OEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_MIDCEE1OEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_MdbcME1OEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_NJBW4E1OEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_SQBs8E1OEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_THHF8E1OEeSkC7TQpCsjnQ" value="The number of seconds in which one or more blocks received had bit errors"/>
+        </slot>
+        <slot xmi:id="_lTvHEE1REeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_mPI_YE1REeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_oy-1IE1REeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_pehFcE1REeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_pwEvgE1REeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_qObfcE1REeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_qr_lME1REeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_rbMNgE1REeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_8G25kE1REeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_9XYGQE1REeSkC7TQpCsjnQ" value="erroredSecondsHC"/>
+        </slot>
+        <slot xmi:id="_9_-XUE1REeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_-7FUsE1REeSkC7TQpCsjnQ" value="erroredSecondsHC"/>
+        </slot>
+        <slot xmi:id="_CwHgUKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_O1VJIOG2EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_i5X2EE1UEeSkC7TQpCsjnQ" name="severelyErroredSecondsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_mhP7sE1UEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_o3A5ME1UEeSkC7TQpCsjnQ" value="severelyErroredSecondsHC"/>
+        </slot>
+        <slot xmi:id="_pbgGUE1UEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_qVqogE1UEeSkC7TQpCsjnQ" value="severelyErroredSecondsHC"/>
+        </slot>
+        <slot xmi:id="_qxV34E1UEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_rdFjkE1UEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_swQboE1UEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_tpABgE1UEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_t4_lUE1UEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_wIkbQE1UEeSkC7TQpCsjnQ" value="The number of seconds in which the number of received blocks with bit errors exceeded 30% of the traffic."/>
+        </slot>
+        <slot xmi:id="_w2bm0E1UEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_xwpzYE1UEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_za8yAE1UEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_z9BkUE1UEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_0LKuAE1UEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_0yE9AE1UEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_1J-foE1UEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_12EJkE1UEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_E1cOEKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_RYC9gOG2EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="__nJCEE1UEeSkC7TQpCsjnQ" name="backgroundBlockErrorsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_G3UrIE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_I0SuIE1VEeSkC7TQpCsjnQ" value="backgroundBlockErrorsHC"/>
+        </slot>
+        <slot xmi:id="_JFGxUE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_J3l-ME1VEeSkC7TQpCsjnQ" value="backgroundBlockErrorsHC"/>
+        </slot>
+        <slot xmi:id="_KLFh8E1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_KzipEE1VEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_NC1yME1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_NtQBIE1VEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_OIBRkE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_O2v_0E1VEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_QU7OAE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_Q0yZ0E1VEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_RHwZIE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_RpWDQE1VEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_Rzzm0E1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_SxsycE1VEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_0jaZcE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_w31hUN3pEeStTpH6QT_xTA" value="The number of blocks received with bit errors in them but without said blocks having been received within a severely errored second."/>
+        </slot>
+        <slot xmi:id="_-NEL4KF2EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_FplLQOG2EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_alVG0E1VEeSkC7TQpCsjnQ" name="unavailableTimeHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_eV7DkE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_fQ2awE1VEeSkC7TQpCsjnQ" value="unavailableTimeHC"/>
+        </slot>
+        <slot xmi:id="_f1xswE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_hWl_QE1VEeSkC7TQpCsjnQ" value="unavailableTimeHC"/>
+        </slot>
+        <slot xmi:id="_iYLYEE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_jFz6IE1VEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_jjk0ME1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_kVR98E1VEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_ku4JsE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_mVKyEE1VEeSkC7TQpCsjnQ" value="The amount of time in seconds during which the line was unavailable as defined by ITU G.826."/>
+        </slot>
+        <slot xmi:id="_nK0nsE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_oPkpQE1VEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_uYnEEE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_u7RsQE1VEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_vLX9wE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_vuSdkE1VEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_v9KnEE1VEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_wtVfwE1VEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_HJoeQKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_UQoUMOG2EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_qtGoYE1lEeSkC7TQpCsjnQ" client="__nJCEE1UEeSkC7TQpCsjnQ" supplier="_7PEdgEsCEeSMzJQrhvNJaA"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_4KfakE1lEeSkC7TQpCsjnQ" client="_2lBaIEsLEeSkC7TQpCsjnQ" supplier="_7PEdgEsCEeSMzJQrhvNJaA"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_7hYd4E1lEeSkC7TQpCsjnQ" client="_2iymUE1MEeSkC7TQpCsjnQ" supplier="_7PEdgEsCEeSMzJQrhvNJaA"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_LVBVwE1mEeSkC7TQpCsjnQ" client="_i5X2EE1UEeSkC7TQpCsjnQ" supplier="_7PEdgEsCEeSMzJQrhvNJaA"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_OsAfsE1mEeSkC7TQpCsjnQ" client="_alVG0E1VEeSkC7TQpCsjnQ" supplier="_7PEdgEsCEeSMzJQrhvNJaA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_Las6QE1WEeSkC7TQpCsjnQ" name="RtnTgTransportStatistics">
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_Fnr9UE1XEeSkC7TQpCsjnQ" name="inAbisOctetsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_ILTJkE1XEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_Jh_2wE1XEeSkC7TQpCsjnQ" value="inAbisOctetsHC"/>
+        </slot>
+        <slot xmi:id="_J3DgwE1XEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_Kya80E1XEeSkC7TQpCsjnQ" value="inAbisOctetsHC"/>
+        </slot>
+        <slot xmi:id="_LLztME1XEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_Ls8rYE1XEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_MDHvsE1XEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_NOevkE1XEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_kV9BcE1XEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_F3_roN9OEeStTpH6QT_xTA" value="The number of octets received from the BSC. The counter counts transport session packets. Control connection messages are not included. The counter counts the load contributed by transport session packets at the IP level. Each packet increments the counter with the length of the entire IP packet, including the IP header."/>
+        </slot>
+        <slot xmi:id="_tgb0AE1XEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_ubYZUE1XEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_xuLm0E1XEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_yP2wgE1XEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_ylWfYE1XEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_zMoh0E1XEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_zYjd8E1XEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_0Fjt4E1XEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_VnQlcKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_RhuBcOG3EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_EucLsE1YEeSkC7TQpCsjnQ" name="outAbisOctetsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_qQ4jQE1hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_qulL4E1hEeSkC7TQpCsjnQ" value="outAbisOctetsHC"/>
+        </slot>
+        <slot xmi:id="_rOn94E1hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_sArs8E1hEeSkC7TQpCsjnQ" value="outAbisOctetsHC"/>
+        </slot>
+        <slot xmi:id="_sjHroE1hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_ta5BIE1hEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_uJnvYE1hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_u04S4E1hEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_vMkaIE1hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_oxmHwN9OEeStTpH6QT_xTA" value="The number of octets sent to the BSC. The counter counts transport session packets. Control connection messages are not included. The counter counts the load contributed by transport session packets at the IP level. Each packet increments the counter with the length of the entire IP packet, including the IP header."/>
+        </slot>
+        <slot xmi:id="_5OPTYE1hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_5_KaAE1hEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="__ocWsE1hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_AGdIYE1iEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_AVqCAE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_A2jvoE1iEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_BD0vkE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_BwclAE1iEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_dkC10KF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_XaYd8OG3EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_HgZKYE1iEeSkC7TQpCsjnQ" name="inAbisPacketsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_K_g8oE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_MJs30E1iEeSkC7TQpCsjnQ" value="inAbisPacketsHC"/>
+        </slot>
+        <slot xmi:id="_MiADEE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_NW4coE1iEeSkC7TQpCsjnQ" value="inAbisPacketsHC"/>
+        </slot>
+        <slot xmi:id="_Ny9UoE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_OYY88E1iEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_PX-xsE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_QCcrAE1iEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_QQMMEE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_T8gFwE1iEeSkC7TQpCsjnQ" value="The number of L2TP transport session packets received from the BSC, excluding control connection messages."/>
+        </slot>
+        <slot xmi:id="_UbiLIE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_V2K9IE1iEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_X47fEE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_YaLyAE1iEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_Yn76IE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_ZXMz4E1iEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_Zvy6EE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_ac20YE1iEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_ZLhWYKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_UXHhQOG3EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_gCausE1iEeSkC7TQpCsjnQ" name="outAbisPacketsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_ix9eIE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_kXtT8E1iEeSkC7TQpCsjnQ" value="outAbisPacketsHC"/>
+        </slot>
+        <slot xmi:id="_kn9WcE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_lYW4oE1iEeSkC7TQpCsjnQ" value="outAbisPacketsHC"/>
+        </slot>
+        <slot xmi:id="_lyKfwE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_mU0g4E1iEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_m4iR8E1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_nv_eYE1iEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_oJMokE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_qjqf4E1iEeSkC7TQpCsjnQ" value="The number of L2TP transport session packets sent to the BSC, excluding control connection messages."/>
+        </slot>
+        <slot xmi:id="_rJiNEE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_r3AXEE1iEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_vvN-wE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_wW3NkE1iEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_wmtncE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_xHxtIE1iEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_xY22EE1iEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_1gCG0E1iEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_fdkjQKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_YvAukOG3EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_NImTkE1jEeSkC7TQpCsjnQ" name="inAbisPacketsErrorsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_S_ToQE1jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_Uvw5QE1jEeSkC7TQpCsjnQ" value="inAbisPacketsErrorsHC"/>
+        </slot>
+        <slot xmi:id="_LFCjkE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_LoYhME1nEeSkC7TQpCsjnQ" value="inAbisPacketsErrorsHC"/>
+        </slot>
+        <slot xmi:id="_L3XYYE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_MVKHoE1nEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_M5BCoE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_NtZF4E1nEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_N6o3sE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_RdBZUE1nEeSkC7TQpCsjnQ" value="The number of L2TP packets received with checksum errors."/>
+        </slot>
+        <slot xmi:id="_R4E9oE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_Snm9IE1nEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_Vg7ToE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_WAvcIE1nEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_WR7SwE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_W2NrkE1nEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_XMD_wE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_X5tv8E1nEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_XW9BcKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_THnoQOG3EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_gKEZYE1jEeSkC7TQpCsjnQ" name="pmInstance">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_WHBeoL_7Ed-FYKAm2tRASg"/>
+        <slot xmi:id="_gLMawE1jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_WHeKkL_7Ed-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_herb4E1jEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_drSNUE1kEeSkC7TQpCsjnQ" name="TgTransportStatsPmGroup">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_uKLt8MABEd-FYKAm2tRASg"/>
+        <slot xmi:id="_jEHTME1kEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_uOfmMMABEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_nMHDUE1kEeSkC7TQpCsjnQ" value="TgTransport"/>
+        </slot>
+        <slot xmi:id="_ogD-gE1kEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_ib3pkNBQEd-v0N0F4ib9BA"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_pkHcgE1kEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_q8u1QE1kEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_PYCOcPo5EeCitcJoAgEPYQ"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_t-yRAE1kEeSkC7TQpCsjnQ" value="TG Transport statistics"/>
+        </slot>
+        <slot xmi:id="_Rvbp4E1lEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_sHLJ4OQ0EeC4FPW5luT0gw"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_VALo8E1lEeSkC7TQpCsjnQ" instance="_B3W98E1lEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Class" href="ECIM_PM.uml#_cKJiUNq5EeCclon5NRd6Fw?ECIM_PM/ECIM_PM/ManagedObjectClass?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_B3W98E1lEeSkC7TQpCsjnQ" name="TgTransportStats">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_cKJiUNq5EeCclon5NRd6Fw"/>
+        <slot xmi:id="_B4dKIE1lEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_cLEvYNq5EeCclon5NRd6Fw"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_MAl3wE1lEeSkC7TQpCsjnQ" value="TgTransport"/>
+        </slot>
+        <slot xmi:id="_B4dKIU1lEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_p-W5ENq5EeCclon5NRd6Fw"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_IxVGcE1lEeSkC7TQpCsjnQ" value="RtnTgTransportStatistics"/>
+        </slot>
+        <slot xmi:id="_B4dxME1lEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_wh9wANq5EeCclon5NRd6Fw"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_OOXW4E1lEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_B4dxMU1lEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_fe53QOQzEeC4FPW5luT0gw"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_PVUX4E1lEeSkC7TQpCsjnQ"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_5gMz0E1mEeSkC7TQpCsjnQ" client="_drSNUE1kEeSkC7TQpCsjnQ" supplier="_gKEZYE1jEeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_86ja0E1mEeSkC7TQpCsjnQ" client="_B3W98E1lEeSkC7TQpCsjnQ" supplier="_drSNUE1kEeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_C3GRwE1nEeSkC7TQpCsjnQ" client="_Fnr9UE1XEeSkC7TQpCsjnQ" supplier="_drSNUE1kEeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_dDgUQE1nEeSkC7TQpCsjnQ" client="_NImTkE1jEeSkC7TQpCsjnQ" supplier="_drSNUE1kEeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_gnpwcE1nEeSkC7TQpCsjnQ" client="_HgZKYE1iEeSkC7TQpCsjnQ" supplier="_drSNUE1kEeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_kGw7oE1nEeSkC7TQpCsjnQ" client="_EucLsE1YEeSkC7TQpCsjnQ" supplier="_drSNUE1kEeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_nbYHAE1nEeSkC7TQpCsjnQ" client="_gCausE1iEeSkC7TQpCsjnQ" supplier="_drSNUE1kEeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_0WvxQE1nEeSkC7TQpCsjnQ" name="inAbisPacketsLostHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_3rAXUE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_5c9dIE1nEeSkC7TQpCsjnQ" value="inAbisPacketsLostHC"/>
+        </slot>
+        <slot xmi:id="_5zE3EE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_8qX0UE1nEeSkC7TQpCsjnQ" value="inAbisPacketsLostHC"/>
+        </slot>
+        <slot xmi:id="_91ducE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_-SzxwE1nEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_-fuMYE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="__GOLsE1nEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="__bhtUE1nEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_ONPfUN9OEeStTpH6QT_xTA" value="The number of out-of-sequence or lost L2TP transport session packets received from the BSC."/>
+        </slot>
+        <slot xmi:id="_CB4EgE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_CxdHUE1oEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_EzgeoE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_FQQFAE1oEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_Fnuw4E1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_GDHFUE1oEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_GRrs0E1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_G7dpoE1oEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_bsYJkKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_V43A0OG3EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_MEh1ME1oEeSkC7TQpCsjnQ" client="_0WvxQE1nEeSkC7TQpCsjnQ" supplier="_drSNUE1kEeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_RFDIwE1oEeSkC7TQpCsjnQ" name="uplinkLAPDFramesDiscarded">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_UmjgoE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_VqEzIE1oEeSkC7TQpCsjnQ" value="uplinkLAPDFramesDiscardedHC"/>
+        </slot>
+        <slot xmi:id="_V6sCAE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_XQA2ME1oEeSkC7TQpCsjnQ" value="uplinkLAPDFramesDiscardedHC"/>
+        </slot>
+        <slot xmi:id="_Xt0zkE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_ZmzHYE1oEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_aAmugE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_asRhsE1oEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_bDbdcE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_foHcQNayEeS22s_Y5Qw08w" value="The number of uplink LAPD frames discarded because there is no active transport session to carry frames with the relevant SAPI value. This can be, for example, when the connection to the BSC is completely or partly lost, or in overload situations when the BSC has throttled down traffic and reconfigured the STN to throw frames."/>
+        </slot>
+        <slot xmi:id="_iFFiUE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_jEUKsE1oEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_kWj1sE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_k1OHoE1oEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_lGxKoE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_loKngE1oEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_l8f4wE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_mgxqgE1oEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_h79RQKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_xjc4kOG3EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_pltbIE1oEeSkC7TQpCsjnQ" client="_RFDIwE1oEeSkC7TQpCsjnQ" supplier="_drSNUE1kEeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_uKKdwE1oEeSkC7TQpCsjnQ" name="downlinkLAPDFramesDiscardedHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_xz3IUE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_ygwqkE1oEeSkC7TQpCsjnQ" value="downlinkLAPDFramesDiscardedHC"/>
+        </slot>
+        <slot xmi:id="_y6NFUE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_z5nT4E1oEeSkC7TQpCsjnQ" value="downlinkLAPDFramesDiscardedHC"/>
+        </slot>
+        <slot xmi:id="_0OR8UE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_0v-UIE1oEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_06SGsE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_1i2ikE1oEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_15jLUE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_hS1FkN9NEeStTpH6QT_xTA" value="The number of downlink LAPD frames discarded because there is no SuperChannel MO configured to carry frames with the relevant TEI value. The reason might be a configuration fault."/>
+        </slot>
+        <slot xmi:id="_6HRwAE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_7A4RgE1oEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_8YyfoE1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_805M0E1oEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_8-kGME1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_9at2sE1oEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_9vfz4E1oEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_-dgwcE1oEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_TRgPAKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_QBbTYOG3EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_BF69IE1pEeSkC7TQpCsjnQ" client="_uKKdwE1oEeSkC7TQpCsjnQ" supplier="_drSNUE1kEeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_mEPcUNE6EeS22s_Y5Qw08w" name="succeededEl2tpControlConnectionsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="__JMukNE6EeS22s_Y5Qw08w">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="__JNVoNE6EeS22s_Y5Qw08w" value="succeededEl2tpControlConnectionsHC"/>
+        </slot>
+        <slot xmi:id="_FWun0NE7EeS22s_Y5Qw08w">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_FWun0dE7EeS22s_Y5Qw08w" value="succeededEl2tpControlConnectionsHC"/>
+        </slot>
+        <slot xmi:id="_J9msUNE7EeS22s_Y5Qw08w">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_J9nTYNE7EeS22s_Y5Qw08w" value="8"/>
+        </slot>
+        <slot xmi:id="_LIDtQNE7EeS22s_Y5Qw08w">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_MCDQUNE7EeS22s_Y5Qw08w">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_MxH80NE7EeS22s_Y5Qw08w">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_-GOjAN9OEeStTpH6QT_xTA" value="The number of succeeded eL2TP control connections made. The counter is increased when a successful SCCRP is received."/>
+        </slot>
+        <slot xmi:id="_RjLWkNE7EeS22s_Y5Qw08w">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_Sma8QNE7EeS22s_Y5Qw08w">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_TWg8cNE7EeS22s_Y5Qw08w">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_upUpwOG3EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_U74XwNE7EeS22s_Y5Qw08w">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_Vq_ggNE7EeS22s_Y5Qw08w" value="1"/>
+        </slot>
+        <slot xmi:id="_WUiz0NE7EeS22s_Y5Qw08w">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_W3Wl8NE7EeS22s_Y5Qw08w"/>
+        </slot>
+        <slot xmi:id="_XJuvYNE7EeS22s_Y5Qw08w">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_X5jCwNE7EeS22s_Y5Qw08w" value="true"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_otVMMNE_EeS22s_Y5Qw08w" client="_mEPcUNE6EeS22s_Y5Qw08w" supplier="_drSNUE1kEeSkC7TQpCsjnQ"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_-i2d0E30EeSkC7TQpCsjnQ" name="RtnSuperChannelStatistics">
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_Hn3hkE31EeSkC7TQpCsjnQ" name="pmInstance">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_WHBeoL_7Ed-FYKAm2tRASg"/>
+        <slot xmi:id="_HpWvUE31EeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_WHeKkL_7Ed-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_I5HuEE31EeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_c6d8gE31EeSkC7TQpCsjnQ" name="SuperChannelStats">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_cKJiUNq5EeCclon5NRd6Fw"/>
+        <slot xmi:id="_nqiM0E31EeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_p-W5ENq5EeCclon5NRd6Fw"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_owXzgE31EeSkC7TQpCsjnQ" value="RtnSuperChannelStatistics"/>
+        </slot>
+        <slot xmi:id="_u_8UIE31EeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_cLEvYNq5EeCclon5NRd6Fw"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_zDELUE31EeSkC7TQpCsjnQ" value="SuperChannel"/>
+        </slot>
+        <slot xmi:id="_4Vbc0E31EeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_fe53QOQzEeC4FPW5luT0gw"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_5HQiYE31EeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_5c1JwE31EeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_wh9wANq5EeCclon5NRd6Fw"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_6QHA0E31EeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_I0X7gE32EeSkC7TQpCsjnQ" name="SuperChannelStatsPmGroup">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_uKLt8MABEd-FYKAm2tRASg"/>
+        <slot xmi:id="_dkR5EE32EeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_uOfmMMABEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_f4RU8E32EeSkC7TQpCsjnQ" value="SuperChannel"/>
+        </slot>
+        <slot xmi:id="_n1YVcE32EeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_sHLJ4OQ0EeC4FPW5luT0gw"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_rxrL4E32EeSkC7TQpCsjnQ" instance="_c6d8gE31EeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Class" href="ECIM_PM.uml#_cKJiUNq5EeCclon5NRd6Fw?ECIM_PM/ECIM_PM/ManagedObjectClass?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_uhyjEE32EeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_ib3pkNBQEd-v0N0F4ib9BA"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_vUbg8E32EeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_voIgEE32EeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_PYCOcPo5EeCitcJoAgEPYQ"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_z9tZME32EeSkC7TQpCsjnQ" value="SuperChannel statistics"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_40PDQE32EeSkC7TQpCsjnQ" client="_I0X7gE32EeSkC7TQpCsjnQ" supplier="_Hn3hkE31EeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_-EA60E32EeSkC7TQpCsjnQ" client="_c6d8gE31EeSkC7TQpCsjnQ" supplier="_I0X7gE32EeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_x9pM0E4gEeSkC7TQpCsjnQ" name="scFramesLostDownlinkHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_A_RY8E4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_Bmxd0E4hEeSkC7TQpCsjnQ" value="scFramesLostDownlinkHC"/>
+        </slot>
+        <slot xmi:id="_CIUEoE4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_C5WgAE4hEeSkC7TQpCsjnQ" value="scFramesLostDownlinkHC"/>
+        </slot>
+        <slot xmi:id="_Dak9wE4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_D6B54E4hEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_EH-PQE4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_E9Ui4E4hEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_FWNkAE4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_tWz_sN3rEeStTpH6QT_xTA" value="The number of frames discarded by the SC buffer (downlink). A discard can be caused by temporary overload, for example."/>
+        </slot>
+        <slot xmi:id="_HYlEYE4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_ITzWgE4hEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_KGA7AE4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_KoOQME4hEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_KxwmsE4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_LTGZME4hEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_LoDVgE4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_MXf1cE4hEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_L5FP8KF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_oeCosOG2EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_Q_mpAE4hEeSkC7TQpCsjnQ" name="scFramesDownlinkHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_XmjH0E4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_YE-JME4hEeSkC7TQpCsjnQ" value="scFramesDownlinkHC"/>
+        </slot>
+        <slot xmi:id="_YXjG8E4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_ZYV1kE4hEeSkC7TQpCsjnQ" value="scFramesDownlinkHC"/>
+        </slot>
+        <slot xmi:id="_ZrQxkE4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_aI1eYE4hEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_adaAME4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_bahvwE4hEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_bxdCAE4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_SgalAN3rEeStTpH6QT_xTA" value="The total number of frames handled by the SC buffer (downlink), including both discarded and sent frames."/>
+        </slot>
+        <slot xmi:id="_ePyssE4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_fGE0cE4hEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_hskVkE4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_ieAZkE4hEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_i1S4ME4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_jbNBoE4hEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_j_jE0E4hEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_kps1EE4hEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_Js99sKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_mJcI0OG2EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_DBCKcE4jEeSkC7TQpCsjnQ" name="scFramesUplinkHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_H119QE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_JN2SAE4jEeSkC7TQpCsjnQ" value="scFramesUplinkHC"/>
+        </slot>
+        <slot xmi:id="_JvN5sE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_K1pWQE4jEeSkC7TQpCsjnQ" value="scFramesUplinkHC"/>
+        </slot>
+        <slot xmi:id="_LU3B0E4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_L3-9AE4jEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_MaMSME4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_NsHNEE4jEeSkC7TQpCsjnQ" value="The number of frames received by the SC buffer (uplink) excluding error frames."/>
+        </slot>
+        <slot xmi:id="_OE3rUE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_O7cG8E4jEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_PKoZgE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_P3L9gE4jEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_Rm95EE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_SJzgYE4jEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_STMF4E4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_Sr45wE4jEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_TgltIE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_UTo6sE4jEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_NijvMKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_qddiwOG2EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_cG40kE4jEeSkC7TQpCsjnQ" name="scInOctetsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_eQN4kE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_eqA4oE4jEeSkC7TQpCsjnQ" value="scInOctetsHC"/>
+        </slot>
+        <slot xmi:id="_e_D7kE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_fvf6AE4jEeSkC7TQpCsjnQ" value="scInOctetsHC"/>
+        </slot>
+        <slot xmi:id="_gAimsE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_gbh5kE4jEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_hDnNQE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_h03EAE4jEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_iC4R4E4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_BHet0N3sEeStTpH6QT_xTA" value="The number of ingress octets received, corresponding to the number of ingress frames received, excluding error frames."/>
+        </slot>
+        <slot xmi:id="_kUyqIE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_lJGb8E4jEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_mwIEIE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_nbCpYE4jEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_nnZDUE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_oG8tIE4jEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_oUh2IE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_o9IHME4jEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_O_GlsKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_r1klMOG2EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_tjPWsE4jEeSkC7TQpCsjnQ" name="scOutOctetsHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_vfqAEE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_v3dcEE4jEeSkC7TQpCsjnQ" value="scOutOctetsHC"/>
+        </slot>
+        <slot xmi:id="_wKHSUE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_xF4-EE4jEeSkC7TQpCsjnQ" value="scOutOctetsHC"/>
+        </slot>
+        <slot xmi:id="_xiASUE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_yAj2kE4jEeSkC7TQpCsjnQ" value="8"/>
+        </slot>
+        <slot xmi:id="_yL91UE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_y84U4E4jEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_zSNrsE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_1j1wEE4jEeSkC7TQpCsjnQ" value="The number of egress octets sent, corresponding to the number of egress frames sent."/>
+        </slot>
+        <slot xmi:id="_178HAE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_2pPR4E4jEeSkC7TQpCsjnQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_49M4kE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_5X6eoE4jEeSkC7TQpCsjnQ" value="1"/>
+        </slot>
+        <slot xmi:id="_5jvUIE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_6LMVsE4jEeSkC7TQpCsjnQ"/>
+        </slot>
+        <slot xmi:id="_6WUnoE4jEeSkC7TQpCsjnQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_7Co7EE4jEeSkC7TQpCsjnQ" value="true"/>
+        </slot>
+        <slot xmi:id="_Qg_2QKF3EeSJhPEBAvuH2g">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_tEPXwOG2EeS4EIbj1QG1XQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_8VpaEE4uEeSkC7TQpCsjnQ" client="_Q_mpAE4hEeSkC7TQpCsjnQ" supplier="_I0X7gE32EeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_FB8b0E4vEeSkC7TQpCsjnQ" client="_x9pM0E4gEeSkC7TQpCsjnQ" supplier="_I0X7gE32EeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_MoIxIE4vEeSkC7TQpCsjnQ" client="_DBCKcE4jEeSkC7TQpCsjnQ" supplier="_I0X7gE32EeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_SDgNoE4vEeSkC7TQpCsjnQ" client="_cG40kE4jEeSkC7TQpCsjnQ" supplier="_I0X7gE32EeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_VexaoE4vEeSkC7TQpCsjnQ" client="_tjPWsE4jEeSkC7TQpCsjnQ" supplier="_I0X7gE32EeSkC7TQpCsjnQ"/>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_zPslkACQEeWIf9_r4zEshQ" name="scInErrorHC">
+        <classifier xmi:type="uml:Class" href="ECIM_PM.uml#_Saq1wMAIEd-FYKAm2tRASg"/>
+        <slot xmi:id="_D2NE0ACREeWIf9_r4zEshQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_SbRSsMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_FGGmcACREeWIf9_r4zEshQ" value="scInErrorHC"/>
+        </slot>
+        <slot xmi:id="_FR18YACREeWIf9_r4zEshQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_w8dkIMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_FoHuYACREeWIf9_r4zEshQ" value="scInErrorHC"/>
+        </slot>
+        <slot xmi:id="_F2bQIACREeWIf9_r4zEshQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_-0sfQMAIEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_GUXwYACREeWIf9_r4zEshQ" value="8"/>
+        </slot>
+        <slot xmi:id="_Go6dAACREeWIf9_r4zEshQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_jn_ygMAKEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_HaVS4ACREeWIf9_r4zEshQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_S3b00MAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_S4eWoMAJEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/CollectionMethod/CC?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_JA9ScACREeWIf9_r4zEshQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kNrAgMAMEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:LiteralString" xmi:id="_KROAcACREeWIf9_r4zEshQ" value="The number of ingress frames discarded due to errors in the frame, for example malformed header or FCS mismatch."/>
+        </slot>
+        <slot xmi:id="_NJq0QACREeWIf9_r4zEshQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_oIjsQMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_OGpZ4ACREeWIf9_r4zEshQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_CGK6QMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_RERRQMANEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/Aggregation/SUM?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_OUIcQACREeWIf9_r4zEshQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_5Of5gMANEd-FYKAm2tRASg"/>
+          <value xmi:type="uml:InstanceValue" xmi:id="_PGqFYACREeWIf9_r4zEshQ">
+            <type xmi:type="uml:Enumeration" href="ECIM_PM.uml#_JBHdsMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="ECIM_PM.uml#_JB3EkMAOEd-FYKAm2tRASg?ECIM_PM/ECIM_PM/MeasurementStatus/USED?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_QexH0ACREeWIf9_r4zEshQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_XCG4sOgmEeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_Q-QgMACREeWIf9_r4zEshQ" value="1"/>
+        </slot>
+        <slot xmi:id="_RJp34ACREeWIf9_r4zEshQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_kpYzcOg2EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralInteger" xmi:id="_RjhwcACREeWIf9_r4zEshQ"/>
+        </slot>
+        <slot xmi:id="_RuOkkACREeWIf9_r4zEshQ">
+          <definingFeature xmi:type="uml:Property" href="ECIM_PM.uml#_dhIh4Og3EeCi14KMiojsFg"/>
+          <value xmi:type="uml:LiteralBoolean" xmi:id="_Sbq5YACREeWIf9_r4zEshQ" value="true"/>
+        </slot>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_X3874ACREeWIf9_r4zEshQ" client="_zPslkACQEeWIf9_r4zEshQ" supplier="_I0X7gE32EeSkC7TQpCsjnQ"/>
+    </packagedElement>
+    <profileApplication xmi:id="_UeIAINCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAIdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAItCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAI9CzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/documentation#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://PAPYRUS_DOCUMENTATION/Papyrus.profile.uml#_H9068AEYEeCIz8iAxBJnfA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_lRy8cErXEeSMzJQrhvNJaA">
+      <eAnnotations xmi:id="_vyNFFJ0SEeW4ma0yeKsZYQ" source="PapyrusVersion">
+        <details xmi:id="_vyNFFZ0SEeW4ma0yeKsZYQ" key="Version" value="1.0.6"/>
+        <details xmi:id="_vyNFFp0SEeW4ma0yeKsZYQ" key="Comment" value=""/>
+        <details xmi:id="_vyNFF50SEeW4ma0yeKsZYQ" key="Copyright" value=""/>
+        <details xmi:id="_vyNFGJ0SEeW4ma0yeKsZYQ" key="Date" value="2015-12-07"/>
+        <details xmi:id="_vyNFGZ0SEeW4ma0yeKsZYQ" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_Ciyi0HGoEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_Ciyi0XGoEeWKa6xc8cMmlg" key="Version" value="1.0.5"/>
+        <details xmi:id="_Ciyi0nGoEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_Ciyi03GoEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_Ciyi1HGoEeWKa6xc8cMmlg" key="Date" value="2015-08-24"/>
+        <details xmi:id="_Ciyi1XGoEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_lgSEYErXEeSMzJQrhvNJaA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_cUcakNQkEd63X4o72aQidQ"/>
+    </profileApplication>
+    <profileApplication xmi:id="_XXhkgErYEeSMzJQrhvNJaA">
+      <eAnnotations xmi:id="_CjBMUHGoEeWKa6xc8cMmlg" source="PapyrusVersion">
+        <details xmi:id="_CjBMUXGoEeWKa6xc8cMmlg" key="Version" value="1.0.2"/>
+        <details xmi:id="_CjBMUnGoEeWKa6xc8cMmlg" key="Comment" value=""/>
+        <details xmi:id="_CjBMU3GoEeWKa6xc8cMmlg" key="Copyright" value=""/>
+        <details xmi:id="_CjBMVHGoEeWKa6xc8cMmlg" key="Date" value="2015-09-04"/>
+        <details xmi:id="_CjBMVXGoEeWKa6xc8cMmlg" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:id="_XXhkgUrYEeSMzJQrhvNJaA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_r97J4FMKEeWR9LrjkQMlmw"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_Br2_QBSXEd-ZjqYFUyJzOw"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_Gxbb8GW_EeWG3arGTiu4Mw" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ" createdBy="EAB/FJP/TA UABERPE" approvedBy="EAB/FJP/TA UABERPE"/>
+  <CoreMWProfile:CmwModel xmi:id="_G5BRsGW_EeWG3arGTiu4Mw" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_Gxbb8WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Package="_U-2LAEraEeSMzJQrhvNJaA" author="EAB/FJP/TA Erika Peterson " contact="EAB/FJP/TA Erika Peterson" date="" docNo="" revision="" version="1" release="3" organization="" ecimMomName="" correction="1"/>
+  <CoreMWProfile:CmwMom xmi:id="_G5BRsWW_EeWG3arGTiu4Mw" base_Package="_U-2LAEraEeSMzJQrhvNJaA" immNamespace="NONE"/>
+  <CoreMWProfile:CmwClass xmi:id="_G5BRsmW_EeWG3arGTiu4Mw" base_Class="_U_Ie4EraEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_Gxbb82W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Class="_U_Ie4EraEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_Gxbb9GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_U_SP4UraEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5BRs2W_EeWG3arGTiu4Mw" base_Property="_HxrUMErcEeSMzJQrhvNJaA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_Gxbb9WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="A maximum of two E1T1Port MOs can refer to the same EtPort MO.&#xA;portInterfaceNumber and encapsulation must be unique.&#xA;Encapsulation must refer to EtPort." disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" isAssociationEnd="true" base_Property="_HxrUMErcEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5BRtGW_EeWG3arGTiu4Mw" base_Property="_49eDkErcEeSMzJQrhvNJaA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_Gxbb9mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="The attributes encapsulation and portInterfaceNumber together specify the E1T1Port MO.&#xA;portInterfaceNumber and encapsulation must be unique." disturbances="" precondition="" sideEffects="" takesEffect="" range="0..1" unit="" resolution="" multiplicationFactor="" isNotifiable="true" base_Property="_49eDkErcEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5BRtWW_EeWG3arGTiu4Mw" base_Property="_Nqly4ErdEeSMzJQrhvNJaA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_Gxbb92W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_Nqly4ErdEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_Gxbb-GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Enumeration="_yCjqcErdEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_Gxbb-WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_EnumerationLiteral="_yCs0YUrdEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5BRtmW_EeWG3arGTiu4Mw" base_Property="_46EU0ErdEeSMzJQrhvNJaA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_Gxbb-mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_46EU0ErdEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KboGW_EeWG3arGTiu4Mw" base_Property="_JgmCMEreEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_Gxbb-2W_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_JgmCMEreEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KboWW_EeWG3arGTiu4Mw" base_Property="_T9fe4EreEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_Gxbb_GW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_T9fe4EreEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbomW_EeWG3arGTiu4Mw" base_Property="_1IuUsEreEeSMzJQrhvNJaA" isConfigurable="true" isPersistent="true"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_Gxbb_WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_1IuUsEreEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwContribution xmi:id="_G5Kbo2W_EeWG3arGTiu4Mw" splitImmDn="false" base_Association="_iZqioErgEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimContribution xmi:id="_Gxbb_mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_iZqioErgEeSMzJQrhvNJaA" isNotifiable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbpGW_EeWG3arGTiu4Mw" base_Property="_KThXIEriEeSMzJQrhvNJaA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_Gxbb_2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" length="1..128" pattern="" isNotifiable="true" base_Property="_KThXIEriEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_GxbcAGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Package="_FwYGoErjEeSMzJQrhvNJaA" author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" date="" docNo="" revision="" version="0" release="0" organization="" correction="0"/>
+  <CoreMWProfile:CmwMom xmi:id="_G5KbpWW_EeWG3arGTiu4Mw" base_Package="_FwYGoErjEeSMzJQrhvNJaA" immNamespace="MOM_NAME"/>
+  <ECIMBaseProfile:EcimDecisions xmi:id="_GxbcAWW_EeWG3arGTiu4Mw" base_Package="_xLG2UErjEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimDecision xmi:id="_GxbcA2W_EeWG3arGTiu4Mw" base_Class="_xLMV4ErjEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_GxbcBGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Package="_ZLbF4ErqEeSMzJQrhvNJaA" author="EAB/FJP/TA Erika Peterson " contact="EAB/FJP/TA Erika Peterson " date="" docNo="" revision="" version="1" release="3" organization="" ecimMomName="" ecimMomVersion="" correction="0"/>
+  <CoreMWProfile:CmwMom xmi:id="_G5KbpmW_EeWG3arGTiu4Mw" base_Package="_ZLbF4ErqEeSMzJQrhvNJaA" immNamespace="NONE"/>
+  <CoreMWProfile:CmwClass xmi:id="_G5Kbp2W_EeWG3arGTiu4Mw" base_Class="_ZLld8ErqEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_GxbcBWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Class="_ZLld8ErqEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_GxbcBmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_ZLv2AUrqEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbqGW_EeWG3arGTiu4Mw" base_Property="_lNUxgErqEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_GxbcB2W_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_lNUxgErqEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbqWW_EeWG3arGTiu4Mw" base_Property="_4jswUErqEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_GxbcCGW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_4jswUErqEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbqmW_EeWG3arGTiu4Mw" base_Property="_E7bskErsEeSMzJQrhvNJaA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_GxbcCWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="All TgTransport MOs must refer to the same AddressIPv4 MO." disturbances="Changing this attribute causes traffic disturbances." precondition="" sideEffects="" takesEffect="" isNotifiable="true" isAssociationEnd="true" base_Property="_E7bskErsEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_GxbcCmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Enumeration="_ZEz1oErsEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_GxbcC2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_EnumerationLiteral="_ZFE7YUrsEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_GxbcDWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_EnumerationLiteral="_dPRD4ErsEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_GxbcDmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_EnumerationLiteral="_gRjwMErsEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5Kbq2W_EeWG3arGTiu4Mw" base_Property="_qFJxMErsEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbrGW_EeWG3arGTiu4Mw" base_Property="_ut958ErtEeSMzJQrhvNJaA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_GxbcD2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="Changing this attribute causes traffic disturbances." precondition="" sideEffects="" takesEffect="" range="0..63" unit="" resolution="" multiplicationFactor="" isNotifiable="true" base_Property="_ut958ErtEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbrWW_EeWG3arGTiu4Mw" base_Property="_E4PjwEruEeSMzJQrhvNJaA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_GxbcEGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="Changing this attribute causes traffic disturbances." precondition="" sideEffects="" takesEffect="" range="1..100" unit="s" resolution="" multiplicationFactor="" isNotifiable="true" base_Property="_E4PjwEruEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbrmW_EeWG3arGTiu4Mw" base_Property="_pq8PgEruEeSMzJQrhvNJaA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_GxbcEWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="Changing this attribute causes traffic disturbances." precondition="" sideEffects="" takesEffect="" range="1..10" unit="" resolution="" multiplicationFactor="" isNotifiable="true" base_Property="_pq8PgEruEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5Kbr2W_EeWG3arGTiu4Mw" base_Property="_6yp-YEruEeSMzJQrhvNJaA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_GxbcEmW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="The value must be greater than or equal to the value of stnPgwL2TpInitialRetransPeriod." disturbances="Changing this attribute causes traffic disturbances." precondition="" sideEffects="" takesEffect="" range="1..10" unit="s" resolution="" multiplicationFactor="" isNotifiable="true" base_Property="_6yp-YEruEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbsGW_EeWG3arGTiu4Mw" base_Property="_C4utoErvEeSMzJQrhvNJaA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_GxbcE2W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="The value must be less than or equal to the value of stnPgwL2TpRetransCap." disturbances="Changing this attribute causes traffic disturbances." precondition="" sideEffects="" takesEffect="" range="1..10" unit="s" resolution="" multiplicationFactor="" isNotifiable="true" base_Property="_C4utoErvEeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwContribution xmi:id="_G5KbsWW_EeWG3arGTiu4Mw" splitImmDn="false" base_Association="_sQC0EErvEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimContribution xmi:id="_GxbcFGW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_sQC0EErvEeSMzJQrhvNJaA" isNotifiable="true"/>
+  <CoreMWProfile:CmwClass xmi:id="_G5KbsmW_EeWG3arGTiu4Mw" base_Class="_e7G90ErwEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_GxbcFWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Class="_e7G90ErwEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_GxlM8GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="The value of supperChannelId must be 0, 1, 2 or 3." disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_e7Z4wErwEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_GxlM8mW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_ushgwErzEeSMzJQrhvNJaA" isNotifiable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5Kbs2W_EeWG3arGTiu4Mw" base_Property="_EP7-4Er0EeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_GxlM82W_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_EP7-4Er0EeSMzJQrhvNJaA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbtGW_EeWG3arGTiu4Mw" base_Property="_PtfnUEr0EeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_GxlM9GW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_PtfnUEr0EeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimInstances xmi:id="_GxlM9WW_EeWG3arGTiu4Mw" base_Package="_ldWdoEsCEeSMzJQrhvNJaA" version="1" release="1" correction="0"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlM9mW_EeWG3arGTiu4Mw" base_InstanceSpecification="_7PEdgEsCEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimStructInstance xmi:id="_GxlM92W_EeWG3arGTiu4Mw" base_InstanceSpecification="_joqvwEsJEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlM-WW_EeWG3arGTiu4Mw" base_InstanceSpecification="_VZzA0EsKEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlM-mW_EeWG3arGTiu4Mw" base_Dependency="_9WnfMEsKEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlM-2W_EeWG3arGTiu4Mw" base_Dependency="_SKjBIEsLEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlM_GW_EeWG3arGTiu4Mw" base_InstanceSpecification="_2lBaIEsLEeSkC7TQpCsjnQ"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbtWW_EeWG3arGTiu4Mw" base_Property="_8oHPgE0wEeSkC7TQpCsjnQ" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_GxlM_WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="A maximum of one SuperChannel MO can refer to the same E1T1Port MO." disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" isAssociationEnd="true" base_Property="_8oHPgE0wEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlM_mW_EeWG3arGTiu4Mw" base_InstanceSpecification="_2iymUE1MEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlM_2W_EeWG3arGTiu4Mw" base_InstanceSpecification="_i5X2EE1UEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNAGW_EeWG3arGTiu4Mw" base_InstanceSpecification="__nJCEE1UEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNAWW_EeWG3arGTiu4Mw" base_InstanceSpecification="_alVG0E1VEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstances xmi:id="_GxlNA2W_EeWG3arGTiu4Mw" base_Package="_Las6QE1WEeSkC7TQpCsjnQ" version="1" release="1" correction="0"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNBGW_EeWG3arGTiu4Mw" base_InstanceSpecification="_Fnr9UE1XEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNBWW_EeWG3arGTiu4Mw" base_InstanceSpecification="_EucLsE1YEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNBmW_EeWG3arGTiu4Mw" base_InstanceSpecification="_HgZKYE1iEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNB2W_EeWG3arGTiu4Mw" base_InstanceSpecification="_gCausE1iEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNCGW_EeWG3arGTiu4Mw" base_InstanceSpecification="_NImTkE1jEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNCWW_EeWG3arGTiu4Mw" base_InstanceSpecification="_gKEZYE1jEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNCmW_EeWG3arGTiu4Mw" base_InstanceSpecification="_drSNUE1kEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimStructInstance xmi:id="_GxlNC2W_EeWG3arGTiu4Mw" base_InstanceSpecification="_B3W98E1lEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNDGW_EeWG3arGTiu4Mw" base_Dependency="_qtGoYE1lEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNDmW_EeWG3arGTiu4Mw" base_Dependency="_4KfakE1lEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlND2W_EeWG3arGTiu4Mw" base_Dependency="_7hYd4E1lEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNEGW_EeWG3arGTiu4Mw" base_Dependency="_LVBVwE1mEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNEWW_EeWG3arGTiu4Mw" base_Dependency="_OsAfsE1mEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNEmW_EeWG3arGTiu4Mw" base_Dependency="_5gMz0E1mEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNE2W_EeWG3arGTiu4Mw" base_Dependency="_86ja0E1mEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNFGW_EeWG3arGTiu4Mw" base_Dependency="_C3GRwE1nEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNFWW_EeWG3arGTiu4Mw" base_Dependency="_dDgUQE1nEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNFmW_EeWG3arGTiu4Mw" base_Dependency="_gnpwcE1nEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNF2W_EeWG3arGTiu4Mw" base_Dependency="_kGw7oE1nEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNGGW_EeWG3arGTiu4Mw" base_Dependency="_nbYHAE1nEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNGWW_EeWG3arGTiu4Mw" base_InstanceSpecification="_0WvxQE1nEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNGmW_EeWG3arGTiu4Mw" base_Dependency="_MEh1ME1oEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNG2W_EeWG3arGTiu4Mw" base_InstanceSpecification="_RFDIwE1oEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNHGW_EeWG3arGTiu4Mw" base_Dependency="_pltbIE1oEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNHWW_EeWG3arGTiu4Mw" base_InstanceSpecification="_uKKdwE1oEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNHmW_EeWG3arGTiu4Mw" base_Dependency="_BF69IE1pEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstances xmi:id="_GxlNH2W_EeWG3arGTiu4Mw" base_Package="_-i2d0E30EeSkC7TQpCsjnQ" version="1" release="2" correction="0"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNIGW_EeWG3arGTiu4Mw" base_InstanceSpecification="_Hn3hkE31EeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimStructInstance xmi:id="_GxlNIWW_EeWG3arGTiu4Mw" base_InstanceSpecification="_c6d8gE31EeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNImW_EeWG3arGTiu4Mw" base_InstanceSpecification="_I0X7gE32EeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNI2W_EeWG3arGTiu4Mw" base_Dependency="_40PDQE32EeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNJGW_EeWG3arGTiu4Mw" base_Dependency="_-EA60E32EeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNJWW_EeWG3arGTiu4Mw" base_InstanceSpecification="_x9pM0E4gEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNJmW_EeWG3arGTiu4Mw" base_InstanceSpecification="_Q_mpAE4hEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNKGW_EeWG3arGTiu4Mw" base_InstanceSpecification="_DBCKcE4jEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNKWW_EeWG3arGTiu4Mw" base_InstanceSpecification="_cG40kE4jEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxlNKmW_EeWG3arGTiu4Mw" base_InstanceSpecification="_tjPWsE4jEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNK2W_EeWG3arGTiu4Mw" base_Dependency="_8VpaEE4uEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNLGW_EeWG3arGTiu4Mw" base_Dependency="_FB8b0E4vEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNLWW_EeWG3arGTiu4Mw" base_Dependency="_MoIxIE4vEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNLmW_EeWG3arGTiu4Mw" base_Dependency="_SDgNoE4vEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxlNL2W_EeWG3arGTiu4Mw" base_Dependency="_VexaoE4vEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimClientAssociationEnd xmi:id="_GxlNMGW_EeWG3arGTiu4Mw" base_Property="_YmCOsFBtEeSkC7TQpCsjnQ" isReserving="true"/>
+  <ECIMBaseProfile:EcimBiDirAssociation_CS xmi:id="_GxlNMWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_Yl8vIFBtEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimServerAssociationEnd xmi:id="_GxlNMmW_EeWG3arGTiu4Mw" base_Property="_YmED4VBtEeSkC7TQpCsjnQ"/>
+  <ECIMBaseProfile:EcimAbstractMoClass xmi:id="_GxlNM2W_EeWG3arGTiu4Mw" base_Class="_FwpMYErjEeSMzJQrhvNJaA" hideGroupName="" specification="" status="OBSOLETE" statusInformation=""/>
+  <ECIMBaseProfile:EcimClientAssociationEnd xmi:id="_GxlNNGW_EeWG3arGTiu4Mw" base_Property="_FJgSoIFDEeShx7XrX2zKPA" isReserving="true"/>
+  <ECIMBaseProfile:EcimBiDirAssociation_CS xmi:id="_GxlNNWW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_FJfrkIFDEeShx7XrX2zKPA"/>
+  <ECIMBaseProfile:EcimServerAssociationEnd xmi:id="_GxuW4GW_EeWG3arGTiu4Mw" base_Property="_FJg5sYFDEeShx7XrX2zKPA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbtmW_EeWG3arGTiu4Mw" base_Property="_mxxG0IRxEeShx7XrX2zKPA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_GxuW4WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="Multicast IP address and broadcast address are not allowed." disturbances="Changing this attribute causes traffic disturbances." precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_mxxG0IRxEeShx7XrX2zKPA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5Kbt2W_EeWG3arGTiu4Mw" base_Property="_Lbc5IIR1EeShx7XrX2zKPA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_GxuW4mW_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_Lbc5IIR1EeShx7XrX2zKPA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_GxuW42W_EeWG3arGTiu4Mw" isPersistent="false" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_qFJxMErsEeSMzJQrhvNJaA"/>
+  <ECIMBaseProfile:EcimClientAssociationEnd xmi:id="_GxuW5GW_EeWG3arGTiu4Mw" base_Property="_ICmBgIUmEeSGLIQSQ-4Ovg" isReserving="true"/>
+  <ECIMBaseProfile:EcimBiDirAssociation_CS xmi:id="_GxuW5WW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" base_Association="_H64P8IUmEeSGLIQSQ-4Ovg"/>
+  <ECIMBaseProfile:EcimServerAssociationEnd xmi:id="_GxuW5mW_EeWG3arGTiu4Mw" base_Property="_ICn2sIUmEeSGLIQSQ-4Ovg"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_GxuW52W_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" range="0..10000" unit="" resolution="" multiplicationFactor="" isNotifiable="true" base_Property="_5XmOQNE4EeS22s_Y5Qw08w"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbuGW_EeWG3arGTiu4Mw" base_Property="_5XmOQNE4EeS22s_Y5Qw08w" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbuWW_EeWG3arGTiu4Mw" base_Property="_Zm8qoNE5EeS22s_Y5Qw08w" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_GxuW6GW_EeWG3arGTiu4Mw" hideGroupName="" specification="" statusInformation="" dependencies="The value of overloadReportInterval must be 1." disturbances="" precondition="" sideEffects="" takesEffect="" range="1..10" unit="s" resolution="" multiplicationFactor="" isNotifiable="true" base_Property="_Zm8qoNE5EeS22s_Y5Qw08w"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxuW6WW_EeWG3arGTiu4Mw" base_InstanceSpecification="_mEPcUNE6EeS22s_Y5Qw08w"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxuW6mW_EeWG3arGTiu4Mw" base_Dependency="_otVMMNE_EeS22s_Y5Qw08w"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_GxuW62W_EeWG3arGTiu4Mw" base_InstanceSpecification="_zPslkACQEeWIf9_r4zEshQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_GxuW7GW_EeWG3arGTiu4Mw" base_Dependency="_X3874ACREeWIf9_r4zEshQ"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbumW_EeWG3arGTiu4Mw" base_Property="_U_SP4UraEeSMzJQrhvNJaA" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5Kbu2W_EeWG3arGTiu4Mw" base_Property="_ZLv2AUrqEeSMzJQrhvNJaA" isPersistent="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_G5KbvGW_EeWG3arGTiu4Mw" base_Property="_e7Z4wErwEeSMzJQrhvNJaA" isPersistent="true"/>
+  <ECIMBaseProfile:EcimSchematronConstraint xmi:id="_GxuW7WW_EeWG3arGTiu4Mw" interfaceVersion="1.0" interfaceName="ECIM_Schematron" base_Constraint="_TtXHYP33EeSHYrPPcWe7bA"/>
+  <ECIMBaseProfile:EcimSchematronConstraint xmi:id="_GxuW7mW_EeWG3arGTiu4Mw" interfaceVersion="1.0" interfaceName="ECIM_Schematron" base_Constraint="_G-FUQL3AEeS22s_Y5Qw08w"/>
+  <ECIMBaseProfile:EcimSchematronConstraint xmi:id="_GxuW72W_EeWG3arGTiu4Mw" interfaceVersion="1.0" interfaceName="ECIM_Schematron" base_Constraint="_0G2-UNFBEeS22s_Y5Qw08w"/>
+  <Documentation:Documentation xmi:id="_COv68GW_EeWG3arGTiu4Mw" base_Comment="_BZyFYErZEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv68WW_EeWG3arGTiu4Mw" base_Comment="_U_BKIUraEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv68mW_EeWG3arGTiu4Mw" base_Comment="_U_OlgkraEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv682W_EeWG3arGTiu4Mw" base_Comment="_U_V6QEraEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv69GW_EeWG3arGTiu4Mw" base_Comment="_HxwMsErcEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv69WW_EeWG3arGTiu4Mw" base_Comment="_49i8EUrcEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv69mW_EeWG3arGTiu4Mw" base_Comment="_Nqu80UrdEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv692W_EeWG3arGTiu4Mw" base_Comment="_yCn74UrdEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv6-GW_EeWG3arGTiu4Mw" base_Comment="_yCxF0UrdEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv6-WW_EeWG3arGTiu4Mw" base_Comment="_46M3sUrdEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv6-mW_EeWG3arGTiu4Mw" base_Comment="_Jgq6sUreEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv6-2W_EeWG3arGTiu4Mw" base_Comment="_T9jwUUreEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv6_GW_EeWG3arGTiu4Mw" base_Comment="_1I4swUreEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv6_WW_EeWG3arGTiu4Mw" base_Comment="_KTrIIUriEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv6_mW_EeWG3arGTiu4Mw" base_Comment="_FwgCcErjEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv6_2W_EeWG3arGTiu4Mw" base_Comment="_FwwhIUrjEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7AGW_EeWG3arGTiu4Mw" base_Comment="_ZLf-YUrqEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7AWW_EeWG3arGTiu4Mw" base_Comment="_ZLq9gUrqEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7AmW_EeWG3arGTiu4Mw" base_Comment="_ZL0ugErqEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7A2W_EeWG3arGTiu4Mw" base_Comment="_lNaREUrqEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7BGW_EeWG3arGTiu4Mw" base_Comment="_4jy28UrqEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7BWW_EeWG3arGTiu4Mw" base_Comment="_E7jBUErsEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7BmW_EeWG3arGTiu4Mw" base_Comment="_ZE8_kUrsEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7B2W_EeWG3arGTiu4Mw" base_Comment="_ZFPTcUrsEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7CGW_EeWG3arGTiu4Mw" base_Comment="_dPVVUUrsEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7CWW_EeWG3arGTiu4Mw" base_Comment="_gRoBoUrsEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7CmW_EeWG3arGTiu4Mw" base_Comment="_qFPQwUrsEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7C2W_EeWG3arGTiu4Mw" base_Comment="_uuCycUrtEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7DGW_EeWG3arGTiu4Mw" base_Comment="_E4VDUUruEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7DWW_EeWG3arGTiu4Mw" base_Comment="_prBIAUruEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7DmW_EeWG3arGTiu4Mw" base_Comment="_6yzvYUruEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7D2W_EeWG3arGTiu4Mw" base_Comment="_C42CYUrvEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7EGW_EeWG3arGTiu4Mw" base_Comment="_e7SkAErwEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7EWW_EeWG3arGTiu4Mw" base_Comment="_e7gmcUrwEeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7EmW_EeWG3arGTiu4Mw" base_Comment="_EQCskEr0EeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7E2W_EeWG3arGTiu4Mw" base_Comment="_PtzwYEr0EeSMzJQrhvNJaA"/>
+  <Documentation:Documentation xmi:id="_COv7FGW_EeWG3arGTiu4Mw" base_Comment="_8oOkQU0wEeSkC7TQpCsjnQ"/>
+  <Documentation:Documentation xmi:id="_COv7FWW_EeWG3arGTiu4Mw" base_Comment="_mx6QwYRxEeShx7XrX2zKPA"/>
+  <Documentation:Documentation xmi:id="_COv7FmW_EeWG3arGTiu4Mw" base_Comment="_LbhKkYR1EeShx7XrX2zKPA"/>
+  <Documentation:Documentation xmi:id="_COv7F2W_EeWG3arGTiu4Mw" base_Comment="_5XqfstE4EeS22s_Y5Qw08w"/>
+  <Documentation:Documentation xmi:id="_COv7GGW_EeWG3arGTiu4Mw" base_Comment="_ZnEmcNE5EeS22s_Y5Qw08w"/>
+</xmi:XMI>

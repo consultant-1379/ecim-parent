@@ -1,0 +1,405 @@
+-- /**
+-- * This transform maps the different EcimRelationship types (containment, contribution, bi-dir etc) to MP RelationshipType
+-- *
+-- * Note: It would have been nice to have these rules layered as they are in the ECIM Profile but this is not possible as
+-- * ATL does not support multiple inheritance, making this impossible. We do have one layer of inheritance though.
+-- *
+-- * superimposition-dependencies: ECIMtoMP 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 03/02/2010
+-- */
+
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module MOAssociationMappingRules;
+create OUT : MP from IN : UML;
+
+
+lazy rule ContributionAssociationToInterMim
+{
+	from s: UML!Association(s.hasStereotype('ECIM Base Profile::EcimContribution'))
+	to t: MP!InterMimType
+	(
+		description <- thisModule.hasDescription(s),
+		relationship <- s
+		
+		--CPP properties that are not supported
+		--applicationTag
+		--domainExtension <-
+	)
+}
+
+rule AssociationToRelationshipWhereEndsAreNotAbstract
+{
+	--from s: UML!Association(s.memberEnd->forAll(e|e.type.isAbstract = false) and (s.hasStereotype('ECIM Base Profile::EcimContainment')))
+	from s: UML!Association(s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimMom') and s.memberEnd->forAll(e|e.type.oclIsUndefined() = false and thisModule.isAbstractEnd(e.type) = false) and (s.hasStereotype('ECIM Base Profile::EcimContainment') or s.hasStereotype('ECIM Base Profile::EcimContribution')))
+	using 
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(s);	
+	}	
+	to t: MP!RelationshipType
+	(
+		name <- thisModule.defineRelationshipName(s),
+		description <- thisModule.hasDescription(s),		
+		containment <- containmentType,
+		dependenciesScript <- thisModule.hasConstraint(s),
+		
+		--before creating the extensions we group them by domain so that they can be outputted together
+		domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,s)),
+		
+		--support the ECIMGeneralProperties
+		deprecated <- thisModule.isDeprecated(s),
+		obsolete <- thisModule.isObsolete(s),
+		preliminary <- thisModule.isPreliminary(s),
+		statusInformation <- thisModule.hasStatusInformation(s),
+		filter <- thisModule.hasFilter(s),
+		specification <- thisModule.hasSpecification(s),
+		decisionPoint <- thisModule.hasDecisionPoint(s)		
+		
+		--CPP properties that are not supported
+		--applicationTag
+		--biDirectionalAssociation <- *This is supported elsewhere*
+		--dependencies <- 
+		--domainExtension <- 
+		--feature <- 
+		--inheritance <- 
+		--interfaceOnly <-
+		--uniDirectionalAssociation <- 
+		--visibility <-
+	),
+	containmentType : MP!ContainmentType
+	(
+		--you must send in the opposite member end property to get the right type out in the next two lines
+		parent <- s.memberEnd->select(e|e.aggregation=#none)->collect(e|thisModule.MemberEndToParentType(e))->first(),	
+		--only do this for non abstract classes
+		child <- s.memberEnd->select(e|e.aggregation=#composite)->collect(e|thisModule.MemberEndToChildType(e)),
+		noNotification <- thisModule.isNoNotification(s),
+		notCreatable <- if(not s.getValue(s.getEcimAppliedStereotype(),'canCreate')) then MP!NotCreatableType.newInstance() else OclUndefined endif,
+		notDeleteable <- if(not s.getValue(s.getEcimAppliedStereotype(),'canDelete')) then MP!NotDeleteableType.newInstance() else OclUndefined endif,
+		domainExtension <- if (thisModule.generateCanCreateCanDeleteAsDomainExtension()) then canCreateCanDeleteDomainExtension else OclUndefined endif
+	),
+	canCreateCanDeleteDomainExtension : MP!DomainExtensionType
+	(
+		domain <- 'ECIM',
+		extension <- canCreateExtension,
+		extension <- canDeleteExtension
+	),
+	canCreateExtension : MP!ExtensionType
+	(
+		name <- 'canCreate',
+		value <- s.getValue(s.getEcimAppliedStereotype(),'canCreate').toString()
+	),
+	canDeleteExtension : MP!ExtensionType
+	(
+		name <- 'canDelete',
+		value <- s.getValue(s.getEcimAppliedStereotype(),'canDelete').toString()
+	)
+}
+
+
+lazy rule MemberEndToParentType--Change name!
+{
+	from s: UML!Property
+	to parentType : MP!ParentType
+	(
+		description <- thisModule.hasDescription(s),
+		hasClass <- hasClassType
+		
+		--CPP properties that are not supported
+		--applicationTag <-
+	),
+	hasClassType: MP!HasClassType
+	(
+		name <- s.type.name,
+		mimName <- thisModule.hasMimNameType(s.type.owner),
+		mimVersion <- thisModule.hasMimVersionType(s.type.owner)
+	)	
+}
+
+lazy rule MemberEndToChildType
+{
+	from s: UML!Property
+	to childType : MP!ChildType
+	(
+		description <- thisModule.hasDescription(s),
+		hasClass <- hasClassType,
+		cardinality <- cardinality
+		
+		--CPP properties that are not supported
+		--applicationTag <-
+	),
+	hasClassType: MP!HasClassType
+	(
+		name <- s.type.name,
+		mimName <- thisModule.hasMimNameType(s.type.owner),
+		mimVersion <- thisModule.hasMimVersionType(s.type.owner)
+	),
+	cardinality: MP!CardinalityType
+	(
+		min <- thisModule.CreateMinType(s.lower.toString()),
+		max <- thisModule.isMaxUnbounded(s.upper)
+		
+		--CPP properties that are not supported
+		--min1 <- 
+		--max1 <- 		
+	)	
+}
+
+-- Bidirectional Association mapping rules start here
+rule BiDirectionalAssociationToRelationship
+{
+	from s: UML!Association(s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimMom') and s.memberEnd->forAll(e|e.type.oclIsUndefined() = false and thisModule.isAbstractEnd(e.type) = false) and (s.hasStereotype('ECIM Base Profile::EcimBiDirAssociation') or s.hasStereotype('ECIM Base Profile::EcimBiDirAssociation_CS')))
+	using
+	{
+		--Use a strategy in the getClientEnd method to try and find the client end
+		clientProperty : UML!Property = thisModule.getClientEnd(s.ownedEnd);
+		
+		--The server will be the side the client is not
+		serverProperty : UML!Property = clientProperty.owningAssociation.ownedEnd->select(f|f<>clientProperty)->first();
+	}
+	to t: MP!RelationshipType
+	(
+		name <- thisModule.defineBiDirRelationshipName(s, clientProperty, serverProperty),
+		dependenciesScript <- thisModule.hasConstraint(s),
+		description <- thisModule.hasDescription(s),
+		biDirectionalAssociation <- biDirAssociationType,
+
+		--dependenciesScript <- thisModule.hasConstraint(s),	
+		--support the ECIMGeneralProperties
+		deprecated <- thisModule.isDeprecated(s),
+		obsolete <- thisModule.isObsolete(s),
+		preliminary <- thisModule.isPreliminary(s),
+		statusInformation <- thisModule.hasStatusInformation(s),
+		filter <- thisModule.hasFilter(s),
+		specification <- thisModule.hasSpecification(s)
+		
+		--CPP properties that are not supported
+		--applicationTag <- 
+		--containment <- --*Supported elsewhere*
+		--dependencies <- 
+		--domainExtension <- 
+		--feature <- 
+		--inheritance <- 
+		--interfaceOnly <-
+		--uniDirectionalAssociation <- 
+		--visibility <-		
+	),
+	biDirAssociationType : MP!BiDirectionalAssociationType (	
+		associationEnd <- thisModule.createBiDirAssociationEnds(serverProperty, clientProperty)		
+	)
+}
+	
+--The client is the read-only side if there is only one, or it is the side named "reservedBy". If neither of these conditions hold then it is random
+helper def : getClientEnd(ends:Sequence(UML!Property)) : UML!Property =
+	let reservedByEnd : Sequence(UML!Property) = ends->select(e|e.name.startsWith('reservedBy'))->first() in--look for an end with the special name "reservedBy"
+	let singleReadOnlyEnd : Sequence(UML!Property) = ends->select(e|e.type.getAllAttributes()->one(a|a.isReadOnly and a.name=ends->select(f|f<>e)->first().name))->first() in
+	if(not reservedByEnd.oclIsUndefined())
+	then
+		reservedByEnd
+	else
+		if(not singleReadOnlyEnd.oclIsUndefined())
+		then
+			singleReadOnlyEnd
+		else
+			--choose the first end as we cannot determine which is the client/server end
+			ends.at(1)
+		endif
+	endif;
+
+helper def : createBiDirAssociationEnds(p1:UML!Property, p2:UML!Property) : Sequence(MP!AssociationEndType) =
+	Sequence{thisModule.MemberEndToAssociationEndType(p1, p2), thisModule.MemberEndToAssociationEndType(p2, p1)};
+
+
+rule MemberEndToAssociationEndType(s: UML!Property, other: UML!Property)
+{
+	to associationEndType : MP!AssociationEndType
+	(
+		description <- thisModule.hasDescription(s),
+		name <- s.name,
+		hasClass <- hasClassType,
+		cardinality <- cardinality,
+		isReserving <- if (s.getValue(s.getEcimAppliedStereotype(),'isReserving')=true) then isReserving else OclUndefined endif
+		
+		--CPP properties that are not supported
+		--applicationTag <- 	
+		--deletionPolicy <- 
+		--domainExtension <- 
+	),
+	hasClassType: MP!HasClassType
+	(
+		name <- s.type.name,
+		mimName <- thisModule.hasMimNameType(s.type.owner),
+		mimVersion <- thisModule.hasMimVersionType(s.type.owner)
+	),
+	cardinality: MP!CardinalityType
+	(
+		min <- thisModule.CreateMinType(s.lower.toString()),
+		max <- thisModule.isMaxUnbounded(s.upper)
+		
+		--CPP properties that are not supported
+		--min1 <- 
+		--max1 <- 				
+	),
+	isReserving : MP!IsReservingType
+	(
+	)
+	do
+	{
+		associationEndType;
+	}
+}
+
+
+-- Unidirectional Association mapping rules start here
+rule UniDirectionalAssociationToRelationship
+{
+	from s: UML!Association(s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimMom') and (s.memberEnd->forAll(e|thisModule.isAbstractEnd(e.type) = false) and (s.hasStereotype('ECIM Base Profile::EcimUniDirAssociation'))))
+	using
+	{
+		--We have a fixed name for association end pointing back
+		backProperty : UML!Property = s.ownedEnd->select(e|e.name='_uniDirBP')->first();
+		                                                           
+		--The forward will be the side the back is not
+		forwardProperty : UML!Property = backProperty.owningAssociation.ownedEnd->select(f|f<>backProperty)->first();
+	}
+	to t: MP!RelationshipType
+	(
+		name <- backProperty.type.name + '_' + forwardProperty.name + '_to_' + forwardProperty.type.name,
+		dependenciesScript <- thisModule.hasConstraint(s),
+		description <- thisModule.hasDescription(s),
+		uniDirectionalAssociation <- uniDirAssociationType,
+
+		--dependenciesScript <- thisModule.hasConstraint(s),	
+		--support the ECIMGeneralProperties
+		deprecated <- thisModule.isDeprecated(s),
+		obsolete <- thisModule.isObsolete(s),
+		preliminary <- thisModule.isPreliminary(s),
+		statusInformation <- thisModule.hasStatusInformation(s),
+		filter <- thisModule.hasFilter(s),
+		specification <- thisModule.hasSpecification(s)
+		
+		--CPP properties that are not supported
+		--applicationTag <- 
+		--containment <- --*Supported elsewhere*
+		--dependencies <- 
+		--domainExtension <- 
+		--feature <- 
+		--inheritance <- 
+		--interfaceOnly <-
+		--uniDirectionalAssociation <- 
+		--visibility <-		
+	),
+	uniDirAssociationType : MP!UniDirectionalAssociationType (	
+		hasClass <- hasClassType,
+		associationEnd <- thisModule.UniAssociationEndType(forwardProperty)	
+	),
+	hasClassType : MP!HasClassType (
+		name <- backProperty.type.name,
+		mimName <- thisModule.CreateMimNameType(s.getNearestPackage().name) 
+	)
+}
+	
+
+
+rule UniAssociationEndType(forwardProperty: UML!Property) 
+{
+	to associationEndType : MP!AssociationEndType
+	(
+		description <- thisModule.hasDescription(forwardProperty),
+		name <- forwardProperty.name,
+		hasClass <- hasClassType,
+		cardinality <- cardinality
+		
+		--CPP properties that are not supported
+		--applicationTag <- 	
+		--deletionPolicy <- 
+		--domainExtension <- 
+	),
+	hasClassType: MP!HasClassType
+	(
+		name <- forwardProperty.type.name,
+		mimName <- thisModule.hasMimNameType(forwardProperty.type.owner),
+		mimVersion <- thisModule.hasMimVersionType(forwardProperty.type.owner)
+	),
+	cardinality: MP!CardinalityType
+	(
+		min <- thisModule.CreateMinType(forwardProperty.lower.toString()),
+		max <- thisModule.isMaxUnbounded(forwardProperty.upper)
+		
+		--CPP properties that are not supported
+		--min1 <- 
+		--max1 <- 				
+	)
+	do
+	{
+		associationEndType;
+	}
+}
+
+
+
+
+-- Generalization mapping rules start here
+
+--rule GeneralizationToInheritanceRelationship
+--{
+--	from s: UML!Generalization(s.hasStereotype('ECIM Base Profile::EcimGeneralization'))
+--	to t: MP!RelationshipType
+--	(
+--		name <- s.specific.name + '_inherits_' + s.general.name,
+--		description <- thisModule.hasDescription(s),
+--		inheritance <- inheritanceType,
+--		
+--		--dependenciesScript <- thisModule.hasConstraint(s),	
+--		--support the ECIMGeneralProperties
+--		deprecated <- thisModule.isDeprecated(s),
+--		obsolete <- thisModule.isObsolete(s),
+--		preliminary <- thisModule.isPreliminary(s),
+--		statusInformation <- thisModule.hasStatusInformation(s),
+--		filter <- thisModule.hasFilter(s),
+--		specification <- thisModule.hasSpecification(s)
+--
+--	),
+--	inheritanceType : MP!InheritanceType 
+--	(
+--		superclass <- thisModule.CreateSuperClass(s.general),
+--		subclass <- thisModule.CreateSubClass(s.specific)
+--	)
+--}
+--
+--lazy rule CreateSuperClass
+--{
+--	from s: UML!Class
+--	to superClassType : MP!SuperclassType
+--	(
+--		description <- thisModule.hasDescription(s),
+--		hasClass <- hasClassType
+--	),
+--	hasClassType: MP!HasClassType
+--	(
+--		name <- s.name,
+--		mimName <- thisModule.hasMimNameType(s.owner),
+--		mimVersion <- thisModule.hasMimVersionType(s.owner)
+--	)
+--}
+--
+--lazy rule CreateSubClass
+--{
+--	from s: UML!Class
+--	to subClassType : MP!SubclassType
+--	(
+--		description <- thisModule.hasDescription(s),
+--		hasClass <- hasClassType
+--	),
+--	hasClassType: MP!HasClassType
+--	(
+--		name <- s.name,
+--		mimName <- thisModule.hasMimNameType(s.owner),
+--		mimVersion <- thisModule.hasMimVersionType(s.owner)
+--	)
+--}

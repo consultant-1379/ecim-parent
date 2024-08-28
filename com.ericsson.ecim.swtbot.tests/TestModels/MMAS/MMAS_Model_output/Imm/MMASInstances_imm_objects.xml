@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Oct 13, 2015 12:58:04 PM using:
+	* com.ericsson.ecim.coremw.m2m 3.0.2.qualifier
+	* com.ericsson.ecim.coremw.dsl 3.0.2.qualifier
+	* com.ericsson.ecim.coremw.imm 3.0.2.qualifier
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="Mmas">
+        <dn>mmasId=1</dn>
+    </object>
+    <object class="MmasAmf">
+        <dn>mmasAmfId=1,mmasId=1</dn>
+        <attr>
+            <name>threadPoolSize</name>
+            <value>10</value>
+        </attr>
+        <attr>
+            <name>shutdownWhenDeactive</name>
+            <value>1</value>
+        </attr>
+    </object>
+    <object class="MmasDns">
+        <dn>mmasDnsId=1,mmasId=1</dn>
+        <attr>
+            <name>dnsServerList</name>
+            <value/>
+        </attr>
+        <attr>
+            <name>dnsCacheSize</name>
+            <value>20000</value>
+        </attr>
+        <attr>
+            <name>dnsPingAttemtThreshold</name>
+            <value>2</value>
+        </attr>
+        <attr>
+            <name>dnsPingInterval</name>
+            <value>30</value>
+        </attr>
+        <attr>
+            <name>dnsPingQuery</name>
+            <value>.</value>
+        </attr>
+    </object>
+    <object class="MmasCommon">
+        <dn>mmasCommonId=1,mmasId=1</dn>
+        <attr>
+            <name>adminHost</name>
+            <value>192.168.0.100</value>
+        </attr>
+        <attr>
+            <name>adminPort</name>
+            <value>8686</value>
+        </attr>
+        <attr>
+            <name>oamPort</name>
+            <value>38686</value>
+        </attr>
+        <attr>
+            <name>adminUser</name>
+            <value>admin</value>
+        </attr>
+    </object>
+    <object class="MmasMonitoring">
+        <dn>mmasMonitoringId=1,mmasId=1</dn>
+    </object>
+    <object class="MmasDeployment">
+        <dn>mmasDeploymentId=1,mmasId=1</dn>
+        <attr>
+            <name>configDir</name>
+            <value>/home/mmas/.deploy</value>
+        </attr>
+        <attr>
+            <name>serverUrl</name>
+            <value>deployer:Sun:AppServer::localhost:4848</value>
+        </attr>
+    </object>
+    <object class="MmasLoggerConfigRoot">
+        <dn>mmasLoggerConfigRootId=1,mmasId=1</dn>
+        <attr>
+            <name>logConfigModelPollInterval</name>
+            <value>30000</value>
+        </attr>
+        <attr>
+            <name>globalLoggerLevel</name>
+            <value>CONFIG</value>
+        </attr>
+        <attr>
+            <name>l4jGlobalLoggerLevel</name>
+            <value>INFO</value>
+        </attr>
+    </object>
+    <object class="MmasAlarmTrigger">
+        <dn>mmasAlarmTriggerId=Cpu,mmasMonitoringId=1,mmasId=1</dn>
+        <attr>
+            <name>delay</name>
+            <value>2000</value>
+        </attr>
+    </object>
+    <object class="MmasLoggerRoot">
+        <dn>mmasLoggerRootId=1,mmasLoggerConfigRootId=1,mmasId=1</dn>
+    </object>
+    <object class="MmasAlarmTrigger">
+        <dn>mmasAlarmTriggerId=Memory,mmasMonitoringId=1,mmasId=1</dn>
+        <attr>
+            <name>delay</name>
+            <value>2000</value>
+        </attr>
+    </object>
+    <object class="MmasLogHandlerRoot">
+        <dn>mmasLogHandlerRootId=1,mmasLoggerConfigRootId=1,mmasId=1</dn>
+    </object>
+    <object class="MmasLoggerGroup">
+        <dn>mmasLoggerGroupId=MMASLogging,mmasLoggerRootId=1,mmasLoggerConfigRootId=1,mmasId=1</dn>
+        <attr>
+            <name>logGroupName</name>
+            <value>MMAS_LOGGING</value>
+        </attr>
+        <attr>
+            <name>groupLoggerLevel</name>
+            <value>CONFIG</value>
+        </attr>
+        <attr>
+            <name>loggerList</name>
+            <value>com.ericsson.mmas.logging.AuditLogger,com.ericsson.mmas.logging.LevelManager,com.ericsson.mmas.logging.LoggingManager,com.ericsson.mmas.logging.LoggingConfig,com.ericsson.mmas.logging.LoggerLevels,com.ericsson.mmas.logging.RollingOutputStream,com.ericsson.mmas.logging.SafLoggingManager,com.ericsson.mmas.logging.SafStreamConfig</value>
+        </attr>
+    </object>
+    <object class="MmasLogHandlerFileConfig">
+        <dn>mmasLogHandlerFileConfigId=TraceFile,mmasLogHandlerRootId=1,mmasLoggerConfigRootId=1,mmasId=1</dn>
+        <attr>
+            <name>logHandlerLogFilePath</name>
+            <value>/opt/ericsson/logs/trace.log</value>
+        </attr>
+        <attr>
+            <name>logHandlerMaxFileSize</name>
+            <value>100000000</value>
+        </attr>
+        <attr>
+            <name>logHandlerNumRotationFiles</name>
+            <value>10</value>
+        </attr>
+    </object>
+    <object class="MmasLogHandlerStreamConfig">
+        <dn>mmasLogHandlerStreamConfigId=AuditStream,mmasLogHandlerRootId=1,mmasLoggerConfigRootId=1,mmasId=1</dn>
+        <attr>
+            <name>logHandlerStreamName</name>
+            <value>AuditStream</value>
+        </attr>
+        <attr>
+            <name>logHandlerLogFilePath</name>
+            <value>/MMASAuditLogs</value>
+        </attr>
+        <attr>
+            <name>logHandlerLogFileName</name>
+            <value>AuditLog</value>
+        </attr>
+        <attr>
+            <name>logHandlerLogLevel</name>
+            <value>AUDIT</value>
+        </attr>
+        <attr>
+            <name>logHandlerMaxFileSize</name>
+            <value>100000000</value>
+        </attr>
+        <attr>
+            <name>logHandlerHighAvailabilityFlag</name>
+            <value>1</value>
+        </attr>
+        <attr>
+            <name>logHandlerNumRotationFiles</name>
+            <value>10</value>
+        </attr>
+        <attr>
+            <name>logHandlerRecordFormat</name>
+            <value>@Cr @Ch:@Cm:@Cs @CY-@Cm-@Cd @Sv @Sl "@Cb"</value>
+        </attr>
+        <attr>
+            <name>logHandlerMaxRecordSize</name>
+            <value>1024</value>
+        </attr>
+    </object>
+    <object class="MmasLogHandlerStreamConfig">
+        <dn>mmasLogHandlerStreamConfigId=AppLogStream,mmasLogHandlerRootId=1,mmasLoggerConfigRootId=1,mmasId=1</dn>
+        <attr>
+            <name>logHandlerStreamName</name>
+            <value>AppLogStream</value>
+        </attr>
+        <attr>
+            <name>logHandlerLogFilePath</name>
+            <value>/MMASAppLogs</value>
+        </attr>
+        <attr>
+            <name>logHandlerLogFileName</name>
+            <value>AppLog</value>
+        </attr>
+        <attr>
+            <name>logHandlerLogLevel</name>
+            <value>OFF</value>
+        </attr>
+        <attr>
+            <name>logHandlerMaxFileSize</name>
+            <value>100000000</value>
+        </attr>
+        <attr>
+            <name>logHandlerHighAvailabilityFlag</name>
+            <value>1</value>
+        </attr>
+        <attr>
+            <name>logHandlerNumRotationFiles</name>
+            <value>10</value>
+        </attr>
+        <attr>
+            <name>logHandlerRecordFormat</name>
+            <value>@Cr @Ch:@Cm:@Cs @CY-@Cm-@Cd @Sv @Sl "@Cb"</value>
+        </attr>
+        <attr>
+            <name>logHandlerMaxRecordSize</name>
+            <value>3500</value>
+        </attr>
+    </object>
+    <object class="MmasLogHandlerStreamConfig">
+        <dn>mmasLogHandlerStreamConfigId=AccessStream,mmasLogHandlerRootId=1,mmasLoggerConfigRootId=1,mmasId=1</dn>
+        <attr>
+            <name>logHandlerStreamName</name>
+            <value>AccessStream</value>
+        </attr>
+        <attr>
+            <name>logHandlerLogFilePath</name>
+            <value>/MMASAccessLogs</value>
+        </attr>
+        <attr>
+            <name>logHandlerLogFileName</name>
+            <value>AccessLog</value>
+        </attr>
+        <attr>
+            <name>logHandlerLogLevel</name>
+            <value>ACCESS</value>
+        </attr>
+        <attr>
+            <name>logHandlerMaxFileSize</name>
+            <value>100000000</value>
+        </attr>
+        <attr>
+            <name>logHandlerHighAvailabilityFlag</name>
+            <value>1</value>
+        </attr>
+        <attr>
+            <name>logHandlerNumRotationFiles</name>
+            <value>10</value>
+        </attr>
+        <attr>
+            <name>logHandlerRecordFormat</name>
+            <value>"@Cr @Ch:@Cm:@Cs @CY-@Cm-@Cd @Sv @Sl "@Cb""</value>
+        </attr>
+        <attr>
+            <name>logHandlerMaxRecordSize</name>
+            <value>1024</value>
+        </attr>
+    </object>
+</imm:IMM-contents>

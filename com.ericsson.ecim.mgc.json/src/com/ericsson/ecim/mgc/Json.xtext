@@ -1,0 +1,43 @@
+grammar com.ericsson.ecim.mgc.Json with org.eclipse.xtext.common.Terminals
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+generate json "http://www.ericsson.com/ecim/mgc/Json"
+
+Object:
+	{Object}'{' 
+		(members+=Member)?
+		(',' members+=Member)* 
+	'}'
+;
+
+Member:
+	key=STRING ':' value=Value;
+
+Value:
+	Object | 
+	StringValue | 
+	Array | 
+	Boolean | 
+	Null | 
+	NUMBER
+;
+
+Array:
+	{Array}'[' 
+		(values+=Value)?
+		(',' values+=Value)* 
+	']'
+;
+
+StringValue:
+	value=(STRING);
+
+Boolean:
+  'true' | 'false';
+
+Null:
+  'null';
+
+terminal NUMBER:
+	'-'? INT? '.' INT (('E'|'e') '-'? INT)?;

@@ -1,0 +1,177 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:32:06 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ECIM_SwIM" {
+	namespace "urn:com:ericsson:ecim:ECIM_SwIM";
+	prefix "ECIM_SwIM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	organization "EAB/FLE/GB";
+	description "This is the software inventory model. 
+It contains the software versions installed on the managed element. For each software version, the software items that constitute the software version are listed.";
+
+	revision "2015-10-28" {
+		ericsson:author "ERAANEE";
+		ericsson:correction "1";
+		ericsson:contact "EAB/FLE/TL Anders S-O Eriksson";
+		ericsson:release "2";
+		ericsson:version "1";
+		ericsson:revision "A";
+	}
+
+	augment "/ECIM_Top:ManagedElement/ECIM_Top:SystemFunctions" {
+		list "SwInventory" {
+			key "swInventoryId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "SwItem" {
+				key "swItemId";
+				uses ECIM_SwIM:SwItem;
+			}
+
+			list "SwVersion" {
+				key "swVersionId";
+				uses ECIM_SwIM:SwVersion;
+			}
+
+			uses ECIM_SwIM:SwInventory;
+		}
+
+	}
+
+	grouping "SwInventory" {
+		description "A singleton class, the purpose of which is only structural.";
+		leaf "swInventoryId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "A label for free usage.";
+		}
+
+		leaf-list "active" {
+			type string {
+				pattern "(.*=.*,)*SwVersion=.*";
+			}
+
+			config true;
+			min-elements 1;
+			description "A reference to the active software version of a software domain. 
+The software of a managed element can be structured into more than one software domain. The active software versions control the behavior of the managed element .";
+		}
+
+	}
+
+	grouping "SwVersion" {
+		description "An MO of this class represents the software version of a domain of the software.
+If there is only one software domain, the MO represents the overall version of the managed element.";
+		leaf "swVersionId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "A label for free usage.";
+		}
+
+		list "administrativeData" {
+			max-elements 1;
+			config true;
+			description "The software version product identification.";
+			uses ECIM_CommonLibrary:ProductData;
+		}
+
+		leaf "timeOfInstallation" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "Indicates the time the software version was installed.";
+		}
+
+		leaf "timeOfActivation" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "Indicates the time when the software version was activated. 
+If no time is shown, the current software version is not activated.";
+		}
+
+		leaf "timeOfDeactivation" {
+			type ECIM_CommonLibrary:DateTime;
+			config true;
+			description "Indicates the time when the software version was deactivated. 
+If no time is shown, the current software version is not deactivated.";
+		}
+
+		leaf-list "consistsOf" {
+			type string {
+				pattern "(.*=.*,)*SwItem=.*";
+			}
+
+			config true;
+			description
+			"List of references to the software items of which the software version consists.";
+		}
+
+	}
+
+	grouping "SwItem" {
+		description "A software item holds information about an executable software product.
+A software item can also represent a container product that contains other software items, which represent a subordinate container and/or executable software products.";
+		leaf "swItemId" {
+			type string;
+			mandatory true;
+			description "The value component of RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "A label for free usage.";
+		}
+
+		list "administrativeData" {
+			max-elements 1;
+			config true;
+			description "The software item product identification.";
+			uses ECIM_CommonLibrary:ProductData;
+		}
+
+		leaf "additionalInfo" {
+			type string;
+			config true;
+			description
+			"Describes any additional relevant aspects of the software item.";
+		}
+
+		leaf-list "consistsOf" {
+			type string {
+				pattern "(.*=.*,)*SwItem=.*";
+			}
+
+			config true;
+			description "Describes a hierarchical relationship between software items.
+An empty value indicates that the current software item is not a container that includes subordinate software items.";
+		}
+
+	}
+
+}

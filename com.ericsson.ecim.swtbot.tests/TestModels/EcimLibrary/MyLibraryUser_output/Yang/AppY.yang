@@ -1,0 +1,155 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Nov 20, 2015 2:35:28 PM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "AppY" {
+	namespace "urn:com:ericsson:ecim:AppY";
+	prefix "AppY";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import MyEcimLibrary2 {
+		prefix "MyEcimLibrary2";
+	}
+
+	import ComTopMom {
+		prefix "ComTopMom";
+	}
+
+	import MyEcimLibrary {
+		prefix "MyEcimLibrary";
+	}
+
+	description "This MOM uses stuff from MyEcimLibrary";
+
+	revision "2015-11-20" {
+		ericsson:version "1";
+		ericsson:release "1";
+	}
+
+	augment "/ComTopMom:ManagedElement" {
+		list "RY" {
+			key "rYId";
+			uses AppY:RY;
+		}
+
+	}
+
+	typedef "LocalEnum" {
+		type enumeration {
+			enum "A" {
+				value 1;
+			}
+
+		}
+
+		description "123";
+	}
+
+	grouping "RY" {
+		description "qwe";
+		leaf "rYId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		list "a5" {
+			max-elements 1;
+			config true;
+			description "qwe";
+			uses MyEcimLibrary2:StructenFrukten;
+		}
+
+		leaf "f1" {
+			type MyEcimLibrary:DerivedFloat1;
+			config true;
+		}
+
+		leaf-list "uses" {
+			type string {
+				pattern "(.*=.*,)*RX=.*";
+			}
+
+			max-elements 2;
+		}
+
+		leaf-list "seqA1" {
+			type MyEcimLibrary:DerivedString1;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "seqA2" {
+			type MyEcimLibrary:DerivedNumeric1;
+			config true;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "seqA3" {
+			type MyEcimLibrary:DerivedFloat1;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "seqA4" {
+			type MyEcimLibrary:DerivedBoolean1;
+			description "qwe";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "seqA5" {
+			type MyEcimLibrary2:EnumPlenum10;
+			description "qwe";
+		}
+
+		leaf-list "seqA6" {
+			type MyEcimLibrary:EnumPlenum;
+			description "qwe";
+		}
+
+		leaf "a1" {
+			type MyEcimLibrary:DerivedString1;
+			description "qwe";
+		}
+
+		leaf "a2" {
+			type MyEcimLibrary:DerivedNumeric1;
+			description "qwe";
+		}
+
+		leaf "a3" {
+			type MyEcimLibrary:DerivedFloat1;
+			description "qwe";
+		}
+
+		leaf "a4" {
+			type MyEcimLibrary:DerivedBoolean1;
+			description "qwe";
+		}
+
+		leaf "a5b" {
+			type MyEcimLibrary:DerivedBoolean1;
+			description "qwe";
+		}
+
+		leaf "a6" {
+			type MyEcimLibrary:EnumPlenum;
+			description "qwe";
+		}
+
+		leaf "dn" {
+			type string;
+			mandatory true;
+			config true;
+			description "The MO's DN.";
+		}
+
+	}
+
+}

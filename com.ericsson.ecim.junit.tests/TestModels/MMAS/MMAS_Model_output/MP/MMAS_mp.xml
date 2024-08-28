@@ -1,0 +1,1306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2014 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Sep 9, 2014 12:24:42 PM using:
+	* com.ericsson.ecim.m2m 2.11.2.qualifier
+	* com.ericsson.ecim.dsl 2.11.2.qualifier
+	* com.ericsson.ecim.edm 2.11.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+    <createdBy>
+      <signature>huiping</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>huiping</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim name="MMAS" namespace="urn:com:ericsson:ecim:MMAS" namespacePrefix="mmas" release="1" revision="1" version="2">
+    <description>MMAS MOM</description>
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <class name="MmasLoggerConfigRoot">
+      <description>The class MmasLoggerConfigRoot Mo represents the main node for logging configuration in MMAS.</description>
+      <attribute name="mmasLoggerConfigRootId">
+        <description>This attribute defines the identity of the MmasLoggerConfigRoot instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="logConfigModelPollInterval">
+        <description>This attribute defines the period between polls of the Mbeans to detect configuration changes. If a logging level is changed then this is the maximum period the operator will have to wait until the change takes effect. 
+            - Range 1000  - 3000 milliseconds.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>3000</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="globalLoggerLevel">
+        <description>This attribute defines the level for the Java Logging root logger. If a logger does not have a specific logging level defined for it, and no logger in the naming hierarchy above it provides a specific logging level, then the global-logger-level will be the effective level. 
+            - Supported levels are: SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>CONFIG</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="l4jGlobalLoggerLevel">
+        <description>This attribute defines the level for the Log4J root logger. If a logger does not have a specific logging level defined for it, and no logger in the naming hierarchy above it provides a specific logging level, then the l4jglobal-logger-level will be the effective level. Log4J logging levels are managed in order to provide support for third-party applications that use the Log4J logging package.
+            - Supported levels are: FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>INFO</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasPmConfig">
+      <description>The class MmasPmConfig is the configuration node for the MMAS.</description>
+      <attribute name="mmasPmConfigId">
+        <description>This attribute defines the identity of the MmasPmConfig instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="outputPath">
+        <description>This attribute defines the directory where Performance Management (PM) reports are placed.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>/tmp</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="counterFilePath">
+        <description>This attribute defines the directory from where counter definitions files are loaded by the PM module.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>/tmp/.pmcounters</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="counterFileLoaderInterval">
+        <description>This attribute defines how often counter definitions files are read.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>30000</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="defaultReporter">
+        <description>This attribute defines the class that is acting as the default reporter for all PM jobs which do not define a reporter themselves.
+            Possible values are: "com.ericsson.mmas.pm.report.AggregationReporter" and "com.ericsson.mmas.pm.report.SimpleReporter".</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>com.ericsson.mmas.pm.report.SimpleReporter</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="aggregateReporterCollectTimer">
+        <description>This attributes defines the time for the aggregation module to wait for PM reports from the different traffic instances.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>20000</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="statusInspectionPool">
+        <description>This attribute defines the pool holding the threads corresponding to the different status inspections in each instance.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>100</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="statisticRate">
+        <description>Performance statistic collection rate</description>
+        <dataType>
+          <double>
+            <defaultValue>0.5</defaultValue>
+          </double>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasMonitoring">
+      <description>The class MmasMonitoring is the fault management node for MMAS.</description>
+      <attribute name="mmasMonitoringId">
+        <description>This attribute defines the identity of the MmasMonitoring instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasLogHandlerStreamConfig">
+      <description>The class MmasLogHandlerStreamConfig Mo is the node for the Audit, Access and Applog streams sonfiguration in MMAS.</description>
+      <attribute name="mmasLogHandlerStreamConfigId">
+        <description>This attribute defines the identity of the MmasLogHandlerStreamConfig instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerStreamName">
+        <description>This attribute defines the identifier for the logging stream across the Service Availability Forum" (SAF) cluster.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerLogFilePath">
+        <description>This attribute defines the location of the log file. For log streams this file path is relative to a system file path defined by the Telecommunication Server Platform (TSP) SAF layer. This path can specify any subdirectories relative to the system file path. For the local machine flat file log this is an absolute file path.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerLogFileName">
+        <description>This attribute defines the prefix for the name of the log file within the directory.
+            Recommended values are: 
+            - AuditLog for the audit log stream, 
+            - AppLog for the application log stream.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerMaxFileSize">
+        <description>This attribute defines the maximum size of an individual record in a log stream file. This allows a guaranteed number of log records within a file of a given maximum size.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>100000000</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerHighAvailabilityFlag">
+        <description>This attribute specifies whether the log stream files are to be replicated and persisted across the cluster, or not. This attribute is represented as an integer, coded as follows: 
+            0=No Persist, 
+            1=Persist.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>1</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerNumRotationFiles">
+        <description>This attribute defines the number of previous versions of log files, when logHandler-actionWhenFull is set to SA_LOG_FILE_FULL_ACTION_ROTATE.
+   - Range 0 to 25.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>5</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerRecordFormat">
+        <description>This attribute defines the format of a log record entry in the log stream file. The format string contains the fields in the order they are required with any separator characters between them. The syntax of the fields in the format string is described in the Service Availability Forum Application Interface Specification for the Log Service (SAI-AIS-LOG).</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>@Cr @Ch:@Cm:@Cs @CY-@Cm-@Cd @Sv @Sl "@Cb"</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerLogLevel">
+        <description>This attribute defines the log level for the log stram files.
+            - Default AUDIT for Audit stream and OFF for AppLog stream.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerMaxRecordSize">
+        <description>This attribute defines the maximum size of an individual record in a log stream file. &#13;
+This allows a guaranteed number of log records within a file of a given maximum size.&#13;
+- Default for AppLog stream is 3500.&#13;
+- Default for Audit stream is 1024.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32/>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerActionWhenLogFull">
+        <description>This attribute defines the behavior when a log file is full. There are three possible actions when a log file is full: &#13;
+-  Stop logging (not recommended) &#13;
+-  Wrap the log (start again with an empty log file, SA_LOG_FILE_FULL_ACTION_ROTATE)&#13;
+-  Rotate the log (save this file as a previous version and start a new one)&#13;
+</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>SA_LOG_FILE_FULL_ACTION_ROTATE</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasLogHandlerRoot">
+      <description>The class MmasLogHandleRoot Mo represents the main node for the MMAS log handle configuration. The supported logs are:
+          - Audit Log
+          - Server Log
+          - Centralized Server Log
+          - Trace Log</description>
+      <attribute name="mmasLogHandlerRootId">
+        <description>This attribute defines the identity of the MmasLogHandlerRoot instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasLogHandlerFileConfig">
+      <description>The class MmasLogHandlerFileConfig is the node for file log stream configuration in MMAS.</description>
+      <attribute name="mmasLogHandlerFileConfigId">
+        <description>This attribute defines the identity of the MmasLogHandlerFileConfig instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerLogFilePath">
+        <description>This attribute defines the location of the log file. For log streams this file path is relative to a system file path defined by the TSP/SAF layer. This path can specify any subdirectories relative to the system file path. For the local machine flat file log this is an absolute file path.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerMaxFileSize">
+        <description>This attribute defines the maximum size of an individual record in a log stream file. This allows a guaranteed number of log records within a file of a given maximum size.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>10000000</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="logHandlerNumRotationFiles">
+        <description>This attribute defines the number of previous versions of log files, when logHandler-actionWhenFull is set to SA_LOG_FILE_FULL_ACTION_ROTATE. 
+    - Range 0 to 25.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>5</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasLoggerRoot">
+      <description>The class MmasLoggerRoot is the node for MMAS logging configuration.</description>
+      <attribute name="mmasLoggerRootId">
+        <description>This attribute defines the identity of the MmasLoggerRoot instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasLoggerGroup">
+      <description>The class MmasLoggerGroup is the node for group MMAS logging configuration.</description>
+      <attribute name="mmasLoggerGroupId">
+        <description>This attribute defines the identity of the MmasLoggerGroup instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="logGroupName">
+        <description>This attribute defines a user-friendly name to refer to a group of loggers whose levels are to be collectively managed.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="groupLoggerLevel">
+        <description>This attribute defines the level for a group of Java Logging loggers. This provides the level to be applied to each logger in the group, and any loggers beneath them in the hierarchy which do not have their own specific logging level.
+            - Supported levels are: OFF, SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>CONFIG</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="loggerList">
+        <description>This attribute defines a list of one or more loggers which are to be treated collectively as members of a group.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasLogger">
+      <description>The class MmasLogger is the node for MMAS logging configuration.</description>
+      <attribute name="mmasLoggerId">
+        <description>This attribute defines the identity of the MmasLogger instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="loggerName">
+        <description>This attribute defines the fully dot-qualified name of the logger, giving its relationship in the logging hierarchy, for example, com.ericsson.mmas.common.AlarmSender.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="loggerLevel">
+        <description>This attribute defines the level for the Java Logging logger. This provides a specific level for a logger  - and any loggers beneath it in the hierarchy which do not have their own specific logging level.
+            - Supported levels are: OFF, SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>CONFIG</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasL4JLoggerGroup">
+      <description>The class MmasL4JLoggerGroup is the node for MMAS Log4J group logger configuration.</description>
+      <attribute name="mmasL4JLoggerGroupId">
+        <description>This attribute defines the identity of the MmasL4JLoggerGroup instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="logGroupName">
+        <description>This attribute defines a user-friendly name to refer to a group of loggers whose levels are to be collectively managed.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="l4jGroupLoggerLevel">
+        <description>This attribute defines the level a group of Log4J loggers. This provides the level to be applied to each logger in the group  - and any loggers beneath them in the hierarchy which do not have their own specific logging level. Log4J logging levels are managed in order to provide support for third-party applications that use the Log4J logging package.
+            - Supported levels are: FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>INFO</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="loggerList">
+        <description>This attribute defines a list of one or more loggers which are to be treated collectively as members of a group.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasL4JLogger">
+      <description>The class MmasL4JLogger is the node for MMAS Log4J logger configuration.</description>
+      <attribute name="mmasL4JLoggerId">
+        <description>This attribute defines the identity of one MmasL4JLogger</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="loggerName">
+        <description>This attribute defines the fully dot-qualified name of the logger, giving its relationship in the logging hierarchy, for example, com.ericsson.mmas.common.AlarmSender.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="l4jLoggerLevel">
+        <description>This attribute defines the level for the Log4J logger. This provides a specific level for a logger and any loggers beneath it in the hierarchy which do not have their own specific logging level.
+            Log4J logging levels are managed in order to provide support for third-party applications that use the Log4J logging package.
+            - Supported levels are: FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>INFO</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasDns">
+      <description>The class MmasDns stores and handles the Domain Name System (DNS) function in the MMAS.</description>
+      <attribute name="mmasDnsId">
+        <description>This attribute defines the identity of the MmasDns instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="dnsServerList">
+        <description>This attribute defines the servers which are available using DNS queries.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="dnsCacheSize">
+        <description>This attribute defines the size of the cache for DNS queries.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>20000</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="dnsPingAttemtThreshold">
+        <description>This attribute defines the maximum number of ping attempts sent to DNS server, before the DNS server is considered to be unreachable.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>2</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="dnsPingInterval">
+        <description>This attribute defines the time between pings, sent to the DNS server.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>30</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="dnsPingQuery">
+        <description>This attribute defines the DNS entry which isused for DNS queries.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>.</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="dnsOutgoingIP">
+        <description>This attribute defines the outgoing IP address for dnsjava requests from all nodes. If not set, the default routing (Linux) will be used.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue/>
+          </string>
+        </dataType>
+        <deprecated/>
+      </attribute>
+    </class>
+    <class name="MmasCountersHandler">
+      <description>The class MmasCountersHandler is the configuration node for a MMAS counters handler. It specifies a Java class responsible for updating one or more MMAS counters. This class is executed continuously after a defined period.</description>
+      <attribute name="mmasCountersHandlerId">
+        <description>This attribute defines the identity of the MmasCountersHandler instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="className">
+        <description>This attribute defines a Java class responsible for updating one or more MMAS counters. This class must implement the Runnable interface and must be available in the Common class loader.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="period">
+        <description>This attribute defines the time in seconds between MMAS counter(s) updates. It defines how often the handler is called.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <int32/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasCounters">
+      <description>The class MmasCounters is the configuration node for all MMAS counters. It includes, as childs, a list of handlers to populate the counters.</description>
+      <attribute name="mmasCountersId">
+        <description>This attributes defines the key indentity of one MmasCounters</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasCommon">
+      <description>The class MmasCommon is the node for general common MMAS configuration.</description>
+      <attribute name="mmasCommonId">
+        <description>This attribute defines the identity of the MmasCommon instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="adminHost">
+        <description>This attribute defines the identity of the MMAS administration host.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>192.168.0.100</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="adminPort">
+        <description>This attribute defines the port number of the administrator port to use on the MMAS host.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>8686</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="oamPort">
+        <description>This attribute defines the port number of the oam port to use on the MMAS host.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>38686</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="adminUser">
+        <description>his attribute defines the user name to use when logging on the MMAS host as an administrator.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>admin</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasAmf">
+      <description>The class MmasAmf is the node for availability management configuration in MMAS.</description>
+      <attribute name="mmasAmfId">
+        <description>This attribute defines the identity of the MmasAmf instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="threadPoolSize">
+        <description>This attribute defines the number of simultaneous operations that can be performed.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>10</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="shutdownWhenDeactive">
+        <description>This attributes defines whether to shutdown the service when deactive, default set as false.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <boolean>
+            <defaultValue>false</defaultValue>
+          </boolean>
+        </dataType>
+        <obsolete/>
+      </attribute>
+    </class>
+    <class name="MmasAlarmTrigger">
+      <description>The class MmasAlarmTrigger is the monitoring threshold node for the MMAS.</description>
+      <attribute name="mmasAlarmTriggerId">
+        <description>This attribute defines the identity of the MmasAlarmTrigger instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="delay">
+        <description>This attribute defines the delay, after which the monitoring of resources starts again.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>2000</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="Mmas">
+      <description>Mmas MOC</description>
+      <root/>
+      <attribute name="mmasId">
+        <description>key attribute</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="myRefAttributeToComFm">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <moRef name="Fm">
+            <mimName>ComFm</mimName>
+          </moRef>
+        </dataType>
+      </attribute>
+      <attribute name="myRefAttributeToPm">
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <moRef name="Pm">
+              <mimName>PM</mimName>
+            </moRef>
+            <minLength>0</minLength>
+            <nonUnique/>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="myRefAttributeToJavaCaf">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <moRef name="JavaCaf">
+            <mimName>JavaCaf</mimName>
+          </moRef>
+        </dataType>
+      </attribute>
+      <attribute name="longAttrTest">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <int64>
+            <defaultValue>3</defaultValue>
+          </int64>
+        </dataType>
+      </attribute>
+      <attribute name="attrUint64">
+        <description>Mapped to BigInteger!</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <uint64>
+            <defaultValue>123456789</defaultValue>
+          </uint64>
+        </dataType>
+      </attribute>
+      <attribute name="attrUint64Array">
+        <description>Mapped to BigInteger!</description>
+        <dataType>
+          <sequence>
+            <uint64/>
+            <minLength>0</minLength>
+            <maxLength>200</maxLength>
+            <nonUnique/>
+          </sequence>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="MmasDeployment">
+      <description>The class MmasDeployment is the node for Java EE application deployment in the MMAS.&#13;
+</description>
+      <attribute name="mmasDeploymentId">
+        <description>This attribute defines the identity of the MmasDeployment instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="pollInterval">
+        <description>This attribute defines how often the deployment directory is read to look for new, updated, or removed applications.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>20000</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="configDir">
+        <description>This attribute defines the path to the directory where Java EE applications archives are placed.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>/home/mmas/.deploy</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="serverUrl">
+        <description>This attribute defines the URL of the admin server.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>deployer:Sun:AppServer::localhost:4848</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="MmasLoggerConfigRoot_to_MmasLogHandlerRoot">
+      <containment>
+        <parent>
+          <hasClass name="MmasLoggerConfigRoot">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasLogHandlerRoot">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Mmas_to_MmasCommon">
+      <containment>
+        <parent>
+          <hasClass name="Mmas">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasCommon">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Mmas_to_MmasDns">
+      <containment>
+        <parent>
+          <hasClass name="Mmas">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasDns">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Mmas_to_MmasAmf">
+      <containment>
+        <parent>
+          <hasClass name="Mmas">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasAmf">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Mmas_to_MmasMonitoring">
+      <containment>
+        <parent>
+          <hasClass name="Mmas">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasMonitoring">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="MmasMonitoring_to_MmasAlarmTrigger">
+      <containment>
+        <parent>
+          <hasClass name="MmasMonitoring">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasAlarmTrigger">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Mmas_to_MmasLoggerConfigRoot">
+      <containment>
+        <parent>
+          <hasClass name="Mmas">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasLoggerConfigRoot">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="MmasLogHandlerRoot_to_MmasLogHandlerStreamConfig">
+      <containment>
+        <parent>
+          <hasClass name="MmasLogHandlerRoot">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasLogHandlerStreamConfig">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="MmasLoggerConfigRoot_to_MmasLoggerRoot">
+      <containment>
+        <parent>
+          <hasClass name="MmasLoggerConfigRoot">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasLoggerRoot">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="MmasLoggerRoot_to_MmasLogger">
+      <containment>
+        <parent>
+          <hasClass name="MmasLoggerRoot">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasLogger">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="MmasLoggerRoot_to_MmasL4JLogger">
+      <containment>
+        <parent>
+          <hasClass name="MmasLoggerRoot">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasL4JLogger">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="MmasLoggerRoot_to_MmasLoggerGroup">
+      <containment>
+        <parent>
+          <hasClass name="MmasLoggerRoot">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasLoggerGroup">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="MmasLoggerRoot_to_MmasL4JLoggerGroup">
+      <containment>
+        <parent>
+          <hasClass name="MmasLoggerRoot">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasL4JLoggerGroup">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="MmasLogHandlerRoot_to_MmasLogHandlerFileConfig">
+      <containment>
+        <parent>
+          <hasClass name="MmasLogHandlerRoot">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasLogHandlerFileConfig">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Mmas_to_MmasPmConfig">
+      <containment>
+        <parent>
+          <hasClass name="Mmas">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasPmConfig">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Mmas_to_MmasCounters">
+      <containment>
+        <parent>
+          <hasClass name="Mmas">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasCounters">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="MmasCounters_to_MmasCountersHandler">
+      <containment>
+        <parent>
+          <hasClass name="MmasCounters">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasCountersHandler">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="Mmas_to_MmasDeployment">
+      <containment>
+        <parent>
+          <hasClass name="Mmas">
+            <mimName>MMAS</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="MmasDeployment">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+  </mim>
+  <interMim>
+    <relationship name="ManagedElement_to_Mmas">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="true"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="ManagedElement">
+            <mimName>ComTop</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="Mmas">
+            <mimName>MMAS</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

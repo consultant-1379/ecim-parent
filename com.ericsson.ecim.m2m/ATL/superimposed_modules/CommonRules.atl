@@ -1,0 +1,1455 @@
+-- /**
+-- * Comment me!
+-- * 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 03/02/2010
+-- */
+
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module CommonRules;
+create OUT : MP from IN : UML;
+
+uses HelperFunctions;
+
+rule ConstraintToValidValuesType(constraint : UML!Constraint)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	--TODO:We only support 1 specification on any given constraint. Do we need to support more?
+		text <- constraint.specification.body
+	),		
+	t : MP!ValidValuesType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+--rule ConstraintToPreconditionType(constraint : UML!Constraint)
+--{
+--	--from s: UML!Constraint(s.oclIsTypeOf(UML!Constraint))
+--	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+--	(
+--    	--TODO:We only support 1 specification on any given constraint. Do we need to support more?
+--		text <- constraint.specification.body
+--	),		
+--	t : MP!PreconditionType 
+--	(
+--        mixed <- xmltype.mixed
+--	)
+--	do
+--	{
+--		t;
+--	}	
+--}
+
+--This rules create a DependencyScriptType which describes a rule
+rule CreateDependenciesScriptType(constraint : UML!Constraint)
+{
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- constraint.specification.stringValue()
+	),		
+	dependenciesScriptType : MP!DependenciesScriptType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		dependenciesScriptType;
+	}
+}
+
+--This rules create a default value for non sequence types
+rule CreateDefaultValueType(classifier : UML!Classifier)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- thisModule.removeEscapeCommaCharacters(classifier.default)
+	),		
+	defaultValueType : MP!DefaultValueType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		defaultValueType;
+	}
+}
+
+--This rules create a blank default value for non sequence types
+rule CreateBlankDefaultValueType(classifier : UML!Classifier)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+	),		
+	defaultValueType : MP!DefaultValueType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		defaultValueType;
+	}
+}
+
+--
+rule CreateDtdVersionType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	dtdVersionType : MP!DtdVersionType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		dtdVersionType;
+	}
+}
+
+--
+rule CreateMomTitleType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	momTitleType : MP!MomTitleType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		momTitleType;
+	}
+}
+
+--
+rule CreateMomSubTitleType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	momSubTitleType : MP!MomSubTitleType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		momSubTitleType;
+	}
+}
+
+rule CreateCopyRightType(company : String,year : String, disclaimer : String)
+{
+	
+	to 	copyRightType : MP!CopyrightType
+	(
+		company <- thisModule.CreateCompanyType(company),
+		year <- thisModule.CreateYearType(year),
+		disclaimer <- thisModule.CreateDisclaimerType(disclaimer)
+	)	
+	do
+	{
+		copyRightType;
+	}
+}
+
+rule CreateCompanyType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	companyType : MP!CompanyType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		companyType;
+	}
+}
+
+rule CreateYearType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	yearType : MP!YearType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		yearType;
+	}
+}
+
+rule CreateDisclaimerType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	disclaimerType : MP!DisclaimerType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		disclaimerType;
+	}
+}
+
+--
+--rule CreateMomIdentityType(value : String)
+--{
+--	
+--	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+--	(
+--    	text <- value
+--	),		
+--	momIdentityType : MP!MomIdentityType
+--	(
+--		mixed <- xmltype.mixed
+--	)	
+--	do
+--	{
+--		momIdentityType;
+--	}
+--}
+
+--
+--rule CreateCreatedByType(value : String)
+--{
+--	
+--	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+--	(
+--    	text <- value
+--	),		
+--	createdByType : MP!CreatedByType
+--	(
+--		mixed <- xmltype.mixed
+--	)	
+--	do
+--	{
+--		createdByType;
+--	}
+--}
+
+--
+rule CreateNameType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	nameType : MP!NameType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		nameType;
+	}
+}
+
+--Comment me
+rule CreateSignatureType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	signatureType : MP!SignatureType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		signatureType;
+	}
+}
+
+--Comment an CreatedByType element
+rule CreateCreatedByType(value : String)
+{
+	to 	createdByType : MP!CreatedByType
+	(
+		signature <- thisModule.CreateSignatureType(value)
+	)	
+	do
+	{
+		createdByType;
+	}
+}
+	
+
+--Comment an ApprovedByType element
+rule CreateApprovedByType(value : String)
+{
+	to 	approvedByType : MP!ApprovedByType
+	(
+		signature <- thisModule.CreateSignatureType(value)
+	)	
+	do
+	{
+		approvedByType;
+	}
+}
+	
+
+--This rules create a value for literal types
+rule CreateValueType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	valueType : MP!ValueType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		valueType;
+	}
+}
+
+rule CreateTransactionConstraintsType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	tcType : MP!TransactionConstraintsType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		tcType;
+	}
+}
+
+rule CreateConditionType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	conditionType : MP!ConditionType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		conditionType;
+	}
+}
+
+rule CreateCounterType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	counterType : MP!CounterTypeType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		counterType;
+	}
+}
+
+rule CreateSamplingRateType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	samplingRateType : MP!SamplingRateType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		samplingRateType;
+	}
+}
+
+rule CreateScannerType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	scannerType : MP!ScannerType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		scannerType;
+	}
+}
+
+rule CreateCounterResetType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	counterResetType : MP!CounterResetType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		counterResetType;
+	}
+}
+
+rule CreateCounterContextType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	ccType : MP!CounterContextType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		ccType;
+	}
+}
+
+rule CreateUndefinedValueType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	undefinedValueType : MP!UndefinedValueType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		undefinedValueType;
+	}
+}
+
+rule CreateGetValueType(value : String)
+{
+	
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	getValueType : MP!GetValueType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		getValueType;
+	}
+}
+
+--This rule creates default sequence values. if there are more than one it splits the string based on a comma separated list
+--In case there is a comma in the default we use a special character sequence !%# to persist them
+rule CreateSeqDefaultValueType(classifier : UML!Classifier)
+{
+	to t : MP!SeqDefaultValueType
+	(
+		defaultValue <- classifier.default.regexReplaceAll('\\\\,','!%#').split(',')->collect(e|thisModule.CreateManySeqDefaultValueType(e.regexReplaceAll('!%#',',')))
+	)
+	do
+	{
+		t;
+	}
+}
+
+--This rule supports the creation of many default values as it can be called many times
+rule CreateManySeqDefaultValueType(defaultValue : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- thisModule.removeEscapeCommaCharacters(defaultValue)
+	),		
+	defaultValueType : MP!DefaultValueType
+	(
+		mixed <- xmltype.mixed
+	)
+	do
+	{
+		defaultValueType;
+	}
+}
+
+rule CreateOrderedType()
+{
+	to t : MP!OrderedType
+	(
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateNonUniqueType()
+{
+	to t : MP!NonUniqueType
+	(
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateVoidType()
+{
+	to t: MP!ReturnTypeType 
+	(
+		void <- voidType
+	),
+	voidType : MP!VoidType
+	(	
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateDeprecatedType()
+{
+	to t : MP!DeprecatedType
+	(
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateNonPersistentType()
+{
+	to t : MP!NonPersistentType
+	(
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateNoNotificationType()
+{
+	to t : MP!NoNotificationType
+	(
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateRestrictedType()
+{
+	to t : MP!RestrictedType
+	(
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateIsExclusiveType()
+{
+	to t : MP!IsExclusiveType
+	(
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateKeyType()
+{
+	to t : MP!KeyType
+	(
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateMandatoryType()
+{
+	to t : MP!MandatoryType
+	(
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateIsNillableType()
+{
+	to t : MP!IsNillableType
+	(
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateObsoleteType()
+{
+	to t : MP!ObsoleteType
+	(
+	)
+	do
+	{
+		t;
+	}
+}
+
+
+rule CreatePreliminaryType()
+{
+	to t : MP!PreliminaryType
+	(
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateInterfaceOnlyType()
+{
+	to t : MP!InterfaceOnlyType
+	(
+	)
+	do
+	{
+		t; 
+	}
+}
+
+rule CreateStatusInformationType(statusInformationText : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- statusInformationText
+	),		
+	t : MP!StatusInformationType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}		
+}
+
+--TODO:Fix rule so that it uses the name
+--This rule just takes a complex string, parses it and then and uses it as the min length
+rule CreateMinLengthType(length : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		--the format for max length or range is x..x so take the first value
+    	text <- length.split('[..]')->at(1)			
+	),		 
+	t : MP!MinLengthType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}
+}
+
+--TODO:Fix rule so that it uses the name
+--This rule just takes a simple String and uses it as the min length
+rule CreateMinLengthTypeSimple(length : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- length		
+	),		
+	t : MP!MinLengthType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}
+}
+
+--TODO:Fix rule so that it uses the name
+--This rule just takes a complex string, parses it and then and uses it as the max length
+rule CreateMaxLengthType(length : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		--the format for max length or range is x..x so take the last value
+    	text <- length.split('[..]')->at(3)			
+	),		
+	t : MP!MaxLengthType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}
+}
+
+--TODO:Fix rule so that it uses the name
+--This rule just takes a simple String and uses it as the max length
+rule CreateMaxLengthTypeSimple(length : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- length		
+	),		
+	t : MP!MaxLengthType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}
+}
+
+--TODO:Fix rule so that it uses the name
+rule CreateFilterType(hideFilterName : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- hideFilterName
+	),		
+	t : MP!FilterType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}
+}
+
+rule CreateSpecificationType(specificationText : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- specificationText
+	),		
+	t : MP!SpecificationType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}		
+}
+
+rule CreateDescriptionType(descriptionText : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- descriptionText
+	),		
+	t : MP!DescriptionType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}		
+}
+
+rule CreateSideEffectsType(theText : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- theText
+	),		
+	t : MP!SideEffectsType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}		
+}
+
+rule CreateDependenciesType(theText : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- theText
+	),		
+	t : MP!DependenciesType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}		
+}
+
+rule CreateDecisionPointType(constraints : OrderedSet(UML!Constraint))
+{
+	to t : MP!DecisionPointType 
+	(
+        decisionStatement <- constraints->collect(e|thisModule.CreateDecisionStatementType(e))
+	)
+	do
+	{
+		t;
+	}		
+}
+
+rule CreateDecisionStatementType(constraint : UML!Constraint)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- constraint.getSpecification().getBodies().first()
+	),	
+	t : MP!DecisionStatementType 
+	(
+		mixed <- xmltype.mixed,
+		decisionType <- 'basic'
+	)
+	do
+	{
+		t;
+	}		
+}
+
+rule CreateDisturbancesType(theText : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- theText
+	),		
+	t : MP!DisturbancesType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}		
+}
+
+rule CreateTakesEffectType(theText : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- theText
+	),		
+	t : MP!TakesEffectType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}		
+}
+
+rule CreatePreconditionType(theText : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- theText
+	),		
+	t : MP!PreconditionType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateReadOnlyType()
+{
+	to t : MP!ReadOnlyType
+	(
+	)
+	do
+	{
+		t; 
+	}
+}
+
+rule CreateSystemCreatedType()
+{
+	to t : MP!SystemCreatedType
+	(
+	)
+	do
+	{
+		t; 
+	}
+}
+
+
+rule CreateMinType(min : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- min	
+	),		
+	t : MP!MinType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateMaxType(max : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- max	
+	),		
+	t : MP!MaxType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateTitleType(title : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- title	
+	),		
+	t : MP!TitleType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateSubTitleType(subTitle : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- subTitle	
+	),		
+	t : MP!SubTitleType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateDocNumType(docNum : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- docNum	
+	),		
+	t : MP!DocNumType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateDocLangType(docLang : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- docLang	
+	),		
+	t : MP!DocLangType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateDocRevType(docRev : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- docRev	
+	),		
+	t : MP!DocRevType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+
+--Create single or multiple length range pairs
+rule CreateLengthRangeType(lengthRange : String)
+{
+	to t : MP!LengthRangeType ()
+	do
+	{
+		--to create multi-ranges use the following method
+		t.addRanges(lengthRange);			
+		t;
+	}	
+}
+
+--Create single or multiple length range pairs
+rule CreateStringLengthType(lengthRange : String)
+{
+	to t : MP!StringLengthType ()
+	do
+	{
+		--to create multi-ranges use the following method
+		t.addRanges(lengthRange);			
+		t;
+	}	
+}
+
+--Create single or multiple range pairs
+rule CreateRangeType(range : String)
+{
+	to t : MP!RangeType ()
+	do
+	{
+		--to create multi-ranges use the following method
+		t.addRanges(range);
+		t;
+	}	
+}
+
+--Create single or multiple range pairs
+rule CreateRangesType(range : String)
+{
+	to t : MP!RangesType ()
+	do
+	{
+		--to create multi-ranges use the following method
+		t.addRanges(range);
+		t;
+	}	
+}
+
+rule CreateMimNameType(mimName : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- mimName	
+	),
+	t : MP!MimNameType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateMimVersionType(mimVersion : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- mimVersion	
+	),
+	t : MP!MimVersionType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateValidValuesType(validValues : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- validValues	
+	),
+	t : MP!ValidValuesType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateUnitType(unit : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- unit	
+	),
+	t : MP!UnitType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateResolutionType(resolution : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- resolution	
+	),
+	t : MP!ResolutionType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateMultiplicationFactorType(multiplicationFactor : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- multiplicationFactor	
+	),
+	t : MP!MultiplicationFactorType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+rule CreateDocDateType(docDate : String)
+{
+	to xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+		text <- docDate	
+	),		
+	t : MP!DocDateType 
+	(
+        mixed <- xmltype.mixed
+	)
+	do
+	{
+		t;
+	}	
+}
+
+--This rules creates an in type for a parameter
+rule CreateInType()
+{
+	
+	to 	inType : MP!InType
+	(
+	)	
+	do
+	{
+		inType;
+	}
+}
+
+-- NOTE: The immNamespace is here until generic domain extension mechanism can be used. COM must be able to 
+-- handle multiple domain extensions first.
+rule CreateEcimMomDomainExtensionType(ecimMomName : String, ecimMomVersion : String, ecimMomRelease : String, ecimMomCorrection : String, immNamespace : String)
+{
+	
+	to 	domainExtenstionType : MP!DomainExtensionType
+	(
+		domain <- 'ECIM',
+		extension <- if not ecimMomName.oclIsUndefined() then thisModule.CreateExtensionType('ecimMomName', ecimMomName) else OclUndefined endif,
+		extension <- if not ecimMomVersion.oclIsUndefined() then thisModule.CreateExtensionType('ecimMomVersion', ecimMomVersion) else OclUndefined endif,
+		extension <- if not ecimMomRelease.oclIsUndefined() then thisModule.CreateExtensionType('ecimMomRelease', ecimMomRelease) else OclUndefined endif,
+		extension <- if not ecimMomCorrection.oclIsUndefined() then thisModule.CreateExtensionType('ecimMomCorrection', ecimMomCorrection) else OclUndefined endif,
+		extension <- if not immNamespace.oclIsUndefined() then thisModule.CreateExtensionType('immNamespace', immNamespace) else OclUndefined endif
+	)	
+	do
+	{
+		domainExtenstionType;
+	}
+}
+
+rule CreateEcimMomImplementsType(ecimMomName : String, ecimMomVersion : String, ecimMomRelease : String, ecimMomCorrection : String)
+{
+	to 	implementsType : MP!ImplementsType
+	(
+		name <- ecimMomName,
+		version <- ecimMomVersion,
+		release <- ecimMomRelease,
+		correction <- ecimMomCorrection
+	)	
+	do
+	{
+		implementsType;
+	}
+}
+			
+--This called rule generates DomainExtensions in the MP XML based on a special <<DomainExtension>> stereotype being applied on a given
+--stereotype. The domain value must exist.
+rule CreateGenericDomainExtensionType(domain : String, sterotypeProperties : Set(UML!Property), property : UML!Property)
+{
+	to 	domainExtenstionType : MP!DomainExtensionType
+	(
+		--create the same domain only once
+		domain <- domain,
+		--loop over all the extensions for this given domain
+		extension <- sterotypeProperties->select(e|thisModule.hasDomain(e)=domain)
+						->collect(e|thisModule.CreateExtensionType(e.name, thisModule.getExtensionValue(property,e)))
+	)	
+	do
+	{
+		if (domainExtenstionType.extension->size() = 0) {
+			OclUndefined;
+		}
+		-- Do not output domainextension if DWAXE output and if in domain MSRBS. 
+		-- TBD: Decision should be more generic and less hardcoded! Sorry...
+		else if (thisModule.isDWAXE() and domain.toString().startsWith('MSRBS')) {
+			OclUndefined;
+		}
+		else 
+		{
+			domainExtenstionType;
+		} 
+	}
+}
+
+--TBD
+rule CreateGenericDomainExtensionType2(domain : String, props : Map(String,String))
+{
+	to 	domainExtenstionType : MP!DomainExtensionType
+	(
+		--create the same domain only once
+		domain <- domain,
+		--loop over all the extensions for this given domain
+		extension <- props.getKeys()->collect(key|thisModule.CreateExtensionType(key, props.get(key)))
+	)	
+	do
+	{
+		--only create the extension is there was a value assigned to all properties
+		if(not domainExtenstionType.extension->forAll(e|e.value.oclIsUndefined()))
+		{
+			domainExtenstionType;
+		}
+		else
+		{
+			OclUndefined;
+		}
+	}
+}
+
+
+
+--This called rule is used for creating domain extensions within ECIM. For example meta properties that are not yet part of ECIM
+rule CreateDomainExtensionType(domain : String, name : String, value : String)
+{
+	
+	to 	domainExtenstionType : MP!DomainExtensionType
+	(
+		domain <- domain,
+		extension <- thisModule.CreateExtensionType(name, value)
+	)	
+	do
+	{
+		domainExtenstionType;
+	}
+}
+
+
+rule CreateExtensionType(name : String, value : String)
+{
+	
+	to 	extenstionType : MP!ExtensionType
+	(
+		name <- name,
+		value <- value
+	)	
+	do
+	{
+		if (thisModule.hasValue(value)) {
+			extenstionType;
+		} else {
+			OclUndefined;
+		}
+	}
+}
+
+
+--Comment me
+rule CreateApplicationTagType(value : String)
+{
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- value
+	),		
+	appType : MP!ApplicationTagType
+	(
+		mixed <- xmltype.mixed
+	)	
+	do
+	{
+		appType;
+	}
+}
+
+
+rule CreateValidationRuleTypeFromSet(ruleDataSet : Set(Sequence(String)))
+{
+	to t: MP!ValidationRulesType
+	(
+		rule <- ruleDataSet->collect(s | thisModule.CreateRuleTypeFromString(s))
+	)
+	do
+	{
+		t;
+	}
+}
+
+-- name,format,exceptionText,body
+--   1    2          3        4      
+rule CreateRuleTypeFromString(ruleData: Sequence(String))
+{
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- ruleData->at(4)
+	),	
+	ruleType: MP!RuleType
+	(
+		mixed <- xmltype.mixed,	
+		name <- ruleData->at(1),
+		format <- ruleData->at(2),
+		exceptionText <- ruleData->at(3)  
+	)
+	do
+	{
+		ruleType;
+	}
+}
+
+
+
+rule CreateValidationRuleType(name : String, format : String, exceptionText : String, body : String)
+{
+	--using {seq : OrderedSet(UML!Constraint) = OrderedSet{s}; }
+	to t: MP!ValidationRulesType
+	(
+		rule <- thisModule.CreateRuleType(name, format, exceptionText, body)
+	)
+	do
+	{
+		t;
+	}
+}
+
+
+rule CreateRuleType(name : String, format : String, exceptionText : String, body : String)
+{
+	to 	xmltype : MP!XMLTypeDocumentRoot--**This declaration has to be first or else the XML is not outputted!!
+	(
+    	text <- body
+	),	
+	ruleType: MP!RuleType
+	(
+		mixed <- xmltype.mixed,	
+		name <- name,
+		format <- format,
+		exceptionText <- if (exceptionText.oclIsUndefined()) then '' else exceptionText endif 
+	)
+	do
+	{
+		ruleType;
+	}
+}
+

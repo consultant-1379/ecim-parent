@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2014 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2014-maj-13 10:32:56 using:
+	* com.ericsson.ecim.m2m 2.10.1.qualifier
+	* com.ericsson.ecim.dsl 2.10.1.qualifier
+	* com.ericsson.ecim.edm 2.10.1.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+  </momMetaData>
+  <mim author="" contact="" date="" docNo="" name="EcimString" namespace="urn:com:ericsson:ecim:EcimString" namespacePrefix="ecimstring" organization="" release="22" revision="" version="2">
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <derivedDataType name="DerivedString">
+      <baseType>
+        <string>
+          <validValues>[a-zA-z0-9]+,[a-zA-z0-9]</validValues>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <class name="StringPatterns">
+      <root/>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="string1">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <readOnly/>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="DerivedString">
+            <defaultValue>A,B</defaultValue>
+            <mimName>EcimString</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="string2">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <readOnly/>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="DerivedString">
+            <defaultValue>A,B</defaultValue>
+            <mimName>EcimString</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="multipleString1">
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <derivedDataTypeRef name="DerivedString">
+              <mimName>EcimString</mimName>
+            </derivedDataTypeRef>
+            <minLength>0</minLength>
+            <maxLength>4</maxLength>
+            <nonUnique/>
+            <seqDefaultValue>
+              <defaultValue>A,B</defaultValue>
+              <defaultValue>C,D</defaultValue>
+              <defaultValue>E,F</defaultValue>
+              <defaultValue>G,H</defaultValue>
+            </seqDefaultValue>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="multipleString2">
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <derivedDataTypeRef name="DerivedString">
+              <mimName>EcimString</mimName>
+            </derivedDataTypeRef>
+            <minLength>0</minLength>
+            <maxLength>2</maxLength>
+            <nonUnique/>
+            <seqDefaultValue>
+              <defaultValue>A,B</defaultValue>
+              <defaultValue>C,D</defaultValue>
+            </seqDefaultValue>
+          </sequence>
+        </dataType>
+      </attribute>
+    </class>
+  </mim>
+  <interMim>
+    <relationship name="Root_to_StringPatterns">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="true"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>RootMom</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="StringPatterns">
+            <mimName>EcimString</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

@@ -1,0 +1,177 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:24:18 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RsyncFrequencySyncIO" {
+	namespace "urn:com:ericsson:ecim:RsyncFrequencySyncIO";
+	prefix "RsyncFrequencySyncIO";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RsyncSynchronization {
+		prefix "RsyncSynchronization";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RsyncSyncLibrary {
+		prefix "RsyncSyncLibrary";
+	}
+
+	description "ECIM Transport frequency SyncIO Model.";
+
+	revision "2015-10-13" {
+		ericsson:version "3";
+		ericsson:release "0";
+		ericsson:correction "1";
+		ericsson:contact "EAB/FJP/TA UABJOCL";
+		ericsson:author "EAB/FJP/TA UABJOCL";
+	}
+
+	augment
+	"/ECIM_Top:ManagedElement/ECIM_Top:Transport/RsyncSynchronization:Synchronization"
+	{
+		list "FrequencySyncIO" {
+			key "frequencySyncIOId";
+			max-elements 8;
+			uses RsyncFrequencySyncIO:FrequencySyncIO;
+		}
+
+	}
+
+	typedef "SyncIOMode" {
+		type enumeration {
+			enum "UNKNOWN_MODE" {
+				value 0;
+				description "Unknown mode.";
+			}
+
+			enum "FREQUENCY_1PPS" {
+				value 1;
+				description "Frequency synchronization IO works in 1PPS mode. ";
+			}
+
+			enum "FREQUENCY_2_MHZ" {
+				value 2;
+				description "Frequency synchronization IO works in 2 MHz mode. ";
+			}
+
+			enum "FREQUENCY_10_MHZ" {
+				value 10;
+				description "Frequency synchronization IO works in 10 MHz mode. ";
+			}
+
+		}
+
+		description "Frequency mode of the synchronization IO port.
+";
+	}
+
+	typedef "SsmLocation" {
+		type enumeration {
+			enum "SA4" {
+				value 1;
+				description "SSM code locates in SA4.";
+			}
+
+			enum "SA5" {
+				value 2;
+				description "SSM code locates in SA5.";
+			}
+
+			enum "SA6" {
+				value 3;
+				description "SSM code locates in SA6.";
+			}
+
+			enum "SA7" {
+				value 4;
+				description "SSM code locates in SA7.";
+			}
+
+			enum "SA8" {
+				value 5;
+				description "SSM code locates in SA8.";
+			}
+
+		}
+
+		description "Where the SSM code is located.
+
+It is only available when syncIO works in 2MBits mode.";
+	}
+
+	grouping "FrequencySyncIO" {
+		description
+		"The MO class specifies that a physical synchronization port is used for frequency synchronization. ";
+		leaf "frequencySyncIOId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "adminPortDirection" {
+			type RsyncSyncLibrary:PortDirection;
+			mandatory true;
+			status deprecated;
+			description
+			"Specifies the port direction of the frequency synchronization IO port. ";
+		}
+
+		leaf "operPortMode" {
+			type RsyncFrequencySyncIO:SyncIOMode;
+			mandatory true;
+			config true;
+			description "Indicates the frequency mode of the frequency synchronization IO.
+";
+		}
+
+		leaf "encapsulation" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			mandatory true;
+			description
+			"Reference to the underlying encapsulation, which must be a SyncPort MO. ";
+		}
+
+		leaf-list "availabilityStatus" {
+			type ECIM_CommonLibrary:AvailStatus;
+			config true;
+			description
+			"The availability status.
+
+It contains details about operationalState. ";
+		}
+
+		leaf "operationalState" {
+			type ECIM_CommonLibrary:OperState;
+			mandatory true;
+			config true;
+			description "The operational state. ";
+		}
+
+		leaf-list "reservedBy" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description
+			"Contains a list of MO instances that reserve this MO instance.";
+		}
+
+	}
+
+}

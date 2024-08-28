@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	Copyright (c) 2013 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2013-apr-16 17:35:25 using:
+	* com.ericsson.ecim.m2m 2.6.3.qualifier
+	* com.ericsson.ecim.dsl 2.6.3.qualifier
+	* com.ericsson.ecim.edm 2.6.3.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>F</dtdVersion>
+    <momMetaData>
+        <momTitle>EPG model</momTitle>
+        <momSubTitle>EPG node</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0.1</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>ervxipe2</signature>
+        </createdBy>
+        <approvedBy>
+            <signature>ervxipe2</signature>
+        </approvedBy>
+    </momMetaData>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <mim author="ervxipe2" contact="ervxipe2" date="" docNo="" name="Epg_Sgw" namespace="urn:com:ericsson:ecim:Epg_Sgw" namespacePrefix="epg_sgw" organization="Ericsson EAB, NDO EPG" release="0" revision="" version="3">
+        <description>SGW settings</description>
+        <enum name="SubscriberIdentifier">
+            <description>List of subscriber identifiers</description>
+            <enumMember name="imsi">
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="DefaultProfile">
+            <description>Default Profile</description>
+            <enumMember name="profile0">
+                <description>Profile 0</description>
+                <value>0</value>
+            </enumMember>
+        </enum>
+        <enum name="ChargingRecordFormat">
+            <description>Format of charging records</description>
+            <enumMember name="9">
+                <description>Version 9</description>
+                <value>9</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="Board">
+            <description>Must be a valid control-plane board</description>
+            <baseType>
+                <string>
+                    <validValues>^gc-0/(20|1[0-9]|[1-9])/1</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="TimeLimit">
+            <description>Time to buffer charging data</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="3"/>
+                <extension name="originatingMimName" value="Epg_Pgw_Charging_Character"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>15</min>
+                        <max>1440</max>
+                    </range>
+                    <unit>minutes</unit>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="VolumeLimit">
+            <description>Volume of charging data to buffer</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="3"/>
+                <extension name="originatingMimName" value="Epg_Pgw_Charging_Character"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>100</min>
+                        <max>2097152</max>
+                    </range>
+                    <unit>kilobytes</unit>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MaximumAge">
+            <description>Maximum age</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>5</min>
+                        <max>1440</max>
+                    </range>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SingletonNodeName">
+            <description>Type of single node name, has to be equal to 1</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>^1$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>The empty built-in type represents a leaf that does not have any value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+                <extension name="originatingMimRelease" value="0"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RangedString20">
+            <description>Node identifier is a string consisting of up to 20 letters, numbers, hyphens, periods, and underscores</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimName" value="Epg_epg"/>
+                <extension name="originatingMimRelease" value="1"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>20</max>
+                    </lengthRange>
+                    <validValues>^[.A-Za-z0-9_-]{1,20}$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="PlmnId">
+            <description>PLMN identifier is a string of 5 or 6 digits</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>5</min>
+                        <max>6</max>
+                    </lengthRange>
+                    <validValues>^[0-9]*$</validValues>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MaximumSize">
+            <description>Maximum size</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>1024</min>
+                        <max>102400</max>
+                    </range>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="ImsiIdentity">
+            <description>Imsi identity</description>
+            <baseType>
+                <uint64>
+                    <range>
+                        <min>1</min>
+                        <max>999999999999999</max>
+                    </range>
+                </uint64>
+            </baseType>
+        </derivedDataType>
+        <class name="InternalDebug">
+            <description>Actions used internally</description>
+            <action name="exportPmXmlFile">
+                <description>.</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <action name="statistics">
+                <description>Show counter</description>
+                <returnType>
+                    <string/>
+                </returnType>
+                <parameter name="identity">
+                    <description>Counter identity</description>
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="internalDebugID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Stop">
+            <description>Stop the SGW service</description>
+            <attribute name="stopID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="node">
+                <description>Stop on node level</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Sgw">
+            <description>SGW settings</description>
+            <root/>
+            <action name="statistics">
+                <description>Show SGW statistics</description>
+                <returnType>
+                    <string/>
+                </returnType>
+            </action>
+            <action name="userInfo">
+                <description>Show user information</description>
+                <returnType>
+                    <string/>
+                </returnType>
+                <parameter name="identifierType">
+                    <description>Show imsi information</description>
+                    <in/>
+                    <dataType>
+                        <enumRef name="SubscriberIdentifier">
+                            <mimName>Epg_Sgw</mimName>
+                        </enumRef>
+                    </dataType>
+                </parameter>
+                <parameter name="imsi">
+                    <description>Imsi identity</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="ImsiIdentity">
+                            <mimName>Epg_Sgw</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="node">
+                <description>Identifier for SGW node</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RangedString20">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sgwID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Board">
+            <description>Stop specific board</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='@boardId = /ManagedElement/Epg/Node/BoardAllocation/@boardAllocationId'><name path='.'/>: Board must be configured under 'managed-element node board-allocation'</assert>]]>&#13;<![CDATA[
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="boardId">
+                <description>Board name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="Board">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="EquivalentPlmnIdList">
+            <description>Equivalent plmn-id list</description>
+            <attribute name="equivalentPlmnIdListID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="plmnId">
+                <description>Serving Home Public Land Mobile Network identifier</description>
+                <noNotification/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="PlmnId">
+                            <mimName>Epg_Sgw</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Charging">
+            <description>SGW charging settings</description>
+            <attribute name="chargingID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="chargingFormat">
+                <description>Format of charging records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="ChargingRecordFormat">
+                        <mimName>Epg_Sgw</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ChargingDataFile">
+            <description>Charging records logged to node</description>
+            <attribute name="chargingDataFileID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="maximumSize">
+                <description>Maximum size of charging log file</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MaximumSize">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="maximumAge">
+                <description>Maximum age of charging log file</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MaximumAge">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="compression">
+                <description>Compress all CDR log files</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="LocalDataFile">
+            <description>CDRs meant for normal offline transfer</description>
+            <attribute name="localDataFileID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="forceEmptyFiles">
+                <description>Generate empty CDR log files if no CDRs are received</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Characteristics">
+            <description>Account-type charging characteristics</description>
+            <attribute name="characteristicsID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="default">
+                <description>Profile applied to context if context contains no charging characteristic</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="DefaultProfile">
+                        <mimName>Epg_Sgw</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Profile0">
+            <description>Profile 0 clients</description>
+            <attribute name="profile0ID">
+                <description>Single instance node must have '1' as name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SingletonNodeName">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="volumeLimit">
+                <description>Volume of charging data to buffer</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="VolumeLimit">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="timeLimit">
+                <description>Time to buffer charging data</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="TimeLimit">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="noCdrGeneration">
+                <description>Do not generate call data records</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimEmpty">
+                        <mimName>Epg_Sgw</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Rf">
+            <description>The Id of an existing Rf DAS</description>
+            <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">]]>&#13;<![CDATA[
+    <pattern>]]>&#13;<![CDATA[
+        <rule>]]>&#13;<![CDATA[
+            <assert id='set' test='every $das in @diameterApplicationSystem satisfies (exists(/ManagedElement/Epg/Node/DiameterApplicationSystem[@diameterApplicationSystemId eq $das]/@applicationId) and (/ManagedElement/Epg/Node/DiameterApplicationSystem[@diameterApplicationSystemId eq $das]/@applicationId eq 2)'><name path='.'/>: Diameter application system must be configured for Rf charging under [services epg node diameter diameter-application-system]</assert>
+        </rule>]]>&#13;<![CDATA[
+    </pattern>]]>&#13;<![CDATA[
+</schema>]]></dependenciesScript>
+            <attribute name="rfID">
+                <description>name</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="diameterApplicationSystem">
+                <description>Diameter application system to use for Rf Charging</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Sgw_to_Stop">
+            <containment>
+                <parent>
+                    <hasClass name="Sgw">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Stop">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Stop_to_Board">
+            <containment>
+                <parent>
+                    <hasClass name="Stop">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Board">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Sgw_to_InternalDebug">
+            <containment>
+                <parent>
+                    <hasClass name="Sgw">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="InternalDebug">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Sgw_to_Charging">
+            <containment>
+                <parent>
+                    <hasClass name="Sgw">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Charging_to_EquivalentPlmnIdList">
+            <containment>
+                <parent>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="EquivalentPlmnIdList">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Charging_to_ChargingDataFile">
+            <containment>
+                <parent>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ChargingDataFile">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Charging_to_Characteristics">
+            <containment>
+                <parent>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="ChargingDataFile_to_LocalDataFile">
+            <containment>
+                <parent>
+                    <hasClass name="ChargingDataFile">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="LocalDataFile">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Characteristics_to_Profile0">
+            <containment>
+                <parent>
+                    <hasClass name="Characteristics">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Profile0">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+        <relationship name="Charging_to_Rf">
+            <containment>
+                <parent>
+                    <hasClass name="Charging">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Rf">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </mim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <interMim>
+        <relationship name="Epg_to_Sgw">
+            <containment>
+                <parent>
+                    <hasClass name="Epg">
+                        <mimName>Epg_epg</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Sgw">
+                        <mimName>Epg_Sgw</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+            </containment>
+        </relationship>
+    </interMim>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</models>

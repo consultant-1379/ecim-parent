@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.ericsson.ecim</groupId>
+		<artifactId>ecim-parent</artifactId>
+		<version>3.1.1</version>
+	</parent>
+	<artifactId>com.ericsson.ecim.repository</artifactId>
+	<packaging>eclipse-repository</packaging>
+	<version>3.1.1</version>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-eclipserun-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<execution>
+						<id>add-repo-properties</id>
+						<goals>
+							<goal>eclipse-run</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<appArgLine>-application org.eclipse.wtp.releng.tools.addRepoProperties</appArgLine>
+							<argLine>-DartifactRepoDirectory=${project.build.directory}/repository -Dp2StatsURI=http://147.214.213.112:8080/DX/UserTracking?tool=ET&amp;version=3.0.0&amp;action=download&amp;user=&amp;source=p2repo&amp;component= -DstatsTrackedArtifacts=com.ericsson.ecim.core -DstatsArtifactsSuffix=-${project.version}</argLine>
+							<dependencies>
+								<dependency>
+									<artifactId>org.eclipse.wtp.releng.tools.feature</artifactId>
+									<type>eclipse-feature</type>
+								</dependency>
+							</dependencies>
+							<repositories>
+								<repository>
+									<url>http://download.eclipse.org/webtools/releng/repository</url>
+									<layout>p2</layout>
+								</repository>
+								<repository>
+									<url>http://download.eclipse.org/releases/luna</url>
+									<layout>p2</layout>
+								</repository>
+							</repositories>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>prepare</id>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<zip
+									destfile="${project.build.directory}/com.ericsson.ecim.repository-${project.version}.zip"
+									basedir="${project.build.directory}/repository" update="true" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

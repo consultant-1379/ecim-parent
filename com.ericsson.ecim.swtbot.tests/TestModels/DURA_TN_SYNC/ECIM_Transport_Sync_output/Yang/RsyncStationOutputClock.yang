@@ -1,0 +1,325 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:23:47 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RsyncStationOutputClock" {
+	namespace "urn:com:ericsson:ecim:RsyncStationOutputClock";
+	prefix "RsyncStationOutputClock";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RsyncSynchronization {
+		prefix "RsyncSynchronization";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RsyncSyncLibrary {
+		prefix "RsyncSyncLibrary";
+	}
+
+	description "ECIM Transport Synchronization StationOutputClock Model.";
+
+	revision "2015-10-13" {
+		ericsson:release "0";
+		ericsson:version "1";
+		ericsson:specification "ITU-T G.781";
+		ericsson:author "EAB/FJP/TA UABJOCL";
+		ericsson:correction "2";
+		ericsson:contact "EAB/FJP/TA UABJOCL";
+	}
+
+	augment
+	"/ECIM_Top:ManagedElement/ECIM_Top:Transport/RsyncSynchronization:Synchronization"
+	{
+		list "StationOutputClock" {
+			key "stationOutputClockId";
+			max-elements 1;
+			status obsolete;
+			description "The min-elements value for this statement is : 1.";
+			list "StationOutputClockReference" {
+				key "stationOutputClockId";
+				status obsolete;
+				uses RsyncStationOutputClock:StationOutputClockReference;
+			}
+
+			uses RsyncStationOutputClock:StationOutputClock;
+		}
+
+	}
+
+	typedef "StationOutputClockState" {
+		type enumeration {
+			enum "SIGNALOK" {
+				value 1;
+				description "Status of station output clock is OK.";
+			}
+
+			enum "SQUELCHED" {
+				value 2;
+				description "Station output clock is squelched.";
+			}
+
+		}
+
+		status obsolete;
+		description "State of station output clock.";
+	}
+
+	grouping "StationOutputClock" {
+		status obsolete;
+		description "Implements the station output clock functionality.
+
+Several StationOutputClockReference instances shall be associated with it to join the station output clock selection algorithm.
+The creation of its instance could be triggered when create Synchronization (root of sync fragment).";
+		leaf "stationOutputClockId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "currentStationClockReference" {
+			type string {
+				pattern "(.*=.*,)*StationOutputClockReference=.*";
+			}
+
+			config true;
+			description "Shows the current selected station output clock reference.
+
+When the clock is experiencing a forced command, the shows value shall be equal to stationClockSwitchReference.
+It shows  NULL if no clock reference is slelected.";
+		}
+
+		leaf "stationClockSwitchReference" {
+			type string {
+				pattern "(.*=.*,)*StationOutputClockReference=.*";
+			}
+
+			config true;
+			description "Shows the current station output clock switch command reference.
+
+It shows NULL if current command is CLEARED.";
+		}
+
+		leaf "stationClockSwitchCommand" {
+			type RsyncSyncLibrary:SwitchCommand;
+			mandatory true;
+			config true;
+			description "Shows the current station output clock switch command.";
+		}
+
+		container "stationClockSquelchLevel" {
+			presence "This Container points to a Struct which has no key.";
+			description "Specifies the squelch quality level for station output clock.
+
+stationClockSquelchLevel is only available when product implement QL-Enable mode.
+User shall set SquelchLevel by selecting it from a given QL list. The value in the list can be product specific, and must be complied with the selected telecom standard.
+If Quality value of station output clock is inferior than SquelchLevel, all output station clock should be squelched.";
+			uses RsyncSyncLibrary:QualityLevelValueOld;
+		}
+
+		leaf "holdOffTime" {
+			type RsyncSyncLibrary:HoldOffTime;
+			mandatory true;
+			description "Specifies the hold-off time for station output clock.
+
+It is available for all station output clock reference.
+According to section 5.8,G.781, the value of HoldOff time is configurable in the range of 300 to 1800 (ms). But some products need implement this attribute exceed the range. So no constraint on the range and unit, products could define them.";
+		}
+
+		leaf "waitToRestoreTime" {
+			type RsyncSyncLibrary:WaitToRestoreTime;
+			mandatory true;
+			description "Specifies the wait to restore time  for station output clock.
+
+According to section 5.9, G.781, the value of WTR time is configurable in the range of 0 to 12 (minute), default value is 5 minutes.
+It is available for all Equipment clock reference. User can clear the WTR state per reference.
+
+";
+		}
+
+		leaf "clockState" {
+			type RsyncStationOutputClock:StationOutputClockState;
+			mandatory true;
+			config true;
+			description "Shows the state of station output clock.
+
+SIGNALOK		-  Status of station output clock is OK.
+SQUELCHED	-  Station output clock is squelched.";
+		}
+
+		leaf-list "stationClockPriorityTable" {
+			type string {
+				pattern "(.*=.*,)*StationOutputClockReference=.*";
+			}
+
+			config true;
+			description "Shows all station output clock references in one place.
+
+Value will be NULL if no station output clock reference existed.";
+		}
+
+		leaf "selectionProcessMode" {
+			type RsyncSyncLibrary:SelectionProcessMode;
+			mandatory true;
+			description "Specifies the selection process mode for station output clock.
+
+QL_ENABLED	-  Station output clock selection process works in QL_ENABLED mode.
+QL_DISABLED	-  Station output clock selection process works in QL_DISABLED mode.";
+		}
+
+		ericsson:setStationClockSwitchCommand {
+			description "Set external command for station output clock.
+
+It is a sync action. switchCommand could be CLEAR, MANUAL or FORCED. switchReference could be any equipment clock reference.";
+			input {
+				leaf "switchCommand" {
+					type RsyncSyncLibrary:SwitchCommand;
+					mandatory true;
+					description
+					"The switch command type, value shall be CLEAR, FORCED, MANUAL. ";
+				}
+
+				leaf "switchReference" {
+					type string {
+						pattern "(.*=.*,)*StationOutputClockReference=.*";
+					}
+
+					description "The switch cmd reference, value shall be the switch cmd specific station output clock reference. 
+If switch cmd is CLEARED, it shall be ignore. In this case, its value could be NULL. ";
+				}
+
+			}
+
+		}
+
+		ericsson:useEquipmentClock {
+			description "Directly use equipment clock as station output clock.";
+		}
+
+	}
+
+	grouping "StationOutputClockReference" {
+		status obsolete;
+		description "Sync Reference for station output clock.
+
+Create its instance, specify an underlying encapsulation, then this reference will join the station output clock selection algorithm.
+Upper number of StationOutputClockReference instance shall be product specific.";
+		leaf "stationOutputClockId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf-list "priority" {
+			type RsyncSyncLibrary:ReferencePriority;
+			min-elements 1;
+			max-elements 8;
+			description
+			"Specifies the priority of synchronization reference.
+
+The priority value must be unique within the clock.";
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf "lockOut" {
+			type RsyncSyncLibrary:EnableStatus;
+			mandatory true;
+			description "Specifies the lock state of sync reference.
+
+ENABLED -  The reference is in lockout state. This cause it to be no longer considered available by the selection process.
+DISABLED - The reference can be considered available.";
+		}
+
+		leaf "useReceiveQL" {
+			type boolean;
+			mandatory true;
+			description "Specifies if sync reference use received quality level to join the selection process.
+
+useReceiveQL is only used in QL_ENABLED.
+
+true	- operQuality is used to join the selection process.
+false	- adminQuality is used to join the selection process.
+
+Runtime to support - flag: if-configure selectionProcessMode is QL_ENABLED";
+		}
+
+		leaf "operQuality" {
+			type RsyncSyncLibrary:QualityLevel;
+			mandatory true;
+			config true;
+			description "Shows the quality level extracted from underlying sync port.";
+		}
+
+		container "adminQuality" {
+			presence "This Container points to a Struct which has no key.";
+			description "Specifies administrative quality level of sync reference.
+
+SyncReference uses adminQuality to join the selection process when useReceiveQL is false.
+User sets adminQuality by selecting QL from a given QL list. The value in the list can be product specific, and must be complied with the selected telecom standard.
+
+Runtime to support - flag: if-configure useReceiveQL of SyncReference is false AND selectionProcessMode is QL_ENABLED";
+			uses RsyncSyncLibrary:QualityLevelValue;
+		}
+
+		leaf "encapsulation" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			mandatory true;
+			description "Underlying physical interface. it is used to hide different physical type of sync port. 
+Specifies the underlying encapsulation of sync reference.
+
+The encapsulation of sync reference is used to hide different physical types of sync port. Products define which type could be used as encapsulation.
+
+Constraint - flag: An transmit port can be use in only one reference for each clock type";
+		}
+
+		leaf "referenceStatus" {
+			type RsyncSyncLibrary:ReferenceStatusOld;
+			mandatory true;
+			config true;
+			description "Shows the status of sync reference.
+
+The value is deceided by the current capability of underlying sync port.
+
+FAILED			- Sync reference is not available.
+BIDIRECTION	- Sync reference can receive and send sync signal.
+MASTER		- Sync reference can only send sync signal, can't receive.
+SLAVE			- Sync reference can only receive sync signal, can't send.";
+		}
+
+		leaf "currentHoldOffTime" {
+			type RsyncSyncLibrary:HoldOffTime;
+			config true;
+			description "Shows the current hold-off time if the sync reference is in hold-off state.
+
+If the sync reference is not in hold-off state, the value is 0.
+
+Optional to support - Flag : if-feature SyncHoldOffTime";
+		}
+
+		leaf "currentWTR" {
+			type RsyncSyncLibrary:CurrentWTR;
+			mandatory true;
+			config true;
+			description "Shows the current wait to restore time if the sync reference is in WTR state.
+
+If the sync reference is not in WTR state, the value is 0.";
+		}
+
+		ericsson:clearWTR {
+			description "Clear the WTR state for a sync reference.";
+		}
+
+	}
+
+}

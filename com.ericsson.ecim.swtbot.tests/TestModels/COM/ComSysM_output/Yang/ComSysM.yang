@@ -1,0 +1,314 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Dec 7, 2015 9:12:11 AM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "ComSysM" {
+	namespace "urn:com:ericsson:ecim:ComSysM";
+	prefix "ComSysM";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ComTop {
+		prefix "ComTop";
+	}
+
+	organization "EAB/FLE/CD";
+	description "This fragment defines the features that are used by other fragments or by the managed element itself. 
+These include the schema for the managed element that will define the version handling for the model parts and the handling of the NTP server information.
+";
+
+	revision "2015-03-11" {
+		ericsson:correction "0";
+		ericsson:revision "A";
+		ericsson:release "2";
+		ericsson:version "3";
+		ericsson:author "Narahari Sundaragopalan";
+		ericsson:contact "XNARSUN";
+	}
+
+	augment "/ComTop:ManagedElement/ComTop:SystemFunctions" {
+		list "SysM" {
+			key "sysMId";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			list "Schema" {
+				key "schemaId";
+				min-elements 2;
+				uses ComSysM:Schema;
+			}
+
+			list "NtpServer" {
+				key "ntpServerId";
+				uses ComSysM:NtpServer;
+			}
+
+			list "NetconfTls" {
+				key "netconfTlsId";
+				max-elements 1;
+				uses ComSysM:NetconfTls;
+			}
+
+			list "NetconfSsh" {
+				key "netconfSshId";
+				max-elements 1;
+				uses ComSysM:NetconfSsh;
+			}
+
+			list "CliSsh" {
+				key "cliSshId";
+				max-elements 1;
+				uses ComSysM:CliSsh;
+			}
+
+			list "CliTls" {
+				key "cliTlsId";
+				max-elements 1;
+				uses ComSysM:CliTls;
+			}
+
+			uses ComSysM:SysM;
+		}
+
+	}
+
+	typedef "EcimPasswordString" {
+		type string;
+		description "The password string.";
+	}
+
+	grouping "SysM" {
+		description "This is the System Management MO. 
+
+It is a parent to the MOs which represent the system level functions such as time handling and version handling as well as file transfer capabilities and netconf configuration.";
+		leaf "sysMId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.
+
+It is set automatically when the MO instance is created.";
+			ericsson:restricted;
+		}
+
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+	}
+
+	grouping "NtpServer" {
+		description
+		"A persistent NTP client mode network association with a specified remote server or local reference clock address. ";
+		leaf "userLabel" {
+			type string;
+			description "An additional descriptive text.";
+		}
+
+		leaf "ntpServerId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "serverAddress" {
+			type ECIM_CommonLibrary:IpDNSAddress;
+			mandatory true;
+			description "The address of the NTP server with which a persistent client server mode association will be made.
+
+The serverAddress represents either a V4 or a V6 IP address or a DNS domain name.";
+		}
+
+		leaf "administrativeState" {
+			type ECIM_CommonLibrary:BasicAdmState;
+			mandatory true;
+			description "Locks or unlocks the operation of the NTP client function. 
+
+This is a convenience function to permit some or all NtpServer instances to be temporarily locked without having to delete the object.";
+		}
+
+	}
+
+	grouping "Schema" {
+		description
+		"Represents a MIM model fragment whose corresponding functionality is operational in the Managed Element.";
+		leaf "schemaId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.
+
+From a usability perspective, the value could e.g. be set to the corresponding model name.";
+			ericsson:restricted;
+		}
+
+		leaf "identifier" {
+			type string;
+			config true;
+			description
+			"Represents the name of the data model fragment that the schema represents.";
+		}
+
+		leaf "baseModelIdentifier" {
+			type string;
+			config true;
+			description
+			"Represents the name of the common information model fragment that the data model fragment is derived from.";
+		}
+
+		leaf "version" {
+			type string;
+			config true;
+			description
+			"Represents the full version information for the data model fragment that the schema represents.";
+		}
+
+		leaf "baseModelVersion" {
+			type string;
+			config true;
+			description
+			"The full version information for the common information model fragment that the data model fragment is derived from. ";
+		}
+
+		leaf-list "selectedModelOptions" {
+			type string;
+			config true;
+			description "Contains the model features used in the generation of the MIM. 
+
+The MS can query the information from the model without having to access the MIM file itself.";
+			ericsson:non-unique-leaf-list;
+		}
+
+	}
+
+	grouping "NetconfTls" {
+		description
+		"Represents the Netconf configuration management service over Transport Layer Security (TLS).";
+		leaf "netconfTlsId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "nodeCredential" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			description "The credential used for the NETCONF service. 
+Specifies the DN of a NodeCredential MO in Certificate Management.
+";
+		}
+
+		leaf "trustCategory" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			description "The set of certificates trusted by the NETCONF service. 
+Specifies the DN of a TrustCategory MO in Certificate Management.
+";
+		}
+
+		leaf "administrativeState" {
+			type ECIM_CommonLibrary:BasicAdmState;
+			mandatory true;
+			description "The administrative state for the Netconf target.
+When LOCKED all on-going netconf connections will immediately be terminated.
+
+NOTE: Setting the administrativState to LOCKED for all Netconf and CLI interfaces disables O&M access to the ME. Refer to product specific troubleshooting instructions to resolve such a scenario.";
+		}
+
+	}
+
+	grouping "NetconfSsh" {
+		description
+		"Represents the Netconf configuration management service over Secure Shell.";
+		leaf "netconfSshId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "administrativeState" {
+			type ECIM_CommonLibrary:BasicAdmState;
+			mandatory true;
+			description "The administrative state for the Netconf target.
+When LOCKED all on-going netconf connections will immediately be terminated.
+
+NOTE: Setting the administrativState to LOCKED for all Netconf and CLI interfaces disables O&M access to the ME. Refer to product specific troubleshooting instructions to resolve such a scenario.";
+		}
+
+	}
+
+	grouping "CliSsh" {
+		description
+		"Represents the CLI configuration management service over Secure Shell.";
+		leaf "cliSshId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "administrativeState" {
+			type ECIM_CommonLibrary:BasicAdmState;
+			mandatory true;
+			description "The administrative state for the CLI target.
+When LOCKED all on-going CLI connections will immediately be terminated.
+
+NOTE: Setting the administrativState to LOCKED for all Netconf and CLI interfaces disables O&M access to the ME. Refer to product specific troubleshooting instructions to resolve such a scenario.";
+		}
+
+	}
+
+	grouping "CliTls" {
+		description
+		"Represents the CLI configuration management service over Transport Layer Security (TLS).";
+		leaf "cliTlsId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "nodeCredential" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			description "The credential used for the CLI service. 
+Specifies the DN of a NodeCredential MO in Certificate Management.
+";
+		}
+
+		leaf "trustCategory" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			description "The set of certificates trusted by the CLI service. 
+Specifies the DN of a TrustCategory MO in Certificate Management.
+";
+		}
+
+		leaf "administrativeState" {
+			type ECIM_CommonLibrary:BasicAdmState;
+			mandatory true;
+			description "The administrative state for the CLI target.
+When LOCKED all on-going netconf connections will immediately be terminated.
+
+NOTE: Setting the administrativState to LOCKED for all Netconf and CLI interfaces disables O&M access to the ME. Refer to product specific troubleshooting instructions to resolve such a scenario.";
+		}
+
+	}
+
+}

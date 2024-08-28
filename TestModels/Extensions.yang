@@ -1,0 +1,170 @@
+module Extensions {
+	namespace "urn:com:ericsson:ecim:Extensions";
+	prefix Extensions;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	organization "Ericsson";
+	description "asdf";
+
+	revision "2014-09-04" {
+		ericsson:author Namn Namnsson;
+		ericsson:contact "Namn Namnsson";
+		ericsson:correction 2;
+		ericsson:docNo 123;
+		ericsson:organization "Inc Inc";
+		ericsson:revision PA1;
+		ericsson:release 4;
+		ericsson:specification "IEEE 736";
+		ericsson:statusInformation "Testing testing";
+		ericsson:version 3;
+		ericsson:date 2014-09-04;
+	}
+
+    list AugmentTestList {
+		key leafA;
+		leaf leafA {
+             type uint32;
+       }
+	
+       
+	} 
+
+		list mva4 {
+			config false;
+			description "qwe Note: This is a writable struct.";
+			ericsson:keyless-config-list;
+		}
+
+	grouping Root {
+		description qwe;
+		leaf rootId {
+			type string;
+			mandatory true;
+			description asd;
+			ericsson:restricted;
+		}
+
+		leaf qq {
+			type string;
+			mandatory true;
+			description qqw;
+		}
+
+		leaf aq1 {
+			type string;
+			default troll;
+			config false;
+			description s;
+		}
+
+		ericsson:action simpleAction {
+			description qwe;
+		}
+
+		ericsson:action complexAction {
+			description qwe;
+			input {
+				leaf a {
+					type int16;
+					mandatory true;
+					description qwe;
+				}
+
+				leaf b {
+					type string;
+					mandatory true;
+					description q;
+				}
+
+				leaf c {
+					type string;
+					mandatory true;
+					description qwe;
+				}
+
+			}
+
+			output {
+				leaf returnValue {
+					type boolean;
+					mandatory true;
+					description qwe;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionWithMultiValuedParams {
+			description "This action has multi-valued parameters.";
+			input {
+				leaf-list x {
+					type int32;
+					min-elements 1;
+					max-elements 23;
+					description a;
+				}
+
+				leaf-list y {
+					type string;
+					description "This param is for something.";
+				}
+
+				leaf-list z {
+					type int64;
+					min-elements 7;
+					max-elements 7;
+					description "A parameter.";
+				}
+
+			}
+
+			output {
+				list returnType {
+					min-elements 1;
+					max-elements 33;
+					config false;
+					description "Return type doc.";
+					ericsson:keyless-config-list;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionWithDerivedReturn {
+			description none;
+			output {
+				leaf returnValue {
+					type string;
+					mandatory true;
+					description none;
+				}
+
+			}
+
+		}
+
+	}
+
+	grouping ManagedElement {
+		description "asdf";
+		leaf managedElementId {
+			type string;
+			mandatory true;
+			description "asdf";
+			ericsson:restricted;
+		}
+		
+		leaf-list z {
+			type int64;
+			min-elements 7;
+			max-elements 7;
+			description "A parameter.";
+			ericsson:non-unique-leaf-list; //Manually added...
+		}
+		
+	}
+}

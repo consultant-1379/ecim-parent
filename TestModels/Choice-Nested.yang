@@ -1,0 +1,135 @@
+module Choice-Nested {
+
+  namespace "urn:com:ericsson:yang:Choice-Nested";
+  
+  prefix "Choice";
+  
+	import ericsson-yang-extensions {
+		prefix ericssony;
+	}
+	
+  organization
+    "Ericsson AB.";
+
+  contact
+    "Web:   <http://www.ericsson.com>";
+
+  description
+    "This YANG module defines the configuration data
+    and operational state data for Context in IPOS.
+
+    Copyright (c) 2014 Ericsson AB.
+    All rights reserved.";
+
+	revision "2014-09-04" {
+		ericssony:correction 1;
+		ericssony:release 1;
+		ericssony:version 1;
+	}
+
+//logical equivalent = z and ((a xor b) xor c xor (e xor f)) and (g xor h)
+list NestedList {
+	key z;
+	leaf z
+	{
+		type string;
+	}
+	choice ChoiceA
+	{
+		case a
+		{
+			choice ChoiceA1
+			{
+				case a
+				{
+					leaf a{type string;}
+				}
+				case b
+				{
+					leaf b{type string;}
+				}		
+			}
+		}
+		case c
+		{
+			leaf c{type string;}
+		}
+		case d
+		{
+			choice ChoiceA2
+			{
+				case e
+				{
+					leaf e{type string;}
+				}
+				case f
+				{
+					leaf f{type string;}
+				}
+			}	
+		}
+	}
+	choice ChoiceB
+	{
+		case g
+		{
+			leaf g{type string;}
+		}
+		case h
+		{
+			leaf h{type string;}
+		}		
+	}
+ } 	 
+
+//This should result in the same output as NestedList above if the mapping is correct but it does not!!
+//This is because we intend o flatten out the inner choice but this will result in a different model
+//logical equivalent = z and (a xor b) and c and (e xor f) and (g xor h)
+list NonNestedList {
+	key z;
+	leaf z
+	{
+		type string;
+	}
+	choice ChoiceA1
+	{
+		case a
+		{
+			leaf a{type string;}
+		}
+		case b
+		{
+			leaf b{type string;}
+		}		
+	}
+	choice ChoiceA
+	{
+		case c
+		{
+			leaf c{type string;}
+		}
+	}
+	choice ChoiceA2
+	{
+		case e
+		{
+			leaf e{type string;}
+		}
+		case f
+		{
+			leaf f{type string;}
+		}
+	}	
+	choice ChoiceB
+	{
+		case g
+		{
+			leaf g{type string;}
+		}
+		case h
+		{
+			leaf h{type string;}
+		}		
+	}
+ } 	
+}

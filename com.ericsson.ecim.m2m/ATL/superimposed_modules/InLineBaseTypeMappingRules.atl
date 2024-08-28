@@ -1,0 +1,244 @@
+-- /**
+-- * Map ECIM DataTypes to an MP Datatype when creating an "outline" type out of an inline type for COM MP XML.
+-- * Note there are no CPP specific properties as this mapping is only for COM type MP XML.
+-- * This method *must* be kept in sync with the mapping in BaseTypeMappingRules. We could not share the code as one rule
+-- * expects a DataType and the other a TypedElement. It is not possible to share code between such rules.
+-- * 
+-- * superimposition-dependencies: ECIMtoMP 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 07/06/2013
+-- */
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module InLineBaseTypeMappingRules;
+create OUT : MP from IN : UML;
+
+lazy abstract rule InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.oclIsTypeOf(UML!TypedElement))
+	to t: MP!BaseTypeType 
+	(
+	)
+}
+
+lazy rule StringDataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and s.type.name='EcimString')
+	to t: MP!BaseTypeType 
+	(
+		string <- stringType
+	),	
+	stringType : MP!StringType
+	(
+		lengthRange <- thisModule.hasLengthRange(s),
+		stringLength <- thisModule.hasStringLength(s),
+		validValues <- thisModule.hasValidValues(s),
+		isPassphrase <- thisModule.hasIsPassphrase(s)
+	)
+}
+
+lazy rule DoubleDataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and s.type.name='EcimFloat')
+	to t: MP!BaseTypeType 
+	(
+		double <- doubleType
+	),	
+	doubleType : MP!DoubleType
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s)
+	)
+}
+
+lazy rule BooleanDataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and s.type.name='EcimBoolean')
+	to t: MP!BaseTypeType 
+	(
+		boolean <- booleanType
+	),	
+	booleanType : MP!BooleanType
+	(	
+		--defaultValue <- --Default is defined on attribute
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule Int8DataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and s.type.name='EcimInt8')
+	to t: MP!BaseTypeType 
+	(
+		int8 <- int8Type
+	),	
+	int8Type : MP!Int8Type
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule Int16DataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and s.type.name='EcimInt16')
+	to t: MP!BaseTypeType 
+	(
+		int16 <- int16Type
+	),	
+	int16Type : MP!Int16Type
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)			
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule Int32DataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and s.type.name='EcimInt32')
+	to t: MP!BaseTypeType 
+	(
+		int32 <- int32Type
+	),	
+	int32Type : MP!Int32Type
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)		
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule Int64DataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and (s.type.name='EcimInt64' or (s.type.name='EcimInteger' and not thisModule.isDWAXE())))
+	to t: MP!BaseTypeType 
+	(
+		int64 <- int64Type
+	),	
+	int64Type : MP!Int64Type
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)			
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule IntegerDataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and (s.type.name='EcimInteger' and thisModule.isDWAXE()))
+	to t: MP!BaseTypeType 
+	(
+		integer <- integerType
+	),	
+	integerType : MP!IntegerType
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)			
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule IntU8DataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and s.type.name='EcimUInt8')
+	to t: MP!BaseTypeType 
+	(
+		uint8 <- uint8Type
+	),	
+	uint8Type : MP!Uint8Type
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s)	
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule IntU16DataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and s.type.name='EcimUInt16')
+	to t: MP!BaseTypeType 
+	(
+		uint16 <- uint16Type
+	),	
+	uint16Type : MP!Uint16Type
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)			
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule IntU32DataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and s.type.name='EcimUInt32')
+	to t: MP!BaseTypeType 
+	(
+		uint32 <- uint32Type
+	),	
+	uint32Type : MP!Uint32Type
+	(	
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)			
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule IntU64DataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsTypeOf(UML!DataType) and s.type.name='EcimUInt64')
+	to t: MP!BaseTypeType 
+	(
+		uint64 <- uint64Type
+	),	
+	uint64Type : MP!Uint64Type
+	(		
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)		
+	)
+}
+
+--this rule is here to match just in case no datatype is specified
+lazy rule NoDataType extends InLineBaseTypeMappingRules
+{
+	from s: UML!TypedElement(s.type.oclIsUndefined())	
+	to t: MP!BaseTypeType 
+	(
+
+	)	
+}

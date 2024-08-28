@@ -1,0 +1,219 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 10:51:51 AM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "MomB" {
+	namespace "urn:com:ericsson:ecim:MomB";
+	prefix "MomB";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import MomA {
+		prefix "MomA";
+	}
+
+	description "MomB";
+
+	revision "2015-04-20" {
+		ericsson:release "1";
+		ericsson:version "1";
+		ericsson:statusInformation "This is deprecated  because blablabla.";
+	}
+
+	augment "/MomA:Root" {
+		list "BRoot" {
+			key "brootId";
+			status obsolete;
+			uses MomB:BRoot;
+		}
+
+	}
+
+	typedef "EcimEmpty" {
+		type boolean;
+		description
+		"This is the special super duper important EcimEmpty data type requested by SSR/EPG.";
+	}
+
+	typedef "MyBoolean" {
+		type boolean;
+		description "qwe";
+	}
+
+	grouping "BRoot" {
+		status obsolete;
+		description "qwe";
+		leaf "brootId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf "ham" {
+			type MomB:EcimEmpty;
+			description "Indicates if set that the pizza must have ham.";
+		}
+
+		list "mySecretPassword" {
+			key "password";
+			max-elements 1;
+			description "You must not know the password.";
+			uses MomB:mySecretPassword;
+		}
+
+		leaf-list "seqDerivedBoolAttr" {
+			type MomB:MyBoolean;
+			max-elements 10;
+			description "qwe";
+		}
+
+		leaf "isRestrictedAttr" {
+			type string;
+			description "A restricted attribute this is.";
+			ericsson:restricted;
+		}
+
+		leaf "isNotifiableAttr" {
+			type string;
+			description "This attribute may output notifications.";
+		}
+
+		leaf "isNillableAttr" {
+			type string;
+			description "This is an isNillable attibute.";
+		}
+
+		leaf "obsoleteAttribute" {
+			type int16;
+			mandatory true;
+			status obsolete;
+			description "wqe";
+		}
+
+		leaf "abstractRef" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			mandatory true;
+			description "Reference to an abstract type with single value";
+		}
+
+		leaf-list "abstractRefSequence" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			min-elements 1;
+			max-elements 8;
+			description "Reference to an abstract type with multi-value";
+		}
+
+		leaf "preliminaryAttribute" {
+			type int64;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "deprecatedAttribute" {
+			type uint32;
+			mandatory true;
+			status deprecated;
+			description "ert";
+		}
+
+		leaf "attrI" {
+			type uint32;
+			default "46545";
+			description "a";
+		}
+
+		leaf "attrH" {
+			type uint32;
+			default "654";
+			description "Huh?";
+		}
+
+		leaf "attrG" {
+			type uint32;
+			default "321";
+			description "qwe";
+		}
+
+		ericsson:actionP {
+			description "123";
+		}
+
+	}
+
+	grouping "EcimPassword" {
+		description "The password struct!";
+		leaf "password" {
+			type string;
+			mandatory true;
+			description "The password.";
+		}
+
+		leaf "cleartext" {
+			type MomB:EcimEmpty;
+			mandatory true;
+			description "Indicates if password is entered in cleartext or not.";
+		}
+
+		leaf-list "seqDerivedBoolMember" {
+			type MomB:MyBoolean;
+			min-elements 1;
+			max-elements 20;
+			description "123";
+		}
+
+	}
+
+	grouping "ObsoleteStruct" {
+		description "qwe";
+		leaf "obsoleteStructMember" {
+			type boolean;
+			mandatory true;
+			status obsolete;
+			description "qw";
+		}
+
+		leaf "abstractRef" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			mandatory true;
+			description "Reference to an abstract type with single value";
+		}
+
+		leaf-list "abstractRefSequence" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			min-elements 1;
+			max-elements 8;
+			description "Reference to an abstract type with multi-value";
+		}
+
+	}
+
+	grouping "MyVeryFirstException" {
+		description "An exception is an exception is an exception.
+";
+	}
+
+	grouping "AnotherException" {
+		description "Another exception documentation.";
+	}
+
+	grouping "ExceptionWithParametersException" {
+		description "qwe";
+	}
+
+}

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2014 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Sep 9, 2014 12:18:28 PM using:
+	* com.ericsson.ecim.m2m 2.11.2.qualifier
+	* com.ericsson.ecim.dsl 2.11.2.qualifier
+	* com.ericsson.ecim.edm 2.11.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+  </momMetaData>
+  <mim author="" contact="" date="" docNo="" name="EcimFloat" namespace="urn:com:ericsson:ecim:EcimFloat" namespacePrefix="ecimfloat" organization="" release="1" revision="" version="23">
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <derivedDataType name="MyDerivedFloat(infinitRange)">
+      <baseType>
+        <double>
+          <range>
+            <min>0</min>
+          </range>
+          <ranges>
+            <subrange>
+              <min>0</min>
+              <max>*</max>
+            </subrange>
+          </ranges>
+        </double>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="MyDerivedFloat(positiveRange)">
+      <baseType>
+        <double>
+          <range>
+            <min>0</min>
+          </range>
+          <ranges>
+            <subrange>
+              <min>0</min>
+              <max>*</max>
+            </subrange>
+          </ranges>
+        </double>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="MyDerivedFloat(negativeRange)">
+      <baseType>
+        <double>
+          <range>
+            <min>-50</min>
+            <max>456</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>-50</min>
+              <max>456</max>
+            </subrange>
+          </ranges>
+        </double>
+      </baseType>
+    </derivedDataType>
+    <class name="FractionDigits">
+      <root/>
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="validNumber">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <readOnly/>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="MyDerivedFloat(infinitRange)">
+            <defaultValue>45.64</defaultValue>
+            <mimName>EcimFloat</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="validListOfNumbers">
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <derivedDataTypeRef name="MyDerivedFloat(infinitRange)">
+              <mimName>EcimFloat</mimName>
+            </derivedDataTypeRef>
+            <minLength>0</minLength>
+            <maxLength>4</maxLength>
+            <nonUnique/>
+            <seqDefaultValue>
+              <defaultValue>45.56</defaultValue>
+              <defaultValue>113.4</defaultValue>
+              <defaultValue>23</defaultValue>
+              <defaultValue>23.45</defaultValue>
+            </seqDefaultValue>
+          </sequence>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="NumberRange">
+      <attribute name="id">
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="validPositiveNumber">
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <readOnly/>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="MyDerivedFloat(positiveRange)">
+            <defaultValue>50</defaultValue>
+            <mimName>EcimFloat</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="validNegativeNumber">
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <derivedDataTypeRef name="MyDerivedFloat(negativeRange)">
+              <mimName>EcimFloat</mimName>
+            </derivedDataTypeRef>
+            <minLength>0</minLength>
+            <maxLength>3</maxLength>
+            <nonUnique/>
+            <seqDefaultValue>
+              <defaultValue>-45.5</defaultValue>
+            </seqDefaultValue>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="validPositiveListOfNumbers">
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <derivedDataTypeRef name="MyDerivedFloat(positiveRange)">
+              <mimName>EcimFloat</mimName>
+            </derivedDataTypeRef>
+            <minLength>0</minLength>
+            <maxLength>3</maxLength>
+            <nonUnique/>
+            <seqDefaultValue>
+              <defaultValue>5000000.3</defaultValue>
+              <defaultValue>33.65</defaultValue>
+              <defaultValue>0.3</defaultValue>
+            </seqDefaultValue>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="validNegativeListOfNumbers">
+        <noNotification/>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <derivedDataTypeRef name="MyDerivedFloat(negativeRange)">
+              <mimName>EcimFloat</mimName>
+            </derivedDataTypeRef>
+            <minLength>0</minLength>
+            <maxLength>3</maxLength>
+            <nonUnique/>
+            <seqDefaultValue>
+              <defaultValue>-45.4</defaultValue>
+              <defaultValue>-20.3</defaultValue>
+              <defaultValue>-5.6</defaultValue>
+            </seqDefaultValue>
+          </sequence>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="FractionDigits_to_NumberRange">
+      <containment>
+        <parent>
+          <hasClass name="FractionDigits">
+            <mimName>EcimFloat</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="NumberRange">
+            <mimName>EcimFloat</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+  </mim>
+  <interMim>
+    <relationship name="Root_to_FractionDigits">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="true"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="Root">
+            <mimName>RootMom</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="FractionDigits">
+            <mimName>EcimFloat</mimName>
+          </hasClass>
+          <cardinality>
+            <min>1</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

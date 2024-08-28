@@ -1,0 +1,104 @@
+module Unique {
+
+  namespace "urn:com:ericsson:yang:UniqueX";
+
+  prefix "U";
+
+	import ericsson-yang-extensions {
+		prefix ericssonx;
+	}
+ 
+
+	organization "Ericsson";
+	description "asdf";
+
+	revision "2014-09-04" {
+		ericssonx:correction 1;
+		ericssonx:release 1;
+		ericssonx:version 1;
+	}
+	
+  revision 2014-09-15 {
+    description
+      "Initial revision.";
+    reference
+      "A YANG Data Model for Routing Management
+      draft-ietf-netmod-routing-cfg-15.";
+  }
+
+	list noUnique {
+	key leafA;
+       leaf leafA {
+			type string;
+       }
+       leaf leafB {
+			type string;
+       }
+   }
+
+	list simpleUniqueListWithQuotes {
+	key leafA;
+	   unique "leafA";
+       leaf leafA {
+			type string;
+       }
+       leaf leafB {
+			type string;
+       }
+   }
+
+	list simpleUniqueListWithOutQuotes {
+	key leafA;
+	   unique leafA;
+       leaf leafA {
+			type string;
+       }
+       leaf leafB {
+			type string;
+       }
+   }
+   
+   	list simpleUniqueListWithOutQuotesWithPrefix {
+	key leafA;
+	   unique U:leafA;
+       leaf leafA {
+			type string;
+       }
+       leaf leafB {
+			type string;
+       }
+   }
+   
+	list compundUniqueList {
+	key leafA;
+	   unique "leafA leafB";
+       leaf leafA {
+			type string;
+       }
+       leaf leafB {
+			type string;
+       }
+   }
+   
+   list compundReverseUniqueList {
+	key leafA;
+	   unique "leafB leafA";
+       leaf leafA {
+			type string;
+       }
+       leaf leafB {
+			type string;
+       }
+   }
+   
+   list compundReverseUniqueListWithPrefixes {
+	key leafA;
+	   unique "U:leafB U:leafA";
+       leaf leafA {
+			type string;
+       }
+       leaf leafB {
+			type string;
+       }
+   }   
+}

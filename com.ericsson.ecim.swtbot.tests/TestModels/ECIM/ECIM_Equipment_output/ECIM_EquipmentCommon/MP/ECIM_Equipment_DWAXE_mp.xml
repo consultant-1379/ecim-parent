@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Dec 7, 2015 9:35:33 AM using:
+	* com.ericsson.ecim.m2m 3.1.0.qualifier
+	* com.ericsson.ecim.dsl 3.1.0.qualifier
+	* com.ericsson.ecim.edm 3.1.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>title</momTitle>
+        <momSubTitle>sub title</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="ETXAVED" contact="EAB/FLE/EU Vahagn Avedian" correction="0" date="2015-02-12" docNo="" name="ECIM_Equipment" namespace="urn:com:ericsson:ecim:ECIM_Equipment" namespacePrefix="ecim_equipment" organization="EAB" release="1" revision="A" variant="Common" version="2">
+        <description>ECIM Equipment Fragment</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_Equipment"/>
+            <extension name="ecimMomVersion" value="2"/>
+            <extension name="ecimMomRelease" value="1"/>
+            <extension name="ecimMomCorrection" value="0"/>
+        </domainExtension>
+        <struct name="Position">
+            <description>Used to indicate the placement of a physical element.</description>
+            <structMember name="name">
+                <description>Defines a label for the position.</description>
+                <string/>
+            </structMember>
+            <structMember name="physicalPosition">
+                <description>Indicates the placement of a physical element.&#13;
+It can specify slot information on a hosting board, mounting site in cabinet or latitude/longitude.</description>
+                <string/>
+            </structMember>
+        </struct>
+        <enum name="AvailabilityStatus">
+            <description>The availability status is used to qualify the operational state.&#13;
+It indicates why the operational state has changed its value to disabled.</description>
+            <enumMember name="NO_STATUS">
+                <description>The resource is fully operational.&#13;
+The operational state is enabled.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="IN_TEST">
+                <description>The resource is undergoing a test procedure.&#13;
+If the administrative state is locked or shutting down then normal users are precluded from using the resource.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="FAILED">
+                <description>The resource has an internal fault that prevents it from operating.&#13;
+The operational state is disabled.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="POWER_OFF">
+                <description>The resource requires power to be applied and is not powered on.&#13;
+For example, a fuse or other protection device is known to have removed power or a low voltage condition has been detected. The operational state is disabled.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="OFF_LINE">
+                <description>The resource requires a routine operation to be performed to make it available.&#13;
+The operation may be manual or automatic, or both. The operational state is disabled.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="OFF_DUTY">
+                <description>The resource has been made inactive in accordance with a predetermined time schedule.&#13;
+Under normal conditions the control process can be expected to reactivate the resource at some scheduled time, and it is therefore considered to be optional. The operational state is enabled or disabled.</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="DEGRADED">
+                <description>The service available from the resource is degraded in some respect.&#13;
+The degradation can for instance be in speed or operating capacity. Failure of a test or an unacceptable performance measurement has established that some or all services are not functional or are degraded due to the presence of a defect. However, the resource remains available for service, either because some services are satisfactory or because degraded service is preferable to no service at all. Object specific attributes may be defined to represent further information indicating, for example, which services are not functional and the nature of the degradation. The operational state is enabled.</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="LOG_FULL">
+                <description>This indicates a log full condition.&#13;
+The semantics of are defined in CCITT Rec. X.735 | ISO/IEC 10164-6.</description>
+                <value>8</value>
+            </enumMember>
+            <enumMember name="DEPENDANCY">
+                <description>The resource cannot operate because some other resource on which it depends is unavailable.&#13;
+The resource it depends on is not represented by the same managed object. For example, a device is not accessible because its controller is powered off. The operational state is disabled.</description>
+                <value>10</value>
+            </enumMember>
+        </enum>
+        <enum name="HwInstallStatus">
+            <description>hwInstallStatus indicates the installation status of the Equipment object.&#13;
+&#13;
+This attribute can be used by the external management system to manage the status of the equipment. It is used together with the acceptableHWTypes attribute from the parent MO to indicate whether the correct piece of equipment is installed or not. It is based on installStatus from the TMF standard (m.3100 attribute).</description>
+            <enumMember name="UNKNOWN">
+                <description>Unknown.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="INSTALLED_AND_ACCEPTABLE">
+                <description>Matches an expected type from the parent MO’s list of acceptableHWTypes.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="INSTALLED_AND_NOT_ACCEPTABLE">
+                <description>Does not match an expected type from the list of parent MO’s acceptableHWTypes.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="NOT_INSTALLED">
+                <description>Not installed.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="LedColor">
+            <description>LED color&#13;
+&#13;
+Possible values:&#13;
+0  RED&#13;
+1  GREEN&#13;
+2  YELLOW&#13;
+3  BLUE</description>
+            <enumMember name="GREEN">
+                <description>GREEN.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="RED">
+                <description>RED.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="BLUE">
+                <description>BLUE.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="YELLOW">
+                <description>YELLOW.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="ResetType">
+            <description>Indicates the type of HW reset to be performed.&#13;
+&#13;
+Possible values:&#13;
+0 SOFT&#13;
+1 HARD&#13;
+2 FACTORYDEFAULT</description>
+            <enumMember name="SOFT">
+                <description>Restart without removing power.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="HARD">
+                <description>Restart where the power is cycled (turned on and off or the equivalent).</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="FACTORY_DEFAULT">
+                <description>A HARD reset followed by resetting the hardware is reset to the factory default settings.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <class name="Equipment">
+            <description>This is the Equipment MO.</description>
+            <root/>
+            <attribute name="equipmentId">
+                <description>Unique identifier for this object instance.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>User friendly name for equipment object.</description>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="ManagedElement_to_Equipment">
+            <containment>
+                <parent>
+                    <hasClass name="ManagedElement">
+                        <mimName>ECIM_Top</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Equipment">
+                        <mimName>ECIM_Equipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

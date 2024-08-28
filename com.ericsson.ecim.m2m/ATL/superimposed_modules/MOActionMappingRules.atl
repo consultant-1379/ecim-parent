@@ -1,0 +1,128 @@
+-- /**
+-- * This transform maps the different EcimActions (UML operations) to MP ActionType
+-- * 
+-- * Note: The inheritance structure of these rules is exactly as defined in the ECIM Profile. This is possible as there is no
+-- * multiple inheritance hierarchies in the ECIM Profile for MOCs.
+-- *
+-- * superimposition-dependencies: ECIMtoMP 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 25/05/2010
+-- */
+
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module MOActionMappingRules;
+create OUT : MP from IN : UML;
+
+--This rule captures the common mappings all MOC action types have
+lazy rule OperationToActionType
+{
+	from s: UML!Operation(s.oclIsTypeOf(UML!Operation))
+	using 
+	{
+		stereotype : String = 'ECIM Base Profile::EcimAction';
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(s);	
+	}		
+	to t: MP!ActionType
+	(
+		description <- thisModule.hasDescription(s),
+		name <- thisModule.setCurrentPackage(s.getNearestPackage()),-- we wrap/store the current mim package to be reused for structs members and exception parameters	
+		name <- s.name,
+
+		--collect all the parameters whicha re not return parameters
+		parameter <- s.ownedParameter->select(e|e.hasStereotype('ECIM Base Profile::EcimParameter'))->select(e|e.direction<>#return),
+		--collect the return parameter if there is one
+		returnType <- thisModule.hasReturnType(s.ownedParameter->select(e|e.hasStereotype('ECIM Base Profile::EcimResult'))->select(e|e.direction=#return)),
+		dependenciesScript <- thisModule.hasConstraint(s),
+		raisesException <- s.raisedException->collect(e|thisModule.CreateRaisedException(e)),
+		
+		--before creating the extensions we group them by domain so that they can be outputted together
+		domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,s)),
+		isNillable <- thisModule.isNillable(s),
+		--Support the ECIMGeneralProperties
+		deprecated <- thisModule.isDeprecated(s),
+		obsolete <- thisModule.isObsolete(s),
+		preliminary <- thisModule.isPreliminary(s),
+		statusInformation <- thisModule.hasStatusInformation(s),		
+		filter <- thisModule.hasFilter(s),
+		specification <- thisModule.hasSpecification(s),
+		decisionPoint <- thisModule.hasDecisionPoint(s),
+		
+		--Support the ECIMCpiBehaviourProperties
+		dependencies <- thisModule.hasDependencies(s),
+		disturbances <- thisModule.hasDisturbances(s),
+		takesEffect  <- thisModule.hasTakesEffect(s),
+		precondition <- thisModule.hasPrecondition(s),
+		sideEffects <- thisModule.hasSideEffects(s),
+		
+		--Supported CPP specific properties
+		--lockBeforeExecute <- TODO		
+		transactionConstraints <- if thisModule.isCPP() then thisModule.hasTransactionConstraints(s) else OclUndefined endif,
+		transactionRequired <- if thisModule.isCPP() then thisModule.isTransactionRequired(s) else OclUndefined endif	
+		
+		--CPP properties that are not supported
+		--applicationTag <- 
+		--domainExtension <-
+		--interfaceOnly <-
+		--visibility <- 
+	)
+}		
+
+--This called rule is called for every Exception an action can raise
+rule CreateRaisedException(exception : UML!Class)
+{
+	to re : MP!RaisesExceptionType
+	(
+		name <- exception.name
+	)
+	do
+	{
+		re;
+	}	
+}
+
+--This abstract rule captures the common mappings all action parameters
+abstract rule ParameterToAbstractParameterType
+{
+	from s: UML!Parameter(s.oclIsTypeOf(UML!Parameter) and s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimMom'))
+	to t: MP!ParameterType()	
+}
+
+--This concrete rule captures the concrete mappings for ECIM action inout parameters
+rule ParameterToParameterType extends ParameterToAbstractParameterType
+{
+	from s: UML!Parameter(s.hasStereotype('ECIM Base Profile::EcimParameter') and s.direction <> #return)
+	using 
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(s);	
+	}
+	to t: MP!ParameterType
+	(
+		
+		description <- thisModule.hasDescription(s),
+		"in"  <- thisModule.isInType(s.direction),--the only supported parameter types are in parameters
+		name <- thisModule.setCurrentPackage(s.getNearestPackage()),-- we wrap/store the current mim package to be reused for structs members and exception parameters			
+		name <- s.name,	
+		isNillable <- thisModule.isNillable(s),
+		dataType <- thisModule.ResolveDataType(s),	
+		validationRules <- if ((thisModule.isCOM() and s.hasInlinePropertiesSet()) or s.type.hasStereotype('ECIM Base Profile::EcimDerivedString')) then
+								OclUndefined -- the validationRules is outputted as part of the derived string type
+						   else
+								thisModule.getValidationRuleWithRegexp(s)
+						   endif,
+		domainExtension <- thisModule.defineParameterDomainExtensionType(s),
+		--before creating the extensions we group them by domain so that they can be outputted together
+		domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,s))
+		
+		
+		--CPP properties that are not supported
+		--applicationTag <-
+		--out <-
+		--inout <-		
+	)			
+}

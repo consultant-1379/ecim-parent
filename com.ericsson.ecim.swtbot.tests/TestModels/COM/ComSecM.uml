@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Documentation="http://www.eclipse.org/papyrus/documentation" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/ECIMBaseProfile/ pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ">
+  <uml:Model xmi:id="_NRAMoAwOEdmFcaeZXPdWAQ" name="ComSecM">
+    <eAnnotations xmi:id="_UxGzsLcrEd-gvvrqzvkuGQ" source="com.ibm.xtools.common.ui.reduction.editingCapabilities">
+      <details xmi:id="_UxGzsbcrEd-gvvrqzvkuGQ" key="com.ericsson.ecim.dsl.uireduction.activity" value="2"/>
+    </eAnnotations>
+    <ownedComment xmi:id="_oKwI8LcrEd-gvvrqzvkuGQ">
+      <body>ECIM Security Management fragment.</body>
+    </ownedComment>
+    <packageImport xmi:id="_uWHKUIXbEd-Id79DLfNphQ">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_iT7qACCSEd-Egr3-YAWs7Q?EcimDataType?"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_IUDvgIXbEd-aDpFTCqQrdw" name="" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_GUIDELIB/ECIM_Guidelines.uml#_tFUKaXhYEd-e29ZwYMJd6w?ECIM%20Guidelines?"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_12zMwLcsEd-gvvrqzvkuGQ" name="ComSecM">
+      <ownedComment xmi:id="_13E5kLcsEd-gvvrqzvkuGQ">
+        <body>ECIM Security Management fragment. &#xD;
+&#xD;
+The Security Management fragment must encompass most system security aspects to be configured on the Managed Element. This version of the model contains authentication and authorization, the User Management aspects. Authentication and authorization methods must contribute to the UserManagement MOC in a modular way.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_14OJELcsEd-gvvrqzvkuGQ" name="SecM">
+        <ownedComment xmi:id="_14OwILcsEd-gvvrqzvkuGQ">
+          <body>Security Management root MOC.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_16Ua0LcsEd-gvvrqzvkuGQ" name="secMId" isReadOnly="true">
+          <ownedComment xmi:id="_16bIgLcsEd-gvvrqzvkuGQ">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_PQCYQN3BEd-W85zyLt2pLQ" name="UserManagementSecurityManagementAssociation" visibility="public" type="_uY-DUN26Ed-W85zyLt2pLQ" aggregation="composite" association="_PPvdUN3BEd-W85zyLt2pLQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_PQC_UN3BEd-W85zyLt2pLQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_PQDmYN3BEd-W85zyLt2pLQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_uCC8ECcxEeKz1uI_cXsnvg" name="Tls" visibility="public" type="_kGE3oCcwEeKjsaJ8viMktA" aggregation="composite" association="_uB5LECcxEeKz1uI_cXsnvg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_G-2-8CcyEeKz1uI_cXsnvg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_G-tN8CcyEeKz1uI_cXsnvg" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_uJ_xwLcvEd-gvvrqzvkuGQ" name="AuthenticationOrder">
+        <ownedComment xmi:id="_uKAY0LcvEd-gvvrqzvkuGQ">
+          <body>MO Class used to view the order of authentication methods.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_uLHzILcvEd-gvvrqzvkuGQ" name="authenticationOrderId" isReadOnly="true">
+          <ownedComment xmi:id="_uLHzIbcvEd-gvvrqzvkuGQ">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_glqngN3mEd-W85zyLt2pLQ" name="authenticationMethodOrder" type="_Rq7GgN3mEd-W85zyLt2pLQ" isReadOnly="true">
+          <ownedComment xmi:id="_glrOkN3mEd-W85zyLt2pLQ">
+            <body>The order in which authentication methods are to be used. &#xD;
+&#xD;
+Methods must be called up in the order specified by the orderNumber member. The method is referenced by the methodReference member.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sh2FoN3mEd-W85zyLt2pLQ" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_xZM2IN3mEd-W85zyLt2pLQ" name="userLabel">
+          <ownedComment xmi:id="_xZM2Id3mEd-W85zyLt2pLQ">
+            <body>An additional descriptive text.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xZM2It3mEd-W85zyLt2pLQ"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_nuGGwN26Ed-W85zyLt2pLQ" name="AuthorizationOrder">
+        <ownedComment xmi:id="_nuGt0N26Ed-W85zyLt2pLQ">
+          <body>MO Class used to view the order of authorization methods.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_nvGzYN26Ed-W85zyLt2pLQ" name="authorizationOrderId" isReadOnly="true">
+          <ownedComment xmi:id="_nvHacN26Ed-W85zyLt2pLQ">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_iS8osN3mEd-W85zyLt2pLQ" name="authorizationMethodOrder" type="_Rq7GgN3mEd-W85zyLt2pLQ" isReadOnly="true">
+          <ownedComment xmi:id="_iS8osd3mEd-W85zyLt2pLQ">
+            <body>The order in which authorization methods are to be used.&#xD;
+&#xD;
+Methods must be called up in the order specified by the orderNumber member. The method is referenced by the methodReference member.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_tadIoN3mEd-W85zyLt2pLQ" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_xpc4oN3mEd-W85zyLt2pLQ" name="userLabel">
+          <ownedComment xmi:id="_xpc4od3mEd-W85zyLt2pLQ">
+            <body>An additional descriptive text.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xpc4ot3mEd-W85zyLt2pLQ"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_uY-DUN26Ed-W85zyLt2pLQ" name="UserManagement">
+        <ownedComment xmi:id="_uY_RcN26Ed-W85zyLt2pLQ">
+          <body>User Management MOC. </body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_uaAlIN26Ed-W85zyLt2pLQ" name="userManagementId" isReadOnly="true">
+          <ownedComment xmi:id="_uaBzQN26Ed-W85zyLt2pLQ">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_wORT4N3BEd-W85zyLt2pLQ" name="AuthenticationOrder" visibility="public" type="_uJ_xwLcvEd-gvvrqzvkuGQ" aggregation="composite" association="_wOQs0N3BEd-W85zyLt2pLQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wOR68N3BEd-W85zyLt2pLQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wOR68d3BEd-W85zyLt2pLQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_A87CgN3CEd-W85zyLt2pLQ" name="AuthorizationOrder" visibility="public" type="_nuGGwN26Ed-W85zyLt2pLQ" aggregation="composite" association="_A86bcN3CEd-W85zyLt2pLQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_A87pkN3CEd-W85zyLt2pLQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_A87pkd3CEd-W85zyLt2pLQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5w3hIN3lEd-W85zyLt2pLQ" name="userLabel">
+          <ownedComment xmi:id="_5w3hId3lEd-W85zyLt2pLQ">
+            <body>An additional descriptive text.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5w3hIt3lEd-W85zyLt2pLQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_PYP18AGYEeCFIdPh0JlfPA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_OXNy4CpvEeKMu_hdrwvWBQ" name="targetType" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_OXaAISpvEeKMu_hdrwvWBQ">
+            <body>Lists the target types of the ME for Target Based Access Control (TBAC).&#xD;
+&#xD;
+This attribute is optional for Authentication Methods that require TBAC configuration. Authentication Methods use TBAC to determine the following: whether a user can be authorized in the ME, and which authorization profiles apply to the user in the ME, based on the target types specified in this attribute.&#xD;
+&#xD;
+This attribute can contain any classifier string for the ME such as geographical, for example: 'stockholm', network, for example 'ims', or functional identifiers, for example 'cscf', and any combination of these.&#xD;
+&#xD;
+The generic behavior of TBAC for authorization is as follows:&#xD;
+&#xD;
+TBAC is LOCKED in the ME: authorization is performed without TBAC. &#xD;
+TBAC is UNLOCKED in the ME: authorization is performed if the targets that the user is provided with exactly match at least one string of configured target types. Otherwise, authorization fails.&#xD;
+&#xD;
+Determining the authorization profiles of the user is specific per Authentication Method.&#xD;
+&#xD;
+The LOCKED and UNLOCKED states of TBAC in the ME are controlled by the Authentication Methods.&#xD;
+&#xD;
+Example value: 'cscf.ims.stockholm'.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_OXmNYSpvEeKMu_hdrwvWBQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_OXmNYipvEeKMu_hdrwvWBQ" value="*"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_PPvdUN3BEd-W85zyLt2pLQ" name="SecM_to_UserManagement" memberEnd="_PQCYQN3BEd-W85zyLt2pLQ _PQMJQN3BEd-W85zyLt2pLQ">
+        <ownedEnd xmi:id="_PQMJQN3BEd-W85zyLt2pLQ" name="SecurityManagementUserManagementAssociation" visibility="public" type="_14OJELcsEd-gvvrqzvkuGQ" association="_PPvdUN3BEd-W85zyLt2pLQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_PQMwUN3BEd-W85zyLt2pLQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_PQNXYN3BEd-W85zyLt2pLQ" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_wOQs0N3BEd-W85zyLt2pLQ" name="UserManagement_to_AuthenticationOrder" memberEnd="_wORT4N3BEd-W85zyLt2pLQ _wOSiAN3BEd-W85zyLt2pLQ">
+        <ownedEnd xmi:id="_wOSiAN3BEd-W85zyLt2pLQ" name="UserManagement" visibility="public" type="_uY-DUN26Ed-W85zyLt2pLQ" association="_wOQs0N3BEd-W85zyLt2pLQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wOTJEN3BEd-W85zyLt2pLQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wOTJEd3BEd-W85zyLt2pLQ" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_A86bcN3CEd-W85zyLt2pLQ" name="UserManagement_to_AuthorizationOrder" memberEnd="_A87CgN3CEd-W85zyLt2pLQ _A88QoN3CEd-W85zyLt2pLQ">
+        <ownedEnd xmi:id="_A88QoN3CEd-W85zyLt2pLQ" name="UserManagement" visibility="public" type="_uY-DUN26Ed-W85zyLt2pLQ" association="_A86bcN3CEd-W85zyLt2pLQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_A883sN3CEd-W85zyLt2pLQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_A883sd3CEd-W85zyLt2pLQ" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_Rq7GgN3mEd-W85zyLt2pLQ" name="MethodOrder">
+        <ownedComment xmi:id="_Rq7tkN3mEd-W85zyLt2pLQ">
+          <body>Struct that represents the order of an authentication or authorization method. &#xD;
+&#xD;
+The referred method must be used by a security function, that is, authentication or authorization in the given order.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_RrXLYN3mEd-W85zyLt2pLQ" name="orderNumber">
+          <ownedComment xmi:id="_RrXLYd3mEd-W85zyLt2pLQ">
+            <body>The method (1-*) order number.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_-Z9gkCCSEd-Egr3-YAWs7Q?EcimDataType/EcimInt16?"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_aJVdQN3mEd-W85zyLt2pLQ" name="methodReference">
+          <ownedComment xmi:id="_aJWEUN3mEd-W85zyLt2pLQ">
+            <body>An MO Reference to the method.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="ECIM_CommonLibrary.uml#_xu6e8JaXEeC11vgiYYrb4A?ECIM_CommonLibrary/ECIM_CommonLibrary/EcimManagedObject?"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5uQVMN3pEd-W85zyLt2pLQ" name="userLabel">
+          <ownedComment xmi:id="_5uQ8QN3pEd-W85zyLt2pLQ">
+            <body>Freetext label to describe reason for the method order.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ly9A8F4qEeKHV__dyZGIdg"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_MCT2kBjeEeC2JL5I1A5iGw" name="SystemFunctions_to_SecM" memberEnd="_MCnYkBjeEeC2JL5I1A5iGw _MCnYkxjeEeC2JL5I1A5iGw">
+        <ownedEnd xmi:id="_MCnYkxjeEeC2JL5I1A5iGw" name="SecM" visibility="public" type="_14OJELcsEd-gvvrqzvkuGQ" aggregation="composite" association="_MCT2kBjeEeC2JL5I1A5iGw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MCnYlBjeEeC2JL5I1A5iGw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MCnYlRjeEeC2JL5I1A5iGw" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_MCnYkBjeEeC2JL5I1A5iGw" name="SystemFunctions" visibility="public" association="_MCT2kBjeEeC2JL5I1A5iGw">
+          <type xmi:type="uml:Class" href="ComTop.uml#_ETwJsJmNEd-RhrgDerFWug?ComTop/ComTop/SystemFunctions?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MCnYkRjeEeC2JL5I1A5iGw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MCnYkhjeEeC2JL5I1A5iGw" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_kGE3oCcwEeKjsaJ8viMktA" name="Tls">
+        <ownedComment xmi:id="_kGqtgScwEeKjsaJ8viMktA">
+          <body>Configures system-wide properties of Transport Layer Security (TLS).</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_kG9ocScwEeKjsaJ8viMktA" name="tlsId" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_kHHZcScwEeKjsaJ8viMktA">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kHaUYScwEeKjsaJ8viMktA" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kHaUYicwEeKjsaJ8viMktA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_oH5uUCcwEeKjsaJ8viMktA" name="enabledCiphers" visibility="public" type="_QDsxkCppEeKMu_hdrwvWBQ" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_oH5uUScwEeKjsaJ8viMktA">
+            <body>Lists the ciphers as filtered by the attribute cipherFilter. &#xD;
+&#xD;
+Ciphers are ordered by strength. The strongest cipher is offered first.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_oH5uUycwEeKjsaJ8viMktA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oH5uUicwEeKjsaJ8viMktA" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_oH5uVCcwEeKjsaJ8viMktA" name="cipherFilter" visibility="public" type="_9sZDECpoEeKMu_hdrwvWBQ" isUnique="false">
+          <ownedComment xmi:id="_oH5uVScwEeKjsaJ8viMktA">
+            <body>Specifies a filter for the cipher suite.&#xD;
+&#xD;
+Applied on the ciphers listed in attribute supportedCiphers. The result is shown in attribute enabledCiphers.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QoElILi4EeOAtbSpJGXieQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oH5uVicwEeKjsaJ8viMktA" value="1"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_Sc78cI4XEeKmr_cKzzJ93w" value="DEFAULT"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_oH5uWScwEeKjsaJ8viMktA" name="supportedCiphers" visibility="public" type="_QDsxkCppEeKMu_hdrwvWBQ" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_oH5uWicwEeKjsaJ8viMktA">
+            <body>Lists the ciphers supported by the ME.</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_oH5uXCcwEeKjsaJ8viMktA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oH5uWycwEeKjsaJ8viMktA" value="*"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_uB5LECcxEeKz1uI_cXsnvg" name="SecM_to_Tls" memberEnd="_uCC8ECcxEeKz1uI_cXsnvg _uCC8EycxEeKz1uI_cXsnvg">
+        <ownedEnd xmi:id="_uCC8EycxEeKz1uI_cXsnvg" name="SecM" visibility="public" type="_14OJELcsEd-gvvrqzvkuGQ" association="_uB5LECcxEeKz1uI_cXsnvg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_uCox8ScxEeKz1uI_cXsnvg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_uCox8CcxEeKz1uI_cXsnvg" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_9sZDECpoEeKMu_hdrwvWBQ" name="CipherList">
+        <ownedComment xmi:id="_9sZDESpoEeKMu_hdrwvWBQ">
+          <body>Derived string for the specification of a cipher list.&#xD;
+&#xD;
+Contains colon-delimited (':') cipher strings that can be of any value of the members contained by a Cipher struct. A cipher string indicates an individual cipher or a set of ciphers that use the same protocol version, key exchange etc. The cipher strings can be combined in logical order and operation by character '+'. They can be optionally preceded by either an '!' or a '-' character. Character '!' means that the preceded cipher or cipher type is permanently deleted from the list. Character '-' means that the preceded cipher or cipher type is deleted from the list, but any of the ciphers can be added by later options.&#xD;
+&#xD;
+They must contain at least one positive expression, that is, without character '!' or '-' in the cipher string, otherwise the filter results in an empty cipher suite.&#xD;
+&#xD;
+Cipher strings with special meaning:&#xD;
+ALL - all cipher suites except for the NULL encryption ciphers, which must be explicitly enabled. NULL authentication ciphers are included.&#xD;
+DEFAULT - all cipher suites except the NULL authentication and NULL encryption ciphers.&#xD;
+&#xD;
+Example: &#xD;
+&#xD;
+ALL:!SSLv2:!RSA:!aRSA:!3DES:!DES:!MD5 &#xD;
+ALL:!EXP-EDH-RSA-DES-CBC-SHA&#xD;
+AES:-kRSA&#xD;
+AES:RC4&#xD;
+kEDH+EXPORT:-MD5, assume that the listed cipher strings are valid values of members of Cipher structs.</body>
+        </ownedComment>
+        <generalization xmi:id="_9sZDEipoEeKMu_hdrwvWBQ">
+          <general xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+        </generalization>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_QDsxkCppEeKMu_hdrwvWBQ" name="Cipher">
+        <ownedComment xmi:id="_QDsxkSppEeKMu_hdrwvWBQ">
+          <body>Represents a cipher algorithm.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_QDsxlippEeKMu_hdrwvWBQ" name="protocolVersion" visibility="public">
+          <ownedComment xmi:id="_QDsxlyppEeKMu_hdrwvWBQ">
+            <body>A keyword that identifies the cipher protocol version.&#xD;
+&#xD;
+For example: 'TLSv1'.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QDsxmSppEeKMu_hdrwvWBQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QDsxmCppEeKMu_hdrwvWBQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_QDsxmippEeKMu_hdrwvWBQ" name="keyExchange" visibility="public">
+          <ownedComment xmi:id="_QDsxmyppEeKMu_hdrwvWBQ">
+            <body>A keyword that identifies the cipher key exchange algorithm.&#xD;
+&#xD;
+For example: 'kEDH'.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QDsxnSppEeKMu_hdrwvWBQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QDsxnCppEeKMu_hdrwvWBQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_QDsxnippEeKMu_hdrwvWBQ" name="authentication" visibility="public">
+          <ownedComment xmi:id="_QDsxnyppEeKMu_hdrwvWBQ">
+            <body>A keyword that identifies the cipher authentication algorithm.&#xD;
+&#xD;
+For example: 'aRSA'.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QDsxoSppEeKMu_hdrwvWBQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QDsxoCppEeKMu_hdrwvWBQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_QDsxoippEeKMu_hdrwvWBQ" name="encryption" visibility="public">
+          <ownedComment xmi:id="_QDsxoyppEeKMu_hdrwvWBQ">
+            <body>A keyword that identifies the cipher encryption algorithm.&#xD;
+&#xD;
+For example: 'AES'.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QDsxpSppEeKMu_hdrwvWBQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QDsxpCppEeKMu_hdrwvWBQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_QDsxpippEeKMu_hdrwvWBQ" name="mac" visibility="public">
+          <ownedComment xmi:id="_QDsxpyppEeKMu_hdrwvWBQ">
+            <body>A keyword that identifies the cipher Message Authentication Code algorithm.&#xD;
+&#xD;
+For example: 'SHA'.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QDsxqSppEeKMu_hdrwvWBQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QDsxqCppEeKMu_hdrwvWBQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_QDsxqippEeKMu_hdrwvWBQ" name="export" visibility="public">
+          <ownedComment xmi:id="_QDsxqyppEeKMu_hdrwvWBQ">
+            <body>Shows 'EXPORT' if the cipher is classified as an EXPORT cipher, otherwise empty.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QDsxrSppEeKMu_hdrwvWBQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QDsxrCppEeKMu_hdrwvWBQ" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_lyalYKZrEeKx3fSQvUvNEg" name="name" visibility="public">
+          <ownedComment xmi:id="_sh_bwKZrEeKx3fSQvUvNEg">
+            <body>A keyword that identifies the cipher name. &#xD;
+&#xD;
+For example: 'TLS_DHE_RSA_WITH_AES_256_CBC_SHA'.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ly2qQaZrEeKx3fSQvUvNEg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ly2qQqZrEeKx3fSQvUvNEg" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_E2EYoEIeEeSbbd8-yy4Wqg" name="Instances">
+        <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_E2E_00IeEeSbbd8-yy4Wqg" name="SecMInstance" classifier="_14OJELcsEd-gvvrqzvkuGQ">
+          <slot xmi:id="_E2E_1EIeEeSbbd8-yy4Wqg" definingFeature="_16Ua0LcsEd-gvvrqzvkuGQ">
+            <value xmi:type="uml:LiteralString" xmi:id="_E2E_1UIeEeSbbd8-yy4Wqg" value="1">
+              <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+            </value>
+          </slot>
+        </packagedElement>
+        <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_-RfUwGmfEeCVrLpBeTEsyQ" name="UserManagementInstance" classifier="_uY-DUN26Ed-W85zyLt2pLQ">
+          <slot xmi:id="_E2E_10IeEeSbbd8-yy4Wqg" definingFeature="_uaAlIN26Ed-W85zyLt2pLQ">
+            <value xmi:type="uml:LiteralString" xmi:id="_E2E_2EIeEeSbbd8-yy4Wqg" value="1">
+              <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+            </value>
+          </slot>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Dependency" xmi:id="_E2E_2UIeEeSbbd8-yy4Wqg" client="_-RfUwGmfEeCVrLpBeTEsyQ" supplier="_E2E_00IeEeSbbd8-yy4Wqg"/>
+        <packagedElement xmi:type="uml:Dependency" xmi:id="_E2E_2kIeEeSbbd8-yy4Wqg" client="_E2E_00IeEeSbbd8-yy4Wqg">
+          <supplier xmi:type="uml:InstanceSpecification" href="ComTop.uml#_8xzHd1s1EeKQFZEdpXt-TQ"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_E2E_20IeEeSbbd8-yy4Wqg" name="TlsInstance" classifier="_kGE3oCcwEeKjsaJ8viMktA">
+          <slot xmi:id="_E2E_3EIeEeSbbd8-yy4Wqg" definingFeature="_kG9ocScwEeKjsaJ8viMktA">
+            <value xmi:type="uml:LiteralString" xmi:id="_E2E_3UIeEeSbbd8-yy4Wqg" value="1">
+              <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+            </value>
+          </slot>
+          <slot xmi:id="_E2E_3kIeEeSbbd8-yy4Wqg" definingFeature="_oH5uVCcwEeKjsaJ8viMktA">
+            <value xmi:type="uml:LiteralString" xmi:id="_E2E_30IeEeSbbd8-yy4Wqg" value="DEFAULT"/>
+          </slot>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Dependency" xmi:id="_E2E_4EIeEeSbbd8-yy4Wqg" client="_E2E_20IeEeSbbd8-yy4Wqg" supplier="_E2E_00IeEeSbbd8-yy4Wqg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_E2GN0EIeEeSbbd8-yy4Wqg" name="SecMSecurityRules">
+        <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_E2GN70IeEeSbbd8-yy4Wqg" name="SecMSystemAdminRule">
+          <classifier xmi:type="uml:Class" href="ComLocalAuthorization.uml#_f9PscLdhEd-gvvrqzvkuGQ"/>
+          <slot xmi:id="_E2GN8EIeEeSbbd8-yy4Wqg">
+            <definingFeature xmi:type="uml:Property" href="ComLocalAuthorization.uml#_f_K_ELdhEd-gvvrqzvkuGQ"/>
+            <value xmi:type="uml:LiteralString" xmi:id="_E2GN8UIeEeSbbd8-yy4Wqg" value="SecurityManagement_1">
+              <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+            </value>
+          </slot>
+          <slot xmi:id="_E2GN8kIeEeSbbd8-yy4Wqg">
+            <definingFeature xmi:type="uml:Property" href="ComLocalAuthorization.uml#_zlMNULdqEd-gvvrqzvkuGQ"/>
+            <value xmi:type="uml:InstanceValue" xmi:id="_E2GN80IeEeSbbd8-yy4Wqg">
+              <type xmi:type="uml:Enumeration" href="ComLocalAuthorization.uml#_2GsP0LdhEd-gvvrqzvkuGQ?ComLocalAuthorization/ComLocalAuthorization/PermissionType?"/>
+              <instance xmi:type="uml:EnumerationLiteral" href="ComLocalAuthorization.uml#_ObsEwLdiEd-gvvrqzvkuGQ?ComLocalAuthorization/ComLocalAuthorization/PermissionType/RWX?"/>
+            </value>
+          </slot>
+          <slot xmi:id="_E2GN9EIeEeSbbd8-yy4Wqg">
+            <definingFeature xmi:type="uml:Property" href="ComLocalAuthorization.uml#_AYx5MMWQEd-wpvYbd3kmkQ"/>
+            <value xmi:type="uml:LiteralString" xmi:id="_E2GN9UIeEeSbbd8-yy4Wqg" value="ManagedElement,SystemFunctions,SecM,*"/>
+          </slot>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Dependency" xmi:id="_E2GN9kIeEeSbbd8-yy4Wqg" client="_E2GN70IeEeSbbd8-yy4Wqg">
+          <supplier xmi:type="uml:InstanceSpecification" href="ComLocalAuthorization.uml#_rtaZAOhREeGot-QGCUxvRg"/>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_UeIAINCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAIdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAItCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAI9CzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/documentation#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://PAPYRUS_DOCUMENTATION/Papyrus.profile.uml#_H9068AEYEeCIz8iAxBJnfA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_U2H2kLcrEd-gvvrqzvkuGQ">
+      <eAnnotations xmi:id="_U2b_oLcrEd-gvvrqzvkuGQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_Fc8vQJzIEeWj272kCkHIPQ"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_cUcakNQkEd63X4o72aQidQ"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_EjpGgJy5EeWyqt-OfTP9YA" hideGroupName="" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ" title="ECIM Security Management" createdBy="ETH/XES Balázs Kovács"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_EjqUoJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Package="_12zMwLcsEd-gvvrqzvkuGQ" author="EAB/FLE/CD XSANBOJ" contact="" date="2014-09-22" docNo="" revision="0" version="11" release="1" organization="EAB/FLE/CD" ecimMomName="ECIM_Security_Management" ecimMomVersion="2" ecimMomRelease="1" ecimMomCorrection="0" correction="0"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_Ejq7sJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" isNotifiable="true" base_Property="_16Ua0LcsEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_EjriwJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" isNotifiable="true" base_Property="_uLHzILcvEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_EjsJ0Jy5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Class="_uJ_xwLcvEd-gvvrqzvkuGQ" isSystemCreated="true"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_EjsJ0Zy5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Class="_nuGGwN26Ed-W85zyLt2pLQ" isSystemCreated="true"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_Ejsw4Jy5EeWyqt-OfTP9YA" hideGroupName="" specification="" isNotifiable="true" base_Property="_nvGzYN26Ed-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_Ejsw4Zy5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Class="_uY-DUN26Ed-W85zyLt2pLQ" isSystemCreated="true"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_EjtX8Jy5EeWyqt-OfTP9YA" hideGroupName="" specification="" isNotifiable="true" base_Property="_uaAlIN26Ed-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_Ejt_AJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Association="_PPvdUN3BEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_Ejt_AZy5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Association="_wOQs0N3BEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_Ej0ssJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Association="_A86bcN3CEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimStruct xmi:id="_Ej1TwJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Class="_Rq7GgN3mEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_Ej160Jy5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Property="_RrXLYN3mEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_Ej2h4Jy5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Property="_aJVdQN3mEd-W85zyLt2pLQ" isAssociationEnd="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_Ej3I8Jy5EeWyqt-OfTP9YA" hideGroupName="" specification="" isNotifiable="true" base_Property="_xZM2IN3mEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_Ej3I8Zy5EeWyqt-OfTP9YA" hideGroupName="" specification="" isNotifiable="true" base_Property="_xpc4oN3mEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_Ej3wAJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Property="_5uQVMN3pEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_Ej3wAZy5EeWyqt-OfTP9YA" isNotifiable="true" base_Property="_5w3hIN3lEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimContribution xmi:id="_Ej4XEJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Association="_MCT2kBjeEeC2JL5I1A5iGw"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_Ej4-IJy5EeWyqt-OfTP9YA" isPersistent="false" hideGroupName="" specification="" isNotifiable="true" base_Property="_glqngN3mEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_Ej4-Ipy5EeWyqt-OfTP9YA" isPersistent="false" hideGroupName="" specification="" isNotifiable="true" base_Property="_iS8osN3mEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_Ej5lMJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" base_Class="_kGE3oCcwEeKjsaJ8viMktA" isSystemCreated="true"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_Ej5lMZy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_kG9ocScwEeKjsaJ8viMktA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_Ej5lM5y5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_oH5uUCcwEeKjsaJ8viMktA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_Ej6MQZy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_oH5uVCcwEeKjsaJ8viMktA"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_Ej6MQpy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_oH5uWScwEeKjsaJ8viMktA"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_Ej6zUJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" base_Association="_uB5LECcxEeKz1uI_cXsnvg"/>
+  <ECIMBaseProfile:EcimDerivedString xmi:id="_Ej7aYJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" length="" pattern="^([!-]?([A-Za-z0-9]+[_-])*[A-Za-z0-9]+(\+([A-Za-z0-9]+[_-])*[A-Za-z0-9]+)*:)*[!-]?([A-Za-z0-9]+[_-])*[A-Za-z0-9]+(\+([A-Za-z0-9]+[_-])*[A-Za-z0-9]+)*$|^$" base_DataType="_9sZDECpoEeKMu_hdrwvWBQ"/>
+  <ECIMBaseProfile:EcimStruct xmi:id="_Ej7aYpy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" base_Class="_QDsxkCppEeKMu_hdrwvWBQ"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_Ej8BcZy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_QDsxlippEeKMu_hdrwvWBQ"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_Ej8Bcpy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_QDsxmippEeKMu_hdrwvWBQ"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_Ej8ogZy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_QDsxnippEeKMu_hdrwvWBQ"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_Ej8ogpy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_QDsxoippEeKMu_hdrwvWBQ"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_Ej8ohJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_QDsxpippEeKMu_hdrwvWBQ"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_Ej9PkJy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_QDsxqippEeKMu_hdrwvWBQ"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_Ej9Pk5y5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_OXNy4CpvEeKMu_hdrwvWBQ"/>
+  <ECIMBaseProfile:EcimStructMember xmi:id="_Ej92oZy5EeWyqt-OfTP9YA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" base_Property="_lyalYKZrEeKx3fSQvUvNEg" isKey="true"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_Ej92o5y5EeWyqt-OfTP9YA" hideGroupName="" specification="" base_Class="_14OJELcsEd-gvvrqzvkuGQ" isSystemCreated="true" isLegacyRoot="true"/>
+  <ECIMBaseProfile:EcimInstances xmi:id="_Ej-dsZy5EeWyqt-OfTP9YA" base_Package="_E2EYoEIeEeSbbd8-yy4Wqg" version="1" release="4" correction="0"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_Ej_EwZy5EeWyqt-OfTP9YA" base_InstanceSpecification="_E2E_00IeEeSbbd8-yy4Wqg"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_Ej_Ew5y5EeWyqt-OfTP9YA" base_InstanceSpecification="_-RfUwGmfEeCVrLpBeTEsyQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_Ej_r0Jy5EeWyqt-OfTP9YA" base_Dependency="_E2E_2UIeEeSbbd8-yy4Wqg"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_Ej_r0py5EeWyqt-OfTP9YA" base_Dependency="_E2E_2kIeEeSbbd8-yy4Wqg"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_EkAS4Jy5EeWyqt-OfTP9YA" base_InstanceSpecification="_E2E_20IeEeSbbd8-yy4Wqg"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_EkAS4py5EeWyqt-OfTP9YA" base_Dependency="_E2E_4EIeEeSbbd8-yy4Wqg"/>
+  <ECIMBaseProfile:EcimInstances xmi:id="_EkAS5Jy5EeWyqt-OfTP9YA" base_Package="_E2GN0EIeEeSbbd8-yy4Wqg" version="1" release="0" correction="0"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_EkA58Zy5EeWyqt-OfTP9YA" base_InstanceSpecification="_E2GN70IeEeSbbd8-yy4Wqg"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_EkA58py5EeWyqt-OfTP9YA" base_Dependency="_E2GN9kIeEeSbbd8-yy4Wqg"/>
+  <Documentation:Documentation xmi:id="_AoEo0Jy5EeWyqt-OfTP9YA" base_Comment="_oKwI8LcrEd-gvvrqzvkuGQ"/>
+  <Documentation:Documentation xmi:id="_AoEo0Zy5EeWyqt-OfTP9YA" base_Comment="_13E5kLcsEd-gvvrqzvkuGQ"/>
+  <Documentation:Documentation xmi:id="_AoEo0py5EeWyqt-OfTP9YA" base_Comment="_14OwILcsEd-gvvrqzvkuGQ"/>
+  <Documentation:Documentation xmi:id="_AoEo05y5EeWyqt-OfTP9YA" base_Comment="_16bIgLcsEd-gvvrqzvkuGQ"/>
+  <Documentation:Documentation xmi:id="_AoEo1Jy5EeWyqt-OfTP9YA" base_Comment="_uKAY0LcvEd-gvvrqzvkuGQ"/>
+  <Documentation:Documentation xmi:id="_AoEo1Zy5EeWyqt-OfTP9YA" base_Comment="_uLHzIbcvEd-gvvrqzvkuGQ"/>
+  <Documentation:Documentation xmi:id="_AoEo1py5EeWyqt-OfTP9YA" base_Comment="_nuGt0N26Ed-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo15y5EeWyqt-OfTP9YA" base_Comment="_nvHacN26Ed-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo2Jy5EeWyqt-OfTP9YA" base_Comment="_uY_RcN26Ed-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo2Zy5EeWyqt-OfTP9YA" base_Comment="_uaBzQN26Ed-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo2py5EeWyqt-OfTP9YA" base_Comment="_5w3hId3lEd-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo25y5EeWyqt-OfTP9YA" base_Comment="_Rq7tkN3mEd-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo3Jy5EeWyqt-OfTP9YA" base_Comment="_RrXLYd3mEd-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo3Zy5EeWyqt-OfTP9YA" base_Comment="_aJWEUN3mEd-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo3py5EeWyqt-OfTP9YA" base_Comment="_glrOkN3mEd-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo35y5EeWyqt-OfTP9YA" base_Comment="_iS8osd3mEd-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo4Jy5EeWyqt-OfTP9YA" base_Comment="_xZM2Id3mEd-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo4Zy5EeWyqt-OfTP9YA" base_Comment="_xpc4od3mEd-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo4py5EeWyqt-OfTP9YA" base_Comment="_5uQ8QN3pEd-W85zyLt2pLQ"/>
+  <Documentation:Documentation xmi:id="_AoEo45y5EeWyqt-OfTP9YA" base_Comment="_kGqtgScwEeKjsaJ8viMktA"/>
+  <Documentation:Documentation xmi:id="_AoEo5Jy5EeWyqt-OfTP9YA" base_Comment="_kHHZcScwEeKjsaJ8viMktA"/>
+  <Documentation:Documentation xmi:id="_AoEo5Zy5EeWyqt-OfTP9YA" base_Comment="_oH5uUScwEeKjsaJ8viMktA"/>
+  <Documentation:Documentation xmi:id="_AoEo5py5EeWyqt-OfTP9YA" base_Comment="_oH5uVScwEeKjsaJ8viMktA"/>
+  <Documentation:Documentation xmi:id="_AoEo55y5EeWyqt-OfTP9YA" base_Comment="_oH5uWicwEeKjsaJ8viMktA"/>
+  <Documentation:Documentation xmi:id="_AoEo6Jy5EeWyqt-OfTP9YA" base_Comment="_9sZDESpoEeKMu_hdrwvWBQ"/>
+  <Documentation:Documentation xmi:id="_AoEo6Zy5EeWyqt-OfTP9YA" base_Comment="_QDsxkSppEeKMu_hdrwvWBQ"/>
+  <Documentation:Documentation xmi:id="_AoEo6py5EeWyqt-OfTP9YA" base_Comment="_QDsxlyppEeKMu_hdrwvWBQ"/>
+  <Documentation:Documentation xmi:id="_AoEo65y5EeWyqt-OfTP9YA" base_Comment="_QDsxmyppEeKMu_hdrwvWBQ"/>
+  <Documentation:Documentation xmi:id="_AoEo7Jy5EeWyqt-OfTP9YA" base_Comment="_QDsxnyppEeKMu_hdrwvWBQ"/>
+  <Documentation:Documentation xmi:id="_AoEo7Zy5EeWyqt-OfTP9YA" base_Comment="_QDsxoyppEeKMu_hdrwvWBQ"/>
+  <Documentation:Documentation xmi:id="_AoEo7py5EeWyqt-OfTP9YA" base_Comment="_QDsxpyppEeKMu_hdrwvWBQ"/>
+  <Documentation:Documentation xmi:id="_AoEo75y5EeWyqt-OfTP9YA" base_Comment="_QDsxqyppEeKMu_hdrwvWBQ"/>
+  <Documentation:Documentation xmi:id="_AoEo8Jy5EeWyqt-OfTP9YA" base_Comment="_OXaAISpvEeKMu_hdrwvWBQ"/>
+  <Documentation:Documentation xmi:id="_AoEo8Zy5EeWyqt-OfTP9YA" base_Comment="_sh_bwKZrEeKx3fSQvUvNEg"/>
+</xmi:XMI>

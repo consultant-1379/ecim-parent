@@ -1,0 +1,163 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 25, 2014 10:38:18 AM using 
+    * com.ericsson.ecim.yang.m2m 2.10.1.qualifier
+*/
+module Mom3 {
+	namespace "urn:com:ericsson:ecim:Mom3";
+	prefix Mom3;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import TheTop {
+		prefix TheTop;
+	}
+
+	organization "Ericsson";
+	description "qwe";
+
+	revision "2014-04-25" {
+		ericsson:release 1;
+		ericsson:version 1;
+	}
+
+	augment "/TheTop:Root" {
+		list Root3 {
+			key root3Id;
+			max-elements 17;
+			description "The min-elements value for this statement is : 17.";
+			uses "Mom3:Root3";
+			list SS7Class {
+				key ss7Id;
+				min-elements 34;
+				max-elements 34;
+				uses "Mom3:SS7Class";
+			}
+
+		}
+
+	}
+
+	typedef ChampSelector {
+		type enumeration {
+			enum OS {
+				value 1;
+			}
+
+			enum VM {
+				value 2;
+			}
+
+		}
+
+	}
+
+	typedef MyDerivedInteger {
+		type int32 {
+			range "17..4711";
+		}
+
+		description "qwe";
+	}
+
+	typedef MyABCString {
+		type string {
+			pattern "[ABC]*";
+		}
+
+		description "qwe";
+	}
+
+	grouping Root3 {
+		description "SS7 class hooya!";
+		leaf root3Id {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf-list a123 {
+			type "TheTop:OneTwoThreeEnum";
+			max-elements 17;
+			description "wer";
+		}
+
+		ericsson:action mgcLock {
+			description "qwe";
+			input {
+				leaf mgcForceLock {
+					type string;
+					mandatory true;
+					description "ert";
+				}
+
+				leaf-list mgcGraceLock {
+					type string;
+					min-elements 1;
+					max-elements 64;
+					description "qwe";
+				}
+
+				leaf xtra {
+					type "TheTop:OneTwoThreeEnum";
+					description "qwe";
+				}
+
+			}
+
+		}
+
+	}
+
+	grouping SS7Class {
+		description "qwe";
+		leaf ss7Id {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf a1 {
+			type int16;
+			default 234;
+			description "qwe\nwow what is \'this\'\nnew lines and \neverything!!";
+		}
+
+		leaf championship {
+			type "Mom3:ChampSelector";
+			config false;
+			description "qwe";
+		}
+
+		leaf myIntAttr {
+			type "Mom3:MyDerivedInteger";
+			config false;
+			description "qwe";
+		}
+
+		leaf abcAttr {
+			type "Mom3:MyABCString";
+			description "qwe";
+		}
+
+		leaf mgcKeyA {
+			type int32;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf mgcKeyB {
+			type int32;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+	}
+
+}

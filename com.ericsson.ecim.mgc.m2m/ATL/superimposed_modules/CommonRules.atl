@@ -1,0 +1,43 @@
+-- /**
+-- * This transformation helper file provides some reusable rules.
+-- *
+-- * 
+-- * superimposition-dependencies: 
+-- * library-dependencies: HelperFunctions.atl
+-- *
+-- * Author: Ronan Barrett, Andreas Jakobik
+-- * Date: 27/06/2012
+-- */
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI JSON=http://www.ericsson.com/ecim/mgc/Json
+
+module CommonRules;
+create OUT : JSON from IN : UML;
+
+uses HelperFunctions;
+
+--This rule creates an emtpy string '' when a String is undefined
+rule CreateJsonStringValue(s : String)
+{
+	to t : JSON!StringValue
+	(
+		value <- if (s.oclIsUndefined()) then '' else s endif 
+	)
+	do
+	{
+		t; 
+	}
+}
+
+--This rule creates an empty Json Object
+rule CreateEmptyJsonObject()
+{
+	to t : JSON!Object
+	(	
+	)
+	do
+	{
+		t; 
+	}
+}
+

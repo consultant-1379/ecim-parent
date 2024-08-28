@@ -1,0 +1,3064 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Oct 14, 2015 10:10:56 PM using:
+	* com.ericsson.ecim.m2m 3.0.2.qualifier
+	* com.ericsson.ecim.dsl 3.0.2.qualifier
+	* com.ericsson.ecim.edm 3.0.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>G</dtdVersion>
+    <momMetaData>
+        <momTitle>ECIM_T SCTP</momTitle>
+        <momSubTitle>ECIM_T SCTP</momSubTitle>
+        <momIdentity>
+            <docNum>0</docNum>
+            <docLang>English</docLang>
+            <docRev>0</docRev>
+            <docDate>date</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="0" date="" docNo="" name="RtnSctp" namespace="urn:com:ericsson:ecim:RtnSctp" namespacePrefix="rtnsctp" organization="" release="7" revision="" variant="Model" version="2">
+        <description>ECIM Transport SCTP MOM. </description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_T_SCTP"/>
+            <extension name="ecimMomVersion" value="1"/>
+            <extension name="ecimMomRelease" value="0"/>
+            <extension name="ecimMomCorrection" value="0"/>
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <implements correction="0" name="ECIM_T_SCTP" release="0" version="1"/>
+        <enum name="AssociationState">
+            <description>The SCTP association state.</description>
+            <enumMember name="CLOSED">
+                <description>SCTP association is closed.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ESTABLISHED">
+                <description>SCTP association is established.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="AlphaIndex">
+            <description>RTO alpha index.</description>
+            <enumMember name="ALPHA_1_2ND">
+                <description>ALPHA_1_2ND -&gt; RTO.Alpha=1/2.&#13;
+</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="ALPHA_1_4TH">
+                <description>ALPHA_1_4TH -&gt; RTO.Alpha=1/4.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="ALPHA_1_8TH">
+                <description>ALPHA_1_8TH -&gt; RTO.Alpha=1/8.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="ALPHA_1_16TH">
+                <description>ALPHA_1_16TH -&gt; RTO.Alpha=1/16.</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="BetaIndex">
+            <description>RTO beta index. </description>
+            <enumMember name="BETA_1_2ND">
+                <description>BETA_1_2ND -&gt; RTO.Beta = 1/2.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="BETA_1_4TH">
+                <description>BETA_1_4TH -&gt; RTO.Beta = 1/4.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="BEAT_1_8TH">
+                <description>BEAT_1_8TH -&gt; RTO.Beta = 1/8.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="BETA_1_16TH">
+                <description>BETA_1_16TH -&gt; RTO.Beta = 1/16.</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="RedundancyStatus">
+            <description>The SCTP redundancy status</description>
+            <enumMember name="UNDEFINED">
+                <description>The SCTP redundancy undefined status. SCTP association is closed.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="DORMANT">
+                <description>All remote IP addresses are inactive. </description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="NOT_REDUNDANT">
+                <description>Redundancy addresses are unreachable. All remote IP addresses except primary are inactive.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="REDUNDANT">
+                <description>At least one remote IP address except primary is active.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="REDUNDANCY_NOT_POSSIBLE">
+                <description>SCTP association has only one remote IP address.</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <class name="SctpAssociation">
+            <description>The SctpAssociation is a representation of the protocol relationship between two SCTP Endpoints. &#13;
+&#13;
+It is composed of the two SCTP Endpoints and protocol state information. </description>
+            <systemCreated/>
+            <attribute name="localPortNumber">
+                <description>Local port number of the association.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>1</min>
+                            <max>65535</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>65535</max>
+                            </subrange>
+                        </ranges>
+                    </uint16>
+                </dataType>
+            </attribute>
+            <attribute name="localPrimaryAddress">
+                <description>Local IP address normally used for outgoing traffic.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddress">
+                        <mimName>RtnFilterTypes</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="remotePortNumber">
+                <description>Remote port number of the association.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>1</min>
+                            <max>65535</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>65535</max>
+                            </subrange>
+                        </ranges>
+                    </uint16>
+                </dataType>
+            </attribute>
+            <attribute name="remotePrimaryAddress">
+                <description>Remote IP address normally used for outgoing traffic.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddress">
+                        <mimName>RtnFilterTypes</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="associationState">
+                <description>The SCTP association state.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="AssociationState">
+                        <mimName>RtnSctp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="localIpAddress">
+                <description>One or several local IP addresses used by the association.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="IpAddress">
+                            <mimName>RtnFilterTypes</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="remoteIpAddress">
+                <description>One or several remote IP addresses used by the association.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <derivedDataTypeRef name="IpAddress">
+                            <mimName>RtnFilterTypes</mimName>
+                        </derivedDataTypeRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="sctpAssociationId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="redundancyStatus">
+                <description>SCTP redundancy status indicates if there are redundant remote IP addresses available for SCTP traffic. </description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="RedundancyStatus">
+                        <mimName>RtnSctp</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SctpEndpoint">
+            <description>An SCTP Endpoint is the logical sender and receiver of SCTP packets.
+Dependencies: All AddressIPv4 MOs configured in SctpEndpoint MOs must refer to IP interfaces belonging to a single Router instance.</description>
+            <validationRules>
+                <rule exceptionText="" format="ECIM_Schematron_1.0" name="SctpEndpoint">&lt;schema xmlns="http://purl.oclc.org/dsdl/schematron"&gt;
+	&lt;pattern&gt;
+		&lt;rule&gt;
+		&lt;assert test="every $ip in @localIpAddress satisfies every $port in @portNumber satisfies count(../SctpEndpoint[$port eq @portNumber and $ip = @localIpAddress]) eq 1"&gt; Bad configuration. SctpEndpoint="&lt;value-of select="@sctpEndpointId"/&gt;", the combination of the portNumber and IP adresses is not unique.&lt;/assert&gt;
+		&lt;assert test="every $ip in @localIpAddress satisfies every $each_ip in (../SctpEndpoint/@localIpAddress) satisfies ($ip/../../@routerId eq $each_ip/../../@routerId)"&gt;&lt;value-of select="."/&gt;. Bad configuration: all AddressIPv4 MOs configured in SctpEndpoint MOs must refer to IP interfaces belonging to a single Router instance.&lt;/assert&gt;
+		&lt;/rule&gt;
+	&lt;/pattern&gt;
+&lt;/schema&gt;</rule>
+            </validationRules>
+            <root/>
+            <attribute name="portNumber">
+                <description>Local port number for the SCTP endpoint. </description>
+                <mandatory/>
+                <restricted/>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>1</min>
+                            <max>65535</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>65535</max>
+                            </subrange>
+                        </ranges>
+                    </uint16>
+                </dataType>
+            </attribute>
+            <attribute name="sctpProfile">
+                <description>Reference to a SctpProfile.</description>
+                <mandatory/>
+                <dataType>
+                    <moRef name="SctpProfile">
+                        <mimName>RtnSctpProfile</mimName>
+                    </moRef>
+                </dataType>
+            </attribute>
+            <attribute name="sctpEndpointId">
+                <description>The value component of the RDN. </description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="localIpAddress">
+                <description>List of references to an AddressIPv4 MO or AddressIPv6 MO serving as local addresses for the endpoint.
+Only 1 address is supported in this release.</description>
+                <mandatory/>
+                <restricted/>
+                <dataType>
+                    <sequence>
+                        <moRef name="ManagedObject">
+                            <mimName>EcimCommon</mimName>
+                        </moRef>
+                        <minLength>1</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>Label for free use.</description>
+                <isNillable/>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>1</min>
+                            <max>128</max>
+                        </lengthRange>
+                        <stringLength>
+                            <subrange>
+                                <min>1</min>
+                                <max>128</max>
+                            </subrange>
+                        </stringLength>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="reservedBy">
+                <description>Contains a list of MO instances that reserve this MO instance.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="ManagedObject">
+                            <mimName>EcimCommon</mimName>
+                        </moRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="SctpEndpoint_to_SctpAssociation">
+            <containment>
+                <parent>
+                    <hasClass name="SctpEndpoint">
+                        <mimName>RtnSctp</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SctpAssociation">
+                        <mimName>RtnSctp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="SctpEndpoint_sctpProfile_to_SctpProfile_reservedBy">
+            <biDirectionalAssociation>
+                <associationEnd name="sctpProfile">
+                    <hasClass name="SctpProfile">
+                        <mimName>RtnSctpProfile</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="SctpEndpoint">
+                        <mimName>RtnSctp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+        <relationship name="SctpEndpoint_localIpAddress_to_AddressIPv4_reservedBy">
+            <biDirectionalAssociation>
+                <associationEnd name="localIpAddress">
+                    <hasClass name="AddressIPv4">
+                        <mimName>RtnL3InterfaceIPv4</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="SctpEndpoint">
+                        <mimName>RtnSctp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+        <relationship name="SctpEndpoint_localIpAddress_to_AddressIPv6_reservedBy">
+            <biDirectionalAssociation>
+                <associationEnd name="localIpAddress">
+                    <hasClass name="AddressIPv6">
+                        <mimName>RtnL3InterfaceIPv6</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                    <isReserving/>
+                </associationEnd>
+                <associationEnd name="reservedBy">
+                    <hasClass name="SctpEndpoint">
+                        <mimName>RtnSctp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+    </mim>
+    <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="0" date="" docNo="" name="RtnSCTP_" namespace="urn:com:ericsson:ecim:RtnSCTP_" namespacePrefix="rtnsctp_" organization="" release="0" revision="" variant="Model" version="0">
+        <description>Decision MOM for SCTP.
+
+Shall not be visible.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+    </mim>
+    <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="0" date="" docNo="" name="RtnSctpProfile" namespace="urn:com:ericsson:ecim:RtnSctpProfile" namespacePrefix="rtnsctpprofile" organization="" release="4" revision="" variant="Model" version="2">
+        <description>SCTP Profile</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <class name="SctpProfile">
+            <description>The SctpProfile defines the configuration that controls the behaviour of an SctpEndpoint. &#13;
+&#13;
+The SctpProfile can be shared by one or more SctpEndpoint MOs.</description>
+            <validationRules>
+                <rule exceptionText="" format="ECIM_Schematron_1.0" name="SctpProfile">&lt;schema xmlns="http://purl.oclc.org/dsdl/schematron"&gt;
+	&lt;pattern&gt;
+		&lt;rule&gt;
+		&lt;assert test='@assocMaxRtx ge @pathMaxRtx'&gt;&lt;value-of select="."/&gt; assocMaxRtx must be &amp;gt;= pathMaxRtx&lt;/assert&gt;
+		&lt;assert test='@initRto ge @minRto'&gt;&lt;value-of select="."/&gt; initRto must be &amp;gt;= minRto&lt;/assert&gt;
+		&lt;assert test='@initRto le @maxRto'&gt;&lt;value-of select="."/&gt; initRto must be &amp;lt;= maxRto&lt;/assert&gt;
+		&lt;assert test='@maxRto gt @minRto'&gt;&lt;value-of select="."/&gt; maxRto must be &amp;gt; minRto&lt;/assert&gt;
+		&lt;assert test='@maxActivateThr ge @minActivateThr'&gt;&lt;value-of select="."/&gt; maxActivateThr must be &amp;gt;= minActivateThr&lt;/assert&gt;
+		&lt;assert test='@primaryPathMaxRtx le @pathMaxRtx'&gt;&lt;value-of select="."/&gt; primaryPathMaxRtx must be &amp;lt;= pathMaxRtx&lt;/assert&gt;
+		&lt;assert test='@thrTransmitBuffer le @transmitBufferSize'&gt;&lt;value-of select="."/&gt; thrTransmitBuffer must be &amp;lt;= transmitBufferSize&lt;/assert&gt;
+		&lt;/rule&gt;
+	&lt;/pattern&gt;
+&lt;/schema&gt;</rule>
+            </validationRules>
+            <root/>
+            <attribute name="dscp">
+                <description>The DSCP value. </description>
+                <dataType>
+                    <uint8>
+                        <range>
+                            <min>0</min>
+                            <max>63</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>0</min>
+                                <max>63</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>40</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="incCookieLife">
+                <description>Allowed increment of parameter valid.Cookie.Life in local node.&#13;
+&#13;
+Applied when an increase of the parameter is requested from the remote node.
+A new value of the attribute does not apply to associations that are already established.</description>
+                <dataType>
+                    <uint8>
+                        <range>
+                            <min>0</min>
+                            <max>180</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>0</min>
+                                <max>180</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>30</defaultValue>
+                        <unit>s</unit>
+                    </uint8>
+                </dataType>
+                <specification>RFC 4960, section 3.3.2.1</specification>
+            </attribute>
+            <attribute name="bundlingActivated">
+                <description>States whether bundling is allowed for an endpoint.
+&#13;
+True: An endpoint bundles chunks by including multiple chunks in one outbound SCTP packet.&#13;
+False: Bundling is not used.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>true</defaultValue>
+                    </boolean>
+                </dataType>
+                <specification>RFC 4960, section 6.10</specification>
+            </attribute>
+            <attribute name="bundlingTimer">
+                <description>Maximum allowed bundling delay.</description>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>0</min>
+                            <max>1000</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>0</min>
+                                <max>1000</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>0</defaultValue>
+                        <unit>ms</unit>
+                    </uint16>
+                </dataType>
+            </attribute>
+            <attribute name="heartbeatInterval">
+                <description>SCTP heartbeat interval.</description>
+                <dataType>
+                    <uint32>
+                        <range>
+                            <min>10</min>
+                            <max>1800000</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>10</min>
+                                <max>1800000</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>2000</defaultValue>
+                        <unit>ms</unit>
+                    </uint32>
+                </dataType>
+                <specification>RFC 4960, section 8.3</specification>
+            </attribute>
+            <attribute name="hbMaxBurst">
+                <description>HB.MaxBurst value.
+A new value of the attribute does not apply to associations that are already established.</description>
+                <dataType>
+                    <uint32>
+                        <range>
+                            <min>0</min>
+                            <max>4</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>0</min>
+                                <max>4</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>1</defaultValue>
+                    </uint32>
+                </dataType>
+                <specification>RFC 4960, section 5.4</specification>
+            </attribute>
+            <attribute name="initialHeartbeatInterval">
+                <description>Period for acceptance of a heartbeat acknowledge message during path probing.&#13;
+&#13;
+It limits the intensity of heartbeats for path probing after association start-up.</description>
+                <dataType>
+                    <uint32>
+                        <range>
+                            <min>10</min>
+                            <max>1800000</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>10</min>
+                                <max>1800000</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>500</defaultValue>
+                        <unit>ms</unit>
+                    </uint32>
+                </dataType>
+            </attribute>
+            <attribute name="heartbeatActivated">
+                <description>States whether heartbeat is activated.&#13;
+&#13;
+True: Activates heartbeats for SCTP endpoint.&#13;
+False: Disables heartbeats for SCTP endpoint.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>true</defaultValue>
+                    </boolean>
+                </dataType>
+                <specification>RFC 4960, section 8.3</specification>
+            </attribute>
+            <attribute name="initARWnd">
+                <description>Value of the initial advertised receiver window credit (a_rwnd sent in the INIT message).
+
+If the value of this attribute is increased, it applies to both existing and new associations. If the value is decreased, it does not apply to associations that are already established.</description>
+                <dataType>
+                    <uint32>
+                        <range>
+                            <min>1500</min>
+                            <max>1048576</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1500</min>
+                                <max>1048576</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>16384</defaultValue>
+                        <unit>bytes</unit>
+                    </uint32>
+                </dataType>
+            </attribute>
+            <attribute name="initRto">
+                <description>RTO initial value.
+
+A new value of the attribute does not apply to associations that are already established.</description>
+                <dataType>
+                    <uint32>
+                        <range>
+                            <min>10</min>
+                            <max>120000</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>10</min>
+                                <max>120000</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>200</defaultValue>
+                        <unit>ms</unit>
+                    </uint32>
+                </dataType>
+                <dependencies>minRto &lt;= initRto &lt;= maxRto</dependencies>
+                <specification>RFC 4960, section 6.3.1.</specification>
+            </attribute>
+            <attribute name="maxBurst">
+                <description>Maximum number of burst packets.</description>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>1</min>
+                            <max>16384</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>16384</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>4</defaultValue>
+                    </uint16>
+                </dataType>
+                <specification>RFC 4960, section 6.1</specification>
+            </attribute>
+            <attribute name="maxRto">
+                <description>Maximum RTO.</description>
+                <dataType>
+                    <uint32>
+                        <range>
+                            <min>11</min>
+                            <max>120000</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>11</min>
+                                <max>120000</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>400</defaultValue>
+                        <unit>ms</unit>
+                    </uint32>
+                </dataType>
+                <dependencies>minRto &lt;= initRto &lt;= maxRto</dependencies>
+                <specification>RFC 4960, section 6.3.1</specification>
+            </attribute>
+            <attribute name="maxInStreams">
+                <description>Maximum number of inbound streams to negotiate for an association. 
+
+A change to this attribute does not affect the existing associations. 
+To apply a new value, the endpoint must be re-created.</description>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>1</min>
+                            <max>16384</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>16384</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>2</defaultValue>
+                    </uint16>
+                </dataType>
+                <specification>RFC 4096, section 3.3.2</specification>
+            </attribute>
+            <attribute name="maxInitRt">
+                <description>Maximum number of retransmissions allowed for both INIT and COOKIE_ECHO chunks.
+
+A new value of the attribute does not apply to associations that are already established.</description>
+                <dataType>
+                    <uint8>
+                        <range>
+                            <min>1</min>
+                            <max>16</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>16</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>8</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="maxOutStreams">
+                <description>Maximum number of outbound streams to negotiate for an association. 
+
+A change to this attribute does not affect the existing associations. 
+To apply a new value, the endpoint must be re-created.</description>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>1</min>
+                            <max>16384</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>16384</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>2</defaultValue>
+                    </uint16>
+                </dataType>
+                <specification>RFC 4960, section 3.3.2</specification>
+            </attribute>
+            <attribute name="maxShutdownRt">
+                <description>Maximum number of retransmissions during the shutdown phase of an association.</description>
+                <dataType>
+                    <uint8>
+                        <range>
+                            <min>1</min>
+                            <max>20</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>20</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>5</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="transmitBufferSize">
+                <description>Size of the buffer used for storing data pending to be sent or retransmitted in an association.</description>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>1</min>
+                            <max>2048</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>2048</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>64</defaultValue>
+                        <unit>KB</unit>
+                    </uint16>
+                </dataType>
+                <dependencies>thrTransmitBuffer&lt;=transmitBufferSize</dependencies>
+            </attribute>
+            <attribute name="minRto">
+                <description>Minimum RTO.</description>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>10</min>
+                            <max>5000</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>10</min>
+                                <max>5000</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>100</defaultValue>
+                        <unit>ms</unit>
+                    </uint16>
+                </dataType>
+                <dependencies>minRto &lt;= initRto &lt;= maxRto</dependencies>
+                <specification>RFC 4960, section 6.3.1</specification>
+            </attribute>
+            <attribute name="thrTransmitBufferCongCeased">
+                <description>Size of threshold of the transmit buffer in percentage when congestion cease indication is sent.&#13;
+&#13;
+See also description of attribute thrTransmitBuffer.</description>
+                <dataType>
+                    <uint8>
+                        <range>
+                            <min>1</min>
+                            <max>100</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>100</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>85</defaultValue>
+                        <unit>%</unit>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="thrTransmitBuffer">
+                <description>Threshold of the transmit buffer size. 
+
+Upon exceeding this threshold the user of SCTP will be asked to stop sending data. This condition will persist until the occupancy of the transmit buffer drops below thrTransmitBufferCongCeased * thrTransmitBuffer.</description>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>1</min>
+                            <max>2048</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>2048</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>48</defaultValue>
+                        <unit>KB</unit>
+                    </uint16>
+                </dataType>
+                <dependencies>thrTransmitBuffer&lt;=transmitBufferSize</dependencies>
+            </attribute>
+            <attribute name="alphaIndex">
+                <description>RTO alpha index.</description>
+                <dataType>
+                    <enumRef name="AlphaIndex">
+                        <defaultValue>ALPHA_1_8TH</defaultValue>
+                        <mimName>RtnSctp</mimName>
+                    </enumRef>
+                </dataType>
+                <specification>RFC 4960, section 6.3.1</specification>
+            </attribute>
+            <attribute name="betaIndex">
+                <description>RTO beta index. &#13;
+</description>
+                <dataType>
+                    <enumRef name="BetaIndex">
+                        <defaultValue>BETA_1_4TH</defaultValue>
+                        <mimName>RtnSctp</mimName>
+                    </enumRef>
+                </dataType>
+                <specification>RFC 4960, section 6.3.1</specification>
+            </attribute>
+            <attribute name="maxActivateThr">
+                <description>Maximum number of consecutive successful heartbeats.&#13;
+&#13;
+It must be sent over the data transfer path (DTP) before switchback can be performed.</description>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>1</min>
+                            <max>65535</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>65535</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>65535</defaultValue>
+                    </uint16>
+                </dataType>
+                <dependencies>minActivateThr&lt;=maxActivateThr</dependencies>
+            </attribute>
+            <attribute name="minActivateThr">
+                <description>Minimum and initial number of consecutive successful heartbeats before switchback can be performed.&#13;
+&#13;
+The minimum and initial value for the number of consecutive successful heartbeats that must be sent over the preferred primary path before switchback can be performed.</description>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>1</min>
+                            <max>65535</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>65535</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>1</defaultValue>
+                    </uint16>
+                </dataType>
+                <dependencies>minActivateThr&lt;=maxActivateThr</dependencies>
+            </attribute>
+            <attribute name="sackTimer">
+                <description>The time delay for sending the Selective Acknowledgement (SACK).&#13;
+&#13;
+Time is measured from receiving the DATA chunk to sending the SACK chunk.</description>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>0</min>
+                            <max>500</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>0</min>
+                                <max>500</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>10</defaultValue>
+                        <unit>ms</unit>
+                    </uint16>
+                </dataType>
+            </attribute>
+            <attribute name="cookieLife">
+                <description>Valid cookie life.
+A new value of the attribute does not apply to associations that are already established. </description>
+                <dataType>
+                    <uint8>
+                        <range>
+                            <min>1</min>
+                            <max>180</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>180</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>60</defaultValue>
+                        <unit>s</unit>
+                    </uint8>
+                </dataType>
+                <specification>RFC 4960, section 5.1.3</specification>
+            </attribute>
+            <attribute name="assocMaxRtx">
+                <description>Association maximum number of retransmissions packets.</description>
+                <dataType>
+                    <uint8>
+                        <range>
+                            <min>1</min>
+                            <max>20</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>20</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>20</defaultValue>
+                    </uint8>
+                </dataType>
+                <dependencies>primaryPathMaxRtx &lt;= pathMaxRtx &lt;= assocMaxRtx</dependencies>
+                <specification>RFC 4960, section 6.3.1</specification>
+            </attribute>
+            <attribute name="pathMaxRtx">
+                <description>Maximum number of consecutive retransmissions on an IP path.&#13;
+&#13;
+An IP path is defined by the pair of local and remote IP addresses.</description>
+                <dataType>
+                    <uint8>
+                        <range>
+                            <min>1</min>
+                            <max>20</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>1</min>
+                                <max>20</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>10</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="primaryPathMaxRtx">
+                <description>Maximum value of the error counter of the current primary path before switchover.&#13;
+&#13;
+In case of enabled Primary Path Avoidance(PPA), if the error counter of the primary path exceeds this value, SCTP chooses another current primary path.</description>
+                <dataType>
+                    <uint8>
+                        <range>
+                            <min>0</min>
+                            <max>20</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>0</min>
+                                <max>20</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>0</defaultValue>
+                    </uint8>
+                </dataType>
+                <dependencies>primaryPathMaxRtx &lt;= pathMaxRtx &lt;= assocMaxRtx</dependencies>
+            </attribute>
+            <attribute name="maxSctpPduSize">
+                <description>Maximum size of the SCTP PDU.&#13;
+&#13;
+This is equal to the size of IP MTU minus the size of IP overhead.</description>
+                <dataType>
+                    <uint16>
+                        <range>
+                            <min>508</min>
+                            <max>1480</max>
+                        </range>
+                        <ranges>
+                            <subrange>
+                                <min>508</min>
+                                <max>1480</max>
+                            </subrange>
+                        </ranges>
+                        <defaultValue>1480</defaultValue>
+                        <unit>bytes</unit>
+                    </uint16>
+                </dataType>
+            </attribute>
+            <attribute name="sctpProfileId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="primaryPathAvoidance">
+                <description>Whether SCTP can avoid primary path usage when it didn't work for the latest transmission.&#13;
+&#13;
+True: Enable functionality. &#13;
+False: Disable functionality.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>true</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="noSwitchback">
+                <description>Recovery of the failed Primary Path does not invoke change of the (current) data transfer path. &#13;
+&#13;
+True: No switchback.&#13;
+False: Switchback.</description>
+                <dataType>
+                    <boolean>
+                        <defaultValue>true</defaultValue>
+                    </boolean>
+                </dataType>
+            </attribute>
+            <attribute name="userLabel">
+                <description>Label for free use.</description>
+                <isNillable/>
+                <dataType>
+                    <string>
+                        <lengthRange>
+                            <min>1</min>
+                            <max>128</max>
+                        </lengthRange>
+                        <stringLength>
+                            <subrange>
+                                <min>1</min>
+                                <max>128</max>
+                            </subrange>
+                        </stringLength>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="reservedBy">
+                <description>Contains a list of MO instances that reserve this MO instance.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="ManagedObject">
+                            <mimName>EcimCommon</mimName>
+                        </moRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="bundlingAdaptiveActivated">
+                <description>States whether adaptive bundling is applied. 
+It is only applicable if bundlingActivated is set to true.
+According to traffic condition, SCTP bundles chunks by including multiple chunks in one outbound SCTP packet.
+
+True :  Adaptive bundling is enabled.
+False : Adaptive bundling is disabled.</description>
+                <isNillable/>
+                <dataType>
+                    <boolean>
+                        <defaultValue>true</defaultValue>
+                    </boolean>
+                </dataType>
+                <preliminary/>
+            </attribute>
+        </class>
+    </mim>
+    <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="0" date="" docNo="" name="RtnSctpServer" namespace="urn:com:ericsson:ecim:RtnSctpServer" namespacePrefix="rtnsctpserver" organization="" release="5" revision="" variant="Model" version="1">
+        <description>SCCTP class</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="NONE"/>
+        </domainExtension>
+        <class name="Sctp">
+            <description>The Sctp is an abstraction of the SCTP system. 
+The only purpose of this class is PM counters. Created automatically when the first SctpEndpoint is created.</description>
+            <systemCreated/>
+            <root/>
+            <attribute name="sctpId">
+                <description>The value component of the RDN. </description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="Transport_to_SctpEndpoint">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="false"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="Transport">
+                        <mimName>ECIM_Top</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SctpEndpoint">
+                        <mimName>RtnSctp</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+    <interMim>
+        <relationship name="Transport_to_SctpProfile">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="false"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="Transport">
+                        <mimName>ECIM_Top</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SctpProfile">
+                        <mimName>RtnSctpProfile</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+    <interMim>
+        <relationship name="Transport_to_Sctp">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="false"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="Transport">
+                        <mimName>ECIM_Top</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Sctp">
+                        <mimName>RtnSctpServer</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+    <mib correction="0" name="RtnSCTPSctpPM" release="0" version="1">
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpPassiveEstabs</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpPassiveEstabs</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>State change from CLOSED directly to ESTABLISHED.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of times that SCTP associations have made a direct transition from the CLOSED state to the ESTABLISHED state</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1">
+            <hasClass name="PmGroup">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="pmGroupId">
+                <value>Sctp</value>
+            </slot>
+            <slot name="description">
+                <value>Statistics for SCTP</value>
+            </slot>
+            <slot name="moClass">
+                <complexValue>
+                    <slot name="moClassName">
+                        <value>Sctp</value>
+                    </slot>
+                    <slot name="mimName">
+                        <value>RtnSctpServer</value>
+                    </slot>
+                    <slot name="mimRelease">
+                        <value>0</value>
+                    </slot>
+                    <slot name="mimVersion">
+                        <value>1</value>
+                    </slot>
+                </complexValue>
+            </slot>
+            <slot name="validity">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpInErrors</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpInErrors</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>The number of received SCTP datagrams for which an SCTP association could not be determined.</value>
+            </slot>
+            <slot name="condition">
+                <value>An SCTP datagram is received, but is not delivered due to inability to find the association and endpoint.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpAborteds</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpAborteds</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>Number of retransmitted DATA chunks.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of times that SCTP associations have made a direct transition to the CLOSED state from any state, using the chunk ABORT.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpInDiscardedChunks</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpInDiscardedChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="condition">
+                <value>A received chunk is discarded.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>Number of received chunks dropped for the following reasons: 
+- Invalid association state
+- Duplicated data
+- Invalid stream identity in the DATA_CHUNK
+- Invalid verification tag in the packet
+- Stale SACK_CHUNK received
+- Lack of receiving buffer
+- ULP buffer overflow.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpOutDiscardedChunks</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpOutDiscardedChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of outgoing user messages originating from the application for this SCTP for which no problems were encountered to prevent their transmission but were discarded. User messages are discarded due to lack of thrTransmitBuffer.</value>
+            </slot>
+            <slot name="condition">
+                <value>A sent user message is discarded.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpInCtrlChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpInCtrlChunks</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value> A control chunk is received.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of received control chunks. The counter does not include abnormal or discarded chunks.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpOutOfBlues</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpOutOfBlues</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>An unidentified packet is received.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of out-of-the-blue packets that are received by the host.
+
+These are SCTP packets that are correctly formed (with a correct checksum), but where the receiver is not able to identify the association to which this packet belongs. </value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpInUnorderChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpInUnorderChunks</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>An unordered chunk is received.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of unordered chunks received from the peers.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpFragUsrMsgs</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpFragUsrMsgs</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>A fragmented message is transmitted.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of fragmented user messages, incremented when the first data chunk of fragmented message is sent.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpChecksumErrors</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpChecksumErrors</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>An SCTP packet with invalid checksum received.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of SCTP packets received from the peers, with an invalid checksum.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpActiveEstabs</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpActiveEstabs</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>State change from COOKIE-ECHOED directly to ESTABLISHED.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of times that SCTP associations have made a direct transition to the ESTABLISHED state from the COOKIE-ECHOED state.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpReasmUsrMsgs</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpReasmUsrMsgs</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>The first data chunk of a fragmented message is received.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of reassembled user messages, incremented when the first data chunk of a fragmented message is received.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpOutUnorderChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpOutUnorderChunks</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>An unordered chunk is transmitted.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of unordered chunks transmitted to the peers.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpOutOrderChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpOutOrderChunks</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="description">
+                <value>Number of transmitted ordered DATA chunks (excluding retransmissions). </value>
+            </slot>
+            <slot name="condition">
+                <value>A DATA chunk is transmitted.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpInNoPorts</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpInNoPorts</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>The number of received SCTP datagrams for which an SCTP association and endpoint could not be determined (for example if there was no user application at the destination port).</value>
+            </slot>
+            <slot name="condition">
+                <value>An SCTP datagram is received, but is not delivered due to inability to find the association and endpoint.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpRtxChunks</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpRtxChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of DATA chunks retransmitted to the peers.</value>
+            </slot>
+            <slot name="condition">
+                <value>A DATA chunk is retransmitted.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpCommResume</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpCommResume</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of times SCTP has sent a congestion ceased indication to the user.</value>
+            </slot>
+            <slot name="condition">
+                <value>A communication resume indication is sent.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpInSCTPPacks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpInSCTPPacks</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>A SCTP package is received.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of received packets, including duplicates and those received in error.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpInOrderChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpInOrderChunks</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>A DATA chunk is received.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of received ordered DATA chunks.
+
+The counter does NOT include abnormal or discarded chunks.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpOutCtrlChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpOutCtrlChunks</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>A control chunk is transmitted.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of transmitted control chunks.</value>
+            </slot>
+        </object>
+        <object parentDn="">
+            <hasClass name="Pm">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="pmId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpShutdowns</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpShutdowns</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>State change from SHUTDOWN-SENT or SHUTDOWN-ACK-SENT directly to CLOSED.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of times that SCTP associations have made a direct transition to the CLOSED state from either the SHUTDOWN-SENT state or the SHUTDOWN-ACK-SENT state.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpCommStop</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpCommStop</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of times SCTP has sent a congestion indication to the user.</value>
+            </slot>
+            <slot name="condition">
+                <value>A communication stop indication is sent.</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=Sctp">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpOutSCTPPacks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpOutSCTPPacks</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>An SCTP package is transmitted.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of transmitted packets.</value>
+            </slot>
+        </object>
+    </mib>
+    <mib correction="0" name="RtnSCTPAssociationPM" release="0" version="1">
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocUnavailRtx</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocUnavailRtx</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of times that the association has become unavailable to the SCTP user because all paths forming part of this association became inactive for one of the following reasons:
+
+- Retransmission limit was reached
+- an ICMP message is received and is treated as if the retransmission limit was reached </value>
+            </slot>
+            <slot name="condition">
+                <value>State change from any state directly to CLOSED after the maximum number of retransmissions is reached, or if an ICMP message is received and breaks the retransmission counter.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1">
+            <hasClass name="PmGroup">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="pmGroupId">
+                <value>SctpAssociation</value>
+            </slot>
+            <slot name="description">
+                <value>Statistics for SCTP association</value>
+            </slot>
+            <slot name="moClass">
+                <complexValue>
+                    <slot name="moClassName">
+                        <value>SctpAssociation</value>
+                    </slot>
+                    <slot name="mimName">
+                        <value>RtnSctp</value>
+                    </slot>
+                    <slot name="mimVersion">
+                        <value>2</value>
+                    </slot>
+                    <slot name="mimRelease">
+                        <value>0</value>
+                    </slot>
+                </complexValue>
+            </slot>
+            <slot name="validity">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocInControlChunks</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocInControlChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of received control chunks.
+
+The counter does not include abnormal or discarded chunks.</value>
+            </slot>
+            <slot name="condition">
+                <value>A control chunk is received.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocInOctets</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocInOctets</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of octets in received packets for this association, including duplicates and those received in error. </value>
+            </slot>
+            <slot name="condition">
+                <value>An SCTP packet is received.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocTimeUnavail</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocTimeUnavail</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of seconds the association has been unavailable to the SCTP user. 
+
+Unit: 1 s</value>
+            </slot>
+            <slot name="condition">
+                <value>The accumulated time in DISABLED operational state reaches one second.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocAborteds</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocAborteds</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of times that the association has become unavailable to the SCTP user due to ungraceful termination by the local or the remote side, using the chunk ABORT.Ungraceful termination during association establishment does not increment this counter.</value>
+            </slot>
+            <slot name="condition">
+                <value>State change from ESTABLISHED to CLOSED, during ABORT.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocOutOctets</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocOutOctets</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of octets in transmitted packets.</value>
+            </slot>
+            <slot name="condition">
+                <value>An SCTP packet is transmitted.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocPeerZeroWindows</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocPeerZeroWindows</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of times that the association has started the zero window supervision procedure. </value>
+            </slot>
+            <slot name="condition">
+                <value>The association starts the zero window supervision procedure.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocTimePeerZeroWindow</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocTimePeerZeroWindow</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of seconds that the remote peer has claimed to have zero window for its receive buffer.</value>
+            </slot>
+            <slot name="condition">
+                <value>The accumulated time the association has spent on zero window supervision reaches one second.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocInDataChunks</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocInDataChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of received DATA chunks.
+
+The counter does NOT include abnormal or discarded chunks.</value>
+            </slot>
+            <slot name="condition">
+                <value> A DATA chunk is received.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocInDiscardedControlChunks</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocInDiscardedControlChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of received control chunks which were discarded even though no errors were detected. Chunks can be discarded for the following reasons:
+- unsupported chunk type.
+- wrong association state.</value>
+            </slot>
+            <slot name="condition">
+                <value>A received chunk is discarded.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocInDiscardedDataChunks</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocInDiscardedDataChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of received DATA chunks that were discarded due to lack of space in the receive buffer. </value>
+            </slot>
+            <slot name="condition">
+                <value>A received chunk is discarded.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementName">
+                <value>sctpAssocRtxChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="measurementTypeId">
+                <value>sctpAssocRtxChunks</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+            <slot name="condition">
+                <value>A DATA chunk is retransmitted.</value>
+            </slot>
+            <slot name="description">
+                <value>Number of retransmitted DATA chunks.</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocOutDiscardedDataChunks</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocOutDiscardedDataChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of outgoing DATA chunks for this association for which no problems were encountered to prevent their transmission but were discarded. DATA chunks are discarded due to ungraceful closing of the association.</value>
+            </slot>
+            <slot name="condition">
+                <value>An outgoing DATA chunk is discarded.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocOutPacks</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocOutPacks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of transmitted packets.</value>
+            </slot>
+            <slot name="condition">
+                <value>An SCTP packet is transmitted.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocCongestions</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocCongestions</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of times that the local transmission buffer for the association is congested.</value>
+            </slot>
+            <slot name="condition">
+                <value>The association becomes congested.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocOutControlChunks</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocOutControlChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of transmitted control chunks.</value>
+            </slot>
+            <slot name="condition">
+                <value>A control chunk is transmitted.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocOutDiscardedUserMsgs</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocOutDiscardedUserMsgs</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of outgoing user data messages, which were discarded even though no problems were encountered to prevent their transmission. User messages are discarded due to lack of space in the transmission buffer.</value>
+            </slot>
+            <slot name="condition">
+                <value>An outgoing user message is discarded.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocInAbnormalControlChunks</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocInAbnormalControlChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of received control chunks which were chosen to be discarded due to errors in the chunk format or in the chunk content.</value>
+            </slot>
+            <slot name="condition">
+                <value>A received chunk is discarded.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocInPacks</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocInPacks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of received packets for this association, including duplicates and those received in error.</value>
+            </slot>
+            <slot name="condition">
+                <value>An SCTP packet is received.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocInAbnormalDataChunks</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocInAbnormalDataChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of received DATA chunks with errors in the chunk format or in the chunk contents preventing them from being delivered to the SCTP user.</value>
+            </slot>
+            <slot name="condition">
+                <value>A received chunk is discarded.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocShutdowns</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocShutdowns</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of times that the association has become unavailable to the SCTP user due to graceful shutdown by the local or the remote side.</value>
+            </slot>
+            <slot name="condition">
+                <value>State change from SHUTDOWN-SENT or SHUTDOWN-ACK-SENT directly to CLOSED.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="">
+            <hasClass name="Pm">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="pmId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocOutDataChunks</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocOutDataChunks</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of transmitted DATA chunks (excluding retransmissions).</value>
+            </slot>
+            <slot name="condition">
+                <value>A DATA chunk is transmitted.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+        <object parentDn="Pm=1,PmGroup=SctpAssociation">
+            <hasClass name="MeasurementType">
+                <mimName>ECIM_PM</mimName>
+            </hasClass>
+            <slot name="measurementTypeId">
+                <value>sctpAssocTimeCongested</value>
+            </slot>
+            <slot name="measurementName">
+                <value>sctpAssocTimeCongested</value>
+            </slot>
+            <slot name="size">
+                <value>8</value>
+            </slot>
+            <slot name="collectionMethod">
+                <value>CC</value>
+            </slot>
+            <slot name="description">
+                <value>Number of seconds that the local transmission buffer for the association is congested.</value>
+            </slot>
+            <slot name="condition">
+                <value>The accumulated association congestion time reaches 1 second.</value>
+            </slot>
+            <slot name="aggregation">
+                <value>SUM</value>
+            </slot>
+            <slot name="measurementStatus">
+                <value>USED</value>
+            </slot>
+            <slot name="multiplicity">
+                <value>1</value>
+            </slot>
+            <slot name="initialValue">
+                <value>0</value>
+            </slot>
+            <slot name="resetAtGranPeriod">
+                <value>true</value>
+            </slot>
+        </object>
+    </mib>
+</models>

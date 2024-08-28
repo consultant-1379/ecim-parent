@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Apr 17, 2015 4:48:19 PM using:
+	* com.ericsson.ecim.m2m 3.0.0.qualifier
+	* com.ericsson.ecim.dsl 3.0.0.qualifier
+	* com.ericsson.ecim.edm 3.0.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+  </momMetaData>
+  <mim author="" contact="" date="" docNo="" name="ClientMOM2" namespace="urn:com:ericsson:ecim:ClientMOM2" namespacePrefix="clientmom2" organization="" release="1" revision="" version="1">
+    <description>qwe</description>
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <class name="ClientMOM2Root">
+      <description>qwe</description>
+      <root/>
+      <attribute name="clientMOM2RootId">
+        <description>qwe</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="Aal5TpVccTp">
+      <description>qwe</description>
+      <attribute name="aal5TpVccTpId">
+        <description>qwe</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="spmProcessorId">
+        <description>qwe</description>
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <moRef name="Spm">
+              <mimName>ServerMOM</mimName>
+            </moRef>
+            <minLength>0</minLength>
+            <maxLength>2</maxLength>
+            <nonUnique/>
+          </sequence>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="ClientMOM2Root_to_Aal5TpVccTp">
+      <containment>
+        <parent>
+          <hasClass name="ClientMOM2Root">
+            <mimName>ClientMOM2</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="Aal5TpVccTp">
+            <mimName>ClientMOM2</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+    <relationship name="Spm_reservedBy_to_Aal5TpVccTp_spmProcessorId">
+      <biDirectionalAssociation>
+        <associationEnd name="spmProcessorId">
+          <hasClass name="Spm">
+            <mimName>ServerMOM</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+          <isReserving/>
+        </associationEnd>
+        <associationEnd name="reservedBy">
+          <hasClass name="Aal5TpVccTp">
+            <mimName>ClientMOM2</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </associationEnd>
+      </biDirectionalAssociation>
+    </relationship>
+  </mim>
+</models>

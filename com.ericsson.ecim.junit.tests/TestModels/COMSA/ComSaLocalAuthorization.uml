@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/_qOwqINnjEeOq-s1KCPD_og/82" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/_fPqpUFhpEeSeLuwq_bEz0w/794" xmlns:documentation="http://www.eclipse.org/papyrus/documentation" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/CoreMWProfile/_qOwqINnjEeOq-s1KCPD_og/82 pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_qOx4QNnjEeOq-s1KCPD_og http:///schemas/ECIMBaseProfile/_fPqpUFhpEeSeLuwq_bEz0w/794 pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_fP0aUFhpEeSeLuwq_bEz0w">
+  <uml:Model xmi:id="_NRAMoAwOEdmFcaeZXPdWAQ" name="ComSaLocalAuthorization">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_fvGYcd3REd-W85zyLt2pLQ" source="com.ibm.xtools.common.ui.reduction.editingCapabilities">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_fvGYct3REd-W85zyLt2pLQ" key="com.ericsson.ecim.dsl.uireduction.activity" value="2"/>
+    </eAnnotations>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_Hq9CIOByEd-znZBL00_kdg">
+      <body>ECIM Local Authorization Model</body>
+    </ownedComment>
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_uWHKUIXbEd-Id79DLfNphQ">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_iT7qACCSEd-Egr3-YAWs7Q"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_prFCwN24Ed-W85zyLt2pLQ" name="ComSaLocalAuthorization">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_prhHoN24Ed-W85zyLt2pLQ">
+        <body>Local Role Based Access Control (RBAC) model.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_2GsP0LdhEd-gvvrqzvkuGQ" name="PermissionType">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_2Gtd8LdhEd-gvvrqzvkuGQ">
+          <body>Permission is the access right a role has on a target object specified by the ruleData attribute.&#xD;
+&#xD;
+Current permission types follow UNIX/Linux permission enumeration values as follows:&#xD;
+0 = NO_ACCESS&#xD;
+1 = X (EXECUTE)&#xD;
+4 = R (READ)&#xD;
+6 = RW (READ and WRITE)&#xD;
+7 = RWX (READ, WRITE and EXECUTE)&#xD;
+&#xD;
+Reserved values that are not included here are as follows (these values may be introduced at a later date, if required):&#xD;
+2 = W (WRITE)&#xD;
+3 = WX (WRITE and EXECUTE)&#xD;
+5 = RX (READ and EXECUTE)</body>
+        </ownedComment>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_2JUGALdhEd-gvvrqzvkuGQ" name="R">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_2JVUILdhEd-gvvrqzvkuGQ">
+            <body>Read only access right.  The user can read MOs and can get attribute values.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_jU6VABjLEeC2JL5I1A5iGw" value="4"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_7Bf88LdhEd-gvvrqzvkuGQ" name="RW">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_7BhLEbdhEd-gvvrqzvkuGQ">
+            <body>Read and write access right.  The user can create and delete MOs and set and get attribute values.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_kMdoEBjLEeC2JL5I1A5iGw" value="6"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_EaQcELdiEd-gvvrqzvkuGQ" name="X">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_EaRqMLdiEd-gvvrqzvkuGQ">
+            <body>Execute access right.  This is valid only for actions and specific commands</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_iXbZEBjLEeC2JL5I1A5iGw" value="1"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_ObsEwLdiEd-gvvrqzvkuGQ" name="RWX">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_ObtS4LdiEd-gvvrqzvkuGQ">
+            <body>Read, write and execute access rights.  The user can create and delete MOs and set and get attribute values and execute any actions.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_k9-kkBjLEeC2JL5I1A5iGw" value="7"/>
+        </ownedLiteral>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_lvYNsLdiEd-gvvrqzvkuGQ" name="NO_ACCESS">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lvZb0bdiEd-gvvrqzvkuGQ">
+            <body>The user has no read, write or execute rights to the MO.</body>
+          </ownedComment>
+          <specification xmi:type="uml:LiteralInteger" xmi:id="_e4nv4BjLEeC2JL5I1A5iGw"/>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_2y5kEMWPEd-wpvYbd3kmkQ" name="RuleDataType">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_2zFxUMWPEd-wpvYbd3kmkQ">
+          <body>The main purpose of this attribute is to specify the target Managed Object (MO) or MO Class (MOC) that the rule applies to. Entire sub-trees can be addressed as well as attributes and actions defined for a specific MO or MOC. Patterns are used for this purpose according to simplified regular expression syntax. Any regular expression can also be defined but has to be identified as such using a specific prefix (&quot;regexp:&quot;).
+
+Examples:
+- Entire MO tree, that is the rule will match all Managed Objects:
+ManagedElement,*
+
+- All ipAddress and port attributes belonging to MOs of the Boo MO class:
+ManagedElement,ApplFuncX,Boo.ipAddress|port
+
+- Only the port attribute belonging to a specific instance of the Boo MOC:
+ManagedElement=1,ApplFuncX=1,Boo=17.port
+
+- All commands in the command module group System:
+regexp:System-[a-zA-Z0-9]+</body>
+        </ownedComment>
+        <generalization xmi:type="uml:Generalization" xmi:id="_21XCMMWPEd-wpvYbd3kmkQ">
+          <general xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </generalization>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_42n2QLdgEd-gvvrqzvkuGQ" name="Role">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_42pEYLdgEd-gvvrqzvkuGQ">
+          <body>Authorization roles that may be assigned to users.  Roles have a containment relationship to the rules which define the access controls to objects.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_44W7oLdgEd-gvvrqzvkuGQ" name="roleId" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_44XisLdgEd-gvvrqzvkuGQ">
+            <body>The value component of the RDN</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_-2tJYLdgEd-gvvrqzvkuGQ" name="userLabel">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_-2twcLdgEd-gvvrqzvkuGQ">
+            <body>Freetext label providing additional description of the role</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_-259sLdgEd-gvvrqzvkuGQ"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_IG_pALdhEd-gvvrqzvkuGQ" name="roleName" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_IHAQELdhEd-gvvrqzvkuGQ">
+            <body>The name of the role that a user may have.  The name must match the role names retrieved from persistent storage</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_x4Lt4PWwEd-bZPa-5ixdPA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_IalH0LdrEd-gvvrqzvkuGQ" name="roleRuleAssociation" visibility="public" type="_f9PscLdhEd-gvvrqzvkuGQ" aggregation="composite" association="_IakgwLdrEd-gvvrqzvkuGQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Ialu4LdrEd-gvvrqzvkuGQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_IamV8LdrEd-gvvrqzvkuGQ" value="*"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_f9PscLdhEd-gvvrqzvkuGQ" name="Rule">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_f9QTgLdhEd-gvvrqzvkuGQ">
+          <body>The rules that define the access control to objects.  Rules are contained by role(s) which may be then applied to users.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_f_K_ELdhEd-gvvrqzvkuGQ" name="ruleId" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_f_LmILdhEd-gvvrqzvkuGQ">
+            <body>The value component of the RDN</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_87gWELdiEd-gvvrqzvkuGQ" name="userLabel">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_87g9ILdiEd-gvvrqzvkuGQ">
+            <body>Freetext label providing additional description of the rule</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_87tKYLdiEd-gvvrqzvkuGQ"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_zlMNULdqEd-gvvrqzvkuGQ" name="permission" type="_2GsP0LdhEd-gvvrqzvkuGQ" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_zlNbcLdqEd-gvvrqzvkuGQ">
+            <body>Permission is the access right a role has on a target specified by the ruleData attribute. </body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_14oEgPWwEd-bZPa-5ixdPA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_AYx5MMWQEd-wpvYbd3kmkQ" name="ruleData" type="_2y5kEMWPEd-wpvYbd3kmkQ" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_AY-GcMWQEd-wpvYbd3kmkQ" annotatedElement="_AYx5MMWQEd-wpvYbd3kmkQ">
+            <body>The main purpose of this attribute is to specify the target Managed Object (MO) or MO Class (MOC) that the rule applies to.  Entire sub-trees can be addressed as well as attributes and actions defined for a specific MO or MOC. Patterns are used for this purpose according to simplified regular expression syntax. Any regular expression can also be defined but has to be identified as such using a specific prefix. &#xD;
+MOs are specified using the 3GPP DN notation, for example &quot;ManagedElement=1,ApplFuncX=2&quot;. In case the naming attribute is not the same as the MO Class name + &quot;Id&quot;, the naming attribute is according to 3GPP part of the DN as well. This means that if ApplFuncX naming attribute is xyz, then the DN would be &quot;ManagedElement=1,ApplFuncX.xyz=2&quot;. However, it is not required (and neither forbidden) to use this more elaborate form of DN. The naming attribute (xyz) can be omitted.  &#xD;
+MOCs are specified in their containment hierarchy separated by commas ','. For example: &quot;ManagedElement,ApplFuncX&quot;.&#xD;
+&#xD;
+The same rule must not mix MO and MOC. The content of ruleData is either all MO or all MOC, which means that &quot;ManagedElement,ApplFunc=1&quot; is not valid.&#xD;
+Attributes and actions are specified after the MO or MOC separated by a dot '.'. Several attributes or actions can be specified for the same MO or MOC separated by the the bar '|' character.&#xD;
+The rule applies to a single MO or MOC and all of its attributes and actions unless the following notation is used:  &#xD;
+*   ...,MOC$&#xD;
+The rule applies only to the MOC itself and not to its attributes and actions. &#xD;
+*   ...,MOC.*&#xD;
+The rule applies to all attributes and actions belonging to the MO Class, but not to the MOC itself. &#xD;
+*   ...,MOC,*&#xD;
+The rule applies to the MOC and all its attributes and actions and all containing (child) MOCs and their attribute and actions.&#xD;
+&#xD;
+The above notations are also valid for MOs.&#xD;
+In addition the ruleData attribute can specify any Perl Compatible Regular Expressions. These regular expressions can be used by CLI Command Modules for tailored commands. The allowed content is specified by the CLI Command Module documentation. The only general restriction to these kinds of rule data is that they must start with &quot;regexp:&quot; plus something different from the wild card &quot;.*&quot;. &#xD;
+Examples:&#xD;
+1)   Entire MO tree, that is the rule will match all Managed Objects:&#xD;
+ManagedElement,*&#xD;
+&#xD;
+2)   Only MOs and their attributes and actions of ManagedElement MOC:&#xD;
+ManagedElement &#xD;
+&#xD;
+3)   Only MOs of ManagedElement MOC (and not their attributes and actions):&#xD;
+ManagedElement$&#xD;
+&#xD;
+4)   A specific MO:&#xD;
+ManagedElement=1,Equipment=1,FRU=19&#xD;
+&#xD;
+5)   An entire sub-tree below and including a specific MO:&#xD;
+ManagedElement=1,Equipment=1,FRU=17,*&#xD;
+&#xD;
+6)   An entire sub-tree below and including a specific MO belonging to a MO class where the naming attribute is not equal to the MOC Name + &quot;Id&quot; (two examples are given, both are valid and describes exactly the same MO tree):&#xD;
+ManagedElement=1,Equipment=1,Abc.xyz=1,*&#xD;
+ManagedElement=1,Equipment=1,Abc=1,*&#xD;
+&#xD;
+7)   All port attributes belonging to MOs of the Boo MOC:&#xD;
+ManagedElement,ApplFuncX,Boo.port&#xD;
+&#xD;
+8)   All ipAddress and port attributes belonging to MOs of the Boo MO class:&#xD;
+ManagedElement,ApplFuncX,Boo.ipAddress|port&#xD;
+&#xD;
+9)   Only the port attribute belonging to a specific instance of the Boo MOC:&#xD;
+ManagedElement=1,ApplFuncX=1,Boo=17.port&#xD;
+&#xD;
+10)   The restart action on the ManagedElement MOC:&#xD;
+ManagedElement.restart&#xD;
+&#xD;
+11)   All commands in the command module group System:&#xD;
+regexp:System-[a-zA-Z0-9]+ &#xD;
+&#xD;
+</body>
+          </ownedComment>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4GC-UPWwEd-bZPa-5ixdPA"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_pwegIN24Ed-W85zyLt2pLQ" name="LocalAuthorizationMethod">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_pwg8YN24Ed-W85zyLt2pLQ">
+          <body>Root MOC of the local authorization method. Roles and authorization rules are defined to build an RBAC model for controlling access to Managed Element resources such as Managed Objects, attributes, actions and CLI commands. </body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_pxlTYN24Ed-W85zyLt2pLQ" name="localAuthorizationMethodId" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_pxmhgN24Ed-W85zyLt2pLQ">
+            <body>The value component of the RDN.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="__2P7EN3REd-W85zyLt2pLQ" name="RoleLocalAuthorizationMethodAssociation" visibility="public" type="_42n2QLdgEd-gvvrqzvkuGQ" aggregation="composite" association="__2Os8N3REd-W85zyLt2pLQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__2QiIN3REd-W85zyLt2pLQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="__2RJMN3REd-W85zyLt2pLQ" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_wO0_oN3kEd-W85zyLt2pLQ" name="administrativeState">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_wO0_od3kEd-W85zyLt2pLQ">
+            <body>The administrative state of this authorization method</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="ComSaTop.uml#_a0k4EKnwEd-n4-IXUFdTxw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_GybIYN3lEd-W85zyLt2pLQ" name="userLabel">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_GybIYd3lEd-W85zyLt2pLQ">
+            <body>Freetext label</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_GybIYt3lEd-W85zyLt2pLQ"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_IakgwLdrEd-gvvrqzvkuGQ" name="Role_to_Rule" memberEnd="_IalH0LdrEd-gvvrqzvkuGQ _IamV8bdrEd-gvvrqzvkuGQ">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_IamV8bdrEd-gvvrqzvkuGQ" name="ruleRoleAssociation" visibility="public" type="_42n2QLdgEd-gvvrqzvkuGQ" association="_IakgwLdrEd-gvvrqzvkuGQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Iam9ALdrEd-gvvrqzvkuGQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_IankELdrEd-gvvrqzvkuGQ" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="__2Os8N3REd-W85zyLt2pLQ" name="LocalAuthorizationMethod_to_Role" memberEnd="__2P7EN3REd-W85zyLt2pLQ __2RJMd3REd-W85zyLt2pLQ">
+        <ownedEnd xmi:type="uml:Property" xmi:id="__2RJMd3REd-W85zyLt2pLQ" name="LocalAuthorizationMethodRoleAssociation" visibility="public" type="_pwegIN24Ed-W85zyLt2pLQ" association="__2Os8N3REd-W85zyLt2pLQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__2RwQN3REd-W85zyLt2pLQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="__2SXUN3REd-W85zyLt2pLQ" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_XBvxUN3SEd-W85zyLt2pLQ" name="LocalAuthorizationMethodContribution" memberEnd="_XBwYYN3SEd-W85zyLt2pLQ _XBxmgd3SEd-W85zyLt2pLQ">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_XBxmgd3SEd-W85zyLt2pLQ" name="LocalAuthorizationMethodUserManagementAssociation" visibility="public" type="_pwegIN24Ed-W85zyLt2pLQ" aggregation="composite" association="_XBvxUN3SEd-W85zyLt2pLQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XByNkN3SEd-W85zyLt2pLQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_XBy0oN3SEd-W85zyLt2pLQ" value="1"/>
+        </ownedEnd>
+        <ownedEnd xmi:type="uml:Property" xmi:id="_XBwYYN3SEd-W85zyLt2pLQ" name="UserManagementLocalAuthorizationMethodAssociation" visibility="public" association="_XBvxUN3SEd-W85zyLt2pLQ">
+          <type xmi:type="uml:Class" href="ComSaSecM.uml#_uY-DUN26Ed-W85zyLt2pLQ"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XBw_cN3SEd-W85zyLt2pLQ" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_XBxmgN3SEd-W85zyLt2pLQ" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_-b5CYGmpEeCVrLpBeTEsyQ" name="Instances">
+        <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_GEZr4GmqEeCVrLpBeTEsyQ" name="LocalAuthorizationMethodInstance" classifier="_pwegIN24Ed-W85zyLt2pLQ">
+          <slot xmi:type="uml:Slot" xmi:id="_GFf4EGmqEeCVrLpBeTEsyQ" definingFeature="_pxlTYN24Ed-W85zyLt2pLQ">
+            <value xmi:type="uml:LiteralString" xmi:id="_GFf4EWmqEeCVrLpBeTEsyQ" value="1">
+              <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+            </value>
+          </slot>
+          <slot xmi:type="uml:Slot" xmi:id="_GFgfIGmqEeCVrLpBeTEsyQ" definingFeature="_wO0_oN3kEd-W85zyLt2pLQ">
+            <value xmi:type="uml:InstanceValue" xmi:id="_u80BoHZUEeCsuJPrFHxIgg">
+              <type xmi:type="uml:Enumeration" href="ComSaTop.uml#_a0k4EKnwEd-n4-IXUFdTxw"/>
+              <instance xmi:type="uml:EnumerationLiteral" href="ComSaTop.uml#_a1oA8KnwEd-n4-IXUFdTxw"/>
+            </value>
+          </slot>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Dependency" xmi:id="_jiT1QOhQEeGot-QGCUxvRg" client="_GEZr4GmqEeCVrLpBeTEsyQ">
+          <supplier xmi:type="uml:InstanceSpecification" href="ComSaSecM.uml#_-RfUwGmfEeCVrLpBeTEsyQ"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_rtaZAOhREeGot-QGCUxvRg" name="SystemSecurityAdminRoleInstance" classifier="_42n2QLdgEd-gvvrqzvkuGQ">
+          <slot xmi:type="uml:Slot" xmi:id="_rtmmQOhREeGot-QGCUxvRg" definingFeature="_44W7oLdgEd-gvvrqzvkuGQ">
+            <value xmi:type="uml:LiteralString" xmi:id="_rtnNUOhREeGot-QGCUxvRg" value="SystemSecurityAdministrator">
+              <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+            </value>
+          </slot>
+          <slot xmi:type="uml:Slot" xmi:id="_wnbhoPgYEeGdz_gbtiw_wQ" definingFeature="_IG_pALdhEd-gvvrqzvkuGQ">
+            <value xmi:type="uml:LiteralString" xmi:id="_wncIsPgYEeGdz_gbtiw_wQ" value="SystemSecurityAdministrator"/>
+          </slot>
+        </packagedElement>
+        <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_5nbc0OhREeGot-QGCUxvRg" name="SystemAdminRoleInstance" classifier="_42n2QLdgEd-gvvrqzvkuGQ">
+          <slot xmi:type="uml:Slot" xmi:id="_5noRIOhREeGot-QGCUxvRg" definingFeature="_44W7oLdgEd-gvvrqzvkuGQ">
+            <value xmi:type="uml:LiteralString" xmi:id="_5no4MOhREeGot-QGCUxvRg" value="SystemAdministrator">
+              <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.uml#_7LZ54CCSEd-Egr3-YAWs7Q"/>
+            </value>
+          </slot>
+          <slot xmi:type="uml:Slot" xmi:id="_q0ockPgYEeGdz_gbtiw_wQ" definingFeature="_IG_pALdhEd-gvvrqzvkuGQ">
+            <value xmi:type="uml:LiteralString" xmi:id="_q0pDoPgYEeGdz_gbtiw_wQ" value="SystemAdministrator"/>
+          </slot>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Dependency" xmi:id="_MCV48OhSEeGot-QGCUxvRg" client="_5nbc0OhREeGot-QGCUxvRg" supplier="_GEZr4GmqEeCVrLpBeTEsyQ"/>
+        <packagedElement xmi:type="uml:Dependency" xmi:id="_OfCk4OhSEeGot-QGCUxvRg" client="_rtaZAOhREeGot-QGCUxvRg" supplier="_GEZr4GmqEeCVrLpBeTEsyQ"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_QlVoQI_xEeKo6ZyXvaKksQ" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.uml#_5vlRYnhQEd-OM9oMWC6jJQ"/>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_UeIAINCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_UeIAIdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_UeIAItCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_UeIAI9CzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/documentation#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_DOCUMENTATION/Papyrus.profile.uml#_H9068AEYEeCIz8iAxBJnfA"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_o6n98ErPEeSQs6BWUEFdOA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_o6pMEErPEeSQs6BWUEFdOA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_fP0aUFhpEeSeLuwq_bEz0w"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.profile.uml#_cUcakNQkEd63X4o72aQidQ"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_pjD28ErPEeSQs6BWUEFdOA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_pjFFEErPEeSQs6BWUEFdOA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_qOx4QNnjEeOq-s1KCPD_og"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://COREMW_PROFILE/CoreMW_Profile.profile.uml#_Br2_QBSXEd-ZjqYFUyJzOw"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_hyDdYF3WEeS0GdOJYDpY8Q" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ" title="ECIM Security Management: Local Authorization Method" createdBy="EJNOLSZ"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_hyDdYV3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" isNotifiable="true" base_Property="_pxlTYN24Ed-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_hyDdYl3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_Package="_prFCwN24Ed-W85zyLt2pLQ" author="EJNOLSZ" contact="EAB/FLE/BG Anders Eriksson S-O" date="2013-03-18" docNo="" revision="" version="1" release="0" organization="EAB/FLE/BG" ecimMomName="ECIM_Local_Authorization" ecimMomVersion="1" ecimMomRelease="1"/>
+  <ECIMBaseProfile:EcimDerivedString xmi:id="_hyDdY13WEeS0GdOJYDpY8Q" hideGroupName="" specification="" length="" pattern="(^[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)?(\=[A-Za-z0-9_-]+)?(\,[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)?(\=[A-Za-z0-9_-]+)?)*((\.[A-Za-z0-9_-]+(|[A-Za-z0-9_-]+)*)|(\,\*)|(\.\*)|(\$))?$)|(^regexp:.*[A-Za-z0-9_-]\+.*$)" base_DataType="_2y5kEMWPEd-wpvYbd3kmkQ"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_hyDdZF3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_Association="_IakgwLdrEd-gvvrqzvkuGQ" canCreate="false" canDelete="false" isNotifiable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_hyDdZV3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_Property="_87gWELdiEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_hyDdZl3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_EnumerationLiteral="_lvYNsLdiEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_hyDdZ13WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_EnumerationLiteral="_ObsEwLdiEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_hyDdaF3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_EnumerationLiteral="_EaQcELdiEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_hyDdaV3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_EnumerationLiteral="_7Bf88LdhEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimEnumerationLiteral xmi:id="_hyDdal3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_EnumerationLiteral="_2JUGALdhEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimEnumeration xmi:id="_hyDda13WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_Enumeration="_2GsP0LdhEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_hyDdbF3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" isNotifiable="true" base_Property="_f_K_ELdhEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_hyDdbV3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_Class="_f9PscLdhEd-gvvrqzvkuGQ" isSystemCreated="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_hyDdbl3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_Property="_-2tJYLdgEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_hyDdb13WEeS0GdOJYDpY8Q" hideGroupName="" specification="" isNotifiable="true" base_Property="_44W7oLdgEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_hyDdcF3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_Class="_42n2QLdgEd-gvvrqzvkuGQ" isSystemCreated="true"/>
+  <ECIMBaseProfile:EcimContainment xmi:id="_hyDdcV3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_Association="__2Os8N3REd-W85zyLt2pLQ" canCreate="false" canDelete="false" isNotifiable="true"/>
+  <ECIMBaseProfile:EcimContribution xmi:id="_hyDdcl3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_Association="_XBvxUN3SEd-W85zyLt2pLQ" canCreate="false" canDelete="false" isNotifiable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_hyDdc13WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_Property="_GybIYN3lEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimInstances xmi:id="_hyDddF3WEeS0GdOJYDpY8Q" base_Package="_-b5CYGmpEeCVrLpBeTEsyQ" version="1" release="2"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_hyDddV3WEeS0GdOJYDpY8Q" base_InstanceSpecification="_GEZr4GmqEeCVrLpBeTEsyQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_hyDddl3WEeS0GdOJYDpY8Q" base_Property="_IG_pALdhEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_hyDdd13WEeS0GdOJYDpY8Q" base_Property="_zlMNULdqEd-gvvrqzvkuGQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_hyDdeF3WEeS0GdOJYDpY8Q" base_Property="_AYx5MMWQEd-wpvYbd3kmkQ"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_hyNOYF3WEeS0GdOJYDpY8Q" hideGroupName="" specification="" base_Property="_wO0_oN3kEd-W85zyLt2pLQ"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_hyNOYV3WEeS0GdOJYDpY8Q" base_Dependency="_jiT1QOhQEeGot-QGCUxvRg"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_hyNOYl3WEeS0GdOJYDpY8Q" base_InstanceSpecification="_rtaZAOhREeGot-QGCUxvRg"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_hyNOY13WEeS0GdOJYDpY8Q" base_InstanceSpecification="_5nbc0OhREeGot-QGCUxvRg"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_hyNOZF3WEeS0GdOJYDpY8Q" base_Dependency="_MCV48OhSEeGot-QGCUxvRg"/>
+  <ECIMBaseProfile:EcimInstanceDependency xmi:id="_hyNOZV3WEeS0GdOJYDpY8Q" base_Dependency="_OfCk4OhSEeGot-QGCUxvRg"/>
+  <CoreMWProfile:CmwMom xmi:id="_pi5e4ErPEeSQs6BWUEFdOA" base_Package="_prFCwN24Ed-W85zyLt2pLQ" immNamespace="NONE"/>
+  <CoreMWProfile:CmwClass xmi:id="_pi6F8ErPEeSQs6BWUEFdOA" base_Class="_42n2QLdgEd-gvvrqzvkuGQ"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_pi7UEErPEeSQs6BWUEFdOA" base_Property="_-2tJYLdgEd-gvvrqzvkuGQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_pi77IErPEeSQs6BWUEFdOA" base_Property="_IG_pALdhEd-gvvrqzvkuGQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwClass xmi:id="_pi9wUErPEeSQs6BWUEFdOA" base_Class="_f9PscLdhEd-gvvrqzvkuGQ"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_pi-XYErPEeSQs6BWUEFdOA" base_Property="_87gWELdiEd-gvvrqzvkuGQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_pi--cErPEeSQs6BWUEFdOA" base_Property="_zlMNULdqEd-gvvrqzvkuGQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_pi_lgErPEeSQs6BWUEFdOA" base_Property="_AYx5MMWQEd-wpvYbd3kmkQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwClass xmi:id="_pjAMkErPEeSQs6BWUEFdOA" base_Class="_pwegIN24Ed-W85zyLt2pLQ"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_pjAzoErPEeSQs6BWUEFdOA" base_Property="_wO0_oN3kEd-W85zyLt2pLQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_pjAzoUrPEeSQs6BWUEFdOA" base_Property="_GybIYN3lEd-W85zyLt2pLQ" isConfigurable="true"/>
+  <CoreMWProfile:CmwContribution xmi:id="_pjBasErPEeSQs6BWUEFdOA" base_Association="_XBvxUN3SEd-W85zyLt2pLQ"/>
+  <CoreMWProfile:CmwModel xmi:id="_pjCBwErPEeSQs6BWUEFdOA" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <ECIMBaseProfile:EcimMoClass xmi:id="_hyNOZl3WEeS0GdOJYDpY8Q" base_Class="_pwegIN24Ed-W85zyLt2pLQ" isSystemCreated="true"/>
+  <documentation:Documentation xmi:id="_xiyYgErNEeSQs6BWUEFdOA" base_Comment="_pxmhgN24Ed-W85zyLt2pLQ"/>
+  <documentation:Documentation xmi:id="_xiyYgUrNEeSQs6BWUEFdOA" base_Comment="_pwg8YN24Ed-W85zyLt2pLQ"/>
+  <documentation:Documentation xmi:id="_xiyYgkrNEeSQs6BWUEFdOA" base_Comment="_prhHoN24Ed-W85zyLt2pLQ"/>
+  <documentation:Documentation xmi:id="_xiyYg0rNEeSQs6BWUEFdOA" base_Comment="_AY-GcMWQEd-wpvYbd3kmkQ"/>
+  <documentation:Documentation xmi:id="_xiyYhErNEeSQs6BWUEFdOA" base_Comment="_2zFxUMWPEd-wpvYbd3kmkQ"/>
+  <documentation:Documentation xmi:id="_xiyYhUrNEeSQs6BWUEFdOA" base_Comment="_zlNbcLdqEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYhkrNEeSQs6BWUEFdOA" base_Comment="_87g9ILdiEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYh0rNEeSQs6BWUEFdOA" base_Comment="_lvZb0bdiEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYiErNEeSQs6BWUEFdOA" base_Comment="_ObtS4LdiEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYiUrNEeSQs6BWUEFdOA" base_Comment="_EaRqMLdiEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYikrNEeSQs6BWUEFdOA" base_Comment="_7BhLEbdhEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYi0rNEeSQs6BWUEFdOA" base_Comment="_2JVUILdhEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYjErNEeSQs6BWUEFdOA" base_Comment="_2Gtd8LdhEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYjUrNEeSQs6BWUEFdOA" base_Comment="_f_LmILdhEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYjkrNEeSQs6BWUEFdOA" base_Comment="_f9QTgLdhEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYj0rNEeSQs6BWUEFdOA" base_Comment="_IHAQELdhEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYkErNEeSQs6BWUEFdOA" base_Comment="_-2twcLdgEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYkUrNEeSQs6BWUEFdOA" base_Comment="_44XisLdgEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYkkrNEeSQs6BWUEFdOA" base_Comment="_42pEYLdgEd-gvvrqzvkuGQ"/>
+  <documentation:Documentation xmi:id="_xiyYk0rNEeSQs6BWUEFdOA" base_Comment="_wO0_od3kEd-W85zyLt2pLQ"/>
+  <documentation:Documentation xmi:id="_xiyYlErNEeSQs6BWUEFdOA" base_Comment="_GybIYd3lEd-W85zyLt2pLQ"/>
+  <documentation:Documentation xmi:id="_xiyYlUrNEeSQs6BWUEFdOA" base_Comment="_Hq9CIOByEd-znZBL00_kdg"/>
+</xmi:XMI>

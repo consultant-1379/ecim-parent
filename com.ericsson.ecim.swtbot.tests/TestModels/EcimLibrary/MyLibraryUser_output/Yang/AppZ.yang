@@ -1,0 +1,95 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Nov 20, 2015 2:35:28 PM using 
+    * com.ericsson.ecim.yang.m2m 3.1.0.qualifier
+*/
+module "AppZ" {
+	namespace "urn:com:ericsson:ecim:AppZ";
+	prefix "AppZ";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ComTopMom {
+		prefix "ComTopMom";
+	}
+
+	description "This MOM uses stuff from MyEcimLibrary";
+
+	revision "2015-11-20" {
+		ericsson:version "1";
+		ericsson:release "1";
+	}
+
+	augment "/ComTopMom:ManagedElement" {
+		list "RZ" {
+			key "rZId";
+			uses AppZ:RZ;
+		}
+
+	}
+
+	typedef "LocalEnum" {
+		type enumeration {
+			enum "A" {
+				value 1;
+			}
+
+		}
+
+		description "123";
+	}
+
+	grouping "RZ" {
+		description "qwe";
+		leaf "rZId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		list "a5" {
+			max-elements 1;
+			config true;
+			description "qwe";
+			uses AppZ:StructenFrukten;
+		}
+
+		leaf "dn" {
+			type string;
+			mandatory true;
+			config true;
+			description "The MO's DN.";
+		}
+
+	}
+
+	grouping "StructenFrukten" {
+		description "123";
+		leaf "banana" {
+			type boolean;
+			mandatory true;
+			description "qwe";
+		}
+
+		leaf "apple" {
+			type boolean;
+			mandatory true;
+			description "123";
+		}
+
+		leaf "peach" {
+			type string;
+			mandatory true;
+		}
+
+		leaf "watermelon" {
+			type string;
+			mandatory true;
+		}
+
+	}
+
+}

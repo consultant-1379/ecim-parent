@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2014 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on 2014-mar-17 13:36:57 using:
+	* com.ericsson.ecim.m2m 2.10.0.qualifier
+	* com.ericsson.ecim.dsl 2.10.0.qualifier
+	* com.ericsson.ecim.edm 2.10.0.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate>date</docDate>
+    </momIdentity>
+    <createdBy>
+      <signature>huiping</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>huiping</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim author="" contact="" date="" docNo="" name="JavaCaf" namespace="urn:com:ericsson:ecim:JavaCaf" namespacePrefix="javacaf" organization="" release="1" revision="1" version="2">
+    <description>The JavaCaf MOM</description>
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <class name="JavaCaf">
+      <description>The JavaCaf MO represents the root node for the Java CAF configuration.</description>
+      <root/>
+      <attribute name="javaCafId">
+        <description>This attribute defines the identity of the JavaCaf instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>This attribute defines a user label, which is free to use for any purpose.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue/>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="mimName">
+        <description>This attribute defines the name of the Java CAF model.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>JavaCaf</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="mimVersion">
+        <description>This attributes defines the version of the Java CAF model.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>2</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="mimRelease">
+        <description>This attributes defines the version of the Java CAF model</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="JavaCafInstSpecAppMngmt">
+      <description>This JavacafInstSpecAppmngmt MO is used to enable, or disable, the Instance Specific Application Management (ISAM). When&#13;
+enabled, this feature allows for testing of altered attribute values on a single node before setting them globally in the&#13;
+cluster. If no instance of this of this class is present in the model, ISAM will be DISABLED.&#13;
+Ensure that the instruction are read and understood, before using ISAM.&#13;
+When ISAM is enabled, create a local test object by inserting a LocalTest:INSTANCENAME:OBJECTNAME in the original DN.&#13;
+If the test of the new value(s) was successful, delete the local test object and set the new values on the original object, in one operation.&#13;
+If the test was unsuccessful, delete the local test object without setting the new values on the original object.&#13;
+&#13;
+Note!&#13;
+- Never turn this feature on or off while local test objects are present in the MOM.&#13;
+- Never create a local test object without a corresponding global object already present in the MOM&#13;
+- Never delete a global object while a local test object is still present in the model&#13;
+&#13;
+An example scenario:&#13;
+1. An object, ConfigClass=a,App=X,Me=1, is present in the MOM. It holds the attributes timeout and sleep. The attribute timeout is set to 4000 and the attribute sleep is set to 100.&#13;
+2. The operator needs change to a new timeout value, but it is considered too risky to set it directly on the whole cluster.&#13;
+3. The operator chooses the instance named AppServer2 as a test server.&#13;
+4. The operator creates a local test object, ConfigClass=LocalTest:AppServer2:a,App=X,Me=1 with the attribute timeout set to 1000. The operator does not set the attribute sleep in the local test object.&#13;
+5. The application running on AppServer2 notices that the attribute timeout of object ConfigClass=a,App=X,Me=1 is changed to 1000. Applications on other server instances are unaffected.&#13;
+6. The operator considers that the new value of the attribute timeout works better, and that the test is successful.&#13;
+7. The operator changes the attribute timeout to 1000 on ConfigClass=a,App=X,Me=1 and removes the local test object in ONE SINGLE OPERATION.&#13;
+8. The new value is now set globally.</description>
+      <attribute name="javaCafInstSpecAppMngmtId">
+        <description>This attribute defines the identity of the JavaCafInstSpecAppMngmt instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="enabled">
+        <description>This attribute turns the ISAM on (true) or off (false). The default is set to false. </description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <boolean>
+            <defaultValue>false</defaultValue>
+          </boolean>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="JavaCafDist">
+      <description>The JavaCafDist MO contains the setup of network properties, needed for the distribution service. The distribution service&#13;
+regards all instances of JavaCaf, in a cluster, as members of the service and provides multicast based communication&#13;
+protocol between them. The distribution service is used to distribute changes in all MOs instantiated from the MO classes&#13;
+listed in JavaCafApp to MBeans. If this class is not instantiated at system startup, Java CAF will use preset values. The&#13;
+preset values are the same as the default values.</description>
+      <attribute name="javaCafDistId">
+        <description>This attribute defines the identity of the JavaCafDist instance.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>This attribute defines a user label, which is free to use for any purpose.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue/>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="bindInterface">
+        <description>This attribute defines the bind interface for incoming group communication. The default is set to NULL.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="multicastPort">
+        <description>This attribute defines the multicast port for member discovery communication. The default is set to NULL.</description>
+        <mandatory/>
+        <noNotification/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="multicastAddress">
+        <description>This attribute defines the multicast address for member discovery communication.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue>224.0.0.1</defaultValue>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="failureDetectionTimeout">
+        <description>This attribute defines the time in milliseconds for discovering service failures. The value must be a positive integer and&#13;
+not lower than the default value.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>1000</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+      <attribute name="globalTimeout">
+        <description>This attribute defines the identity of the JavaCafDist instance.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <int32>
+            <defaultValue>30000</defaultValue>
+          </int32>
+        </dataType>
+      </attribute>
+    </class>
+    <class name="JavaCafApp">
+      <description>The JavaCafApp MO points to all classes under the control of Java CAF. Each instance of this class corresponds to a model,&#13;
+designed for an application using the Java CAF runtime support.</description>
+      <attribute name="javaCafAppId">
+        <description>This attribute defines the identity of the JavaCafApp instance. </description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>This attribute defines an user label, which is free to use for any purpose.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <noNotification/>
+        <isNillable/>
+        <dataType>
+          <string>
+            <defaultValue/>
+          </string>
+        </dataType>
+      </attribute>
+      <attribute name="classNames">
+        <description>This attribute contains all MO class names of an application model whose implementation uses the Java CAF runtime support. The application model may be located under any mount point in the MOM, that is, there are no restrictions on where to put the MO instances referred to by this attribute. </description>
+        <noNotification/>
+        <dataType>
+          <sequence>
+            <string/>
+            <minLength>0</minLength>
+          </sequence>
+        </dataType>
+      </attribute>
+    </class>
+    <relationship name="JavaCaf_to_JavaCafApp">
+      <containment>
+        <parent>
+          <hasClass name="JavaCaf">
+            <mimName>JavaCaf</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="JavaCafApp">
+            <mimName>JavaCaf</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="JavaCaf_to_JavaCafInstSpecAppMngmt">
+      <containment>
+        <parent>
+          <hasClass name="JavaCaf">
+            <mimName>JavaCaf</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="JavaCafInstSpecAppMngmt">
+            <mimName>JavaCaf</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+    <relationship name="JavaCaf_to_JavaCafDist">
+      <containment>
+        <parent>
+          <hasClass name="JavaCaf">
+            <mimName>JavaCaf</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="JavaCafDist">
+            <mimName>JavaCaf</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+  </mim>
+  <interMim>
+    <relationship name="ManagedElement_to_JavaCaf">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="true"/>
+      </domainExtension>
+      <containment>
+        <parent>
+          <hasClass name="ManagedElement">
+            <mimName>ComTop</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="JavaCaf">
+            <mimName>JavaCaf</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+      </containment>
+    </relationship>
+  </interMim>
+</models>

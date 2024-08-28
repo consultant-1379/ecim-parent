@@ -1,0 +1,157 @@
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI MP=http://ericsson.com/ECIM/MP
+
+module CreateDefault;
+ 
+create OUT : UML from IN : MP, PRO : UML, ECIM : UML, DATATYPES : UML, DEFAULT : UML;
+
+--Map a CPP Attribute Default to an ECIM/UML Default
+rule CreateDefault(att : OclAny)
+{
+	using
+	{
+		--**TODO:We can optimize this method by having an abstract type for the types in the MP model and filtering for that
+		--A better approach than a big load of ifs is to see which type is actually set. We figure this
+		--out by reflectively looking at the datatype and seeing which eAttribute has a value (via eContents)
+		--defaultType : OclAny = if(att.oclIsTypeOf(MP!StructMemberType)) then att.eContents()->select(e|e.oclIsTypeOf(MP!EnumRefType) or e.oclIsTypeOf(MP!VoidType) or e.oclIsTypeOf(MP!MoRefType) or e.oclIsTypeOf(MP!StructRefType) or e.oclIsTypeOf(MP!StringType) or e.oclIsTypeOf(MP!WstringType) or e.oclIsTypeOf(MP!BooleanType) or e.oclIsTypeOf(MP!CharType) or e.oclIsTypeOf(MP!OctetType) or e.oclIsTypeOf(MP!DerivedDataTypeRefType) or e.oclIsTypeOf(MP!FloatType) or e.oclIsTypeOf(MP!DoubleType) or e.oclIsTypeOf(MP!SequenceType) or e.oclIsTypeOf(MP!LongType) or e.oclIsTypeOf(MP!LonglongType) or e.oclIsTypeOf(MP!Int64Type) or e.oclIsTypeOf(MP!ShortType) or e.oclIsTypeOf(MP!Int8Type) or e.oclIsTypeOf(MP!Uint8Type) or e.oclIsTypeOf(MP!Uint16Type) or e.oclIsTypeOf(MP!Uint32Type) or e.oclIsTypeOf(MP!Uint64Type) or e.oclIsTypeOf(MP!Int16Type) or e.oclIsTypeOf(MP!Int32Type))->first() else att.dataType.eContents()->first() endif;
+		defaultType : OclAny = if(att.oclIsTypeOf(MP!StructMemberType)) then att.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first() else att.dataType.eContents()->first() endif;
+		sequenceDataType : OclAny = if (defaultType.oclIsTypeOf(MP!SequenceType)) then defaultType.eContents()->select(e|e.oclIsKindOf(MP!DataType))->first() else OclUndefined endif; 
+		
+		--Prepare a bunch of types. We only assign and return the type that matches the default
+		s :UML!LiteralString = OclUndefined;
+		i :UML!LiteralInteger = OclUndefined; 
+		b :UML!LiteralBoolean = OclUndefined; 
+		iv : UML!InstanceValue = OclUndefined; 
+		en : UML!Enumeration = OclUndefined;
+	}
+	do
+	{
+		if(defaultType.oclIsTypeOf(MP!MoRefType))
+		{
+			-- Let's check if class pointing to is found in local model
+			-- If remote, then return string with "mimname:classname" for later uml utility to use to look up real class
+			if (MP!ClassType.allInstances()->select(e|e.name=defaultType.name)->size()=0) {
+				s <- UML!LiteralString.newInstance();
+				s.value <- thisModule.getStringValue(defaultType.mimName) + ':' + defaultType.name;
+				s;	
+			}	
+			else {
+				OclUndefined;
+			}
+		}	
+		else if(sequenceDataType.oclIsTypeOf(MP!MoRefType))
+		{
+			-- Let's check if class pointing to is found in local model
+			-- If remote, then return string with "mimname:classname" for later uml utility to use to look up real class
+			if (MP!ClassType.allInstances()->select(e|e.name=sequenceDataType.name)->size()=0) {
+				s <- UML!LiteralString.newInstance();
+				s.value <- thisModule.getStringValue(sequenceDataType.mimName) + ':' + sequenceDataType.name;
+				s;	
+			}	
+			else {
+				OclUndefined;
+			}
+		}	
+		else if(defaultType.oclIsTypeOf(MP!EnumRefType))
+		{
+			if(not defaultType.defaultValue.oclIsUndefined())
+			{
+				iv <- UML!InstanceValue.newInstance();
+				iv.type <- thisModule.resolveTemp(MP!EnumType.allInstances()->select(e|e.name=defaultType.name)->first(),'t');
+				iv.name <- thisModule.getStringValue(defaultType.defaultValue);
+				--NOTE:The rule for creating enumerations must be placed before the property mapping rules for this to fire!
+				iv.instance <- thisModule.resolveTemp(MP!EnumType.allInstances()->select(e|e.name=defaultType.name)->first(),'t').ownedLiteral->select(e|e.name.toLower()=iv.name.toLower())->first();
+				iv;
+			}
+			else
+			{
+				OclUndefined;
+			}
+		}		
+		else if(defaultType.oclIsTypeOf(MP!StringType) or defaultType.oclIsTypeOf(MP!WstringType) or defaultType.oclIsTypeOf(MP!CharType))
+		{
+			if (defaultType.defaultValue.oclIsUndefined())
+			{
+				OclUndefined;
+			}
+			else if(thisModule.getStringValue(defaultType.defaultValue) <> '')
+			{
+				s <- UML!LiteralString.newInstance();
+				s.value <- thisModule.getStringValue(defaultType.defaultValue);
+				s;						
+			}
+			else
+			{
+				s <- UML!LiteralString.newInstance();
+				s.value <- '""';
+				s;
+			}
+		}
+		else if(defaultType.oclIsTypeOf(MP!BooleanType))
+		{
+			if(defaultType.defaultValue.oclIsUndefined())
+			{
+				OclUndefined;
+			}
+			else
+			{
+				--map a number of variations of true to true
+				if(defaultType.defaultValue.getMixedText().toUpper() = 'TRUE' or defaultType.defaultValue.getMixedText() = '1')	
+				{
+					b <- UML!LiteralBoolean.newInstance();
+					b.value <- true;
+					b;
+				}
+				else--otherwise the default is false
+				{
+					b <- UML!LiteralBoolean.newInstance();
+					b.value <- false;
+					b;
+				}
+			}		
+		}
+		else if(defaultType.oclIsTypeOf(MP!FloatType)  or defaultType.oclIsTypeOf(MP!LonglongType) or defaultType.oclIsTypeOf(MP!DoubleType) or defaultType.oclIsTypeOf(MP!LongType) or defaultType.oclIsTypeOf(MP!Int64Type) or defaultType.oclIsTypeOf(MP!ShortType) or defaultType.oclIsTypeOf(MP!Int8Type) or defaultType.oclIsTypeOf(MP!Uint8Type) or defaultType.oclIsTypeOf(MP!Uint16Type) or defaultType.oclIsTypeOf(MP!Uint32Type) or defaultType.oclIsTypeOf(MP!Uint64Type) or defaultType.oclIsTypeOf(MP!Int16Type) or defaultType.oclIsTypeOf(MP!Int32Type))
+		{
+			if(not defaultType.defaultValue.oclIsUndefined())
+			{
+				--we must handle cases where the default is too large for the Integer type. If it is we create an
+				--LiteralString
+				if(defaultType.defaultValue.getMixedText().toReal() > 2147483647)
+				{
+					s <- UML!LiteralString.newInstance();
+					s.value <- defaultType.defaultValue.getMixedText().toString();
+					s;
+				}
+				else
+				{
+					i <- UML!LiteralInteger.newInstance();
+					i.value <- defaultType.defaultValue.getMixedText().toInteger();
+					i;
+				}
+			}
+			else
+			{
+				OclUndefined;
+			}
+		}		
+		else if(defaultType.oclIsTypeOf(MP!SequenceType))
+		{
+				if (defaultType.seqDefaultValue.oclIsUndefined())
+				{
+					OclUndefined;
+				}
+				else
+				{
+					s <- UML!LiteralString.newInstance(); 
+					s.value <- thisModule.getSequenceDefaultValue(defaultType.seqDefaultValue);
+					s;
+				}
+		}
+		
+		else
+		{
+			OclUndefined;	
+		}
+	}
+}

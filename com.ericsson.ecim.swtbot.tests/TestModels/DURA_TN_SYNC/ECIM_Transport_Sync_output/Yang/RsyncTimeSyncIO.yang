@@ -1,0 +1,275 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Oct 13, 2015 2:23:48 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.2.qualifier
+*/
+module "RsyncTimeSyncIO" {
+	namespace "urn:com:ericsson:ecim:RsyncTimeSyncIO";
+	prefix "RsyncTimeSyncIO";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RsyncSynchronization {
+		prefix "RsyncSynchronization";
+	}
+
+	import ECIM_CommonLibrary {
+		prefix "ECIM_CommonLibrary";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	import RsyncSyncLibrary {
+		prefix "RsyncSyncLibrary";
+	}
+
+	description "ECIM Transport time SyncIO Model.";
+
+	revision "2015-10-13" {
+		ericsson:author "EAB/FJP/TA UABJOCL";
+		ericsson:release "0";
+		ericsson:correction "0";
+		ericsson:version "3";
+		ericsson:contact "EAB/FJP/TA UABJOCL";
+	}
+
+	augment
+	"/ECIM_Top:ManagedElement/ECIM_Top:Transport/RsyncSynchronization:Synchronization"
+	{
+		list "TimeSyncIO" {
+			key "timeSyncIOId";
+			max-elements 8;
+			uses RsyncTimeSyncIO:TimeSyncIO;
+		}
+
+	}
+
+	typedef "ToDFormat" {
+		type enumeration {
+			enum "GNSS" {
+				value 2;
+				description "ToD format for GNSS system.";
+			}
+
+			enum "GPS" {
+				value 1;
+				description "ToD format for GPS system.";
+			}
+
+			enum "HPTSI" {
+				value 6;
+				description "ToD format for HPTSI.
+
+HPTSI is a customer specific time of day format, defined by CMCC.";
+			}
+
+			enum "GLONASS" {
+				value 3;
+				description "ToD format for GLONASS system.";
+			}
+
+			enum "BEIDO" {
+				value 4;
+				description "ToD format for BEIDO system.";
+			}
+
+			enum "GALILEO" {
+				value 5;
+				description "ToD format for GALILEO system.";
+			}
+
+			enum "TDI" {
+				value 7;
+				description "ToD format for TDI.
+
+ToD format for Time distribution interface. It is under discussion in Draft of Recommendation ITU-T G.8271.1.";
+			}
+
+		}
+
+		description "Time of Day format whichTimeSyncIO supports.
+
+It inculdes GPS, GNSS, GLONASS, BEIDO, GALILEO, HPTSI and TDI. Products can implement part of them.
+
+Optional to support - Flag :	if-feature TimeSyncIOTodFormatGPS
+							if-feature TimeSyncIOTodFormatGNSS
+							if-feature TimeSyncIOTodFormatGLONASS
+							if-feature TimeSyncIOTodFormatBEIDO
+							if-feature TimeSyncIOTodFormatGALILEO
+							if-feature TimeSyncIOTodFormatHPTSI
+							if-feature TimeSyncIOTodFormatTDI";
+	}
+
+	typedef "TimeSyncIOStatus" {
+		type enumeration {
+			enum "NO_FAULT" {
+				value 0;
+				description "No faults detected.";
+			}
+
+			enum "LOSS_OF_SIGNAL" {
+				value 1;
+				description "No signals received.";
+			}
+
+			enum "HW_FAULT" {
+				value 2;
+				description "Hardware fault reported from the reference.";
+			}
+
+			enum "NO_MESSAGES" {
+				value 3;
+				description "No messages received.";
+			}
+
+			enum "PROTOCOL_NOT_RECOGNIZED" {
+				value 4;
+				description "The protocol used by the reference is not recognized.";
+			}
+
+			enum "LOSS_OF_1PPS_SIGNAL" {
+				value 5;
+				description "1PPS synchronization signal lost.";
+			}
+
+			enum "NO_SYNC_TO_SATELLITES" {
+				value 6;
+				description "GNSS receiver not synchronized to satellites.";
+			}
+
+			enum "DEGRADED" {
+				value 7;
+				description "The stability of the 1PPS is considered degraded.";
+			}
+
+		}
+
+		description "The status of the time synchronization IO.";
+	}
+
+	typedef "TimeSyncIOCompensationDelay" {
+		type uint16 {
+			range "0..65535";
+		}
+
+		status obsolete;
+		description
+		"Delay compensation between the TimeSyncIO and the GPC receiver/PTP stand-alone box.";
+	}
+
+	grouping "TimeSyncIO" {
+		description
+		"The TimeSyncIO is used to indicate that a physical synchronization port is used for time synchronization.";
+		leaf "timeSyncIOId" {
+			type string;
+			mandatory true;
+			description "The value component of the RDN.";
+			ericsson:restricted;
+		}
+
+		leaf "linkStatus" {
+			type RsyncSyncLibrary:LinkStatus;
+			mandatory true;
+			config true;
+			status obsolete;
+			description "Shows the physical link status of time SyncIO.";
+		}
+
+		leaf "todFormat" {
+			type RsyncTimeSyncIO:ToDFormat;
+			mandatory true;
+			status obsolete;
+			description "Specifies Time of Day format for TimeSyncIO.
+
+TodFormat  inculdes GPS, GNSS, GLONASS, BEIDO, GALILEO, HPTSI and TDI. Products can implement part of them.";
+		}
+
+		leaf "adminPortDirection" {
+			type RsyncSyncLibrary:PortDirection;
+			mandatory true;
+			status deprecated;
+			description
+			"Specifies the direction of the time synchronization I/O port
+";
+		}
+
+		leaf "operPortDirection" {
+			type RsyncSyncLibrary:PortDirection;
+			mandatory true;
+			config true;
+			status obsolete;
+			description "Shows the direction of the time syncIO interface.
+
+operPortDirection is read-only attribute, decided by the physical status of time SyncIO hardware.";
+		}
+
+		leaf "encapsulation" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			mandatory true;
+			description
+			"Reference to the underlying encapsulation.
+
+The underlying encapsulation must be a SyncPort MO.";
+		}
+
+		leaf "compensationDelay" {
+			type uint16 {
+				range "0..65535";
+			}
+
+			mandatory true;
+			description
+			"The delay of the input signal.
+
+The delay is calculated using the documentation of the GPS receiver System for RBS 6000.";
+		}
+
+		leaf-list "availabilityStatus" {
+			type ECIM_CommonLibrary:AvailStatus;
+			config true;
+			description
+			"The availability status.
+
+It contains details about operationalState.";
+		}
+
+		leaf "operationalState" {
+			type ECIM_CommonLibrary:OperState;
+			mandatory true;
+			config true;
+			description "The operational state.";
+		}
+
+		leaf "administrativeState" {
+			type ECIM_CommonLibrary:AdmState;
+			mandatory true;
+			status obsolete;
+			description "Specifies the administrative state of the MO.";
+		}
+
+		leaf-list "reservedBy" {
+			type string {
+				pattern "(.*=.*,)*.*=.*";
+			}
+
+			config true;
+			description
+			"Contains a list of MO instances that reserve this MO instance.";
+		}
+
+		leaf "timeSyncIOStatus" {
+			type RsyncTimeSyncIO:TimeSyncIOStatus;
+			config true;
+			description "The status of TimeSyncIO as reference.";
+		}
+
+	}
+
+}

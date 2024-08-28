@@ -1,0 +1,1081 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 006 91-APR 901 950: rev PE3 -->
+<!-- Date-               10 June 2011 -->
+<!-- Author-             erajaik -->
+<!--
+  Revision History
+  A detailed history of changes to the DTD is available at the
+  end of this document.
+  
+  Rev. D: 2010-02-12   erasodd   Stored after approval by MOM Forum.
+  Rev. C: 2008-01-24   eeimhln   Stored after approval by MOM Forum.
+  Rev. B: 2007-10-16   eeimhln   Stored after approval by MOM Forum.
+  Rev. A: 2007-06-12   ecorrei   Stored after approval by CIF CS team
+-->
+<!-- Data types -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="corbaTypes" abstract="true" substitutionGroup="primitiveTypes"/>
+  <xs:element name="yangTypes" abstract="true" substitutionGroup="primitiveTypes" type="rangeSpecifier"/>
+  <xs:element name="primitiveTypes" abstract="true" substitutionGroup="availableTypes"/>
+  <xs:element name="availableTypes" abstract="true"/>
+  <xs:complexType name="rangeSpecifier">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="range"/>
+      <xs:element minOccurs="0" ref="defaultValue"/>
+      <xs:element minOccurs="0" ref="unit"/>
+      <xs:element minOccurs="0" ref="multiplicationFactor"/>
+      <xs:element minOccurs="0" ref="resolution"/>
+      <xs:element minOccurs="0" ref="undefinedValue"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="stringSpecifier">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="lengthRange"/>
+      <xs:choice minOccurs="0">
+        <xs:element ref="validValues"/>
+        <xs:element ref="alphabet"/>
+        <xs:element ref="ipV4Address"/>
+        <xs:element ref="ipV6Address"/>
+        <xs:element ref="macAddress"/>
+        <xs:element ref="date"/>
+        <xs:element ref="time"/>
+      </xs:choice>
+      <xs:element minOccurs="0" ref="defaultValue"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="dataType">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="availableTypes"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="void">
+    <xs:complexType/>
+  </xs:element>
+  <!-- Corba data types -->
+  <xs:element name="octet" substitutionGroup="corbaTypes" type="rangeSpecifier"/>
+  <xs:element name="double" substitutionGroup="corbaTypes" type="rangeSpecifier"/>
+  <xs:element name="float" substitutionGroup="corbaTypes" type="rangeSpecifier"/>
+  <xs:element name="long" substitutionGroup="corbaTypes" type="rangeSpecifier"/>
+  <xs:element name="longlong" substitutionGroup="corbaTypes" type="rangeSpecifier"/>
+  <xs:element name="short" substitutionGroup="corbaTypes" type="rangeSpecifier"/>
+  <xs:element name="boolean" substitutionGroup="corbaTypes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="defaultValue"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="char" substitutionGroup="corbaTypes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="range"/>
+        <xs:element minOccurs="0" ref="defaultValue"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="string" substitutionGroup="corbaTypes">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="stringSpecifier">
+          <xs:sequence>
+            <xs:element minOccurs="0" ref="undefinedValue"/>
+          </xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="wstring" substitutionGroup="corbaTypes" type="stringSpecifier"/>
+  <!-- Yang datatypes -->
+  <xs:element name="int8" substitutionGroup="yangTypes"/>
+  <xs:element name="int16" substitutionGroup="yangTypes"/>
+  <xs:element name="int32" substitutionGroup="yangTypes"/>
+  <xs:element name="int64" substitutionGroup="yangTypes"/>
+  <xs:element name="uint8" substitutionGroup="yangTypes"/>
+  <xs:element name="uint16" substitutionGroup="yangTypes"/>
+  <xs:element name="uint32" substitutionGroup="yangTypes"/>
+  <xs:element name="uint64" substitutionGroup="yangTypes"/>
+  <xs:element name="lengthRange">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="max"/>
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="min"/>
+          <xs:element ref="max"/>
+        </xs:sequence>
+        <xs:element minOccurs="0" ref="min"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="range">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="max"/>
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="min"/>
+          <xs:element ref="max"/>
+        </xs:sequence>
+        <xs:element minOccurs="0" ref="min"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="max" type="xs:string"/>
+  <xs:element name="min" type="xs:string"/>
+  <xs:element name="defaultValue" type="xs:string"/>
+  <xs:element name="unit" type="xs:string"/>
+  <xs:element name="multiplicationFactor" type="xs:string"/>
+  <xs:element name="resolution" type="xs:string"/>
+  <xs:element name="alphabet" type="xs:string"/>
+  <xs:element name="validValues" type="xs:string"/>
+  <!--
+    date and time are for ensure that the format 
+    yyyy-mm-dd and hh:mm:ss are used
+  -->
+  <xs:element name="date">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="time">
+    <xs:complexType/>
+  </xs:element>
+  <!--
+    The attribute that uses ipV4Address tag must follow the format:
+    four fields of digits, separated by a dot. 
+    Each field consists of one to three digits.
+  -->
+  <xs:element name="ipV4Address">
+    <xs:complexType/>
+  </xs:element>
+  <!--
+     The attribute that uses ipV6Address tag must follow the format:
+    eight fields of hexadecimal digits, separated by a colons. 
+    Each field consists of one to four digits. 
+    One or any number of consecutive group of 0 value may be replaced with two colons (::).
+    This substitution with double-colon may be performed only once in an address.
+  -->
+  <xs:element name="ipV6Address">
+    <xs:complexType/>
+  </xs:element>
+  <!--
+    The attribute that uses macAddress tag must follow the format:
+    six fields of hexadecimal digits, separated by a colons. 
+    Each field consists of two digits.
+  -->
+  <xs:element name="macAddress">
+    <xs:complexType/>
+  </xs:element>
+  <!-- Derived data type -->
+  <xs:element name="derivedDataType">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element ref="baseType"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="baseType">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="availableTypes"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="derivedDataTypeRef" substitutionGroup="availableTypes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="defaultValue"/>
+        <xs:element minOccurs="0" ref="mimName"/>
+        <xs:element minOccurs="0" ref="mimVersion"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- Sequence data type -->
+  <xs:element name="sequence" substitutionGroup="availableTypes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice>
+          <xs:element ref="primitiveTypes"/>
+          <xs:element ref="structRef"/>
+          <xs:element ref="derivedDataTypeRef"/>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="minLength"/>
+        <xs:element minOccurs="0" ref="maxLength"/>
+        <xs:element minOccurs="0" ref="nonUnique"/>
+        <xs:element minOccurs="0" ref="ordered"/>
+        <xs:element minOccurs="0" ref="seqDefaultValue"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="seqDefaultValue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="defaultValue"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="minLength" type="xs:string"/>
+  <xs:element name="maxLength" type="xs:string"/>
+  <xs:element name="nonUnique">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="ordered">
+    <xs:complexType/>
+  </xs:element>
+  <!-- MoRef data type -->
+  <xs:element name="moRef" substitutionGroup="primitiveTypes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="mimName"/>
+        <xs:element minOccurs="0" ref="mimVersion"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- Modifiers -->
+  <!-- nonUnique is defined under the sequence data type. -->
+  <xs:group name="commonSpecifier">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="deprecated"/>
+      <xs:element minOccurs="0" ref="obsolete"/>
+      <xs:element minOccurs="0" ref="visibility"/>
+      <xs:element minOccurs="0" ref="filter"/>
+      <xs:element minOccurs="0" ref="dependencies"/>
+      <xs:element minOccurs="0" ref="dependenciesScript"/>
+      <xs:element minOccurs="0" ref="feature"/>
+      <xs:element minOccurs="0" ref="specification"/>
+      <xs:element minOccurs="0" ref="interfaceOnly"/>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="classSpecifier">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="description"/>
+      <xs:element minOccurs="0" ref="applicationTag"/>
+      <xs:element minOccurs="0" ref="domainExtension"/>
+      <xs:element minOccurs="0" ref="systemCreated"/>
+      <xs:element minOccurs="0" ref="notificationTypes"/>
+      <xs:element minOccurs="0" ref="nonPersistent"/>
+      <xs:element minOccurs="0" ref="precondition"/>
+      <xs:element minOccurs="0" ref="readOnly"/>
+      <xs:element minOccurs="0" ref="lockBeforeDelete"/>
+      <xs:element minOccurs="0" ref="root"/>
+      <xs:group ref="commonSpecifier"/>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="implementationSpecifier">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="local"/>
+      <xs:element minOccurs="0" ref="mandatory"/>
+      <xs:element minOccurs="0" ref="noNotification"/>
+      <xs:element minOccurs="0" ref="nonPersistent"/>
+      <xs:element minOccurs="0" ref="readOnly"/>
+      <xs:element minOccurs="0" ref="restricted"/>
+      <xs:element minOccurs="0" ref="static"/>
+      <xs:element minOccurs="0" ref="undefined"/>
+      <xs:element minOccurs="0" ref="lockBeforeModify"/>
+      <xs:element minOccurs="0" ref="restartType"/>
+      <xs:element minOccurs="0" ref="indexed"/>
+      <xs:element minOccurs="0" ref="key"/>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="behaviorSpecifier">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="disturbances"/>
+      <xs:element minOccurs="0" ref="takesEffect"/>
+      <xs:element minOccurs="0" ref="sideEffects"/>
+      <xs:element minOccurs="0" ref="precondition"/>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="counterSpecifier">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="condition"/>
+      <xs:element minOccurs="0" ref="counterType"/>
+      <xs:element minOccurs="0" ref="samplingRate"/>
+      <xs:element minOccurs="0" ref="scanner"/>
+      <xs:element minOccurs="0" ref="counterReset"/>
+      <xs:element minOccurs="0" ref="counterContext"/>
+      <xs:element minOccurs="0" ref="getValue"/>
+    </xs:sequence>
+  </xs:group>
+  <xs:element name="description" type="xs:string"/>
+  <!-- applicationTag for free use to extend the dtd -->
+  <xs:element name="applicationTag" type="xs:string"/>
+  <!-- deprecated, for elements that will be removed, but has full functionality -->
+  <xs:element name="deprecated" type="xs:string"/>
+  <!-- obsolite, for elements that will be removed, and  has degraded functionality. -->
+  <!-- The behavior must be specified -->
+  <xs:element name="obsolete" type="xs:string"/>
+  <!-- visibility, used at generation of the xml file to separate elements that is for Ericsson personel -->
+  <!-- The values are: public -for operator, hidden -for Ericsson personel. -->
+  <xs:element name="visibility" type="xs:string"/>
+  <!-- filter, used at generation of the xml file to be able to filter out elelemts -->
+  <xs:element name="filter" type="xs:string"/>
+  <!-- dependenciesScript, for constrains in a constraint language -->
+  <xs:element name="dependenciesScript" type="xs:string"/>
+  <!-- Value when attribute is undefiend -->
+  <xs:element name="undefinedValue" type="xs:string"/>
+  <!--  disturbancies, for change or create can cause trafic distrubancies -->
+  <xs:element name="disturbances" type="xs:string"/>
+  <!-- takesEffect, conditions for when change or create takes effect -->
+  <xs:element name="takesEffect" type="xs:string"/>
+  <!--  sideEffect, specifies if a chagnes is affecting other elements -->
+  <xs:element name="sideEffects" type="xs:string"/>
+  <!-- dependencies, in natural langugage -->
+  <xs:element name="dependencies" type="xs:string"/>
+  <!--  precondition -->
+  <xs:element name="precondition" type="xs:string"/>
+  <!-- condition, must be specified for pm counters -->
+  <xs:element name="condition" type="xs:string"/>
+  <!-- counterType must be specified for pm counters -->
+  <xs:element name="counterType" type="xs:string"/>
+  <!-- samplingRate, for pm counter -->
+  <xs:element name="samplingRate" type="xs:string"/>
+  <!-- scanner, for pm counter -->
+  <xs:element name="scanner" type="xs:string"/>
+  <!-- counterContext, for pm counter -->
+  <xs:element name="counterContext" type="xs:string"/>
+  <!-- feature, -->
+  <xs:element name="feature" type="xs:string"/>
+  <!-- specification, the standard the element is defined -->
+  <xs:element name="specification" type="xs:string"/>
+  <!-- counterReset, value: true -if the coutner resets between the measurement periods -->
+  <!-- false -if not -->
+  <xs:element name="counterReset" type="xs:string"/>
+  <!-- transactionRequired, value: true -if the transaction is required -->
+  <!-- true -if not required -->
+  <xs:element name="transactionRequired" type="xs:string"/>
+  <!-- Description of the constrains of the transaction -->
+  <xs:element name="transactionConstraints" type="xs:string"/>
+  <!-- lockBeforeModify, value: true -if the Mo must be locket before modify -->
+  <!-- false -if not -->
+  <xs:element name="lockBeforeModify" type="xs:string"/>
+  <!-- getValue, for pm countrs, specifies the type of value, like runtime or ROP value -->
+  <xs:element name="getValue" type="xs:string"/>
+  <!-- local -->
+  <xs:element name="local">
+    <xs:complexType/>
+  </xs:element>
+  <!-- the attribute must have a value at create of the MO -->
+  <xs:element name="mandatory">
+    <xs:complexType/>
+  </xs:element>
+  <!-- noNotificaton, the attribute is not sending value change notification -->
+  <xs:element name="noNotification">
+    <xs:complexType/>
+  </xs:element>
+  <!-- nonPersistent, the element value do not survive a restart -->
+  <xs:element name="nonPersistent">
+    <xs:complexType/>
+  </xs:element>
+  <!-- readonly -->
+  <xs:element name="readOnly">
+    <xs:complexType/>
+  </xs:element>
+  <!-- restricted, can only be set at create of the MO -->
+  <xs:element name="restricted">
+    <xs:complexType/>
+  </xs:element>
+  <!-- static -->
+  <xs:element name="static">
+    <xs:complexType/>
+  </xs:element>
+  <!-- undifined -->
+  <xs:element name="undefined">
+    <xs:complexType/>
+  </xs:element>
+  <!-- indexed -->
+  <xs:element name="indexed">
+    <xs:complexType/>
+  </xs:element>
+  <!-- key -->
+  <xs:element name="key">
+    <xs:complexType/>
+  </xs:element>
+  <!-- interfaceOnly, no fuctionality is implemented -->
+  <xs:element name="interfaceOnly">
+    <xs:complexType/>
+  </xs:element>
+  <!-- root, the root MO of the mim -->
+  <xs:element name="root">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="restartType">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="noRestart"/>
+        <xs:element ref="moRestart"/>
+        <xs:element ref="nodeRestart"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="noRestart">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="moRestart">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="nodeRestart">
+    <xs:complexType/>
+  </xs:element>
+  <!-- domainExtension -->
+  <xs:element name="domainExtension">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="extension"/>
+      </xs:sequence>
+      <xs:attribute name="domain"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="extension">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="value" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- Models definition -->
+  <xs:element name="models">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="dtdVersion"/>
+        <xs:element minOccurs="0" ref="momMetaData"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="mim"/>
+          <xs:element ref="interMim"/>
+          <xs:element ref="mib"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dtdVersion" type="xs:string"/>
+  <!---->
+  <xs:element name="momMetaData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="momTitle"/>
+        <xs:element ref="momSubTitle"/>
+        <xs:element ref="momIdentity"/>
+        <xs:element minOccurs="0" ref="createdBy"/>
+        <xs:element minOccurs="0" ref="approvedBy"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="momTitle" type="xs:string"/>
+  <xs:element name="momSubTitle" type="xs:string"/>
+  <xs:element name="momIdentity">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="docNum"/>
+        <xs:element ref="docLang"/>
+        <xs:element ref="docRev"/>
+        <xs:element ref="docDate"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="docNum" type="xs:string"/>
+  <xs:element name="docLang" type="xs:string"/>
+  <xs:element name="docRev" type="xs:string"/>
+  <!-- Date in YYYY-MM-DD format -->
+  <xs:element name="docDate" type="xs:string"/>
+  <xs:element name="createdBy">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="signature"/>
+        <xs:element minOccurs="0" ref="name"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="signature" type="xs:string"/>
+  <xs:element name="name" type="xs:string"/>
+  <xs:element name="approvedBy">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="signature"/>
+        <xs:element minOccurs="0" ref="name"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="mib">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:element maxOccurs="unbounded" ref="object"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:ID"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="object">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:element ref="hasClass"/>
+        <xs:element maxOccurs="unbounded" ref="slot"/>
+      </xs:sequence>
+      <xs:attribute name="parentDn" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="slot">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:choice>
+          <xs:element ref="value"/>
+          <xs:element ref="complexValue"/>
+          <xs:element ref="seqValue"/>
+          <xs:element ref="complexSeqValue"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="complexValue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="slot"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="complexSeqValue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="complexValue"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="seqValue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="mim">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:element minOccurs="0" ref="copyright"/>
+        <xs:element minOccurs="0" ref="mimParts"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="struct"/>
+          <xs:element ref="enum"/>
+          <xs:element ref="exception"/>
+          <xs:element ref="derivedDataType"/>
+        </xs:choice>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="class"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="relationship"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:ID"/>
+      <xs:attribute name="version" use="required"/>
+      <xs:attribute name="release" use="required"/>
+      <xs:attribute name="author"/>
+      <xs:attribute name="contact"/>
+      <xs:attribute name="date"/>
+      <xs:attribute name="docNo"/>
+      <xs:attribute name="revision"/>
+      <xs:attribute name="namespace"/>
+      <xs:attribute name="namespacePrefix"/>
+      <xs:attribute name="organization"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="interMim">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="relationship"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="copyright">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="company"/>
+        <xs:element minOccurs="0" ref="year"/>
+        <xs:element minOccurs="0" ref="disclaimer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="company" type="xs:string"/>
+  <xs:element name="year" type="xs:string"/>
+  <xs:element name="disclaimer" type="xs:string"/>
+  <xs:element name="mimParts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="mimPart"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="mimPart">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="name"/>
+        <xs:element maxOccurs="unbounded" ref="label"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="label" type="xs:string"/>
+  <!-- MO class definition -->
+  <xs:element name="class">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="classSpecifier"/>
+        <xs:element minOccurs="0" ref="transactionRequired"/>
+        <xs:element minOccurs="0" ref="transactionConstraints"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="action"/>
+          <xs:element ref="attribute"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="systemCreated">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="lockBeforeDelete" type="xs:string"/>
+  <xs:element name="notificationTypes" type="xs:string"/>
+  <!-- MO Attribute definition -->
+  <xs:element name="attribute">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:element minOccurs="0" ref="transactionRequired"/>
+        <xs:element minOccurs="0" ref="transactionConstraints"/>
+        <xs:group ref="implementationSpecifier"/>
+        <xs:element ref="dataType"/>
+        <xs:sequence>
+          <xs:group ref="commonSpecifier"/>
+          <xs:choice>
+            <xs:group ref="behaviorSpecifier"/>
+            <xs:group ref="counterSpecifier"/>
+          </xs:choice>
+        </xs:sequence>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- Struct data type -->
+  <xs:element name="struct">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:element maxOccurs="unbounded" ref="structMember"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="structMember">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:choice>
+          <xs:element ref="primitiveTypes"/>
+          <xs:element ref="sequence"/>
+          <xs:element ref="derivedDataTypeRef"/>
+        </xs:choice>
+        <xs:group ref="commonSpecifier"/>
+        <xs:group ref="behaviorSpecifier"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="structRef" substitutionGroup="availableTypes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="mimName"/>
+        <xs:element minOccurs="0" ref="mimVersion"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- Enum data type -->
+  <xs:element name="enum">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:element maxOccurs="unbounded" ref="enumMember"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="enumMember">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:element minOccurs="0" ref="value"/>
+        <xs:group ref="commonSpecifier"/>
+        <xs:group ref="behaviorSpecifier"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="enumRef" substitutionGroup="primitiveTypes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="defaultValue"/>
+        <xs:element minOccurs="0" ref="mimName"/>
+        <xs:element minOccurs="0" ref="mimVersion"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="value" type="xs:string"/>
+  <!-- MO Action -->
+  <xs:element name="action">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:element ref="returnType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="parameter"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="raisesException"/>
+        <xs:element minOccurs="0" ref="lockBeforeExecute"/>
+        <xs:element minOccurs="0" ref="transactionRequired"/>
+        <xs:element minOccurs="0" ref="transactionConstraints"/>
+        <xs:group ref="commonSpecifier"/>
+        <xs:group ref="behaviorSpecifier"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parameter">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:choice>
+          <xs:element ref="in"/>
+          <xs:element ref="out"/>
+          <xs:element ref="inout"/>
+        </xs:choice>
+        <xs:element ref="dataType"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="in">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="inout">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="out">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="raisesException">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="returnType">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="void"/>
+        <xs:element ref="availableTypes"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="lockBeforeExecute" type="xs:string"/>
+  <!-- MO Exception -->
+  <xs:element name="exception">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="exceptionParameter"/>
+        <xs:element minOccurs="0" ref="deprecated"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="exceptionParameter">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element ref="dataType"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- MO Relations -->
+  <xs:element name="relationship">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:group ref="commonSpecifier"/>
+        <xs:choice>
+          <xs:element ref="biDirectionalAssociation"/>
+          <xs:element ref="uniDirectionalAssociation"/>
+          <xs:element ref="containment"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="biDirectionalAssociation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="mandatory"/>
+        <xs:element ref="associationEnd"/>
+        <xs:element ref="associationEnd"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="uniDirectionalAssociation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="mandatory"/>
+        <xs:element ref="hasClass"/>
+        <xs:element ref="associationEnd"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="associationEnd">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element minOccurs="0" ref="domainExtension"/>
+        <xs:element ref="hasClass"/>
+        <xs:element minOccurs="0" ref="cardinality"/>
+        <xs:element minOccurs="0" ref="deletionPolicy"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="containment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="parent"/>
+        <xs:element maxOccurs="unbounded" ref="child"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="deletionPolicy">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="none"/>
+        <xs:element ref="restricted"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="none">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="parent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element ref="hasClass"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="child">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="applicationTag"/>
+        <xs:element ref="hasClass"/>
+        <xs:element minOccurs="0" ref="cardinality"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cardinality">
+    <xs:complexType>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element ref="min"/>
+          <xs:element minOccurs="0" ref="max"/>
+        </xs:sequence>
+        <xs:element ref="max"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="hasClass">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="mimName"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="mimVersion"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="mimName" type="xs:string"/>
+  <xs:element name="mimVersion" type="xs:string"/>
+</xs:schema>
+<!--
+  Detailed Revision History
+  
+  Rev PE3 erajaik 2011-06-10
+  Renamed the following elements:
+    attributeValue          ->   value (reusing the already existing definition)
+    sequenceAttributeValue  ->   seqValue
+    structValue             ->   complexValue
+    sequenceStructValue     ->   complexSeqValue
+    structMemberValue       ->   slot (i.e recursively using the slot definition)
+  Removed the definitions of attributeValue and structMemberValue since no longer needed.
+  
+  Rev PE2 erajaik 2011-06-09
+  Changed object dn attribute to parentDn after MOM Forum review.
+  
+  Rev PE1 erajaik 2011-05-11
+  Added mib, object, slot, attributeValue, structValue, structMemberValue, sequenceAttributeValue, sequenceStructValue tags.
+  Changed from class+ to class* in mim tag.
+  
+  Rev D  erasodd 2010-02-12
+  Added domainExtension
+  Added transactionConstraints on moClass attribute and action
+  Added transactionRequired on attribute and moClass
+  Added comments to specifiers. 
+  Added momMetaData and dtdVersion for DWAXE tools
+  Added root to classSpecifier
+  Added minLength and ordered to sequence
+  Added author, contact, date, docNo, revision, namespace, namespacePrefix, organization to mim
+  Added mimName and mimVersion to MoRef
+  Added notImplemented to commonSpecifiers
+  Added mimName and mimVersion to enumRef and structRef
+  Added key to attribute
+  Added derivedDataTypes to sequence and struct
+  Added declaration of noRestart, moRestart, nodeRestart, lockBeforeExecute
+  Added precondition to Class
+  Added commonSpecifiers to relationships.
+  Added hasClass to uniDirecAssociation.
+  Added yangTypes, derivedDataTypeRef, targetNameSpace, mountNameSpace, mountPoint
+  runtime, cached, internallyRW, restartType
+  Added on Class: visibility, dependenciesScript, obsolete
+  Added on Attribute: visibility, dependenciesScript, obsolete, feature, date, time, ipAddress, macAddress
+  Added on Action: visibility, dependenciesScript, obsolete
+  Added on associationEnd: mimClass, mimVersion, mimName. hasClass is changed to optional.
+  
+  Rev Pd20 erasodd 2010-02-02
+  Changes after review. 
+  Removed double specification of signature and name.
+  Removed intraMib
+  Added domainExtension
+  Added transactionConstraints on moClass attribute and action
+  Added transactionRequired on attribute and moClass
+  Added comments to specifiers. 
+  
+  Rev PD19 erasodd 2010-01-18
+  Correted syntax for docDate
+  
+  Rev PD18 erasodd 2010-01-15
+  Added momMetaData and dtdVersion for DWAXE tools
+  
+  Rev PD17 erasodd 2009-12-23
+  Changed cardinality according WRNae71840 to be deterministic
+  Changed commonSpecifier and behaviorSpecifaier to be deterministic.
+  Added metaData in models for MOM2HTML
+  
+  Rev PD16 erasodd/erajaik 2009-12-03
+  Added root to classSpecifier
+  Added minLength and ordered to sequence
+  Removed mountNamespace and mountPoint from mim
+  Added author, contact, date, docNo, revision, namespace, namespacePrefix, organization to mim
+  Added dtdDocNo and dtdRevision to the models attributeList
+  Removed pure, cached, internallyRW, persistent, runtime from specifiers.
+  
+  RevPD15 erasodd	2009-11-02
+  Changed notImplemented to interfaceOnly and and added getValue
+  
+  Rev PD14 erajaik 2009-10-31
+  Corrections to notImplemented, structRef and moRef.
+  
+  Rev PD13 erasodd 2009-10-27
+  Added mimName and mimVersion to MoRef
+  Added notImplemented to commonSpecifiers
+  
+  Rev PD12 erasodd 2009-10-19
+  Added mimName and mimVersion to enumRef and structRef
+  Added key to attribute
+  
+  Rev Pd11 erasodd 2009-08-24
+  Added derivedDataTypes to sequence and struct
+  
+  Rev PD10 erasodd 2009-05-27
+  Replaced booleanVals with PCDATA
+  Removed  ELEMENT true EMPTY and ELEMENT false EMPTY
+  
+  Rev PD9 erasodd 2009-04-24
+  Added mimName and mimVersion to derivedDataTypeRef due to that the types can be in an other mim
+  Added Specification to  commonSpecifiers
+  
+  Rev PD8 erasodd 2009-04-20
+  Removed dubble declarations of mimName and mimVersion
+  Added declaration of noRestart, moRestart, nodeRestart, lockBeforeExecute
+  Corrected format of derivedDataTypes,
+  Added precondition to Class
+  
+  Rev PD7 erasodd	2009-04-08
+  Approved at MOM Forum with the changes:
+  Added undefinedValue to string
+  Changed ipAddress to ipV4Address and ipV6Address
+  Removed float32, float64 from yangTypes due to they are removed from the Yang specification
+  
+  Rev PD6 erasodd 2009-04-07
+  Removed extra "|" in relationship.
+  Moved implementationSpecifier in attribute.
+  
+  Rev PD5 erasodd 2009-04-07
+  Added commonSpecifiers to relationships.
+  Added hasClass to uniDirecAssociation.
+  
+  Rev PD4 erasodd 2009-04-06
+  Changed delimeter from - to : in format for time. 
+  Removed boolean and string from yangtypes
+  Contcatinated the suggestions from David Sundqvist and Mark Hollmann.
+  Removed unused: softlink, support, associationClass
+  
+  Rev PD3 David Sundqvist: Restructed for better readability
+  
+  Rev. PD2  23.Mars.2009 erasodd: Added visiblitiyFilter on class, attribute and action.
+  Changed delimeter from - to : in format for time. 
+  Removed boolean and string from yangtypes
+  
+  Rev. PD1  20.Mar.2009 erasodd:
+  TSP-SAF and STN tags added:
+  yangTypes, derivedDataTypeRef, targetNameSpace, mountNameSpace, mountPoint
+  runtime, cached, internallyRW, restartType
+  
+  Rev. PD1  20.Mar.2009 erasodd: New additions:
+  On Class: visibility, dependenciesScript, obsolete
+  On Attribute: visibility, dependenciesScript, obsolete, feature, date, time, ipAddress, macAddress
+  On Action: visibility, dependenciesScript, obsolete
+  On associationEnd: mimClass, mimVersion, mimName. hasClass is changed to optional.
+  
+  Rev. C - 24.Jan.2008 - Mark Hollmann (eeimhln) - Updated after approval by MOM Forum as follows:
+  
+  Counter types removed: peg, gauge, pdf, acc, ddm, scan, trigAcc, trigScan
+  
+  <!ELEMENT counterType (peg | gauge | pdf | acc | ddm | scan | trigAcc | trigScan)> 
+  changed to:
+  <!ELEMENT counterType (#PCDATA)> 
+  
+  <!ELEMENT sequence ((%corbaTypes; | enumRef | structRef | moRef), (maxLength | enumRef)?, nonUnique?, seqDefaultValue?)> 
+  changed to:
+  <!ELEMENT sequence ((%corbaTypes; | enumRef | structRef | moRef), maxLength?, nonUnique?, seqDefaultValue?)> 
+  
+-->

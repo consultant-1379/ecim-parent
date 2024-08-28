@@ -1,0 +1,75 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 20, 2015 4:09:07 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "EcimString" {
+	namespace "urn:com:ericsson:ecim:EcimString";
+	prefix "EcimString";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import RootMom {
+		prefix "RootMom";
+	}
+
+	revision "2015-04-20" {
+		ericsson:release "22";
+		ericsson:version "2";
+	}
+
+	augment "/RootMom:Root" {
+		list "StringPatterns" {
+			key "id";
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			uses EcimString:StringPatterns;
+		}
+
+	}
+
+	typedef "DerivedString" {
+		type string {
+			pattern "[a-zA-z0-9]+,[a-zA-z0-9]";
+		}
+
+	}
+
+	grouping "StringPatterns" {
+		leaf "id" {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+		leaf "string1" {
+			type EcimString:DerivedString;
+			default "A,B";
+			config true;
+		}
+
+		leaf "string2" {
+			type EcimString:DerivedString;
+			default "A\,B";
+			config true;
+		}
+
+		leaf-list "multipleString1" {
+			type EcimString:DerivedString;
+			config true;
+			max-elements 4;
+			ericsson:non-unique-leaf-list;
+		}
+
+		leaf-list "multipleString2" {
+			type EcimString:DerivedString;
+			config true;
+			max-elements 2;
+			ericsson:non-unique-leaf-list;
+		}
+
+	}
+
+}

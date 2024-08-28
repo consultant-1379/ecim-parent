@@ -1,0 +1,254 @@
+/*
+  Copyright (c) 2014 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on 2014-maj-13 10:33:11 using 
+    * com.ericsson.ecim.yang.m2m 2.10.1.qualifier
+*/
+module EcimActions {
+	namespace "urn:com:ericsson:ecim:EcimActions";
+	prefix EcimActions;
+	import ericsson-yang-extensions {
+		prefix ericsson;
+	}
+
+	import EcimString {
+		prefix EcimString;
+	}
+
+	import EcimEnum {
+		prefix EcimEnum;
+	}
+
+	import RootMom {
+		prefix RootMom;
+	}
+
+	import EcimFloat {
+		prefix EcimFloat;
+	}
+
+	import EcimInt {
+		prefix EcimInt;
+	}
+
+	organization "Ericsson";
+
+	revision "2014-05-13" {
+		ericsson:release 2;
+		ericsson:version 1;
+	}
+
+	augment "/RootMom:Root" {
+		list Actions {
+			key id;
+			max-elements 1;
+			description "The min-elements value for this statement is : 1.";
+			uses "EcimActions:Actions";
+		}
+
+	}
+
+	typedef IPaddress {
+		type string {
+			pattern "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}";
+		}
+
+	}
+
+	typedef DerivedFloat {
+		type decimal64 {
+			fraction-digits 1;
+		}
+
+	}
+
+	grouping Actions {
+		leaf id {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+		ericsson:action actionWithStringPatterns {
+			input {
+				leaf originatingIPAddress {
+					type "EcimActions:IPaddress";
+					mandatory true;
+				}
+
+				leaf destinationIPAddress {
+					type "EcimActions:IPaddress";
+					mandatory true;
+				}
+
+			}
+
+			output {
+				leaf returnValue {
+					type boolean;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionWithIntegers {
+			input {
+				leaf-list num1 {
+					type int32;
+					min-elements 1;
+					max-elements 3;
+				}
+
+				leaf-list num2 {
+					type int8;
+					min-elements 1;
+					max-elements 2;
+				}
+
+				leaf-list num3 {
+					type int64;
+					min-elements 1;
+					max-elements 30;
+					description "qwe";
+				}
+
+			}
+
+			output {
+				leaf returnValue {
+					type uint32;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionWithBooleans {
+			input {
+				leaf bool1 {
+					type boolean;
+					mandatory true;
+				}
+
+				leaf bool2 {
+					type boolean;
+					mandatory true;
+				}
+
+			}
+
+			output {
+				leaf returnValue {
+					type boolean;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionWithEmptyDefaultParameters {
+			input {
+				leaf num1 {
+					type int32;
+					mandatory true;
+				}
+
+				leaf num2 {
+					type int32;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action emptyAction {
+		}
+
+		ericsson:action actionWithMultiValuedAttributes {
+			input {
+				leaf-list numbers {
+					type int32;
+					min-elements 1;
+					max-elements 4;
+				}
+
+				leaf-list strings {
+					type string;
+					min-elements 1;
+					max-elements 2;
+				}
+
+				leaf-list booleans {
+					type boolean;
+					min-elements 1;
+					max-elements 3;
+				}
+
+				leaf-list floats {
+					type "EcimActions:DerivedFloat";
+					min-elements 1;
+					max-elements 3;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionWithDerivedDataTypes {
+			input {
+				leaf derivedEnum {
+					type "EcimEnum:equipmentList";
+					mandatory true;
+				}
+
+				leaf derivedFloat {
+					type "EcimFloat:MyDerivedFloat(infinitRange)";
+					mandatory true;
+				}
+
+				leaf derivedInt {
+					type "EcimInt:MyDerivedInteger(positiveRange)";
+					mandatory true;
+				}
+
+				leaf derivedString {
+					type "EcimString:DerivedString";
+					mandatory true;
+				}
+
+			}
+
+			output {
+				leaf returnValue {
+					type "EcimInt:MyDerivedInteger(positiveRange)";
+					mandatory true;
+				}
+
+			}
+
+		}
+
+		ericsson:action actionEcimIntegerReturn {
+			description "qwe";
+			output {
+				leaf returnValue {
+					type int64 {
+						range "0..234";
+					}
+
+					mandatory true;
+					description "qwe";
+				}
+
+			}
+
+		}
+
+	}
+
+}

@@ -1,0 +1,168 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 17, 2015 4:51:40 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "InheritanceExample" {
+	namespace "urn:com:ericsson:ecim:InheritanceExample";
+	prefix "InheritanceExample";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	description "Demo for inheritance of mandatory optional/attributes.";
+
+	revision "2015-04-17" {
+		ericsson:version "1";
+		ericsson:release "1";
+	}
+
+	list "Root" {
+		key "keyId";
+		list "ClassA" {
+			key "keyId";
+			min-elements 1;
+			max-elements 1;
+			list "ClassModA" {
+				key "keyId";
+				max-elements 1;
+				uses InheritanceExample:ClassModA;
+			}
+
+			uses InheritanceExample:ClassA;
+		}
+
+		list "ClassB" {
+			key "keyId";
+			min-elements 1;
+			max-elements 1;
+			uses InheritanceExample:ClassB;
+		}
+
+		uses InheritanceExample:Root;
+	}
+
+	grouping "Root" {
+		description "Root MO Class.";
+		leaf "keyId" {
+			type string;
+			mandatory true;
+			description "Key attribute of Root MO Class.";
+			ericsson:restricted;
+		}
+
+	}
+
+	grouping "ClassA" {
+		description "Documentation of Class A.";
+		leaf "keyId" {
+			type string;
+			mandatory true;
+			description "Documentation of key attribute.";
+			ericsson:restricted;
+		}
+
+		leaf "paOptInteger1" {
+			type int16;
+			description "Optional uint16 integer attribute.";
+		}
+
+		leaf "paOptString1" {
+			type string;
+			description "Optional string attribute.";
+		}
+
+		leaf "someMandatory" {
+			type int16;
+			mandatory true;
+			description "Mandatory uint16 integer attribute.";
+		}
+
+		leaf "someOptionalString" {
+			type string;
+			description "Optional string attribute.";
+		}
+
+		leaf "someOptionalInt" {
+			type int16;
+			description "Optional uint16 integer attribute.";
+		}
+
+	}
+
+	grouping "ClassB" {
+		description "Documentation of Class B.";
+		leaf "keyId" {
+			type string;
+			mandatory true;
+			description "Documentation of key attribute.";
+			ericsson:restricted;
+		}
+
+		leaf "pbOptIneger1" {
+			type int16;
+			description "Optional uint16 integer attribute.";
+		}
+
+		leaf "pbOptString1" {
+			type string;
+			description "Optional string attribute.";
+		}
+
+		leaf "someMandatory" {
+			type int16;
+			mandatory true;
+			description "Mandatory uint16 integer attribute.";
+		}
+
+		leaf "someOptionalString" {
+			type string;
+			description "Optional string attribute.";
+		}
+
+		leaf "someOptionalInt" {
+			type int16;
+			description "Optional uint16 integer attribute.";
+		}
+
+	}
+
+	grouping "ClassModA" {
+		description "Documentation of Class ModA.";
+		leaf "keyId" {
+			type string;
+			mandatory true;
+			description "Documentation of key attribute.";
+			ericsson:restricted;
+		}
+
+		leaf "pModaOptInteger1" {
+			type int16;
+			description "Optional uint16 integer attribute.";
+		}
+
+		leaf "pModaOptString1" {
+			type string;
+			description "Optional string attribute.";
+		}
+
+		leaf "someMandatory" {
+			type int16;
+			mandatory true;
+			description "Mandatory uint16 integer attribute.";
+		}
+
+		leaf "someOptionalString" {
+			type string;
+			description "Optional string attribute.";
+		}
+
+		leaf "someOptionalInt" {
+			type int16;
+			description "Optional uint16 integer attribute.";
+		}
+
+	}
+
+}

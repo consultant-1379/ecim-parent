@@ -1,0 +1,161 @@
+/*
+  Copyright (c) 2015 Ericsson AB.
+  All rights reserved
+  DX ECIM Tool-chain generated this file on Apr 21, 2015 2:21:20 PM using 
+    * com.ericsson.ecim.yang.m2m 3.0.0.qualifier
+*/
+module "CmwApplXMom" {
+	namespace "urn:com:ericsson:ecim:CmwApplXMom";
+	prefix "CmwApplXMom";
+	import ericsson-yang-extensions {
+		prefix "ericsson";
+	}
+
+	import ECIM_Top {
+		prefix "ECIM_Top";
+	}
+
+	description "qwe";
+
+	revision "2015-04-21" {
+		ericsson:version "1";
+		ericsson:release "1";
+	}
+
+	augment "/ECIM_Top:ManagedElement" {
+		list "CmwApplXRoot" {
+			key "cmwApplXRootId";
+			max-elements 1;
+			list "FunctionX" {
+				key "functionXId";
+				max-elements 5;
+				list "PrelClass" {
+					key "prelClassId";
+					uses CmwApplXMom:PrelClass;
+				}
+
+				uses CmwApplXMom:FunctionX;
+			}
+
+			uses CmwApplXMom:CmwApplXRoot;
+		}
+
+	}
+
+	typedef "EnumWithPrelEnumLiteral" {
+		type enumeration {
+			enum "ONE" {
+				value 1;
+			}
+
+			enum "TWO" {
+				value 2;
+			}
+
+		}
+
+		description "qwe";
+	}
+
+	grouping "CmwApplXRoot" {
+		description "123";
+		leaf "cmwApplXRootId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf "prelAttr1" {
+			type int16;
+		}
+
+		leaf "attrWithPrelEnumLiteral" {
+			type CmwApplXMom:EnumWithPrelEnumLiteral;
+			config true;
+			description "qwe";
+		}
+
+		container "attrWithStructwithPrelSm" {
+			presence "This Container points to a Struct which has no key.";
+			uses CmwApplXMom:attrWithStructwithPrelSm;
+		}
+
+		ericsson:prelAction;
+		ericsson:actionWithPrelParam {
+			description "123";
+			input {
+				leaf "prelParam" {
+					type int32;
+					mandatory true;
+				}
+
+				leaf "qq" {
+					type decimal64 {
+						fraction-digits 1;
+					}
+
+					mandatory true;
+				}
+
+			}
+
+			output {
+				leaf "returnValue" {
+					type int64;
+					mandatory true;
+				}
+
+			}
+
+		}
+
+	}
+
+	grouping "FunctionX" {
+		description "qwe";
+		leaf "functionXId" {
+			type string;
+			mandatory true;
+			description "qwe";
+			ericsson:restricted;
+		}
+
+		leaf "a1" {
+			type ECIM_Top:IpDNSAddress;
+			mandatory true;
+			description "qwe";
+		}
+
+		container "prodId" {
+			presence "This Container points to a Struct which has no key.";
+			description "qwe";
+			uses CmwApplXMom:prodId;
+		}
+
+	}
+
+	grouping "StructWithPrelMember" {
+		description "qwe";
+		leaf "sm1" {
+			type string;
+			mandatory true;
+		}
+
+		leaf "prelSm" {
+			type string;
+			mandatory true;
+		}
+
+	}
+
+	grouping "PrelClass" {
+		leaf "prelClassId" {
+			type string;
+			mandatory true;
+			ericsson:restricted;
+		}
+
+	}
+
+}

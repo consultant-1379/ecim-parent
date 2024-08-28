@@ -1,0 +1,241 @@
+-- /**
+-- * Map ECIM DataTypes to an MP Datatype
+-- * 
+-- * superimposition-dependencies: ECIMtoMP 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 03/02/2010
+-- */
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module BaseTypeMappingRules;
+create OUT : MP from IN : UML;
+
+lazy abstract rule BaseTypeMappingRules
+{
+	from s: UML!DataType(s.oclIsTypeOf(UML!DataType))
+	to t: MP!BaseTypeType 
+	(
+	)
+}
+
+lazy rule StringDataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s.hasStereotype('ECIM Base Profile::EcimDerivedString') and s.general.first().name='EcimString')
+	to t: MP!BaseTypeType 
+	(
+		string <- stringType
+	),	
+	stringType : MP!StringType
+	(
+		lengthRange <- thisModule.hasLengthRange(s),
+		stringLength <- thisModule.hasStringLength(s),
+		validValues <- thisModule.hasValidValues(s),
+		isPassphrase <- thisModule.hasIsPassphrase(s)
+	)
+}
+
+lazy rule DoubleDataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s.hasStereotype('ECIM Base Profile::EcimDerivedFloat') and s.general.first().name='EcimFloat')
+	to t: MP!BaseTypeType 
+	(
+		double <- doubleType
+	),	
+	doubleType : MP!DoubleType
+	(
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s),
+		unit <- thisModule.hasUnit(s)
+	)
+}
+
+lazy rule BooleanDataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s.hasStereotype('ECIM Base Profile::EcimDerivedBoolean') and s.general.first().name='EcimBoolean')
+	to t: MP!BaseTypeType 
+	(
+		boolean <- booleanType
+	),	
+	booleanType : MP!BooleanType
+	(	
+		--defaultValue <- --Default is defined on attribute
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule Int8DataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s.hasStereotype('ECIM Base Profile::EcimDerivedInteger') and s.general.first().name = 'EcimInt8')
+	to t: MP!BaseTypeType 
+	(
+		int8 <- int8Type
+	),	
+	int8Type : MP!Int8Type
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule Int16DataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s.hasStereotype('ECIM Base Profile::EcimDerivedInteger')  and s.general.first().name = 'EcimInt16')
+	to t: MP!BaseTypeType 
+	(
+		int16 <- int16Type
+	),	
+	int16Type : MP!Int16Type
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)			
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule Int32DataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s.hasStereotype('ECIM Base Profile::EcimDerivedInteger')  and s.general.first().name = 'EcimInt32')
+	to t: MP!BaseTypeType 
+	(
+		int32 <- int32Type
+	),	
+	int32Type : MP!Int32Type
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)		
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule Int64DataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s.hasStereotype('ECIM Base Profile::EcimDerivedInteger') and (s.general.first().name = 'EcimInt64' or (s.general.first().name = 'EcimInteger' and not thisModule.isDWAXE())))
+	to t: MP!BaseTypeType 
+	(
+		int64 <- int64Type
+	),	
+	int64Type : MP!Int64Type
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)			
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule IntegerDataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s.hasStereotype('ECIM Base Profile::EcimDerivedInteger') and s.general.first().name = 'EcimInteger' and thisModule.isDWAXE())
+	to t: MP!BaseTypeType 
+	(
+		integer <- integerType
+	),	
+	integerType : MP!IntegerType
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)			
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule IntU8DataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s.hasStereotype('ECIM Base Profile::EcimDerivedInteger')  and s.general.first().name = 'EcimUInt8')
+	to t: MP!BaseTypeType 
+	(
+		uint8 <- uint8Type
+	),	
+	uint8Type : MP!Uint8Type
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s)			
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule IntU16DataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s.hasStereotype('ECIM Base Profile::EcimDerivedInteger')  and s.general.first().name = 'EcimUInt16')
+	to t: MP!BaseTypeType 
+	(
+		uint16 <- uint16Type
+	),	
+	uint16Type : MP!Uint16Type
+	(
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)			
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule IntU32DataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s.hasStereotype('ECIM Base Profile::EcimDerivedInteger')  and s.general.first().name = 'EcimUInt32')
+	to t: MP!BaseTypeType 
+	(
+		uint32 <- uint32Type
+	),	
+	uint32Type : MP!Uint32Type
+	(	
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)				
+	)
+}
+
+--Map the BaseTypeType from a ECIM!Int*
+lazy rule IntU64DataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s.hasStereotype('ECIM Base Profile::EcimDerivedInteger')  and s.general.first().name = 'EcimUInt64')
+	to t: MP!BaseTypeType 
+	(
+		uint64 <- uint64Type
+	),	
+	uint64Type : MP!Uint64Type
+	(		
+		unit <- thisModule.hasUnit(s),
+		range <- thisModule.hasRange(s),
+		ranges <- thisModule.hasRanges(s),
+		multiplicationFactor <- thisModule.hasMultiplicationFactor(s),
+		resolution <- thisModule.hasResolution(s)		
+	)
+}
+
+
+--this rule is here to match just in case no datatype is specified
+lazy rule NoDataType extends BaseTypeMappingRules
+{
+	from s: UML!DataType(s <> OclUndefined)
+	to t: MP!BaseTypeType 
+	(
+
+	)	
+}

@@ -1,0 +1,91 @@
+module CrossModuleTypeUser {
+
+  namespace "urn:com:ericsson:yang:CrossModuleTypeUser";
+
+  prefix "CrossModuleTypeUser";
+
+  import DataTypes {
+    prefix "DataTypes";
+  }
+
+  organization
+    "Ericsson AB.";
+
+  contact
+    "Web:   <http://www.ericsson.com>";
+
+  description
+    "This YANG module defines the configuration data
+    and operational state data for Context in IPOS.
+
+    Copyright (c) 2014 Ericsson AB.
+    All rights reserved.";
+
+  revision 2014-09-15 {
+    description
+      "Initial revision.";
+    reference
+      "A YANG Data Model for Routing Management
+      draft-ietf-netmod-routing-cfg-15.";
+  }
+
+  container simpleContainer {
+       leaf leafA {
+             type DataTypes:TypeDefString;
+       }
+       leaf leafB {
+             type DataTypes:TypeDefBoolean;
+       }
+       leaf leafC {
+             type DataTypes:TypeDefDecimal64;
+       }    
+       leaf leafD {
+             type DataTypes:TypeDefEnumeration;
+       }     
+       leaf leafE {
+             type DataTypes:TypeDefIdentityref;
+       }     
+       leaf leafF {
+             type DataTypes:TypeDefBits;
+       }        
+       leaf leafG {
+             type DataTypes:TypeDefUnion;
+       }           
+       leaf-list leafListB{
+       		type DataTypes:TypeDefInt8;
+       }       
+  }
+ /*
+  list simpleList {
+	key leafA;
+       leaf leafA {
+             type DataTypes:TypeDefBits;
+       }
+       leaf-list leafListB{
+       		type DataTypes:TypeDefIdentityref;
+       }
+  } 
+  
+  list listParent {
+	key leafA;
+	leaf leafA
+	{
+		type string;	
+	}
+	list listChild {
+		key leafA;
+		leaf leafA {
+			type DataTypes:TypeDefUnion;
+		} 
+	}
+  }
+  
+  container containerParent {
+	container containerChild {
+		leaf leafA {
+			type DataTypes:TypeDefEnumeration;
+		} 
+	}
+  }
+ */
+}

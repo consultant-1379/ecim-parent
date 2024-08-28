@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.ericsson.ecim</groupId>
+    <artifactId>ecim-parent</artifactId>
+    <version>3.1.1</version>
+  </parent>
+  <artifactId>com.ericsson.ecim.mgc.cpp</artifactId>
+  <packaging>eclipse-plugin</packaging>
+  
+  <!-- required configurations to compile Acceleo -->
+  <build>
+   <plugins>
+     <plugin>
+       <groupId>org.eclipse.acceleo</groupId>
+       <artifactId>org.eclipse.acceleo.maven</artifactId>
+       <version>3.5.0-SNAPSHOT</version>
+       <executions>
+         <execution>
+           <id>compile-acceleo</id>
+           <phase>compile</phase>
+       	   <configuration>
+        	    <useBinaryResources>false</useBinaryResources>
+         	    <usePlatformResourcePath>true</usePlatformResourcePath>
+       	  		<acceleoProject>
+           		<root>${project.basedir}</root>
+          		<entries>
+             		<entry>
+               			<input>src</input>
+               			<output>target/classes</output>
+             		</entry>
+           		</entries>
+         		</acceleoProject>
+         		<packagesToRegister>
+           			<packageToRegister>org.eclipse.uml2.uml.UMLPackage</packageToRegister>
+         		</packagesToRegister>
+       		</configuration>
+            <goals>
+              <goal>acceleo-compile</goal>
+            </goals>
+         </execution>
+       </executions>
+     </plugin>
+   </plugins>
+</build>
+  
+</project>

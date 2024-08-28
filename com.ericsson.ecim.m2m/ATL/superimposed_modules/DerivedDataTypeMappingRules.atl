@@ -1,0 +1,63 @@
+-- /**
+-- *  This transformation creates MP DerivedDataTypeType(s) from EcimDataType(s) when called
+-- *
+-- * Note: It would have been nice to have these rules layered as they are in the ECIM Profile but this is not possible as
+-- * ATL does not support multiple inheritance, making this impossible. We do have one layer of inheritance though.
+-- *
+-- * superimposition-dependencies: ECIMtoMP 
+-- * library-dependencies: HelperFunctions
+-- *
+-- * Author: Ronan Barrett
+-- * Date: 03/02/2010
+-- */
+
+-- @atlcompiler atl2006
+-- @path MP=/com.ericsson.ecim.edm/model/Mp.ecore
+-- @nsURI PROFILE=http://www.eclipse.org/uml2/2.1.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module DerivedDataTypesMappingRules;
+create OUT : MP from IN : UML;
+
+--Generate a DerivedType
+rule EcimDerivedDataTypeToDerivedDataTypeType(s: UML!DataType)
+{
+--	from s: UML!DataType((s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimMom') or s.getNearestPackage().hasStereotype('ECIM Base Profile::EcimLibrary')) and (s.hasStereotype('ECIM Base Profile::EcimDerivedString') or s.hasStereotype('ECIM Base Profile::EcimDerivedInteger') or s.hasStereotype('ECIM Base Profile::EcimDerivedFloat') or s.hasStereotype('ECIM Base Profile::EcimDerivedBoolean')))	
+	using 
+	{
+		domainExtensions : Set(UML!Property) = thisModule.getDomainExtensions(s);	
+	}	
+	to t: MP!DerivedDataTypeType
+	(
+		description <- thisModule.hasDescription(s),
+		name <- s.name,
+		baseType <- thisModule.hasBaseType(s),
+		domainExtension <- thisModule.getDomainExtensionForOriginatingMomInfoPlusFilter(s, s.getCurrentPackage(), s.getNearestPackage()),
+		validationRules <- thisModule.getValidationRuleWithRegexp(s)
+	)
+	do
+	{
+		--generate domainExtensions if there are any
+		if (domainExtensions->size() > 0)
+		{
+			--before creating the extensions we group them by domain so that they can be outputted together
+			t.domainExtension <- domainExtensions->collect(e|thisModule.hasDomain(e))->asSet()->collect(e|thisModule.CreateGenericDomainExtensionType(e,domainExtensions,s));
+		}
+		t;
+	}			
+}
+
+--Create a DerivedType based on an inline type
+rule EcimInlineDerivedDataTypeToDerivedDataTypeType(te : UML!TypedElement)
+{
+	to t: MP!DerivedDataTypeType
+	(
+		name <- thisModule.CreateDerivedTypeName(te),
+		baseType <- thisModule.InLineBaseTypeMappingRules(te),
+		validationRules <- thisModule.getValidationRuleWithRegexp(te)
+	)
+	do
+	{
+		t;	
+	}
+}

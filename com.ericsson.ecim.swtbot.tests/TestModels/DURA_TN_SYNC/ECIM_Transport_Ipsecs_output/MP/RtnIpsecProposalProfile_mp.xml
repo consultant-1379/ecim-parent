@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2015 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Oct 13, 2015 2:45:36 PM using:
+	* com.ericsson.ecim.m2m 3.0.2.qualifier
+	* com.ericsson.ecim.dsl 3.0.2.qualifier
+	* com.ericsson.ecim.edm 3.0.2.qualifier
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+  <dtdVersion>G</dtdVersion>
+  <momMetaData>
+    <momTitle>title</momTitle>
+    <momSubTitle>sub title</momSubTitle>
+    <momIdentity>
+      <docNum>0</docNum>
+      <docLang>English</docLang>
+      <docRev>0</docRev>
+      <docDate/>
+    </momIdentity>
+    <createdBy>
+      <signature>EAB/FJP/TA UABERPE</signature>
+    </createdBy>
+    <approvedBy>
+      <signature>EAB/FJP/TA UABERPE</signature>
+    </approvedBy>
+  </momMetaData>
+  <mim author="EAB/FJP/TA UABERPE" contact="EAB/FJP/TA UABERPE" correction="0" date="" docNo="" name="RtnIpsecProposalProfile" namespace="urn:com:ericsson:ecim:RtnIpsecProposalProfile" namespacePrefix="rtnipsecproposalprofile" organization="" release="1" revision="" version="1">
+    <description>IpSecProposalProfile package</description>
+    <domainExtension domain="ECIM">
+      <extension name="immNamespace" value="NONE"/>
+    </domainExtension>
+    <struct name="ChildSaLifetime">
+      <description>Lifetime for the negotiated ChildSAs.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="2"/>
+        <extension name="originatingMimName" value="RtnIpsec"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <structMember name="dataLimit">
+        <description>Specifies the maximum amount of data that is allowed to be transmitted on a SA before rekeying.&#13;
+</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <derivedDataTypeRef name="DataLimit">
+          <mimName>RtnIpsecProposalProfile</mimName>
+        </derivedDataTypeRef>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ChildSaLifetimeDataLimit</decisionStatement>
+        </decisionPoint>
+      </structMember>
+      <structMember name="timeLimit">
+        <description>The maximum lifetime when an SA can be used.</description>
+        <derivedDataTypeRef name="TimeLimit">
+          <defaultValue>1440</defaultValue>
+          <mimName>RtnIpsecProposalProfile</mimName>
+        </derivedDataTypeRef>
+      </structMember>
+    </struct>
+    <struct name="IpsecProposal">
+      <description>Ipsec Transform to be proposed during SA negotiation.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="2"/>
+        <extension name="originatingMimName" value="RtnIpsec"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <structMember name="encryptionAlgorithm">
+        <description>Specifies the algorithm used for encryption.&#13;
+&#13;
+When unset (nil), the node will send all encryption algorithms supported by the hardware in the proposal.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <enumRef name="ChildSaEncryptionAlgorithm">
+          <mimName>RtnIpsecProposalProfile</mimName>
+        </enumRef>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature EncryptionAlgorithm</decisionStatement>
+        </decisionPoint>
+      </structMember>
+      <structMember name="integrityAlgorithm">
+        <description>Specifies the algorithm used for integrity check.&#13;
+&#13;
+When unset (nil), the node will send all integrity algorithms supported by the hardware in the proposal.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <enumRef name="ChildSaIntegrityAlgorithm">
+          <mimName>RtnIpsecProposalProfile</mimName>
+        </enumRef>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature IntegrityAlgorithm</decisionStatement>
+        </decisionPoint>
+      </structMember>
+      <structMember name="diffieHellmanGroup">
+        <description>Specifies a Diffie-Hellman group. &#13;
+&#13;
+If it is not specified, PFS is disabled.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <enumRef name="DiffieHellmanGroup">
+          <mimName>RtnIpsecProposalProfile</mimName>
+        </enumRef>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature IpsecProposalDiffieHellmanGroup</decisionStatement>
+        </decisionPoint>
+      </structMember>
+    </struct>
+    <enum name="ChildSaEncryptionAlgorithm">
+      <description>Child Security Association(SA) encryption algorithms.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="2"/>
+        <extension name="originatingMimName" value="RtnIpsec"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="ENCR_3DES">
+        <description>Specification: RFC_5996. </description>
+        <value>3</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ENCR_3DES</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="ENCR_NULL">
+        <description>Specification:  RFC_2410. </description>
+        <value>11</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ENCR_NULL</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="ENCR_AES_CBC_128">
+        <description>Specification:  RFC_5996. </description>
+        <value>1024</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ENCR_AES_CBC_128</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="ENCR_AES_CBC_192">
+        <description>Specification:  RFC_5996. </description>
+        <value>1025</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ENCR_AES_CBC_192</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="ENCR_AES_CBC_256">
+        <description>Specification:  RFC_5996. </description>
+        <value>1026</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ENCR_AES_CBC_256</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="ENCR_BLOWFISH_128">
+        <description>Specification:  RFC_5996. </description>
+        <value>1027</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ENCR_BLOWFISH_128</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="ENCR_BLOWFISH_192">
+        <description>Specification:  RFC_5996. </description>
+        <value>1028</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ENCR_BLOWFISH_192</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="ENCR_BLOWFISH_256">
+        <description>Specification:  RFC_5996. </description>
+        <value>1029</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ENCR_BLOWFISH_256</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="ENCR_BLOWFISH_448">
+        <description>Specification:  RFC_5996. </description>
+        <value>1030</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ENCR_BLOWFISH_448</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="ENCR_CAMELLIA_128">
+        <description>Specification:  RFC_5996. </description>
+        <value>1031</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ENCR_CAMELLIA_128</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="ENCR_CAMELLIA_192">
+        <description>Specification:  RFC_5996. </description>
+        <value>1032</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ENCR_CAMELLIA_192</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="ENCR_CAMELLIA_256">
+        <description>Specification:  RFC_5996. </description>
+        <value>1033</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature ENCR_CAMELLIA_256</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+    </enum>
+    <enum name="DiffieHellmanGroup">
+      <description>Diffie-Hellman groups. &#13;
+</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="2"/>
+        <extension name="originatingMimName" value="RtnIpsec"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="MODP_768_GROUP_1">
+        <description>Specification:  RFC_5996. </description>
+        <value>1</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature MODP_768_GROUP_1</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="MODP_1024_GROUP_2">
+        <description>Specification:  RFC_5996. </description>
+        <value>2</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature MODP_1024_GROUP_2</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="MODP_1536_GROUP_5">
+        <description>Specification:  RFC_3526. </description>
+        <value>5</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature MODP_1536_GROUP_5</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="MODP_2048_GROUP_14">
+        <description>Specification:  RFC_3526.&#13;
+</description>
+        <value>14</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature MODP_2048_GROUP_14</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="MODP_3072_GROUP_15">
+        <description>Specification:  RFC_3526. </description>
+        <value>15</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature MODP_3072_GROUP_15</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="MODP_4096_GROUP_16">
+        <description>Specification:  RFC_3526. </description>
+        <value>16</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature MODP_4096_GROUP_16</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="MODP_6144_GROUP_17">
+        <description>Specification:  RFC_3526. </description>
+        <value>17</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature MODP_6144_GROUP_17</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="MODP_8192_GROUP_18">
+        <description>Specification:  RFC_3526. </description>
+        <value>18</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature MODP_8192_GROUP_18</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+    </enum>
+    <enum name="ChildSaIntegrityAlgorithm">
+      <description>Child Security Association(SA) integrity algorithms.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="2"/>
+        <extension name="originatingMimName" value="RtnIpsec"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <enumMember name="AUTH_HMAC_MD5_96">
+        <description>Specification:  RFC_5996. &#13;
+</description>
+        <value>1</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature AUTH_HMAC_MD5_96</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="AUTH_HMAC_SHA1_96">
+        <description>Specification:  RFC_5996. &#13;
+</description>
+        <value>2</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature AUTH_HMAC_SHA1_96</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="AUTH_AES_XCBC_96">
+        <description>Specification:  RFC_5996. &#13;
+&#13;
+&#13;
+</description>
+        <value>5</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature AUTH_AES_XCBC_96</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="AUTH_HMAC_MD5_128">
+        <description>Specification:  RFC_5996. </description>
+        <value>6</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature AUTH_HMAC_MD5_128</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="AUTH_HMAC_SHA1_160">
+        <description>AUTH_HMAC_SHA1_160. </description>
+        <value>7</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature AUTH_HMAC_SHA1_160</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="AUTH_HMAC_SHA2_256_128">
+        <description>AUTH_HMAC_SHA2_256_128.</description>
+        <value>12</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature AUTH_HMAC_SHA2_256_128</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="AUTH_HMAC_SHA2_384_192">
+        <description>AUTH_HMAC_SHA2_384_192.</description>
+        <value>13</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature AUTH_HMAC_SHA2_384_192</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="AUTH_HMAC_SHA2_512_256">
+        <description>AUTH_HMAC_SHA2_512_256.</description>
+        <value>14</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature AUTH_HMAC_SHA2_512_256</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+      <enumMember name="AUTH_HMAC_SHA2_256_96">
+        <description>AUTH_HMAC_SHA2_256_96.</description>
+        <value>1024</value>
+        <decisionPoint>
+          <decisionStatement decisionType="basic">if-feature AUTH_HMAC_SHA2_256_96</decisionStatement>
+        </decisionPoint>
+      </enumMember>
+    </enum>
+    <derivedDataType name="TimeLimit">
+      <description>The maximum time in minutes.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="0"/>
+        <extension name="originatingMimName" value="RtnFilterTypes"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <baseType>
+        <uint32>
+          <range>
+            <min>60</min>
+            <max>5000</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>60</min>
+              <max>5000</max>
+            </subrange>
+          </ranges>
+          <unit>minutes</unit>
+        </uint32>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="DataLimit">
+      <description>Specify the amount of data in Mbytes.</description>
+      <domainExtension domain="ECIM">
+        <extension name="originatingMimRelease" value="0"/>
+        <extension name="originatingMimName" value="RtnFilterTypes"/>
+        <extension name="originatingMimVersion" value="1"/>
+      </domainExtension>
+      <baseType>
+        <uint32>
+          <range>
+            <min>100</min>
+            <max>500000</max>
+          </range>
+          <ranges>
+            <subrange>
+              <min>100</min>
+              <max>500000</max>
+            </subrange>
+          </ranges>
+          <unit>MByte</unit>
+        </uint32>
+      </baseType>
+    </derivedDataType>
+    <derivedDataType name="RtnIpsecProposalProfile_IpsecProposalProfile_userLabel">
+      <baseType>
+        <string>
+          <lengthRange>
+            <min>1</min>
+            <max>128</max>
+          </lengthRange>
+          <stringLength>
+            <subrange>
+              <min>1</min>
+              <max>128</max>
+            </subrange>
+          </stringLength>
+        </string>
+      </baseType>
+    </derivedDataType>
+    <class name="IpsecProposalProfile">
+      <description>Configuration information for Ipsec policies.</description>
+      <validationRules>
+        <rule exceptionText="" format="ECIM_Schematron_1.0" name="ProposalProfile"><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+	<pattern> 
+		<rule>
+		<assert test='every $ip in @ipsecProposal satisfies not (exists($ip/@encryptionAlgorithm) xor exists($ip/@integrityAlgorithm))'><value-of select="."/> None or both attributes of IpsecProposal must be present.</assert> 
+		</rule>
+	</pattern>
+</schema> ]]></rule>
+      </validationRules>
+      <root/>
+      <dependenciesScript><![CDATA[<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+	<pattern> 
+		<rule>
+		<assert test='every $ip in @ipsecProposal satisfies not (exists($ip/@encryptionAlgorithm) xor exists($ip/@integrityAlgorithm))'><value-of select="."/> None or both attributes of IpsecProposal must be present.</assert> 
+		</rule>
+	</pattern>
+</schema> ]]></dependenciesScript>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature IpsecProposalProfile</decisionStatement>
+      </decisionPoint>
+      <attribute name="ipsecProposalProfileId">
+        <description>Value component of the RDN.</description>
+        <mandatory/>
+        <noNotification/>
+        <restricted/>
+        <key/>
+        <dataType>
+          <string/>
+        </dataType>
+      </attribute>
+      <attribute name="childSaLifetime">
+        <description>Lifetime for the negotiated ChildSAs. 
+In order for the node to have completed the rekeying process before the lifetime expires, the node will initiate re-rekeying according to a soft lifetime. The soft lifetime is calculated as (0.8+0.1*R)*childSaLifetime, where R is a random factor between 0 and 1. </description>
+        <mandatory/>
+        <restricted/>
+        <dataType>
+          <structRef name="ChildSaLifetime">
+            <mimName>RtnIpsecProposalProfile</mimName>
+          </structRef>
+        </dataType>
+      </attribute>
+      <attribute name="ipsecProposal">
+        <description>An ordered list of Ipsec proposals to be used for IKEv2 negotiation. 
+
+At least one Ipsec proposal must be specified. The first one in the list has the highest priority.&#13;
+</description>
+        <mandatory/>
+        <restricted/>
+        <dataType>
+          <sequence>
+            <structRef name="IpsecProposal">
+              <mimName>RtnIpsecProposalProfile</mimName>
+            </structRef>
+            <minLength>1</minLength>
+            <maxLength>2</maxLength>
+            <nonUnique/>
+            <ordered/>
+          </sequence>
+        </dataType>
+      </attribute>
+      <attribute name="userLabel">
+        <description>Label for free use.</description>
+        <domainExtension domain="ECIM">
+          <extension name="isNillable" value="true"/>
+        </domainExtension>
+        <isNillable/>
+        <dataType>
+          <derivedDataTypeRef name="RtnIpsecProposalProfile_IpsecProposalProfile_userLabel">
+            <mimName>RtnIpsecProposalProfile</mimName>
+          </derivedDataTypeRef>
+        </dataType>
+      </attribute>
+      <attribute name="reservedBy">
+        <description>Contains a list of MO instances that reserve this MO instance.</description>
+        <readOnly/>
+        <dataType>
+          <sequence>
+            <moRef name="ManagedObject"/>
+            <minLength>0</minLength>
+          </sequence>
+        </dataType>
+      </attribute>
+    </class>
+  </mim>
+  <interMim>
+    <relationship name="Router_to_IpsecProposalProfile">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="false"/>
+      </domainExtension>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature RouterToIpsecProposalProfile</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Router">
+            <mimName>RtnL3Router</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="IpsecProposalProfile">
+            <mimName>RtnIpsecProposalProfile</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </interMim>
+  <interMim>
+    <relationship name="Transport_to_IpsecProposalProfile">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="false"/>
+      </domainExtension>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature TnToIpsecProposalProfile</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Transport">
+            <mimName>ECIM_Top</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="IpsecProposalProfile">
+            <mimName>RtnIpsecProposalProfile</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+            <max>1</max>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </interMim>
+  <interMim>
+    <relationship name="Host_to_IpsecProposalProfile">
+      <domainExtension domain="CoreMW">
+        <extension name="splitImmDn" value="false"/>
+      </domainExtension>
+      <decisionPoint>
+        <decisionStatement decisionType="basic">if-feature Host</decisionStatement>
+        <decisionStatement decisionType="basic">if-feature HostToIpsecProposalProfile</decisionStatement>
+      </decisionPoint>
+      <containment>
+        <parent>
+          <hasClass name="Host">
+            <mimName>RtnL3Host</mimName>
+          </hasClass>
+        </parent>
+        <child>
+          <hasClass name="IpsecProposalProfile">
+            <mimName>RtnIpsecProposalProfile</mimName>
+          </hasClass>
+          <cardinality>
+            <min>0</min>
+          </cardinality>
+        </child>
+        <domainExtension domain="ECIM">
+          <extension name="canCreate" value="true"/>
+          <extension name="canDelete" value="true"/>
+        </domainExtension>
+      </containment>
+    </relationship>
+  </interMim>
+</models>
